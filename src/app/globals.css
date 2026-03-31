@@ -1,26 +1,628 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ===== Tailwind v4 Custom Theme ===== */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* --- Fonts --- */
+  --font-headline: "Manrope", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-label: "Space Grotesk", sans-serif;
+  --font-sans: var(--font-body);
+
+  /* --- Light mode design-system colours --- */
+  --color-primary: #003b93;
+  --color-primary-container: #0051c3;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #beceff;
+  --color-primary-fixed: #dae2ff;
+  --color-primary-fixed-dim: #b1c5ff;
+  --color-on-primary-fixed: #001947;
+  --color-on-primary-fixed-variant: #00419f;
+  --color-inverse-primary: #b1c5ff;
+
+  --color-secondary: #5f5e5e;
+  --color-secondary-container: #e4e2e1;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #656464;
+  --color-secondary-fixed: #e4e2e1;
+  --color-secondary-fixed-dim: #c8c6c6;
+  --color-on-secondary-fixed: #1b1c1c;
+  --color-on-secondary-fixed-variant: #474747;
+
+  --color-tertiary: #00446e;
+  --color-tertiary-container: #005c93;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #a9d3ff;
+  --color-tertiary-fixed: #cfe5ff;
+  --color-tertiary-fixed-dim: #98cbff;
+  --color-on-tertiary-fixed: #001d33;
+  --color-on-tertiary-fixed-variant: #004a77;
+
+  --color-surface: #f7f9fc;
+  --color-surface-dim: #d8dadd;
+  --color-surface-bright: #f7f9fc;
+  --color-surface-variant: #e0e3e6;
+  --color-surface-container: #eceef1;
+  --color-surface-container-low: #f2f4f7;
+  --color-surface-container-high: #e6e8eb;
+  --color-surface-container-highest: #e0e3e6;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-tint: #1357c9;
+  --color-on-surface: #191c1e;
+  --color-on-surface-variant: #434653;
+  --color-inverse-surface: #2d3133;
+  --color-inverse-on-surface: #eff1f4;
+
+  --color-background: #f7f9fc;
+  --color-on-background: #191c1e;
+
+  --color-outline: #737785;
+  --color-outline-variant: #c3c6d6;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ================================================================
+   STITCH DARK THEME — Deep Navy Palette
+   Mapped 1:1 from the Stitch "Blog Homepage (Dark)" design.
+   ================================================================ */
+:root {
+  /* Dark-mode CSS variables (consumed by .dark selectors) */
+  --dk-background: #0b1326;
+  --dk-surface: #0b1326;
+  --dk-surface-dim: #0b1326;
+  --dk-surface-bright: #31394d;
+  --dk-surface-container: #171f33;
+  --dk-surface-container-low: #131b2e;
+  --dk-surface-container-high: #222a3d;
+  --dk-surface-container-highest: #2d3449;
+  --dk-surface-container-lowest: #060e20;
+  --dk-surface-variant: #2d3449;
+  --dk-surface-tint: #adc6ff;
+
+  --dk-primary: #adc6ff;
+  --dk-primary-container: #4d8eff;
+  --dk-on-primary: #002e6a;
+  --dk-on-primary-container: #00285d;
+  --dk-on-primary-fixed-variant: #004395;
+
+  --dk-secondary: #ffb787;
+  --dk-secondary-container: #e1720e;
+
+  --dk-tertiary: #a5c8ff;
+  --dk-tertiary-container: #5e93d9;
+
+  --dk-on-surface: #dae2fd;
+  --dk-on-surface-variant: #c2c6d6;
+  --dk-on-background: #dae2fd;
+
+  --dk-outline: #8c909f;
+  --dk-outline-variant: #424754;
+
+  --dk-error: #ffb4ab;
+  --dk-error-container: #93000a;
+
+  --dk-inverse-surface: #dae2fd;
+  --dk-inverse-on-surface: #283044;
+  --dk-inverse-primary: #005ac2;
+}
+
+/* Map specific variables explicitly for Tailwind v4 theme resolution */
+.dark,
+html.dark {
+  --color-background: var(--dk-background);
+  --color-surface: var(--dk-surface);
+  --color-surface-dim: var(--dk-surface-dim);
+  --color-surface-bright: var(--dk-surface-bright);
+  --color-surface-container: var(--dk-surface-container);
+  --color-surface-container-low: var(--dk-surface-container-low);
+  --color-surface-container-high: var(--dk-surface-container-high);
+  --color-surface-container-highest: var(--dk-surface-container-highest);
+  --color-surface-container-lowest: var(--dk-surface-container-lowest);
+  --color-surface-variant: var(--dk-surface-variant);
+  --color-surface-tint: var(--dk-surface-tint);
+
+  --color-primary: var(--dk-primary);
+  --color-primary-container: var(--dk-primary-container);
+  --color-on-primary: var(--dk-on-primary);
+  --color-on-primary-container: var(--dk-on-primary-container);
+  --color-on-primary-fixed-variant: var(--dk-on-primary-fixed-variant);
+
+  --color-secondary: var(--dk-secondary);
+  --color-secondary-container: var(--dk-secondary-container);
+
+  --color-tertiary: var(--dk-tertiary);
+  --color-tertiary-container: var(--dk-tertiary-container);
+
+  --color-on-surface: var(--dk-on-surface);
+  --color-on-surface-variant: var(--dk-on-surface-variant);
+  --color-on-background: var(--dk-on-background);
+
+  --color-outline: var(--dk-outline);
+  --color-outline-variant: var(--dk-outline-variant);
+
+  --color-error: var(--dk-error);
+  --color-error-container: var(--dk-error-container);
+
+  --color-inverse-surface: var(--dk-inverse-surface);
+  --color-inverse-on-surface: var(--dk-inverse-on-surface);
+  --color-inverse-primary: var(--dk-inverse-primary);
+}
+
+/* ===== Base styles ===== */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-body);
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+/* Dark mode body — deep navy from Stitch */
+.dark body,
+html.dark body {
+  background: var(--dk-background);
+  color: var(--dk-on-surface);
+}
+
+::selection {
+  background: rgba(0, 59, 147, 0.15);
+  color: #003b93;
+}
+
+.dark ::selection {
+  background: rgba(173, 198, 255, 0.25);
+  color: #adc6ff;
+}
+
+/* ===== Material Icons ===== */
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  vertical-align: middle;
+  user-select: none;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+/* ===== Glass Navigation ===== */
+.glass-nav {
+  background: rgba(247, 249, 252, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: background-color 0.4s ease, box-shadow 0.3s ease;
+}
+
+.dark .glass-nav {
+  background: rgba(11, 19, 38, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 40px 40px rgba(6, 14, 32, 0.08);
+}
+
+/* ===== Asymmetric Grid ===== */
+.asymmetric-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .asymmetric-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Ambient Shadows ===== */
+.ambient-shadow {
+  box-shadow: 0 32px 64px -12px rgba(25, 28, 30, 0.06);
+}
+
+.dark .ambient-shadow {
+  box-shadow: 0 32px 64px -12px rgba(6, 14, 32, 0.4);
+}
+
+/* ===== Reading Progress Bar ===== */
+.reading-progress-track {
+  height: 4px;
+  background: rgba(195, 198, 214, 0.25);
+  overflow: hidden;
+}
+
+.dark .reading-progress-track {
+  background: rgba(66, 71, 84, 0.4);
+}
+
+.reading-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(135deg, #003b93, #0051c3);
+  transition: width 0.08s ease-out;
+  border-radius: 0 4px 4px 0;
+}
+
+.dark .reading-progress-bar {
+  background: linear-gradient(135deg, #adc6ff, #4d8eff);
+  box-shadow: 0 0 10px rgba(77, 142, 255, 0.5);
+}
+
+/* ===== Toast Notifications ===== */
+.toast-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: #2d3133;
+  color: #eff1f4;
+  border-radius: 1rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  box-shadow: 0 16px 48px -12px rgba(0, 0, 0, 0.25);
+  animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+  max-width: 380px;
+}
+
+.dark .toast {
+  background: var(--dk-surface-container-highest);
+  color: var(--dk-on-surface);
+  box-shadow: 0 16px 48px -12px rgba(6, 14, 32, 0.6);
+}
+
+.toast.toast-success {
+  border-left: 4px solid #00c853;
+}
+
+.toast.toast-error {
+  border-left: 4px solid #ba1a1a;
+}
+
+.dark .toast.toast-error {
+  border-left-color: #ffb4ab;
+}
+
+.toast.toast-info {
+  border-left: 4px solid #0051c3;
+}
+
+.dark .toast.toast-info {
+  border-left-color: #adc6ff;
+}
+
+.toast.toast-exit {
+  animation: toastOut 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@keyframes toastIn {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toastOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
+/* ===== Blog Card Animations ===== */
+.blog-card {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.blog-card:hover {
+  transform: translateY(-4px);
+}
+
+.blog-card.hidden-card {
+  display: none;
+}
+
+/* Dark card surfaces */
+.dark .blog-card {
+  background: var(--dk-surface-container-low);
+}
+
+/* ===== Quiz ===== */
+.quiz-option.correct {
+  border-color: #00c853 !important;
+  background: rgba(0, 200, 83, 0.06) !important;
+}
+
+.quiz-option.incorrect {
+  border-color: #ba1a1a !important;
+  background: rgba(186, 26, 26, 0.06) !important;
+}
+
+.dark .quiz-option.correct {
+  border-color: #69f0ae !important;
+  background: rgba(105, 240, 174, 0.08) !important;
+}
+
+.dark .quiz-option.incorrect {
+  border-color: #ffb4ab !important;
+  background: rgba(255, 180, 171, 0.08) !important;
+}
+
+/* ===== Like Animation ===== */
+@keyframes heartPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.like-btn.liked .material-symbols-outlined {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  color: #e53e3e;
+  animation: heartPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ===== Fade-in Section ===== */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Bookmark ===== */
+.bookmark-btn.saved .material-symbols-outlined {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  color: #003b93;
+}
+
+.dark .bookmark-btn.saved .material-symbols-outlined {
+  color: #adc6ff;
+}
+
+/* ===== Share Dropdown ===== */
+.share-dropdown {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: all 0.2s ease;
+}
+
+.share-trigger:hover .share-dropdown,
+.share-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dark .share-dropdown {
+  background: var(--dk-surface-container-highest) !important;
+  border-color: var(--dk-outline-variant) !important;
+}
+
+/* ===== Reply Form ===== */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reply-form {
+  display: none;
+}
+
+.reply-form.show {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+/* ===== Tag chips ===== */
+.tag-chip {
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.tag-chip:hover {
+  transform: translateY(-1px);
+}
+
+.tag-chip.active {
+  background: #003b93 !important;
+  color: #fff !important;
+}
+
+.dark .tag-chip.active {
+  background: #adc6ff !important;
+  color: #001947 !important;
+}
+
+/* ===== Table of Contents ===== */
+.toc-link {
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.toc-link.active {
+  color: #003b93;
+  font-weight: 700;
+  border-left-color: #003b93;
+}
+
+.dark .toc-link.active {
+  color: #adc6ff;
+  border-left-color: #adc6ff;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(115, 119, 133, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(115, 119, 133, 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--dk-surface-variant);
+}
+
+/* ===== Mobile Bottom Nav ===== */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: none;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(195, 198, 214, 0.2);
+  padding: 0.5rem 0 env(safe-area-inset-bottom, 0.5rem);
+}
+
+.dark .mobile-bottom-nav {
+  background: rgba(11, 19, 38, 0.92);
+  border-top-color: rgba(218, 226, 253, 0.08);
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  body {
+    padding-bottom: 4.5rem;
+  }
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
+  color: #737785;
+  text-decoration: none;
+  font-family: var(--font-label);
+  font-size: 0.625rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: color 0.2s;
+}
+
+.mobile-nav-item.active,
+.mobile-nav-item:hover {
+  color: #003b93;
+}
+
+.dark .mobile-nav-item.active,
+.dark .mobile-nav-item:hover {
+  color: #adc6ff;
+}
+
+.dark .mobile-nav-item {
+  color: var(--dk-outline);
+}
+
+/* ================================================================
+   DARK MODE UTILITY OVERRIDES
+   Mapping generic Tailwind dark: classes to Stitch navy palette.
+   This ensures all `dark:bg-*` and `dark:text-*` utilities reference
+   the correct deep navy colours instead of generic grays.
+   ================================================================ */
+
+/* --- Dark gradient CTA button (from Stitch design) --- */
+.dark .btn-primary-gradient {
+  background: linear-gradient(135deg, #adc6ff, #4d8eff);
+  color: #0b1326;
+}
+
+.dark .btn-primary-gradient:hover {
+  box-shadow: 0 8px 24px rgba(77, 142, 255, 0.3);
+}
+
+/* --- Dark hero overlay gradient --- */
+.dark .hero-gradient-overlay {
+  background: linear-gradient(to right, #0b1326, rgba(11, 19, 38, 0.8), transparent) !important;
+}
+
+/* --- Dark footer --- */
+.dark footer {
+  background: var(--dk-background) !important;
+  border-color: rgba(218, 226, 253, 0.15) !important;
+}
+
+/* --- Dark code blocks --- */
+.dark pre, .dark code {
+  background: var(--dk-surface-container-lowest) !important;
+}
+
+/* --- Dark input fields (fallback only — component-level dark:bg-* takes priority) --- */
+.dark input:not([class*="dark:bg"]),
+.dark textarea:not([class*="dark:bg"]),
+.dark select:not([class*="dark:bg"]) {
+  background: var(--dk-surface-container-highest);
+  color: var(--dk-on-surface);
+  border-color: var(--dk-outline-variant);
+}
+
+.dark input::placeholder, .dark textarea::placeholder {
+  color: var(--dk-outline);
+}
+
+.dark input:focus, .dark textarea:focus {
+  border-color: var(--dk-primary);
+  box-shadow: 0 0 0 2px rgba(173, 198, 255, 0.15);
 }
