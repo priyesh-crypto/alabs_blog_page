@@ -45,7 +45,7 @@
 .studio-wrapper .s-spacer { flex: 1; }
 
 /* Editor pane */
-.studio-wrapper .editor-pane { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.studio-wrapper .editor-pane { flex: 1; display: flex; flex-direction: column; overflow-y: hidden; overflow-x: visible; }
 .studio-wrapper .editor-toolbar { height: 44px; background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 16px; gap: 2px; flex-shrink: 0; }
 .studio-wrapper .tb-btn { width: 30px; height: 28px; border-radius: 6px; border: none; background: transparent; color: var(--text2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: var(--font-body); font-size: 13px; font-weight: 500; transition: all 0.1s; }
 .studio-wrapper .tb-btn:hover { background: var(--bg4); color: var(--text); }

@@ -19,7 +19,7 @@ const CustomDocument = Document.extend({
 });
 
 // ── Bubble Menu (renders on text selection) ──────────────────
-function SelectionMenu({ editor }) {
+function SelectionMenu({ editor, outerRef }) {
   const [pos, setPos] = useState(null);
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
@@ -31,15 +31,16 @@ function SelectionMenu({ editor }) {
     const update = () => {
       const { from, to, empty } = editor.state.selection;
       if (empty) { setPos(null); setShowLinkInput(false); return; }
+      if (!outerRef?.current) return;
 
       const view = editor.view;
       const start = view.coordsAtPos(from);
       const end = view.coordsAtPos(to);
-      const editorRect = view.dom.getBoundingClientRect();
+      const outerRect = outerRef.current.getBoundingClientRect();
 
       setPos({
-        left: (start.left + end.left) / 2 - editorRect.left,
-        top: start.top - editorRect.top - 48,
+        left: (start.left + end.left) / 2 - outerRect.left,
+        top: start.top - outerRect.top - 52,
       });
     };
 
@@ -49,16 +50,14 @@ function SelectionMenu({ editor }) {
       editor.off('selectionUpdate', update);
       editor.off('transaction', update);
     };
-  }, [editor]);
+  }, [editor, outerRef]);
 
   if (!pos || !editor) return null;
 
   const isLinkActive = editor.isActive('link');
 
   const applyLink = () => {
-    if (linkUrl.trim()) {
-      editor.chain().focus().setLink({ href: linkUrl.trim() }).run();
-    }
+    if (linkUrl.trim()) editor.chain().focus().setLink({ href: linkUrl.trim() }).run();
     setShowLinkInput(false);
     setLinkUrl('');
   };
@@ -78,23 +77,29 @@ function SelectionMenu({ editor }) {
       ref={menuRef}
       className="bubble-menu"
       style={{ position: 'absolute', left: pos.left, top: pos.top, transform: 'translateX(-50%)', zIndex: 50 }}
+      onMouseDown={(e) => e.preventDefault()} // prevent editor blur on click
     >
       <button onClick={() => editor.chain().focus().toggleBold().run()} className={editor.isActive('bold') ? 'is-active' : ''} title="Bold"><b>B</b></button>
       <button onClick={() => editor.chain().focus().toggleItalic().run()} className={editor.isActive('italic') ? 'is-active' : ''} title="Italic"><i>I</i></button>
+      <button onClick={() => editor.chain().focus().toggleStrike().run()} className={editor.isActive('strike') ? 'is-active' : ''} title="Strikethrough"><s>S</s></button>
+      <div className="bmenu-sep" />
       <button onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''} title="Heading 2">H2</button>
       <button onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} className={editor.isActive('heading', { level: 3 }) ? 'is-active' : ''} title="Heading 3">H3</button>
-      <button onClick={() => editor.chain().focus().toggleBlockquote().run()} className={editor.isActive('blockquote') ? 'is-active' : ''} title="Quote">❝</button>
-      <button onClick={() => editor.chain().focus().toggleCode().run()} className={editor.isActive('code') ? 'is-active' : ''} title="Code">{'<>'}</button>
-      {/* Link button */}
+      <div className="bmenu-sep" />
+      <button onClick={() => editor.chain().focus().toggleBulletList().run()} className={editor.isActive('bulletList') ? 'is-active' : ''} title="Bullet list">•</button>
+      <button onClick={() => editor.chain().focus().toggleOrderedList().run()} className={editor.isActive('orderedList') ? 'is-active' : ''} title="Numbered list">1.</button>
+      <div className="bmenu-sep" />
+      <button onClick={() => editor.chain().focus().toggleBlockquote().run()} className={editor.isActive('blockquote') ? 'is-active' : ''} title="Blockquote">❝</button>
+      <button onClick={() => editor.chain().focus().toggleCode().run()} className={editor.isActive('code') ? 'is-active' : ''} title="Inline code">{'<>'}</button>
+      <div className="bmenu-sep" />
       {isLinkActive ? (
-        <button onClick={removeLink} className="is-active" title="Remove link">🔗</button>
+        <button onClick={removeLink} className="is-active" title="Remove link">🔗✕</button>
       ) : (
         <button
           onClick={() => { setShowLinkInput(l => !l); setLinkUrl(editor.getAttributes('link').href || ''); }}
           title="Add link"
         >🔗</button>
       )}
-      {/* Inline link input */}
       {showLinkInput && !isLinkActive && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 4 }}>
           <input
@@ -104,10 +109,7 @@ function SelectionMenu({ editor }) {
             onChange={e => setLinkUrl(e.target.value)}
             onKeyDown={handleLinkKeyDown}
             placeholder="https://…"
-            style={{
-              background: '#2a2a2a', color: '#fff', border: '1px solid #555',
-              borderRadius: 4, padding: '3px 7px', fontSize: 12, width: 160, outline: 'none',
-            }}
+            style={{ background: '#2a2a2a', color: '#fff', border: '1px solid #555', borderRadius: 4, padding: '3px 7px', fontSize: 12, width: 160, outline: 'none' }}
           />
           <button onClick={applyLink} title="Apply" style={{ fontSize: 13 }}>✓</button>
           <button onClick={() => { setShowLinkInput(false); setLinkUrl(''); }} title="Cancel" style={{ fontSize: 13 }}>✕</button>
@@ -118,29 +120,51 @@ function SelectionMenu({ editor }) {
 }
 
 // ── Plus Menu (renders on empty line focus) ──────────────────
-function PlusMenu({ editor }) {
+function PlusMenu({ editor, outerRef }) {
   const [pos, setPos] = useState(null);
   const [open, setOpen] = useState(false);
+  const openRef = useRef(false); // stable ref to avoid stale closure in editor events
+  const imageFileRef = useRef(null);
+  const videoFileRef = useRef(null);
+  const menuRef = useRef(null);
+
+  // Keep openRef in sync
+  useEffect(() => { openRef.current = open; }, [open]);
+
+  // Close when clicking outside the menu
+  useEffect(() => {
+    if (!open) return;
+    const handleOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, [open]);
 
   useEffect(() => {
     if (!editor) return;
 
     const update = () => {
+      // Don't update position while dropdown is open — prevents menu unmounting before click registers
+      if (openRef.current) return;
+
       const { $from, empty } = editor.state.selection;
-      if (!empty) { setPos(null); setOpen(false); return; }
+      if (!empty) { setPos(null); return; }
 
       const node = $from.parent;
       const isEmpty = node.textContent === '';
       const isNotTitle = node.type.name !== 'heading' || $from.depth > 1;
 
       if (isEmpty && isNotTitle) {
+        if (!outerRef?.current) return;
         const view = editor.view;
         const coords = view.coordsAtPos($from.pos);
-        const rect = view.dom.getBoundingClientRect();
-        setPos({ top: coords.top - rect.top });
+        const outerRect = outerRef.current.getBoundingClientRect();
+        setPos({ top: coords.top - outerRect.top });
       } else {
         setPos(null);
-        setOpen(false);
       }
     };
 
@@ -150,28 +174,57 @@ function PlusMenu({ editor }) {
       editor.off('selectionUpdate', update);
       editor.off('transaction', update);
     };
-  }, [editor]);
+  }, [editor, outerRef]);
 
-  const addImage = () => {
-    const url = window.prompt('Image URL:');
-    if (url) editor.chain().focus().setImage({ src: url }).run();
+  // ── Image upload ────────────────────────────────────────────
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/upload', { method: 'POST', body: fd });
+      const data = await res.json();
+      if (data.url) editor.chain().focus().setImage({ src: data.url, alt: file.name }).run();
+      else alert('Upload failed: ' + (data.error || 'unknown'));
+    } catch { alert('Image upload failed. Please try again.'); }
+    e.target.value = '';
     setOpen(false);
   };
 
-  const addVideo = () => {
-    const url = window.prompt('YouTube embed URL (e.g. https://www.youtube.com/embed/VIDEO_ID):');
-    if (url) {
-      editor.commands.insertContent(
-        `<div class="yt-embed-wrapper"><iframe src="${url}" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`
-      );
-    }
+  // ── Video upload ─────────────────────────────────────────────
+  const handleVideoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/upload', { method: 'POST', body: fd });
+      const data = await res.json();
+      if (data.url) {
+        editor.commands.insertContent(
+          `<p><video src="${data.url}" controls style="max-width:100%;border-radius:8px;margin:16px 0;display:block;"></video></p>`
+        );
+      } else alert('Upload failed: ' + (data.error || 'unknown'));
+    } catch { alert('Video upload failed. Please try again.'); }
+    e.target.value = '';
     setOpen(false);
   };
 
   if (!pos || !editor) return null;
 
   return (
-    <div className="floating-menu" style={{ position: 'absolute', left: -52, top: pos.top - 2 }}>
+    <div
+      ref={menuRef}
+      className="floating-menu"
+      style={{ position: 'absolute', left: -44, top: pos.top - 17, zIndex: 50 }}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
+      {/* Hidden file inputs */}
+      <input ref={imageFileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageUpload} />
+      <input ref={videoFileRef} type="file" accept="video/*" style={{ display: 'none' }} onChange={handleVideoUpload} />
+
+      {/* + toggle button */}
       <button
         className={`floating-menu-btn-primary ${open ? 'is-open' : ''}`}
         onClick={() => setOpen(o => !o)}
@@ -179,25 +232,50 @@ function PlusMenu({ editor }) {
       >
         <Plus size={18} strokeWidth={2} />
       </button>
-      <div className={`floating-options ${open ? 'open' : ''}`}>
-        <button title="Image" onClick={addImage}><ImageIcon size={16} strokeWidth={1.5} /></button>
-        <button title="Video" onClick={addVideo}><Video size={16} strokeWidth={1.5} /></button>
-        <button title="Code block" onClick={() => { editor.chain().focus().toggleCodeBlock().run(); setOpen(false); }}><Code size={16} strokeWidth={1.5} /></button>
-        <button title="Divider" onClick={() => { editor.chain().focus().setHorizontalRule().run(); setOpen(false); }}>—</button>
-      </div>
+
+      {/* Dropdown panel — appears below the + button */}
+      {open && (
+        <div className="floating-options-dropdown">
+          <button onClick={() => imageFileRef.current?.click()} className="fod-btn">
+            <ImageIcon size={15} strokeWidth={1.5} />
+            <span>Image</span>
+          </button>
+          <button onClick={() => videoFileRef.current?.click()} className="fod-btn">
+            <Video size={15} strokeWidth={1.5} />
+            <span>Video</span>
+          </button>
+          <button
+            onClick={() => { editor.chain().focus().toggleCodeBlock().run(); setOpen(false); }}
+            className="fod-btn"
+          >
+            <Code size={15} strokeWidth={1.5} />
+            <span>Code block</span>
+          </button>
+          <div className="fod-sep" />
+          <button
+            onClick={() => { editor.chain().focus().setHorizontalRule().run(); setOpen(false); }}
+            className="fod-btn"
+          >
+            <span style={{ fontSize: 16, fontWeight: 700, lineHeight: 1 }}>—</span>
+            <span>Divider</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
 // ── Main Editor ──────────────────────────────────────────────
 const TiptapEditor = ({ content, onChange }) => {
+  const outerRef = useRef(null);
+
   const editor = useEditor({
     extensions: [
       CustomDocument,
       StarterKit.configure({ document: false, codeBlock: false }),
       Placeholder.configure({
         placeholder: ({ node }) => {
-          if (node.type.name === 'heading') return 'Title';
+          if (node.type.name === 'heading') return 'Article title…';
           return 'Tell your story…';
         },
       }),
@@ -214,9 +292,9 @@ const TiptapEditor = ({ content, onChange }) => {
   });
 
   return (
-    <div className="tiptap-outer" style={{ position: 'relative' }}>
-      <SelectionMenu editor={editor} />
-      <PlusMenu editor={editor} />
+    <div ref={outerRef} className="tiptap-outer" style={{ position: 'relative' }}>
+      <SelectionMenu editor={editor} outerRef={outerRef} />
+      <PlusMenu editor={editor} outerRef={outerRef} />
       <div className="tiptap-prose">
         <EditorContent editor={editor} />
       </div>

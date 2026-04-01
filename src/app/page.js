@@ -1,15 +1,15 @@
 "use client";
 
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Suspense, useState, useEffect, useRef } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import Newsletter from "@/components/Newsletter";
-import { ToastProvider, useToast } from "@/components/Toast";
-import { getPosts, tags, skillLevels, courses, searchPosts } from "@/lib/data";
+import { ToastProvider } from "@/components/Toast";
+import { getPosts, tags, skillLevels, courses, searchPosts, getRecommendations } from "@/lib/data";
 
 function HomeContent() {
   const searchParams = useSearchParams();
@@ -20,8 +20,6 @@ function HomeContent() {
   const [activeSkill, setActiveSkill] = useState(searchParams.get("skill") || null);
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [activeFilterCategory, setActiveFilterCategory] = useState("topics"); // "topics" or "skills"
-  const addToast = useToast();
-  const sectionsRef = useRef([]);
 
   // Fade-in observer
   useEffect(() => {
@@ -63,6 +61,7 @@ function HomeContent() {
 
   const filteredPosts = searchPosts(searchQuery, activeTopic, activeSkill);
   const heroPost = getPosts()[0];
+  const sidebarRecommendations = getRecommendations(heroPost.slug, 3);
 
   return (
     <>
@@ -271,15 +270,11 @@ function HomeContent() {
                 </h4>
               </div>
               <ul className="space-y-6">
-                {[
-                  { cat: "Deep Learning", title: "Understanding Transformers via Visual Manifolds" },
-                  { cat: "Career Growth", title: "How to Build a High-Impact Data Portfolio in 2024" },
-                  { cat: "Ethics & AI", title: "The Bias Bottleneck: Addressing Fairness in LLMs" },
-                ].map((item) => (
-                  <li key={item.title}>
-                    <Link className="group block" href="/article">
+                {sidebarRecommendations.map((item) => (
+                  <li key={item.slug}>
+                    <Link className="group block" href={`/article/${item.slug}`}>
                       <p className="text-[10px] font-[family-name:var(--font-label)] uppercase text-slate-400 dark:text-[#8c909f] mb-1">
-                        {item.cat}
+                        {item.category}
                       </p>
                       <h5 className="text-sm font-bold font-[family-name:var(--font-headline)] leading-tight group-hover:text-primary dark:group-hover:text-[#adc6ff] transition-colors dark:text-[#dae2fd]">
                         {item.title}

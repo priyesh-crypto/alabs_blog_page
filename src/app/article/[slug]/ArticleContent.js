@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { ToastProvider, useToast } from "@/components/Toast";
-import { getRecommendations, getCourseMatch, courses } from "@/lib/data";
+import { courses } from "@/lib/data";
 import NewsletterInline from "@/components/NewsletterInline";
 import "@/components/TiptapEditor.css";
 
@@ -31,33 +31,52 @@ const initialComments = [
   },
 ];
 
-function ArticleContent({ post }) {
+function ArticleContent({ post, recommendedArticles, courseMatch }) {
   const addToast = useToast();
   const [progress, setProgress] = useState(0);
   const [toc, setToc] = useState([]);
   const [activeSection, setActiveSection] = useState("");
   const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(1200);
+  const [likeCount, setLikeCount] = useState(post.likeCount ?? 0);
   const [bookmarked, setBookmarked] = useState(false);
   const [comments, setComments] = useState(initialComments);
   const [newComment, setNewComment] = useState("");
   const [quizAnswer, setQuizAnswer] = useState(null);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [activeQuizIndex, setActiveQuizIndex] = useState(0);
   const [replyingTo, setReplyingTo] = useState(null);
   const [replyText, setReplyText] = useState("");
+  const [showMobileToc, setShowMobileToc] = useState(false);
+  const [sidebarSearch, setSidebarSearch] = useState("");
+  const [likedComments, setLikedComments] = useState(new Set());
 
   const articleRef = useRef(null);
 
-  const recommendedArticles = getRecommendations(post.slug, 3);
-  const courseMatch = getCourseMatch(post.domain_tags);
   const author = post.author || {};
 
-  // Initialize bookmark
+  // Initialize bookmark, like state, and comments from localStorage
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setBookmarked(localStorage.getItem(`bookmark_${post.slug}`) === "true");
+    setBookmarked(localStorage.getItem(`bookmark_${post.slug}`) === "true");
+    const wasLiked = localStorage.getItem(`like_${post.slug}`) === "true";
+    setLiked(wasLiked);
+    const storedCount = localStorage.getItem(`likeCount_${post.slug}`);
+    if (storedCount !== null) setLikeCount(Number(storedCount));
+    const storedComments = localStorage.getItem(`comments_${post.slug}`);
+    if (storedComments) {
+      try { setComments(JSON.parse(storedComments)); } catch {}
+    }
+    const storedLikedComments = localStorage.getItem(`likedComments_${post.slug}`);
+    if (storedLikedComments) {
+      try { setLikedComments(new Set(JSON.parse(storedLikedComments))); } catch {}
     }
   }, [post.slug]);
+
+  // Persist comments to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(`comments_${post.slug}`, JSON.stringify(comments));
+    }
+  }, [comments, post.slug]);
 
   // Reading progress
   useEffect(() => {
@@ -124,8 +143,12 @@ function ArticleContent({ post }) {
   }, []);
 
   function handleLike() {
-    setLiked(!liked);
-    setLikeCount((c) => (liked ? c - 1 : c + 1));
+    const newLiked = !liked;
+    const newCount = newLiked ? likeCount + 1 : likeCount - 1;
+    setLiked(newLiked);
+    setLikeCount(newCount);
+    localStorage.setItem(`like_${post.slug}`, String(newLiked));
+    localStorage.setItem(`likeCount_${post.slug}`, String(newCount));
   }
 
   function handleBookmark() {
@@ -154,11 +177,28 @@ function ArticleContent({ post }) {
       addToast("Please select an answer.", "error");
       return;
     }
+    const questions = post.quiz?.questions || [];
+    const correct = questions[activeQuizIndex]?.correctIndex;
     setQuizSubmitted(true);
-    if (quizAnswer === 1) {
-      addToast("Correct!", "success");
+    if (quizAnswer === correct) {
+      addToast("Correct! Well done.", "success");
     } else {
       addToast("Not quite — try re-reading the article.", "error");
+    }
+  }
+
+  function handleNextQuestion() {
+    const questions = post.quiz?.questions || [];
+    if (activeQuizIndex < questions.length - 1) {
+      setActiveQuizIndex(activeQuizIndex + 1);
+      setQuizAnswer(null);
+      setQuizSubmitted(false);
+    }
+  }
+
+  function handleSidebarSearch(e) {
+    if (e.key === "Enter" && sidebarSearch.trim()) {
+      window.location.href = `/?q=${encodeURIComponent(sidebarSearch.trim())}`;
     }
   }
 
@@ -202,17 +242,27 @@ function ArticleContent({ post }) {
   }
 
   function handleCommentLike(commentId, replyId = null) {
+    const key = replyId ? `${commentId}_${replyId}` : `${commentId}`;
+    const alreadyLiked = likedComments.has(key);
+    const delta = alreadyLiked ? -1 : 1;
+
+    const newLikedComments = new Set(likedComments);
+    if (alreadyLiked) newLikedComments.delete(key);
+    else newLikedComments.add(key);
+    setLikedComments(newLikedComments);
+    localStorage.setItem(`likedComments_${post.slug}`, JSON.stringify([...newLikedComments]));
+
     setComments((prev) =>
       prev.map((c) => {
         if (replyId && c.id === commentId) {
           return {
             ...c,
             replies: c.replies.map((r) =>
-              r.id === replyId ? { ...r, likes: r.likes + 1 } : r
+              r.id === replyId ? { ...r, likes: r.likes + delta } : r
             ),
           };
         }
-        if (!replyId && c.id === commentId) return { ...c, likes: c.likes + 1 };
+        if (!replyId && c.id === commentId) return { ...c, likes: c.likes + delta };
         return c;
       })
     );
@@ -314,11 +364,23 @@ function ArticleContent({ post }) {
         <main className="w-full min-w-0 lg:col-span-6 max-w-3xl mx-auto lg:mx-0">
           {/* Header */}
           <header className="mb-12">
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center gap-3 mb-6 flex-wrap">
               <span className="px-3 py-1 bg-tertiary-fixed dark:bg-[#004a77] text-on-tertiary-fixed dark:text-[#cfe5ff] font-[family-name:var(--font-label)] text-xs font-bold rounded-full">
                 {post.category?.toUpperCase() || "ARTICLE"}
               </span>
-              <span className="text-secondary dark:text-[#c2c6d6] text-sm font-[family-name:var(--font-label)] uppercase tracking-widest">
+              {post.skill_level && (
+                <span className={`px-3 py-1 font-[family-name:var(--font-label)] text-xs font-bold rounded-full ${
+                  post.skill_level === "Beginner"
+                    ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
+                    : post.skill_level === "Intermediate"
+                    ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
+                    : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300"
+                }`}>
+                  {post.skill_level}
+                </span>
+              )}
+              <span className="flex items-center gap-1 text-secondary dark:text-[#c2c6d6] text-sm font-[family-name:var(--font-label)]">
+                <span className="material-symbols-outlined text-sm">schedule</span>
                 {post.readTime}
               </span>
             </div>
@@ -326,15 +388,67 @@ function ArticleContent({ post }) {
               {post.title}
             </h1>
 
+            {/* Mobile TOC toggle */}
+            {toc.length > 0 && (
+              <div className="lg:hidden mb-4">
+                <button
+                  onClick={() => setShowMobileToc(!showMobileToc)}
+                  className="flex items-center gap-2 px-4 py-2 bg-surface-container-low dark:bg-[#131b2e] border border-outline-variant/20 dark:border-[#424754] rounded-xl text-sm font-semibold dark:text-[#dae2fd] w-full justify-between"
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-primary dark:text-[#adc6ff] text-sm">list</span>
+                    Contents ({toc.length} sections)
+                  </span>
+                  <span className="material-symbols-outlined text-secondary dark:text-[#c2c6d6] text-sm transition-transform" style={{ transform: showMobileToc ? "rotate(180deg)" : "rotate(0deg)" }}>
+                    expand_more
+                  </span>
+                </button>
+                {showMobileToc && (
+                  <nav className="mt-2 p-4 bg-surface-container-low dark:bg-[#131b2e] border border-outline-variant/20 dark:border-[#424754] rounded-xl flex flex-col gap-2">
+                    {toc.map((s) => (
+                      <a
+                        key={s.id}
+                        href={`#${s.id}`}
+                        onClick={() => setShowMobileToc(false)}
+                        className={`text-sm pl-3 border-l-2 transition-colors ${
+                          activeSection === s.id
+                            ? "border-primary dark:border-[#adc6ff] text-primary dark:text-[#adc6ff] font-semibold"
+                            : "border-transparent text-on-surface-variant dark:text-[#c2c6d6]"
+                        } ${s.level === "h3" ? "pl-6 text-xs" : ""}`}
+                      >
+                        {s.label}
+                      </a>
+                    ))}
+                  </nav>
+                )}
+              </div>
+            )}
+
             {/* Meta bar */}
-            <div className="flex justify-between items-center py-4 border-y border-outline-variant/10 dark:border-[#424754]">
-              <div className="flex items-center gap-3">
-                <span className="material-symbols-outlined text-secondary dark:text-[#c2c6d6]">
-                  calendar_today
-                </span>
-                <span className="text-sm text-on-surface-variant dark:text-[#c2c6d6]">
-                  Published {post.publishedAt}
-                </span>
+            <div className="flex flex-wrap justify-between items-center py-4 border-y border-outline-variant/10 dark:border-[#424754] gap-3">
+              <div className="flex flex-wrap items-center gap-4">
+                {author.name && (
+                  <Link href={`/author/${author.slug}`} className="flex items-center gap-2 group">
+                    {author.image ? (
+                      <Image src={author.image} alt={author.name} width={24} height={24} className="w-6 h-6 rounded-full object-cover" />
+                    ) : (
+                      <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-[10px]">
+                        {author.initials || "?"}
+                      </div>
+                    )}
+                    <span className="text-sm font-semibold text-on-surface dark:text-[#dae2fd] group-hover:text-primary dark:group-hover:text-[#adc6ff] transition-colors">{author.name}</span>
+                  </Link>
+                )}
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-secondary dark:text-[#c2c6d6] text-sm">calendar_today</span>
+                  <span className="text-sm text-on-surface-variant dark:text-[#c2c6d6]">{post.publishedAt}</span>
+                </div>
+                {post.updatedAt && post.updatedAt !== post.publishedAt && (
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-secondary dark:text-[#c2c6d6] text-sm">update</span>
+                    <span className="text-sm text-on-surface-variant dark:text-[#c2c6d6]">Updated {post.updatedAt}</span>
+                  </div>
+                )}
               </div>
               <button
                 onClick={handleBookmark}
@@ -417,6 +531,87 @@ function ArticleContent({ post }) {
                 {post.excerpt}
               </p>
             )}
+
+            {/* ─── Inline Knowledge Check ─── */}
+            {post.quiz?.questions?.length > 0 && (() => {
+              const questions = post.quiz.questions;
+              const q = questions[activeQuizIndex];
+              return (
+                <div className="my-10 p-6 bg-primary/5 dark:bg-[#1a2540] rounded-2xl border border-primary/20 dark:border-[#adc6ff]/20">
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-primary dark:text-[#adc6ff] text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>quiz</span>
+                      <h3 className="font-[family-name:var(--font-headline)] font-bold text-base dark:text-[#dae2fd]">
+                        Quick Knowledge Check
+                      </h3>
+                    </div>
+                    <span className="text-xs font-[family-name:var(--font-label)] font-bold text-secondary dark:text-[#8c909f] uppercase tracking-wider">
+                      {activeQuizIndex + 1} / {questions.length}
+                    </span>
+                  </div>
+                  <p className="text-on-surface dark:text-[#dae2fd] font-medium mb-5 leading-relaxed">
+                    {q.question}
+                  </p>
+                  <div className="space-y-3 mb-5">
+                    {q.options.map((option, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => !quizSubmitted && setQuizAnswer(idx)}
+                        className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-all ${
+                          quizSubmitted
+                            ? idx === q.correctIndex
+                              ? "bg-green-50 dark:bg-green-900/30 border-green-500 text-green-800 dark:text-green-300 font-semibold"
+                              : idx === quizAnswer
+                              ? "bg-red-50 dark:bg-red-900/20 border-red-400 text-red-700 dark:text-red-300"
+                              : "bg-surface-container-lowest dark:bg-[#060e20] border-outline-variant/20 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] opacity-40"
+                            : quizAnswer === idx
+                            ? "bg-primary/10 dark:bg-[#adc6ff]/10 border-primary dark:border-[#adc6ff] text-on-surface dark:text-[#dae2fd]"
+                            : "bg-surface-container-lowest dark:bg-[#060e20] border-outline-variant/20 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] hover:border-primary/50 dark:hover:border-[#adc6ff]/50 cursor-pointer"
+                        }`}
+                      >
+                        <span className="font-bold mr-2 text-primary dark:text-[#adc6ff]">
+                          {String.fromCharCode(65 + idx)}.
+                        </span>
+                        {option}
+                        {quizSubmitted && idx === q.correctIndex && (
+                          <span className="material-symbols-outlined text-green-600 dark:text-green-400 text-sm ml-2 align-middle" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  {!quizSubmitted ? (
+                    <button
+                      onClick={handleQuizSubmit}
+                      className="px-6 py-2.5 bg-primary text-on-primary rounded-full font-[family-name:var(--font-headline)] font-bold text-sm hover:opacity-90 transition-opacity"
+                    >
+                      Submit Answer
+                    </button>
+                  ) : (
+                    <div className="flex flex-wrap items-center gap-4">
+                      <span className={`flex items-center gap-1.5 text-sm font-bold ${
+                        quizAnswer === q.correctIndex ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"
+                      }`}>
+                        <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: "'FILL' 1" }}>
+                          {quizAnswer === q.correctIndex ? "check_circle" : "cancel"}
+                        </span>
+                        {quizAnswer === q.correctIndex
+                          ? "Correct! Keep learning."
+                          : `Correct: ${q.options[q.correctIndex]}`}
+                      </span>
+                      {activeQuizIndex < questions.length - 1 && (
+                        <button
+                          onClick={handleNextQuestion}
+                          className="flex items-center gap-1.5 px-5 py-2 bg-primary text-on-primary rounded-full font-[family-name:var(--font-headline)] font-bold text-sm hover:opacity-90 transition-opacity"
+                        >
+                          Next Question
+                          <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
 
             <NewsletterInline />
 
@@ -502,9 +697,9 @@ function ArticleContent({ post }) {
                       >Reply</button>
                       <button
                         onClick={() => handleCommentLike(comment.id)}
-                        className="flex items-center gap-1.5 text-xs text-secondary dark:text-[#c2c6d6] hover:text-primary dark:hover:text-[#adc6ff] transition-colors"
+                        className={`flex items-center gap-1.5 text-xs transition-colors ${likedComments.has(`${comment.id}`) ? "text-primary dark:text-[#adc6ff]" : "text-secondary dark:text-[#c2c6d6] hover:text-primary dark:hover:text-[#adc6ff]"}`}
                       >
-                        <span className="material-symbols-outlined text-sm">thumb_up</span>
+                        <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: likedComments.has(`${comment.id}`) ? "'FILL' 1" : "'FILL' 0" }}>thumb_up</span>
                         <span className="font-bold">{comment.likes}</span>
                       </button>
                     </div>
@@ -543,9 +738,9 @@ function ArticleContent({ post }) {
                           <p className="text-sm text-on-surface-variant dark:text-[#c2c6d6] leading-relaxed mb-2">{reply.text}</p>
                           <button
                             onClick={() => handleCommentLike(comment.id, reply.id)}
-                            className="flex items-center gap-1 text-[11px] text-secondary dark:text-[#c2c6d6] hover:text-primary dark:hover:text-[#adc6ff] transition-colors"
+                            className={`flex items-center gap-1 text-[11px] transition-colors ${likedComments.has(`${comment.id}_${reply.id}`) ? "text-primary dark:text-[#adc6ff]" : "text-secondary dark:text-[#c2c6d6] hover:text-primary dark:hover:text-[#adc6ff]"}`}
                           >
-                            <span className="material-symbols-outlined text-sm">thumb_up</span>
+                            <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: likedComments.has(`${comment.id}_${reply.id}`) ? "'FILL' 1" : "'FILL' 0" }}>thumb_up</span>
                             <span className="font-bold">{reply.likes}</span>
                           </button>
                         </div>
@@ -565,8 +760,11 @@ function ArticleContent({ post }) {
               <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">search</span>
               <input
                 className="w-full pl-12 pr-4 py-4 bg-surface-container-low dark:bg-[#131b2e] dark:text-[#dae2fd] border-none rounded-2xl text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest dark:focus:bg-[#060e20] transition-all placeholder:text-outline/60 dark:placeholder:text-[#8c909f]"
-                placeholder="Search within blog..."
+                placeholder="Search blog… (Enter)"
                 type="text"
+                value={sidebarSearch}
+                onChange={(e) => setSidebarSearch(e.target.value)}
+                onKeyDown={handleSidebarSearch}
               />
             </div>
 

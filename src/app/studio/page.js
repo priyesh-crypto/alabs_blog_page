@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { publishPostAction, schedulePostAction } from "@/app/actions";
+import { publishPostAction, schedulePostAction, updatePostAction } from "@/app/actions";
 import TiptapEditor from "@/components/TiptapEditor";
 import { authors } from "@/lib/data";
 import "./studio.css";
@@ -133,6 +133,9 @@ export default function AuthorStudio() {
   const [viewMode, setViewMode] = useState("write");
   const [editorKey, setEditorKey] = useState(0);
   const [editorInitContent, setEditorInitContent] = useState("<h1></h1><p></p>");
+  const [editingPostId, setEditingPostId] = useState(null); // null = new post, number = editing existing
+  const [postsViewMode, setPostsViewMode] = useState("editor"); // "editor" | "posts"
+  const [allPosts, setAllPosts] = useState([]);
 
   // ── Section collapse state ────────────────────────────────
   const [openSections, setOpenSections] = useState({
@@ -375,6 +378,86 @@ export default function AuthorStudio() {
 
   const clearDraftOnSuccess = () => localStorage.removeItem(DRAFT_KEY);
 
+  // ── New Post (reset all state) ────────────────────────────
+  const clearEditor = () => {
+    if (postBody && !window.confirm("Start a new post? Any unsaved changes will be lost.")) return;
+    localStorage.removeItem(DRAFT_KEY);
+    setPostBody(""); setPostTitle(""); setSlug(""); setExcerpt("");
+    setCategory("Machine Learning"); setAuthorId("al-editorial"); setSkill("Beginner");
+    setTags([]); setTagInput(""); setFeaturedImage("");
+    setFocusKeyword(""); setMetaTitle(""); setMetaDesc(""); setOgImage("");
+    setSchemaType("Article"); setCanonicalUrl("");
+    setMappedCourses([]); setCourseCTA("");
+    setNewsletterPlacement("after-intro"); setLeadMagnetPDF("none"); setExitIntentEnabled(false);
+    setQuizQuestions([]); setGa4TrackingEnabled(true);
+    setEntityTags([]); setEntityTagInput(""); setRelatedPostIds(""); setAiInclusionEnabled(true);
+    setAuthorBio(""); setFactChecker(""); setLastReviewedDate("");
+    setQaEnabled(false); setFaqSchemaEnabled(false); setModerationMode("auto");
+    setSemanticIndexEnabled(true); setSalaryHubEnabled(false); setDarkModeCompat(true);
+    setProgressBarColor("#003b93");
+    setEditorInitContent("<h1></h1><p></p>");
+    setEditorKey(k => k + 1);
+    setSaveStatus("Draft");
+    setWordCount(0); setReadTime(0);
+  };
+
+  // ── Load posts list ───────────────────────────────────────
+  const fetchAllPosts = async () => {
+    try {
+      const res = await fetch('/api/posts');
+      const data = await res.json();
+      setAllPosts(data);
+    } catch { /* silent */ }
+  };
+
+  // ── Load a post into the editor for editing ───────────────
+  const loadPostForEdit = (post) => {
+    if (postBody && !window.confirm("Load this post for editing? Unsaved changes will be lost.")) return;
+    localStorage.removeItem(DRAFT_KEY);
+    setEditingPostId(post.id);
+    setPostBody(post.content || "");
+    setPostTitle(post.title || "");
+    setSlug(post.slug || "");
+    setExcerpt(post.excerpt || "");
+    setCategory(post.category || "Machine Learning");
+    setAuthorId(post.authorId || "al-editorial");
+    setSkill(post.skill_level || "Beginner");
+    setTags(post.domain_tags || []);
+    setTagInput("");
+    setFeaturedImage(post.image || "");
+    setFocusKeyword(post.seo?.focusKeyword || "");
+    setMetaTitle(post.seo?.metaTitle || "");
+    setMetaDesc(post.seo?.metaDesc || "");
+    setOgImage(post.seo?.ogImage || "");
+    setSchemaType(post.seo?.schemaType || "Article");
+    setCanonicalUrl(post.seo?.canonicalUrl || "");
+    setMappedCourses(post.courseMappings || []);
+    setCourseCTA(post.courseCTA || "");
+    setNewsletterPlacement(post.newsletter?.placement || "after-intro");
+    setLeadMagnetPDF(post.newsletter?.leadMagnet || "none");
+    setExitIntentEnabled(post.newsletter?.exitIntent || false);
+    setQuizQuestions(post.quiz?.questions || []);
+    setGa4TrackingEnabled(post.quiz?.ga4Tracking !== false);
+    setEntityTags(post.aiHints?.entityTags || []);
+    setRelatedPostIds((post.aiHints?.relatedPostIds || []).join(", "));
+    setAiInclusionEnabled(post.aiHints?.enabled !== false);
+    setAuthorBio(post.trust?.authorBio || "");
+    setFactChecker(post.trust?.factChecker || "");
+    setLastReviewedDate(post.trust?.lastReviewedDate || "");
+    setQaEnabled(post.discussion?.qa || false);
+    setFaqSchemaEnabled(post.discussion?.faqSchema || false);
+    setModerationMode(post.discussion?.moderation || "auto");
+    setSemanticIndexEnabled(post.advanced?.semanticIndex !== false);
+    setSalaryHubEnabled(post.advanced?.salaryHub || false);
+    setDarkModeCompat(post.advanced?.darkModeCompat !== false);
+    setProgressBarColor(post.advanced?.progressBarColor || "#003b93");
+    setEditorInitContent(post.content || "<h1></h1><p></p>");
+    setEditorKey(k => k + 1);
+    setSaveStatus(`Editing: ${post.title}`);
+    setWordCount(0); setReadTime(0);
+    setPostsViewMode("editor");
+  };
+
   // ── Publish ───────────────────────────────────────────────
   const publishPost = async () => {
     if (!postTitle.trim()) { alert("Please add a title to your article before publishing."); return; }
@@ -385,6 +468,22 @@ export default function AuthorStudio() {
       if (res.success) { setSaveStatus("✓ Published"); clearDraftOnSuccess(); router.push("/article/" + res.slug); }
       else { alert("Publish failed: " + res.error); setSaveStatus("Error"); }
     } catch { alert("Publish failed. Please try again."); setSaveStatus("Error"); }
+    finally { setIsPublishing(false); }
+  };
+
+  // ── Update existing post ──────────────────────────────────
+  const updatePost = async () => {
+    if (!postTitle.trim()) { alert("Please add a title before updating."); return; }
+    setIsPublishing(true);
+    setSaveStatus("Updating...");
+    try {
+      const res = await updatePostAction(editingPostId, buildPayload());
+      if (res.success) {
+        setSaveStatus("✓ Updated");
+        clearDraftOnSuccess();
+        router.push("/article/" + res.slug);
+      } else { alert("Update failed: " + res.error); setSaveStatus("Error"); }
+    } catch { alert("Update failed. Please try again."); setSaveStatus("Error"); }
     finally { setIsPublishing(false); }
   };
 
@@ -404,7 +503,7 @@ export default function AuthorStudio() {
   };
 
   const excerptLen = excerpt.length;
-  const excerptClass = excerptLen < 120 ? "cc-good" : excerptLen <= 160 ? "cc-warn" : "cc-bad";
+  const excerptClass = excerptLen === 0 ? "" : excerptLen < 120 ? "cc-warn" : excerptLen <= 160 ? "cc-good" : "cc-bad";
   const isSaved = saveStatus.startsWith("Saved") || saveStatus.startsWith("Restored");
   const isPublished = saveStatus.includes("Published") || saveStatus.includes("Scheduled");
 
@@ -424,9 +523,14 @@ export default function AuthorStudio() {
               <path d="M3 14l2-2 8-8 2 2-8 8-2 0 0-2z" /><path d="M11 4l2 2" />
             </svg>
           </div>
-          <div className={`s-icon ${viewMode === "preview" ? "active" : ""}`} title="Preview" onClick={() => setViewMode("preview")}>
+          <div className={`s-icon ${viewMode === "preview" ? "active" : ""}`} title="Preview" onClick={() => { setPostsViewMode("editor"); setViewMode("preview"); }}>
             <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M1 9s3-5 8-5 8 5 8 5-3 5-8 5-8-5-8-5z" /><circle cx="9" cy="9" r="2" />
+            </svg>
+          </div>
+          <div className={`s-icon ${postsViewMode === "posts" ? "active" : ""}`} title="All Posts" onClick={() => { setPostsViewMode(p => p === "posts" ? "editor" : "posts"); fetchAllPosts(); }}>
+            <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <rect x="2" y="2" width="14" height="3" rx="1" /><rect x="2" y="7.5" width="14" height="3" rx="1" /><rect x="2" y="13" width="14" height="3" rx="1" />
             </svg>
           </div>
           <div className="s-spacer" />
@@ -441,6 +545,13 @@ export default function AuthorStudio() {
           {/* ── Top bar ── */}
           <header className="topbar">
             <span className="tb-brand">Analytix<span>Labs</span> Studio</span>
+            <button
+              onClick={clearEditor}
+              title="Start a new post"
+              style={{ fontSize: 11, fontWeight: 600, color: "var(--text3)", background: "var(--bg3)", border: "1px solid var(--border2)", borderRadius: 6, padding: "4px 10px", cursor: "pointer", whiteSpace: "nowrap" }}
+            >
+              + New Post
+            </button>
             <div style={{ display: "flex", gap: 2, background: "var(--bg3)", padding: 2, borderRadius: 8, border: "1px solid var(--border)" }}>
               {["write", "preview"].map(m => (
                 <button key={m} onClick={() => setViewMode(m)} style={{
@@ -466,8 +577,52 @@ export default function AuthorStudio() {
           {/* ── Workspace ── */}
           <div className="workspace">
 
+            {/* ── Posts List pane ── */}
+            {postsViewMode === "posts" && (
+              <div className="editor-pane" style={{ background: "var(--bg2)" }}>
+                <div className="editor-scroll" style={{ padding: "32px 40px" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
+                    <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--text)", margin: 0 }}>All Posts</h2>
+                    <button onClick={() => { clearEditor(); setPostsViewMode("editor"); }} style={{ fontSize: 12, fontWeight: 600, color: "var(--accent)", background: "var(--accent-dim)", border: "1px solid rgba(0,59,147,0.2)", borderRadius: 7, padding: "5px 14px", cursor: "pointer" }}>+ New Post</button>
+                  </div>
+                  {allPosts.length === 0 ? (
+                    <p style={{ color: "var(--text3)", fontSize: 13 }}>No posts found.</p>
+                  ) : (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                      {allPosts.map(p => (
+                        <div key={p.id} style={{ display: "flex", alignItems: "center", gap: 14, background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "12px 16px" }}>
+                          {p.image && (
+                            <img src={p.image} alt="" style={{ width: 56, height: 40, objectFit: "cover", borderRadius: 6, flexShrink: 0 }} />
+                          )}
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{p.title || "Untitled"}</div>
+                            <div style={{ display: "flex", gap: 8, marginTop: 3 }}>
+                              <span style={{ fontSize: 10, color: "var(--text3)" }}>{p.category}</span>
+                              <span style={{ fontSize: 10, color: "var(--text3)" }}>·</span>
+                              <span style={{ fontSize: 10, color: p.status === "Published" ? "var(--green)" : "var(--orange)" }}>{p.status || "Draft"}</span>
+                              <span style={{ fontSize: 10, color: "var(--text3)" }}>·</span>
+                              <span style={{ fontSize: 10, color: "var(--text3)" }}>{p.publishedAt}</span>
+                            </div>
+                          </div>
+                          <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+                            <button
+                              onClick={() => loadPostForEdit(p)}
+                              style={{ fontSize: 11, fontWeight: 600, color: "var(--accent)", background: "var(--accent-dim)", border: "1px solid rgba(0,59,147,0.2)", borderRadius: 6, padding: "4px 12px", cursor: "pointer" }}
+                            >Edit</button>
+                            <a href={`/article/${p.slug}`} target="_blank" rel="noreferrer"
+                              style={{ fontSize: 11, fontWeight: 500, color: "var(--text3)", background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: 6, padding: "4px 12px", cursor: "pointer", textDecoration: "none" }}
+                            >View ↗</a>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* ── Editor / Preview pane ── */}
-            <div className="editor-pane">
+            {postsViewMode === "editor" && <div className="editor-pane">
               {showDraftBanner && draftData && (
                 <div style={{
                   background: "var(--orange-dim)", borderBottom: "1px solid rgba(225,114,14,0.2)",
@@ -528,7 +683,7 @@ export default function AuthorStudio() {
                   </div>
                 )}
               </div>
-            </div>
+            </div>}
 
             {/* ══════════════════════════════════════════════
                 ── Publish Panel (right) ──
@@ -953,12 +1108,26 @@ export default function AuthorStudio() {
                   <span className="status-dot" style={isSaved || isPublished ? { background: "var(--green)", animation: "none" } : {}} />
                   {saveStatus}
                 </div>
-                <div className="btn-row">
-                  <button className="btn btn-schedule" onClick={schedulePost} disabled={isPublishing}>Schedule</button>
-                  <button className="btn btn-publish" onClick={publishPost} disabled={isPublishing}>
-                    {isPublishing ? "Publishing…" : "Publish"}
-                  </button>
-                </div>
+                {editingPostId !== null ? (
+                  <div className="btn-row">
+                    <button
+                      className="btn btn-schedule"
+                      onClick={() => { setEditingPostId(null); clearEditor(); }}
+                      disabled={isPublishing}
+                      title="Discard edits and start fresh"
+                    >✕ Exit Edit</button>
+                    <button className="btn btn-publish" onClick={updatePost} disabled={isPublishing}>
+                      {isPublishing ? "Saving…" : "Update"}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="btn-row">
+                    <button className="btn btn-schedule" onClick={schedulePost} disabled={isPublishing}>Schedule</button>
+                    <button className="btn btn-publish" onClick={publishPost} disabled={isPublishing}>
+                      {isPublishing ? "Publishing…" : "Publish"}
+                    </button>
+                  </div>
+                )}
               </div>
 
             </aside>
