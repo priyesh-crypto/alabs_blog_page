@@ -11,25 +11,6 @@ import { courses } from "@/lib/data";
 import NewsletterInline from "@/components/NewsletterInline";
 import "@/components/TiptapEditor.css";
 
-const initialComments = [
-  {
-    id: 1,
-    user: "TechAnalyst_42",
-    time: "2 hours ago",
-    text: "Great breakdown! The depth of analysis here is impressive.",
-    likes: 12,
-    replies: [
-      {
-        id: 11,
-        user: "AnalytixLabs Support",
-        verified: true,
-        time: "1 hour ago",
-        text: "Thank you for reading! Feel free to share your thoughts in the discussion.",
-        likes: 4,
-      },
-    ],
-  },
-];
 
 function ArticleContent({ post, recommendedArticles, courseMatch }) {
   const addToast = useToast();
@@ -39,7 +20,7 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likeCount ?? 0);
   const [bookmarked, setBookmarked] = useState(false);
-  const [comments, setComments] = useState(initialComments);
+  const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [quizAnswer, setQuizAnswer] = useState(null);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
@@ -830,10 +811,10 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
   );
 }
 
-export default function ArticlePageWrapper({ post }) {
+export default function ArticlePageWrapper({ post, recommendedArticles, courseMatch }) {
   return (
     <ToastProvider>
-      <ArticleContent post={post} />
+      <ArticleContent post={post} recommendedArticles={recommendedArticles} courseMatch={courseMatch} />
     </ToastProvider>
   );
 }
