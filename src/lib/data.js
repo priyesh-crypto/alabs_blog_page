@@ -56,79 +56,9 @@ export const authors = {
   }
 };
 
-export const blogPosts = [
-  {
-    slug: "beyond-transformers-lru",
-    id: 0,
-    category: "Machine Learning",
-    domain_tags: ["Deep Learning", "Generative AI"],
-    skill_level: "Advanced",
-    readTime: "12 min read",
-    title: "Beyond Transformers: The Rise of Linear Recurrent Units",
-    excerpt: "For years, the Transformer architecture has been the undisputed king of sequence modeling. Enter Linear Recurrent Units (LRUs)...",
-    content: "Full content omitted for brevity", // Will just map to /article route essentially
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCWH0-iy0YexEmNgbb6xT4xV9b6GsoFnY_9aUMH6fTFAQclaeR3Q3aaUejHYtdNeoOUCTHo8msFSglbimLSEzN8cRXBVovh6XHhCo8N7AGOkSGG7g42Soi0OGcBxTncG9BuB7d3Q885lglT_5HxweffsUakx3AzCrpMIEhhDwPn5bNo8LmtHlY3K0HomYlDlJZ_6y4dfViCcAmAEtc4Uji5B7X82cLIVqrEJZuSbAuamU0ZRAZZl5bXiz7fveiMJcorj_U3ODpBe3kQ",
-    authorId: "aris-thorne",
-    publishedAt: "Oct 24, 2024",
-    updatedAt: "Oct 26, 2024"
-  },
-  {
-    slug: "bayesian-inference-production",
-    id: 1,
-    category: "Data Science",
-    domain_tags: ["Statistics", "PyTorch"],
-    skill_level: "Intermediate",
-    readTime: "8 min read",
-    title: "Bayesian Inference in Production: Beyond Traditional A/B Testing",
-    excerpt: "Explore how probabilistic programming is reshaping how we interpret experiment results in high-stakes environments...",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBqbmACZVEBM4Y4qOv1IIUcz17R6_yLTz9ipnfQoZQktUZXYK0sGC5gP7okIqdq-37FayoBWmrTZvwSSPJYUfXEjMvQH3TsLFnvXYb_nPl-cTo1XDIDndpx2C6jKPZYXtq369tEZOfJrQldj-qAdIZR07jRGFVvdmTLHM3CfaKXsrOWkGwx_gFbMJmlCONTSnLccG_AIjG9XlI3T16B_wgKWIZbI7JGq0KbFEEgjkVfqM7vhtpSmf2yJxQFdPGZzec0CBE2asckyogV",
-    authorId: "s-dutta",
-    publishedAt: "Oct 15, 2024",
-    updatedAt: "Oct 15, 2024"
-  },
-  {
-    slug: "vector-databases-rag",
-    id: 2,
-    category: "Engineering",
-    domain_tags: ["Data Engineering", "MLOps"],
-    skill_level: "Advanced",
-    readTime: "15 min read",
-    title: "Vector Databases: The Unsung Heroes of RAG Pipelines",
-    excerpt: "Understanding why cosine similarity and HNSW indexing are the new prerequisites for any modern AI engineer...",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAMr60OXqV8zI3Zk0C0ETUOloQaTtAXKObnroPkmQdBL29_hVyUdJ-LSpSMGeYarlq66xkm4Z2MA3h-7o-vlqf7wM3m_3eAspRDpqzPgAu4eiiGgNXkj1UZEh-BCEdP7eAlO4lvBrV0t6bHKOrEUtbma5CaVChapJWGIPz8r3mepo-RZwhhqAlgITBPNu8St4Ko8WmG_u9QTbPqR6H-PnvImPZqflWN_PTxmYHqbVwdsdXfaU9FHf7ByKii_EAbmhKkyuZCkxf18lmS",
-    authorId: "a-kapoor",
-    publishedAt: "Oct 10, 2024",
-    updatedAt: "Oct 11, 2024"
-  },
-  {
-    slug: "prompt-engineering-programming",
-    id: 3,
-    category: "Machine Learning",
-    domain_tags: ["Generative AI", "MLOps"],
-    skill_level: "Intermediate",
-    readTime: "5 min read",
-    title: "Prompt Engineering is Dead. Long Live Prompt Programming.",
-    excerpt: "Why the next shift in AI interaction isn't about better English, but structured logic and systematic templates...",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBMq4SnHrlQjxX8LHK7133d7SO4FMST4Z5hp_Cx9UYvvsbDAauyktxyph2UnuFYW2OUp054uJlb4bWu-XpFzyzJWIh3iOxuO5jHA2oMHQq44qaujoZ0bkX7IFHqans6DbmJzCUZRD0hXn34SCby41Q_y-E6vPolNd2rlscw5l_gdOWby-bScC2pD6w7-lZcdTfFv9nXpMczP7Pu9yICg2d9Cu_N2FxJ2U80ztBRRwKc6Ykb3mT9147IG-NF-u_SaEbxhKExTXi_s_R9",
-    authorId: "r-long",
-    publishedAt: "Oct 05, 2024",
-    updatedAt: "Oct 05, 2024"
-  },
-  {
-    slug: "data-science-roadmap-2024",
-    id: 4,
-    category: "Career Growth",
-    domain_tags: ["Career Advice"],
-    skill_level: "Beginner",
-    readTime: "10 min read",
-    title: "The 2024 Data Science Roadmap: From Python to Production",
-    excerpt: "A curated journey for beginners looking to master the stack that matters in the current industry climate...",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC0-4I2p4D7_DV8w8c-ChPKLcxGj3rQV_UciKqavuQFAkQeVjO29CuIhMKEHouka2KQQMGcyTgp7OOBFTn7k3VmsfhWbDE_q2DZn5P2nY27vFb2qyS4gbv_CEQsheGIdQzl8NQPXNMzqos59jNdacWdbC4zs1_Ow3ccdw-B3Ij5t-JriFYtteDLXb3Mg-MG2N2CKBm1UBX_tBtV5qwaGRK9Syl4Yg4exf_MvcWhLMzxd4K6T8YN0Ao2JgqgeLCpWG7jvOX3Lojt3wUp",
-    authorId: "al-editorial",
-    publishedAt: "Sep 28, 2024",
-    updatedAt: "Oct 01, 2024"
-  },
-];
+import blogPostsData from './posts.json';
+
+export const blogPosts = blogPostsData;
 
 // Helper to expand authors inside posts
 export const getPosts = () => blogPosts.map(p => ({ ...p, author: authors[p.authorId] }));

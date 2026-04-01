@@ -62,6 +62,7 @@ function HomeContent() {
   };
 
   const filteredPosts = searchPosts(searchQuery, activeTopic, activeSkill);
+  const heroPost = getPosts()[0];
 
   return (
     <>
@@ -70,7 +71,7 @@ function HomeContent() {
       <main className="pt-24 pb-12 max-w-7xl mx-auto px-6">
         {/* ── Hero ── */}
         <section className="mb-16 fade-in-section">
-          <Link href="/article" className="block">
+          <Link href={`/article/${heroPost.slug}`} className="block">
             <div className="relative w-full aspect-square md:aspect-[21/9] rounded-3xl overflow-hidden group cursor-pointer">
               <Image
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -206,7 +207,7 @@ function HomeContent() {
                 </p>
               )}
               {filteredPosts.map((post) => (
-                <Link href="/article" key={post.id}>
+                <Link href={`/article/${post.slug}`} key={post.id}>
                   <div className="blog-card group bg-surface-container-low dark:bg-[#131b2e] hover:bg-surface-container-lowest dark:hover:bg-[#171f33] transition-all duration-300 rounded-xl overflow-hidden hover:shadow-[0_32px_64px_-12px_rgba(25,28,30,0.06)] dark:hover:shadow-[0_32px_64px_-12px_rgba(6,14,32,0.5)]">
                     <div className="aspect-[16/9] overflow-hidden relative">
                       <Image
