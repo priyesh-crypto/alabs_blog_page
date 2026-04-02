@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { publishPostAction, schedulePostAction, updatePostAction } from "@/app/actions";
+import { publishPostAction, schedulePostAction, updatePostAction, deletePostAction } from "@/app/actions";
 import TiptapEditor from "@/components/TiptapEditor";
 import { authors } from "@/lib/data";
 import "./studio.css";
@@ -401,6 +401,18 @@ export default function AuthorStudio() {
     setWordCount(0); setReadTime(0);
   };
 
+  // ── Delete post ───────────────────────────────────────────
+  const handleDeletePost = async (post) => {
+    if (!window.confirm(`Delete "${post.title}"? This cannot be undone.`)) return;
+    const res = await deletePostAction(post.id);
+    if (res.success) {
+      setAllPosts(prev => prev.filter(p => p.id !== post.id));
+      if (editingPostId === post.id) { setEditingPostId(null); clearEditor(); }
+    } else {
+      alert("Delete failed: " + res.error);
+    }
+  };
+
   // ── Load posts list ───────────────────────────────────────
   const fetchAllPosts = async () => {
     try {
@@ -612,6 +624,10 @@ export default function AuthorStudio() {
                             <a href={`/article/${p.slug}`} target="_blank" rel="noreferrer"
                               style={{ fontSize: 11, fontWeight: 500, color: "var(--text3)", background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: 6, padding: "4px 12px", cursor: "pointer", textDecoration: "none" }}
                             >View ↗</a>
+                            <button
+                              onClick={() => handleDeletePost(p)}
+                              style={{ fontSize: 11, fontWeight: 600, color: "var(--red, #e53935)", background: "rgba(229,57,53,0.08)", border: "1px solid rgba(229,57,53,0.2)", borderRadius: 6, padding: "4px 12px", cursor: "pointer" }}
+                            >Delete</button>
                           </div>
                         </div>
                       ))}

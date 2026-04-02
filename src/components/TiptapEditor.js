@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
+import { Node, mergeAttributes } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import Document from '@tiptap/extension-document';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -11,6 +12,27 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { common, createLowlight } from 'lowlight';
 import './TiptapEditor.css';
 import { ImageIcon, Video, Code, Plus } from 'lucide-react';
+
+// ── Custom Video Node ────────────────────────────────────────
+const VideoNode = Node.create({
+  name: 'video',
+  group: 'block',
+  atom: true,
+  addAttributes() {
+    return {
+      src: { default: null },
+    };
+  },
+  parseHTML() {
+    return [{ tag: 'video[src]' }];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ['video', mergeAttributes(HTMLAttributes, {
+      controls: true,
+      style: 'max-width:100%;border-radius:8px;margin:16px 0;display:block;',
+    })];
+  },
+});
 
 const lowlight = createLowlight(common);
 
@@ -202,9 +224,7 @@ function PlusMenu({ editor, outerRef }) {
       const res = await fetch('/api/upload', { method: 'POST', body: fd });
       const data = await res.json();
       if (data.url) {
-        editor.commands.insertContent(
-          `<p><video src="${data.url}" controls style="max-width:100%;border-radius:8px;margin:16px 0;display:block;"></video></p>`
-        );
+        editor.chain().focus().insertContent({ type: 'video', attrs: { src: data.url } }).run();
       } else alert('Upload failed: ' + (data.error || 'unknown'));
     } catch { alert('Video upload failed. Please try again.'); }
     e.target.value = '';
@@ -280,6 +300,7 @@ const TiptapEditor = ({ content, onChange }) => {
         },
       }),
       TiptapImage.configure({ inline: false, allowBase64: true }),
+      VideoNode,
       Link.configure({
         openOnClick: false,
         HTMLAttributes: { rel: 'noopener noreferrer', target: '_blank' },

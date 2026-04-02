@@ -83,6 +83,28 @@ export async function updatePostAction(id, payload) {
   }
 }
 
+export async function deletePostAction(id) {
+  try {
+    const filePath = getFilePath();
+    const fileData = fs.readFileSync(filePath, 'utf8');
+    const posts = JSON.parse(fileData);
+
+    const post = posts.find(p => p.id === id);
+    if (!post) return { success: false, error: "Post not found" };
+
+    const filtered = posts.filter(p => p.id !== id);
+    fs.writeFileSync(filePath, JSON.stringify(filtered, null, 2));
+
+    revalidatePath('/');
+    revalidatePath('/article');
+    revalidatePath(`/article/${post.slug}`);
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to delete post:", error);
+    return { success: false, error: error.message };
+  }
+}
+
 export async function schedulePostAction(payload) {
   try {
     const filePath = getFilePath();
