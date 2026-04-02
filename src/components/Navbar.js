@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const categories = [
   { label: "Data Science", href: "/" },
@@ -53,11 +54,8 @@ export default function Navbar({ activeCategory = "Data Science" }) {
       <nav className="fixed top-0 w-full z-50 glass-nav shadow-sm" id="main-nav">
         <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
           {/* Logo */}
-          <Link
-            href="/"
-            className="text-2xl font-extrabold text-[#003b93] dark:text-[#dae2fd] tracking-tighter font-[family-name:var(--font-headline)]"
-          >
-            AnalytixLabs
+          <Link href="/" className="flex items-center">
+            <Image src="/logo.svg" alt="AnalytixLabs" width={140} height={32} priority style={{ objectFit: "contain" }} />
           </Link>
 
           {/* Desktop Nav */}
@@ -145,11 +143,8 @@ export default function Navbar({ activeCategory = "Data Science" }) {
           menuOpen ? "translate-x-0" : "-translate-x-full"
         } md:hidden overflow-y-auto p-8`}
       >
-        <Link
-          href="/"
-          className="text-xl font-extrabold text-[#003b93] dark:text-[#dae2fd] font-[family-name:var(--font-headline)] block mb-8"
-        >
-          AnalytixLabs
+        <Link href="/" className="block mb-8">
+          <Image src="/logo.svg" alt="AnalytixLabs" width={120} height={28} style={{ objectFit: "contain" }} />
         </Link>
         <nav className="flex flex-col gap-4">
           {categories.map((cat) => (
