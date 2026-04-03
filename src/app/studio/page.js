@@ -413,14 +413,17 @@ export default function AuthorStudio() {
     }
   };
 
-  // ── Load posts list ───────────────────────────────────────
+  // ── Load posts list (all statuses, studio-only) ───────────
   const fetchAllPosts = async () => {
     try {
-      const res = await fetch('/api/posts');
+      const res = await fetch('/api/posts?all=true');
       const data = await res.json();
-      setAllPosts(data);
+      setAllPosts(Array.isArray(data) ? data : []);
     } catch { /* silent */ }
   };
+
+  // Fetch on mount so list is ready when user opens "All Posts"
+  useEffect(() => { fetchAllPosts(); }, []);
 
   // ── Load a post into the editor for editing ───────────────
   const loadPostForEdit = (post) => {
@@ -477,7 +480,7 @@ export default function AuthorStudio() {
     setSaveStatus("Publishing...");
     try {
       const res = await publishPostAction(buildPayload());
-      if (res.success) { setSaveStatus("✓ Published"); clearDraftOnSuccess(); router.push("/article/" + res.slug); }
+      if (res.success) { setSaveStatus("✓ Published"); clearDraftOnSuccess(); fetchAllPosts(); router.push("/article/" + res.slug); }
       else { alert("Publish failed: " + res.error); setSaveStatus("Error"); }
     } catch { alert("Publish failed. Please try again."); setSaveStatus("Error"); }
     finally { setIsPublishing(false); }
@@ -493,6 +496,7 @@ export default function AuthorStudio() {
       if (res.success) {
         setSaveStatus("✓ Updated");
         clearDraftOnSuccess();
+        fetchAllPosts();
         router.push("/article/" + res.slug);
       } else { alert("Update failed: " + res.error); setSaveStatus("Error"); }
     } catch { alert("Update failed. Please try again."); setSaveStatus("Error"); }

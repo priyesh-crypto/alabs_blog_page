@@ -1,4 +1,4 @@
-import { getPosts, getRecommendations, getCourseMatch } from "@/lib/data";
+import { getPostBySlug, getRecommendations, getCourseMatch, getAuthorPostCount } from "@/lib/data.server";
 import { notFound } from "next/navigation";
 import ArticleContent from "./ArticleContent";
 
@@ -52,11 +52,13 @@ function extractFaqJsonLd(htmlContent) {
 
 export default async function ArticlePage({ params }) {
   const { slug } = await params;
-  const posts = getPosts();
-  const post = posts.find((p) => p.slug === slug);
+  const post = await getPostBySlug(slug);
   if (!post) notFound();
-  const recommendedArticles = getRecommendations(slug, 3);
-  const courseMatch = getCourseMatch(post.domain_tags);
+  const [recommendedArticles, courseMatch, authorPostCount] = await Promise.all([
+    getRecommendations(slug, 3),
+    Promise.resolve(getCourseMatch(post.domain_tags)),
+    getAuthorPostCount(post.authorId),
+  ]);
 
   const faqJsonLd = post.discussion?.faqSchema && post.content
     ? extractFaqJsonLd(post.content)
@@ -70,7 +72,7 @@ export default async function ArticlePage({ params }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
-      <ArticleContent post={post} recommendedArticles={recommendedArticles} courseMatch={courseMatch} />
+      <ArticleContent post={post} recommendedArticles={recommendedArticles} courseMatch={courseMatch} authorPostCount={authorPostCount} />
     </>
   );
 }

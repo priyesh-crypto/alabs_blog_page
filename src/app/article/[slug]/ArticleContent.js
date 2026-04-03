@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { ToastProvider, useToast } from "@/components/Toast";
 import { courses } from "@/lib/data";
+import AskAI from "@/components/AskAI";
 import "@/components/TiptapEditor.css";
 
 // Generate a deterministic background color from a username string
@@ -59,7 +60,7 @@ function buildSuggestedQuestions(post) {
   return [...found, ...fromTags, ...fallback].filter((v, i, a) => a.indexOf(v) === i).slice(0, 5);
 }
 
-function ArticleContent({ post, recommendedArticles, courseMatch }) {
+function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCount = 0 }) {
   const addToast      = useToast();
   const [progress, setProgress] = useState(0);
   const [toc, setToc]           = useState([]);
@@ -75,7 +76,6 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
   const [replyingTo, setReplyingTo]   = useState(null);
   const [replyText, setReplyText]     = useState("");
   const [showMobileToc, setShowMobileToc] = useState(false);
-  const [sidebarSearch, setSidebarSearch] = useState("");
   const [likedComments, setLikedComments] = useState(new Set());
   const [showShare, setShowShare] = useState(false);
 
@@ -250,7 +250,8 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
 
         {/* ── Left Sidebar ── */}
         <aside className="hidden lg:flex flex-col gap-0 lg:col-span-3">
-          <div className="sticky top-24 flex flex-col gap-0 bg-surface-container-low dark:bg-[#131b2e] rounded-2xl overflow-hidden border border-outline-variant/10 dark:border-[#424754]">
+          <div className="sticky top-24 flex flex-col gap-0 rounded-2xl overflow-hidden border border-white/10 shadow-xl"
+            style={{ background: "linear-gradient(180deg, #4C7FD2 38%, #27416C 100%)" }}>
 
             {/* Author Card */}
             <div className="p-6 flex flex-col gap-4">
@@ -265,35 +266,35 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
                   </div>
                 )}
                 <div>
-                  <h3 className="font-[family-name:var(--font-headline)] font-bold text-base text-on-surface dark:text-[#dae2fd]">
+                  <h3 className="font-[family-name:var(--font-headline)] font-bold text-base text-white">
                     {author.name || "Author"}
                   </h3>
-                  <p className="text-[11px] text-on-surface-variant dark:text-[#8c909f] mt-0.5">
+                  <p className="text-[11px] text-blue-100/80 mt-0.5">
                     {author.expertise?.[0] || "Contributor"} · AnalytixLabs
                   </p>
                 </div>
               </div>
 
               {/* Bio */}
-              <p className="text-[13px] text-on-surface-variant dark:text-[#c2c6d6] leading-relaxed">
+              <p className="text-[13px] text-white/90 leading-relaxed font-medium">
                 {author.bio || ""}
               </p>
 
               {/* Stats */}
-              <div className="flex items-center gap-3 text-xs text-on-surface-variant dark:text-[#8c909f]">
+              <div className="flex items-center gap-3 text-xs text-blue-100/70">
                 <span className="flex items-center gap-1">
-                  <span className="font-bold text-on-surface dark:text-[#dae2fd]">34</span> articles
+                  <span className="font-bold text-white">{authorPostCount}</span> articles
                 </span>
-                <span className="w-px h-3 bg-outline-variant/30 dark:bg-[#424754]" />
+                <span className="w-px h-3 bg-white/20" />
                 <span className="flex items-center gap-1">
-                  <span className="font-bold text-on-surface dark:text-[#dae2fd]">{author.experience?.replace(" Years", "") || "10"}</span> yrs exp
+                  <span className="font-bold text-white">{author.experience?.replace(" Years", "") || "10"}</span> yrs exp
                 </span>
               </div>
 
               {/* LinkedIn */}
               {author.linkedin && (
                 <a href={author.linkedin} target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold border transition-colors text-primary dark:text-[#adc6ff] border-primary dark:border-[#adc6ff] hover:bg-primary hover:text-white dark:hover:bg-[#adc6ff] dark:hover:text-[#0b1326]">
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all bg-white text-[#27416C] shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0">
                   <svg viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
                     <path d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" />
                   </svg>
@@ -305,17 +306,17 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
             {/* TOC */}
             {tocItems.length > 0 && (
               <>
-                <div className="mx-6 border-t border-outline-variant/20 dark:border-[#424754]" />
+                <div className="mx-6 border-t border-white/20" />
                 <nav className="p-6 flex flex-col gap-1">
-                  <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant dark:text-[#8c909f] mb-3">
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-100 mb-3">
                     In this article
                   </h4>
                   {tocWithDiscussion.map((s, i) => (
                     <a key={s.id + i} href={`#${s.id}`}
                       className={`py-1.5 pl-3 border-l-2 text-[13px] transition-colors ${
                         activeSection === s.id
-                          ? "border-primary dark:border-[#adc6ff] text-primary dark:text-[#adc6ff] font-semibold"
-                          : "border-transparent text-on-surface-variant dark:text-[#c2c6d6] hover:text-on-surface dark:hover:text-[#dae2fd]"
+                          ? "border-white text-white font-bold"
+                          : "border-white/10 text-blue-100/60 hover:text-white"
                       } ${s.level === "h3" ? "pl-6 text-xs" : ""}`}>
                       {s.label}
                     </a>
@@ -331,21 +332,14 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
 
           {/* ── Article Header ── */}
           <header className="mb-10">
-            {/* Badge + Category */}
+            {/* Badge */}
             <div className="flex items-center gap-2 mb-5 flex-wrap">
-              <span className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest bg-primary/10 dark:bg-[#004a77]/30 text-primary dark:text-[#cfe5ff]">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest border border-green-500/60 text-green-700 dark:text-green-400 dark:border-green-500/40 bg-green-50 dark:bg-green-900/20">
                 Featured Analysis
               </span>
-              {post.skill_level && (
-                <span className={`px-3 py-1 rounded-full text-[11px] font-bold ${
-                  post.skill_level === "Beginner"     ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
-                  : post.skill_level === "Intermediate" ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
-                  : "bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300"
-                }`}>{post.skill_level}</span>
-              )}
             </div>
 
-            <h1 className="font-[family-name:var(--font-headline)] font-extrabold text-4xl md:text-5xl text-on-background dark:text-[#dae2fd] leading-[1.1] tracking-tight mb-6">
+            <h1 className="font-[family-name:var(--font-headline)] font-extrabold text-4xl md:text-5xl text-on-background dark:text-[#dae2fd] leading-[1.08] tracking-tight mb-6">
               {post.title}
             </h1>
 
@@ -381,49 +375,45 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
             )}
 
             {/* Meta row */}
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-on-surface-variant dark:text-[#c2c6d6] py-3 border-y border-outline-variant/10 dark:border-[#424754] mb-4">
-              {post.publishedAt && (
-                <span>Published {post.publishedAt}</span>
-              )}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-on-surface-variant dark:text-[#8c909f] mb-6">
+              {post.publishedAt && <span>Published {post.publishedAt}</span>}
               {post.updatedAt && post.updatedAt !== post.publishedAt && (
-                <><span className="text-outline/30">·</span><span>Updated {post.updatedAt}</span></>
+                <><span className="opacity-30">·</span><span>Updated {post.updatedAt}</span></>
               )}
-              {post.readTime && (
-                <><span className="text-outline/30">·</span><span>{post.readTime}</span></>
-              )}
-              {post.skill_level && (
-                <><span className="text-outline/30">·</span><span>{post.skill_level}</span></>
-              )}
+              {post.readTime && <><span className="opacity-30">·</span><span>{post.readTime}</span></>}
+              {post.skill_level && <><span className="opacity-30">·</span><span>{post.skill_level}</span></>}
             </div>
 
             {/* Action bar */}
-            <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-2 flex-wrap pb-6 border-b border-outline-variant/10 dark:border-[#424754]">
+              {/* Like */}
               <button onClick={handleLike}
-                className={`like-btn flex items-center gap-1.5 px-3 py-2 rounded-full border text-sm font-bold transition-colors ${
-                  liked ? "bg-red-50 dark:bg-red-900/20 border-red-300 text-red-600 dark:border-red-500/40 dark:text-red-400"
-                        : "bg-surface-container-low dark:bg-[#131b2e] border-outline-variant/20 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] hover:border-red-300"
+                className={`like-btn inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[13px] font-semibold border transition-all ${
+                  liked
+                    ? "border-red-300 dark:border-red-500/40 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400"
+                    : "border-outline-variant/30 dark:border-[#424754] bg-white dark:bg-[#131b2e] text-on-surface-variant dark:text-[#c2c6d6] hover:border-red-300"
                 }`}>
-                <span className="material-symbols-outlined text-base"
-                  style={{ fontVariationSettings: liked ? "'FILL' 1" : "'FILL' 0", color: liked ? "#ef4444" : "inherit" }}>
-                  favorite
-                </span>
+                <span className="material-symbols-outlined text-[16px]"
+                  style={{ fontVariationSettings: liked ? "'FILL' 1" : "'FILL' 0", color: liked ? "#ef4444" : "inherit" }}>favorite</span>
                 {likeDisplay}
               </button>
 
+              {/* Comments */}
               <a href="#discussion"
-                className="flex items-center gap-1.5 px-3 py-2 rounded-full border text-sm font-bold transition-colors bg-surface-container-low dark:bg-[#131b2e] border-outline-variant/20 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] hover:border-primary/40">
-                <span className="material-symbols-outlined text-base">chat_bubble</span>
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[13px] font-semibold border border-outline-variant/30 dark:border-[#424754] bg-white dark:bg-[#131b2e] text-on-surface-variant dark:text-[#c2c6d6] hover:border-primary/40 transition-colors">
+                <span className="material-symbols-outlined text-[16px]">chat_bubble_outline</span>
                 {totalComments}
               </a>
 
+              {/* Share */}
               <div className="relative">
                 <button onClick={() => setShowShare(s => !s)}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-full border text-sm font-bold transition-colors bg-surface-container-low dark:bg-[#131b2e] border-outline-variant/20 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] hover:border-primary/40">
-                  <span className="material-symbols-outlined text-base">share</span>
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[13px] font-semibold border border-outline-variant/30 dark:border-[#424754] bg-white dark:bg-[#131b2e] text-on-surface-variant dark:text-[#c2c6d6] hover:border-primary/40 transition-colors">
+                  <span className="material-symbols-outlined text-[16px]">share</span>
                   Share
                 </button>
                 {showShare && (
-                  <div className="absolute left-0 top-full mt-2 w-44 bg-surface-container-lowest dark:bg-[#171f33] border border-outline-variant/20 dark:border-[#424754] rounded-xl shadow-xl z-20 overflow-hidden">
+                  <div className="absolute left-0 top-full mt-2 w-44 bg-white dark:bg-[#171f33] border border-outline-variant/20 dark:border-[#424754] rounded-xl shadow-xl z-20 overflow-hidden">
                     <button onClick={handleCopyLink}
                       className="w-full flex items-center gap-3 px-4 py-3 text-sm hover:bg-surface-container-low dark:hover:bg-[#222a3d] dark:text-[#dae2fd]">
                       <span className="material-symbols-outlined text-base">link</span>Copy Link
@@ -440,15 +430,15 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
                 )}
               </div>
 
+              {/* Save */}
               <button onClick={handleBookmark}
-                className={`bookmark-btn flex items-center gap-1.5 px-3 py-2 rounded-full border text-sm font-bold transition-colors ml-auto ${
-                  bookmarked ? "bg-primary/10 dark:bg-[#adc6ff]/10 border-primary dark:border-[#adc6ff] text-primary dark:text-[#adc6ff]"
-                             : "bg-surface-container-low dark:bg-[#131b2e] border-outline-variant/20 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] hover:border-primary/40"
+                className={`bookmark-btn inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[13px] font-semibold border transition-all ml-auto ${
+                  bookmarked
+                    ? "border-primary dark:border-[#adc6ff] bg-primary/8 dark:bg-[#adc6ff]/10 text-primary dark:text-[#adc6ff]"
+                    : "border-outline-variant/30 dark:border-[#424754] bg-white dark:bg-[#131b2e] text-on-surface-variant dark:text-[#c2c6d6] hover:border-primary/40"
                 }`}>
-                <span className="material-symbols-outlined text-base"
-                  style={{ fontVariationSettings: bookmarked ? "'FILL' 1" : "'FILL' 0" }}>
-                  bookmark
-                </span>
+                <span className="material-symbols-outlined text-[16px]"
+                  style={{ fontVariationSettings: bookmarked ? "'FILL' 1" : "'FILL' 0" }}>bookmark</span>
                 {bookmarked ? "Saved" : "Save"}
               </button>
             </div>
@@ -465,7 +455,7 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
 
             {/* ── Newsletter CTA ── */}
             <div className="my-10 rounded-2xl overflow-hidden"
-              style={{ background: "linear-gradient(135deg,#001d6b 0%,#003b93 100%)" }}>
+              style={{ background: "linear-gradient(135deg,#4C7FD2 57%,#27416C 100%)" }}>
               <div className="p-7">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="material-symbols-outlined text-blue-300 text-xl">download</span>
@@ -484,8 +474,7 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
                     className="flex-[2] px-4 py-2.5 rounded-xl text-sm outline-none"
                     style={{ background: "rgba(255,255,255,0.12)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)" }} />
                   <button type="submit"
-                    className="px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap text-white transition-opacity hover:opacity-90"
-                    style={{ background: "#1a56db" }}>
+                    className="glass-btn px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap">
                     Get Free PDF →
                   </button>
                 </form>
@@ -590,17 +579,14 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
             {/* ── Related Course CTA ── */}
             {courseMatch && (
               <div className="my-10 rounded-2xl overflow-hidden flex flex-col md:flex-row"
-                style={{ background: "linear-gradient(135deg,#001d6b 0%,#003b93 100%)" }}>
+                style={{ background: "linear-gradient(135deg,#4C7FD2 57%,#27416C 100%)" }}>
                 <div className="flex-1 p-7 flex flex-col gap-3">
                   <p className="text-blue-300 text-xs font-medium">Reading about {post.domain_tags?.[0] || "AI"}?</p>
                   <h3 className="font-[family-name:var(--font-headline)] font-bold text-xl text-white leading-tight">
                     {courseMatch.title}
                   </h3>
                   <p className="text-blue-200 text-sm leading-relaxed">{courseMatch.desc}</p>
-                  <button className="mt-2 w-full py-3 rounded-xl font-bold text-sm transition-colors"
-                    style={{ background: "#1a56db", color: "#fff" }}
-                    onMouseEnter={e => e.currentTarget.style.background = "#2563eb"}
-                    onMouseLeave={e => e.currentTarget.style.background = "#1a56db"}>
+                  <button className="glass-btn mt-2 w-full py-3 rounded-xl font-bold text-sm">
                     View Full Course Details →
                   </button>
                 </div>
@@ -637,7 +623,7 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
                   rows="3" value={newComment} onChange={e => setNewComment(e.target.value)} />
                 <div className="flex justify-end">
                   <button type="submit"
-                    className="px-6 py-2.5 bg-primary text-on-primary rounded-full font-bold text-sm hover:opacity-90 transition-opacity">
+                    className="glass-chip active px-6 py-2.5 rounded-full font-bold text-sm">
                     Post Comment
                   </button>
                 </div>
@@ -720,32 +706,11 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
           <div className="sticky top-24 flex flex-col gap-5">
 
             {/* Ask the AI */}
-            <div className="rounded-2xl border p-5 bg-surface-container-lowest dark:bg-[#0b1326] border-outline-variant/20 dark:border-[#424754]">
-              <h3 className="font-[family-name:var(--font-headline)] font-bold text-base dark:text-[#dae2fd] mb-4">
-                Ask the AI
-              </h3>
-              <div className="relative mb-4">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
-                <input type="text" placeholder="Search..."
-                  value={sidebarSearch}
-                  onChange={e => setSidebarSearch(e.target.value)}
-                  onKeyDown={handleSidebarSearch}
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl text-sm bg-surface-container-low dark:bg-[#131b2e] dark:text-[#dae2fd] border border-outline-variant/20 dark:border-[#424754] outline-none" />
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[18px]"
-                  style={{ color: "#f59e0b", fontVariationSettings: "'FILL' 1" }}>star</span>
-              </div>
-              <p className="text-[10px] font-bold text-on-surface-variant dark:text-[#8c909f] uppercase tracking-widest mb-3">
-                Suggested by AI
-              </p>
-              <div className="flex flex-col gap-2">
-                {suggestedQuestions.map((q, i) => (
-                  <button key={i} onClick={() => setSidebarSearch(q)}
-                    className="text-left px-3 py-2.5 rounded-xl text-[13px] border transition-colors bg-surface-container-low dark:bg-[#131b2e] dark:text-[#dae2fd] border-outline-variant/10 dark:border-[#424754] hover:border-primary/40 dark:hover:border-[#adc6ff]/40">
-                    {q}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <AskAI
+              questions={suggestedQuestions}
+              context={`Title: ${post.title}\nExcerpt: ${post.excerpt || ""}\nTopics: ${(post.domain_tags || []).join(", ")}`}
+              placeholder="Ask anything about this article…"
+            />
 
             {/* Recommended articles */}
             {recommendedArticles?.length > 0 && (
@@ -794,7 +759,7 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
                   <h3 className="font-[family-name:var(--font-headline)] text-base font-bold mb-2 group-hover:text-primary dark:group-hover:text-[#adc6ff] transition-colors dark:text-[#dae2fd]">{course.title}</h3>
                   <p className="text-on-surface-variant dark:text-[#c2c6d6] text-sm mb-4 flex-1 line-clamp-2">{course.desc}</p>
                   <a href="#"
-                    className="w-full text-center py-2.5 border border-outline-variant/30 dark:border-[#424754] hover:bg-primary hover:text-on-primary hover:border-primary dark:hover:bg-[#4d8eff] transition-colors rounded-xl font-bold text-sm text-on-surface dark:text-[#dae2fd] block">
+                    className="glass-chip active block w-full text-center py-2.5 rounded-xl font-bold text-sm">
                     View Courses
                   </a>
                 </div>
@@ -810,10 +775,10 @@ function ArticleContent({ post, recommendedArticles, courseMatch }) {
   );
 }
 
-export default function ArticlePageWrapper({ post, recommendedArticles, courseMatch }) {
+export default function ArticlePageWrapper({ post, recommendedArticles, courseMatch, authorPostCount }) {
   return (
     <ToastProvider>
-      <ArticleContent post={post} recommendedArticles={recommendedArticles} courseMatch={courseMatch} />
+      <ArticleContent post={post} recommendedArticles={recommendedArticles} courseMatch={courseMatch} authorPostCount={authorPostCount} />
     </ToastProvider>
   );
 }

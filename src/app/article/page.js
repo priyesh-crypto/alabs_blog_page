@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { ToastProvider, useToast } from "@/components/Toast";
-import { getPosts, courses, authors } from "@/lib/data";
+import { courses, authors } from "@/lib/data";
+import AskAI from "@/components/AskAI";
 
 const FILTER_CHIPS = ["Hot Topic", "Data Science", "Deep Learning", "Business Analyst", "Cyber Security"];
 const SKILL_LEVELS = ["All", "Beginner", "Intermediate", "Advanced"];
@@ -27,16 +28,23 @@ function BlogListingContent() {
   const [activeSkill, setActiveSkill] = useState("All");
   const [topicsOpen, setTopicsOpen]   = useState(false);
   const [skillsOpen, setSkillsOpen]   = useState(false);
-  const [bookmarked, setBookmarked]   = useState(new Set());
-  const [aiSearch, setAiSearch]       = useState("");
-  const [emailInput, setEmailInput]   = useState("");
+  const [allPosts, setAllPosts]         = useState([]);
+  const [postsLoading, setPostsLoading] = useState(true);
+  const [bookmarked, setBookmarked]     = useState(new Set());
+  const [emailInput, setEmailInput]     = useState("");
   const [commentInput, setCommentInput] = useState("");
   const [comments, setComments] = useState([
     { id: 1, user: "Ravi S.",  time: "2 days ago", text: "Great breakdown! Can you cover Weaviate vs Pinecone comparison in the next article?" },
     { id: 2, user: "Priya M.", time: "4 days ago", text: "The HNSW section was super clarifying. Bookmarked this for my team." },
   ]);
 
-  const allPosts     = getPosts();
+  useEffect(() => {
+    fetch('/api/posts')
+      .then(r => r.json())
+      .then(data => { setAllPosts(Array.isArray(data) ? data : []); setPostsLoading(false); })
+      .catch(() => setPostsLoading(false));
+  }, []);
+
   const featuredPost = allPosts[0];
 
   const filtered = allPosts.slice(1).filter(p => {
@@ -75,17 +83,25 @@ function BlogListingContent() {
     addToast("Comment posted!", "success");
   };
 
+  if (postsLoading) return (
+    <div className="min-h-screen flex items-center justify-center bg-surface dark:bg-[#0b1326]">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+        <span className="text-sm text-on-surface-variant dark:text-[#c2c6d6]">Loading content…</span>
+      </div>
+    </div>
+  );
+
   return (
     <>
       <Navbar activeCategory="Blog" />
 
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="pt-24 pb-16"
-        style={{ background: "linear-gradient(135deg,#00103d 0%,#001f6b 45%,#003b93 100%)" }}>
+        style={{ background: "linear-gradient(135deg,#4C7FD2 57%,#27416C 100%)" }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="max-w-3xl">
-            <span className="inline-block mb-5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest border"
-              style={{ background: "rgba(255,255,255,0.08)", color: "#93bbff", borderColor: "rgba(173,198,255,0.25)" }}>
+            <span className="glass-badge inline-block mb-5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest">
               Featured Analysis
             </span>
             <h1 className="font-[family-name:var(--font-headline)] font-extrabold text-4xl md:text-5xl text-white leading-tight mb-6">
@@ -97,8 +113,7 @@ function BlogListingContent() {
                 {featuredPost?.readTime || "12 min read"}
               </span>
               {featuredPost?.domain_tags?.[0] && (
-                <span className="px-2.5 py-1 rounded-full text-xs font-medium"
-                  style={{ background: "rgba(255,255,255,0.1)", color: "#b3d0ff" }}>
+                <span className="glass-badge px-2.5 py-1 rounded-full text-xs font-medium">
                   {featuredPost.domain_tags[0]}
                 </span>
               )}
@@ -109,14 +124,12 @@ function BlogListingContent() {
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <Link href={`/article/${featuredPost?.slug || ""}`}
-                className="px-6 py-3 rounded-full font-bold text-sm text-white transition-opacity hover:opacity-90"
-                style={{ background: "#1a56db" }}>
+                className="glass-btn px-6 py-3 rounded-full font-bold text-sm">
                 Read More
               </Link>
               <button
                 onClick={() => toggleBookmark(featuredPost?.slug)}
-                className="px-6 py-3 rounded-full font-bold text-sm border transition-colors hover:bg-white/10"
-                style={{ borderColor: "rgba(255,255,255,0.35)", color: "#fff" }}>
+                className="glass-btn px-6 py-3 rounded-full font-bold text-sm">
                 {bookmarked.has(featuredPost?.slug) ? "Saved ✓" : "Save Article"}
               </button>
             </div>
@@ -139,7 +152,7 @@ function BlogListingContent() {
           {/* Topics dropdown */}
           <div className="relative">
             <button onClick={() => { setTopicsOpen(o => !o); setSkillsOpen(false); }}
-              className="flex items-center gap-2 px-4 py-3 text-sm rounded-xl font-medium border bg-surface-container-low dark:bg-[#131b2e] dark:text-[#dae2fd] border-outline-variant/20 dark:border-[#424754]">
+              className="glass-dropdown flex items-center gap-2 px-4 py-3 text-sm rounded-xl font-semibold">
               Topics <span className="material-symbols-outlined text-sm">expand_more</span>
             </button>
             {topicsOpen && (
@@ -158,7 +171,7 @@ function BlogListingContent() {
           {/* Skill Level dropdown */}
           <div className="relative">
             <button onClick={() => { setSkillsOpen(o => !o); setTopicsOpen(false); }}
-              className="flex items-center gap-2 px-4 py-3 text-sm rounded-xl font-medium border bg-surface-container-low dark:bg-[#131b2e] dark:text-[#dae2fd] border-outline-variant/20 dark:border-[#424754]">
+              className="glass-dropdown flex items-center gap-2 px-4 py-3 text-sm rounded-xl font-semibold">
               Skill Level <span className="material-symbols-outlined text-sm">expand_more</span>
             </button>
             {skillsOpen && (
@@ -180,11 +193,7 @@ function BlogListingContent() {
           {FILTER_CHIPS.map(chip => (
             <button key={chip}
               onClick={() => setActiveTopic(prev => prev === chip ? null : chip)}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
-                activeTopic === chip
-                  ? "bg-primary dark:bg-[#adc6ff] text-white dark:text-[#0b1326] border-primary dark:border-[#adc6ff]"
-                  : "bg-surface-container-low dark:bg-[#131b2e] text-on-surface-variant dark:text-[#c2c6d6] border-outline-variant/20 dark:border-[#424754] hover:border-primary/40"
-              }`}>
+              className={`glass-chip px-4 py-1.5 rounded-full text-sm font-semibold ${activeTopic === chip ? "active" : ""}`}>
               {chip}
             </button>
           ))}
@@ -257,29 +266,15 @@ function BlogListingContent() {
           <aside className="lg:col-span-4 flex flex-col gap-5">
 
             {/* Ask the AI */}
-            <div className="rounded-2xl border p-5 bg-surface-container-lowest dark:bg-[#0b1326] border-outline-variant/20 dark:border-[#424754]">
-              <h3 className="font-[family-name:var(--font-headline)] font-bold text-base dark:text-[#dae2fd] mb-4">Ask the AI</h3>
-              <div className="relative mb-4">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
-                <input type="text" placeholder="Search..." value={aiSearch} onChange={e => setAiSearch(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl text-sm bg-surface-container-low dark:bg-[#131b2e] dark:text-[#dae2fd] border border-outline-variant/20 dark:border-[#424754] outline-none" />
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[18px]"
-                  style={{ color: "#f59e0b", fontVariationSettings: "'FILL' 1" }}>star</span>
-              </div>
-              <p className="text-[10px] font-bold text-on-surface-variant dark:text-[#8c909f] uppercase tracking-widest mb-3">Suggested by AI</p>
-              <div className="flex flex-col gap-2">
-                {suggestedQueries.map((q, i) => (
-                  <button key={i} onClick={() => setAiSearch(q)}
-                    className="text-left px-3 py-2.5 rounded-xl text-[13px] border transition-colors bg-surface-container-low dark:bg-[#131b2e] dark:text-[#dae2fd] border-outline-variant/10 dark:border-[#424754] hover:border-primary/40 dark:hover:border-[#adc6ff]/40">
-                    {q}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <AskAI
+              questions={suggestedQueries}
+              context="AnalytixLabs blog covering Data Science, Machine Learning, AI, Analytics, and career growth in India."
+              placeholder="Ask anything about data science…"
+            />
 
             {/* Recommended Course */}
             <div className="rounded-2xl overflow-hidden"
-              style={{ background: "linear-gradient(135deg,#001d6b 0%,#003b93 100%)" }}>
+              style={{ background: "linear-gradient(135deg,#4C7FD2 57%,#27416C 100%)" }}>
               <div className="p-5">
                 <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-3"
                   style={{ background: "rgba(255,255,255,0.15)", color: "#b3d0ff" }}>
@@ -291,84 +286,90 @@ function BlogListingContent() {
                   <span style={{ color: "#fbbf24", letterSpacing: "1px" }}>★★★★☆</span>
                   <span className="text-xs">4.8</span>
                 </div>
-                <button className="w-full py-2.5 rounded-xl font-bold text-sm transition-colors"
-                  style={{ background: "#f59e0b", color: "#78350f" }}>
+                <button className="glass-btn w-full py-2.5 rounded-xl font-bold text-sm">
                   Enroll Now →
                 </button>
               </div>
             </div>
 
             {/* Recommended for you */}
-            <div className="rounded-2xl border p-5 bg-surface-container-lowest dark:bg-[#0b1326] border-outline-variant/20 dark:border-[#424754]">
-              <h3 className="font-[family-name:var(--font-headline)] font-bold text-base dark:text-[#dae2fd] mb-4">Recommended for you</h3>
-              <div className="flex flex-col gap-4">
+            <div className="rounded-2xl border p-5 bg-white dark:bg-[#0b1326] border-outline-variant/10 dark:border-[#424754] shadow-sm">
+              <h3 className="font-[family-name:var(--font-headline)] font-bold text-[15px] text-on-background dark:text-[#dae2fd] mb-4">Recommended for you</h3>
+              <div className="flex flex-col divide-y divide-outline-variant/10 dark:divide-[#424754]/40">
                 {allPosts.slice(1, 5).map(post => (
-                  <Link key={post.id} href={`/article/${post.slug}`} className="flex items-center gap-3 group">
-                    <div className="w-12 h-9 rounded-lg overflow-hidden bg-surface-container-high dark:bg-[#131b2e] shrink-0 relative">
+                  <Link key={post.id} href={`/article/${post.slug}`} className="flex items-center gap-3 group py-3 first:pt-0 last:pb-0">
+                    <div className="w-14 h-14 rounded-xl overflow-hidden bg-surface-container-high dark:bg-[#131b2e] shrink-0 relative">
                       {post.image ? (
-                        <Image src={post.image} alt="" fill className="object-cover" sizes="48px" />
+                        <Image src={post.image} alt="" fill className="object-cover" sizes="56px" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <span className="material-symbols-outlined text-xs text-outline/40">image</span>
+                        <div className="w-full h-full flex items-center justify-center bg-surface-container-high dark:bg-[#222a3d]">
+                          <span className="material-symbols-outlined text-sm text-outline/40">image</span>
                         </div>
                       )}
                     </div>
-                    <h4 className="text-[13px] font-medium leading-snug line-clamp-2 dark:text-[#dae2fd] group-hover:text-primary dark:group-hover:text-[#adc6ff] transition-colors">
-                      {post.title}
-                    </h4>
+                    <div className="min-w-0">
+                      <h4 className="text-[13px] font-semibold leading-snug line-clamp-2 text-on-background dark:text-[#dae2fd] group-hover:text-primary dark:group-hover:text-[#adc6ff] transition-colors mb-1">
+                        {post.title}
+                      </h4>
+                      <span className="text-[11px] text-on-surface-variant dark:text-[#8c909f]">{post.readTime || "5 min read"}</span>
+                    </div>
                   </Link>
                 ))}
               </div>
             </div>
 
             {/* Author Spotlight */}
-            <div className="rounded-2xl border p-5 bg-surface-container-lowest dark:bg-[#0b1326] border-outline-variant/20 dark:border-[#424754]">
-              <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-4 bg-surface-container-high dark:bg-[#222a3d] text-on-surface-variant dark:text-[#c2c6d6]">
+            <div className="rounded-2xl border p-5 bg-white dark:bg-[#0b1326] border-outline-variant/10 dark:border-[#424754] shadow-sm">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-5"
+                style={{ background: "linear-gradient(135deg,#4C7FD2 57%,#27416C 100%)", color: "#fff" }}>
                 Author Spotlight
               </span>
-              <div className="flex items-start gap-3 mb-3">
+              <div className="flex items-center gap-3 mb-3">
                 {spotlight?.image ? (
-                  <Image src={spotlight.image} alt={spotlight.name} width={40} height={40}
-                    className="w-10 h-10 rounded-full object-cover shrink-0" />
+                  <Image src={spotlight.image} alt={spotlight.name} width={48} height={48}
+                    className="w-12 h-12 rounded-full object-cover shrink-0" />
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-primary/20 dark:bg-[#2d3449] flex items-center justify-center text-primary dark:text-[#adc6ff] font-bold text-sm shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-surface-container-high dark:bg-[#2d3449] flex items-center justify-center text-on-surface-variant dark:text-[#c2c6d6] font-bold text-base shrink-0">
                     {spotlight?.initials}
                   </div>
                 )}
-                <div>
-                  <h4 className="font-bold text-sm dark:text-[#dae2fd]">{spotlight?.name}</h4>
-                  <p className="text-[11px] text-on-surface-variant dark:text-[#8c909f] leading-snug line-clamp-2 mt-0.5">{spotlight?.bio}</p>
+                <div className="min-w-0">
+                  <h4 className="font-bold text-[14px] text-on-background dark:text-[#dae2fd]">{spotlight?.name}</h4>
+                  <p className="text-[12px] text-on-surface-variant dark:text-[#8c909f] leading-snug line-clamp-2 mt-0.5">{spotlight?.bio}</p>
                 </div>
               </div>
-              <div className="flex gap-4 text-xs text-on-surface-variant dark:text-[#8c909f]">
-                <span><strong className="text-on-surface dark:text-[#dae2fd]">34</strong> articles</span>
-                <span><strong className="text-on-surface dark:text-[#dae2fd]">15</strong> yrs exp</span>
+              <div className="flex items-center gap-5 text-[12px] text-on-surface-variant dark:text-[#8c909f] pt-3 border-t border-outline-variant/10 dark:border-[#424754]/40">
+                <span><strong className="text-on-background dark:text-[#dae2fd] font-bold">34</strong> articles</span>
+                <span><strong className="text-on-background dark:text-[#dae2fd] font-bold">{spotlight?.experience?.replace(" Years","") || "15"}</strong> yrs exp</span>
               </div>
             </div>
 
             {/* Salary Data */}
-            <div className="rounded-2xl border p-5 bg-surface-container-lowest dark:bg-[#0b1326] border-outline-variant/20 dark:border-[#424754]">
-              <h3 className="text-[11px] font-bold uppercase tracking-widest dark:text-[#dae2fd] mb-4">India DS Salaries 2026</h3>
-              <div className="flex flex-col divide-y divide-outline-variant/10 dark:divide-[#424754]">
+            <div className="rounded-2xl border p-5 bg-white dark:bg-[#0b1326] border-outline-variant/10 dark:border-[#424754] shadow-sm">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-outline-variant/30 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] mb-5">
+                India DS Salaries 2026
+              </span>
+              <div className="flex flex-col divide-y divide-outline-variant/10 dark:divide-[#424754]/40">
                 {SALARY_ROWS.map(({ role, range, meta, badge }) => (
-                  <div key={role} className="flex items-center justify-between py-2.5">
+                  <div key={role} className="flex items-center justify-between py-3">
                     <div>
-                      <div className="text-sm font-medium dark:text-[#dae2fd] flex items-center gap-1.5">
+                      <div className="text-[13px] font-bold text-on-background dark:text-[#dae2fd] flex items-center gap-2">
                         {role}
                         {badge && (
-                          <span className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase"
-                            style={{ background: "rgba(34,197,94,0.15)", color: "#16a34a" }}>
+                          <span className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wide text-white"
+                            style={{ background: "linear-gradient(135deg,#4C7FD2,#27416C)" }}>
                             {badge}
                           </span>
                         )}
                       </div>
                       <div className="text-[11px] text-on-surface-variant dark:text-[#8c909f] mt-0.5">{meta}</div>
                     </div>
-                    <span className="text-sm font-bold" style={{ color: "#16a34a" }}>{range}</span>
+                    <span className="text-[13px] font-bold" style={{ color: "#16a34a" }}>{range}</span>
                   </div>
                 ))}
               </div>
-              <button className="w-full mt-4 py-2.5 rounded-xl text-sm font-bold border transition-colors text-primary dark:text-[#adc6ff] border-primary dark:border-[#adc6ff] hover:bg-primary hover:text-white dark:hover:bg-[#adc6ff] dark:hover:text-[#0b1326]">
+              <button className="block w-full mt-5 py-3 rounded-2xl text-sm font-bold text-center text-white transition-opacity hover:opacity-90"
+                style={{ background: "linear-gradient(135deg,#4C7FD2 57%,#27416C 100%)" }}>
                 Full Salary Report + Calculator →
               </button>
             </div>
@@ -378,76 +379,86 @@ function BlogListingContent() {
       </div>
 
       {/* ── Newsletter + Discussion ─────────────────────────── */}
-      <section className="mt-6 py-14"
-        style={{ background: "linear-gradient(135deg,#00103d 0%,#001f6b 50%,#002b85 100%)" }}>
-        <div className="max-w-7xl mx-auto px-6">
-          {/* Newsletter */}
-          <div className="flex flex-col md:flex-row md:items-center gap-8 pb-12 border-b border-white/10">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2 flex-wrap">
-                <h2 className="font-[family-name:var(--font-headline)] font-bold text-2xl text-white">Weekly Data Science Digest</h2>
-                <span className="text-blue-300 text-sm">{comments.length} comments</span>
+      <section className="py-14 bg-white dark:bg-[#0b1326]">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+          {/* Left col: newsletter card + discussion */}
+          <div className="lg:col-span-8">
+
+            {/* Newsletter card */}
+            <div className="rounded-2xl p-8 mb-10"
+              style={{ background: "linear-gradient(135deg,#4C7FD2 57%,#27416C 100%)" }}>
+              <h2 className="font-[family-name:var(--font-headline)] font-bold text-xl text-white mb-1">
+                Weekly Data Science Digest
+              </h2>
+              <p className="text-blue-100 text-sm mb-5">Join 50,000+ data professionals. Research, tutorials &amp; career insights, every Friday.</p>
+              <div className="flex gap-3 flex-col sm:flex-row">
+                <input type="email" placeholder="Enter your work email"
+                  value={emailInput} onChange={e => setEmailInput(e.target.value)}
+                  className="flex-1 px-4 py-3 rounded-xl text-sm outline-none bg-white text-gray-800 placeholder:text-gray-400 border-0" />
+                <button
+                  onClick={() => { if (emailInput.trim()) { addToast("Subscribed! Check your inbox.", "success"); setEmailInput(""); } else addToast("Please enter your email", "error"); }}
+                  className="glass-btn px-6 py-3 rounded-xl font-bold text-sm whitespace-nowrap">
+                  Subscribe →
+                </button>
               </div>
-              <p className="text-blue-200 text-sm">Join 50,000+ data professionals. Research, tutorials &amp; career insights, every Friday.</p>
-              <p className="text-[11px] text-blue-300/70 mt-1">Get free Data Science Career Roadmap 2026 PDF on sign-up.</p>
+              <p className="text-[11px] text-blue-300/70 mt-3">Free gift: Data Science Career Roadmap 2026 PDF on sign-up</p>
             </div>
-            <div className="flex gap-2 w-full md:w-auto">
-              <input type="email" placeholder="Enter your work email"
-                value={emailInput} onChange={e => setEmailInput(e.target.value)}
-                className="flex-1 md:w-60 px-4 py-3 rounded-xl text-sm outline-none"
-                style={{ background: "rgba(255,255,255,0.08)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)" }} />
-              <button
-                onClick={() => { if (emailInput.trim()) { addToast("Subscribed! Check your inbox.", "success"); setEmailInput(""); } else addToast("Please enter your email", "error"); }}
-                className="px-5 py-3 rounded-xl font-bold text-sm whitespace-nowrap text-white transition-opacity hover:opacity-90"
-                style={{ background: "#1a56db" }}>
-                Subscribe →
-              </button>
+
+            {/* Discussion */}
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-[family-name:var(--font-headline)] font-bold text-lg text-on-background dark:text-[#dae2fd]">
+                  Weekly Data Science Digest
+                </h3>
+                <span className="text-sm text-on-surface-variant dark:text-[#8c909f]">{comments.length} comments</span>
+              </div>
+
+              {/* New comment */}
+              <div className="flex gap-3 mb-8 items-start">
+                <div className="w-9 h-9 rounded-full bg-surface-container-high dark:bg-[#2d3449] flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-secondary dark:text-[#c2c6d6] text-lg">person</span>
+                </div>
+                <div className="flex gap-3 flex-1">
+                  <input value={commentInput} onChange={e => setCommentInput(e.target.value)}
+                    onKeyDown={e => e.key === "Enter" && postComment()}
+                    placeholder="Ask a question or share your thoughts..."
+                    className="flex-1 px-4 py-3 rounded-xl text-sm outline-none bg-surface-container-low dark:bg-[#131b2e] dark:text-[#dae2fd] border border-outline-variant/20 dark:border-[#424754] focus:ring-2 focus:ring-primary/20 placeholder:text-outline/60" />
+                  <button onClick={postComment}
+                    className="glass-chip active px-5 py-3 rounded-xl font-bold text-sm whitespace-nowrap self-center">
+                    Post
+                  </button>
+                </div>
+              </div>
+
+              {/* Comments */}
+              <div className="flex flex-col divide-y divide-outline-variant/10 dark:divide-[#424754]/40">
+                {comments.map(c => (
+                  <div key={c.id} className="flex gap-4 py-5">
+                    <div className="w-9 h-9 rounded-full bg-surface-container-high dark:bg-[#2d3449] flex items-center justify-center shrink-0">
+                      <span className="material-symbols-outlined text-secondary dark:text-[#c2c6d6] text-lg">person</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-bold text-sm text-on-background dark:text-[#dae2fd]">{c.user}</span>
+                        <span className="text-xs text-on-surface-variant dark:text-[#8c909f]">{c.time}</span>
+                      </div>
+                      <p className="text-sm text-on-surface-variant dark:text-[#c2c6d6] leading-relaxed">{c.text}</p>
+                      <div className="flex items-center gap-4 mt-2">
+                        <button className="text-xs font-medium text-on-surface-variant dark:text-[#8c909f] hover:text-primary dark:hover:text-[#adc6ff] flex items-center gap-1 transition-colors">
+                          Like <span className="material-symbols-outlined text-sm">favorite_border</span>
+                        </button>
+                        <button className="text-xs font-medium text-on-surface-variant dark:text-[#8c909f] hover:text-primary dark:hover:text-[#adc6ff] transition-colors">Reply</button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Discussion */}
-          <div className="mt-10">
-            <h3 className="font-[family-name:var(--font-headline)] font-bold text-lg text-white mb-6">
-              Discussion <span className="text-blue-300 font-normal text-sm ml-2">{comments.length} comments</span>
-            </h3>
-            <div className="flex gap-3 mb-8">
-              <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
-                style={{ background: "rgba(255,255,255,0.1)" }}>
-                <span className="material-symbols-outlined text-blue-200 text-lg">person</span>
-              </div>
-              <div className="flex gap-2 flex-1">
-                <input value={commentInput} onChange={e => setCommentInput(e.target.value)}
-                  onKeyDown={e => e.key === "Enter" && postComment()}
-                  placeholder="Ask a question or share your thoughts..."
-                  className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none"
-                  style={{ background: "rgba(255,255,255,0.08)", color: "#fff", border: "1px solid rgba(255,255,255,0.15)" }} />
-                <button onClick={postComment}
-                  className="px-5 py-2.5 rounded-xl font-bold text-sm text-white whitespace-nowrap"
-                  style={{ background: "#1a56db" }}>Post</button>
-              </div>
-            </div>
-            <div className="flex flex-col gap-6">
-              {comments.map(c => (
-                <div key={c.id} className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-white font-bold text-xs"
-                    style={{ background: "rgba(26,86,219,0.5)" }}>
-                    {c.user[0]}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-bold text-sm text-white">{c.user}</span>
-                      <span className="text-xs text-blue-300">{c.time}</span>
-                    </div>
-                    <p className="text-sm text-blue-100">{c.text}</p>
-                    <div className="flex items-center gap-4 mt-2">
-                      <button className="text-xs text-blue-300 hover:text-white transition-colors">Like ♡</button>
-                      <button className="text-xs text-blue-300 hover:text-white transition-colors">Reply</button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* Right col: placeholder */}
+          <div className="hidden lg:block lg:col-span-4" />
         </div>
       </section>
 
@@ -468,7 +479,7 @@ function BlogListingContent() {
                   <h3 className="font-[family-name:var(--font-headline)] font-bold text-base dark:text-[#dae2fd] mb-2">{course.title}</h3>
                   <p className="text-sm text-on-surface-variant dark:text-[#c2c6d6] mb-4 flex-1 line-clamp-2">{course.desc}</p>
                   <a href="#"
-                    className="block w-full text-center py-2.5 rounded-xl font-bold text-sm border transition-colors text-primary dark:text-[#dae2fd] border-outline-variant/30 dark:border-[#424754] hover:bg-primary hover:text-white hover:border-primary dark:hover:bg-[#4d8eff] dark:hover:border-[#4d8eff]">
+                    className="glass-chip active block w-full text-center py-2.5 rounded-xl font-bold text-sm">
                     View Courses
                   </a>
                 </div>

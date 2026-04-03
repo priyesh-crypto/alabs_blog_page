@@ -111,7 +111,7 @@ function SelectionMenu({ editor, outerRef }) {
       <button onClick={() => editor.chain().focus().toggleBulletList().run()} className={editor.isActive('bulletList') ? 'is-active' : ''} title="Bullet list">•</button>
       <button onClick={() => editor.chain().focus().toggleOrderedList().run()} className={editor.isActive('orderedList') ? 'is-active' : ''} title="Numbered list">1.</button>
       <div className="bmenu-sep" />
-      <button onClick={() => editor.chain().focus().toggleBlockquote().run()} className={editor.isActive('blockquote') ? 'is-active' : ''} title="Blockquote">❝</button>
+      <button onClick={() => editor.chain().focus().toggleBlockquote().run()} className={editor.isActive('blockquote') ? 'is-active' : ''} title="Key Insight callout" style={{ fontSize: 11, letterSpacing: '0.02em' }}>💡 Key Insight</button>
       <button onClick={() => editor.chain().focus().toggleCode().run()} className={editor.isActive('code') ? 'is-active' : ''} title="Inline code">{'<>'}</button>
       <div className="bmenu-sep" />
       {isLinkActive ? (
@@ -270,6 +270,13 @@ function PlusMenu({ editor, outerRef }) {
           >
             <Code size={15} strokeWidth={1.5} />
             <span>Code block</span>
+          </button>
+          <button
+            onClick={() => { editor.chain().focus().toggleBlockquote().run(); setOpen(false); }}
+            className="fod-btn"
+          >
+            <span style={{ fontSize: 14, lineHeight: 1 }}>💡</span>
+            <span>Key Insight</span>
           </button>
           <div className="fod-sep" />
           <button

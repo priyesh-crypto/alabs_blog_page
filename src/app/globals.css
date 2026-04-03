@@ -4,9 +4,9 @@
 /* ===== Tailwind v4 Custom Theme ===== */
 @theme inline {
   /* --- Fonts --- */
-  --font-headline: "Manrope", sans-serif;
+  --font-headline: "Inter", sans-serif;
   --font-body: "Inter", sans-serif;
-  --font-label: "Space Grotesk", sans-serif;
+  --font-label: "Inter", sans-serif;
   --font-sans: var(--font-body);
 
   /* --- Light mode design-system colours --- */
@@ -245,7 +245,7 @@ html.dark body {
 .reading-progress-bar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(135deg, #003b93, #0051c3);
+  background: linear-gradient(135deg, #4C7FD2 57%, #27416C 100%);
   transition: width 0.08s ease-out;
   border-radius: 0 4px 4px 0;
 }
@@ -625,4 +625,111 @@ html.dark body {
 .dark input:focus, .dark textarea:focus {
   border-color: var(--dk-primary);
   box-shadow: 0 0 0 2px rgba(173, 198, 255, 0.15);
+}
+
+/* ================================================================
+   GLASS EFFECT UTILITIES
+   Based on: Light -45° 80%, Refraction 80, Depth 20,
+             Dispersion 50, Frost 4, Splay 0
+   ================================================================ */
+
+/* --- On dark/gradient backgrounds (hero, dark cards) --- */
+.glass-btn {
+  background: linear-gradient(-45deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 100%);
+  backdrop-filter: blur(4px) saturate(1.8);
+  -webkit-backdrop-filter: blur(4px) saturate(1.8);
+  border: 1px solid rgba(255,255,255,0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.38),
+    inset 0 -1px 0 rgba(0,0,0,0.06),
+    0 4px 20px rgba(0,0,0,0.14);
+  color: #fff;
+  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.glass-btn:hover {
+  background: linear-gradient(-45deg, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.16) 100%);
+  border-color: rgba(255,255,255,0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    0 6px 24px rgba(0,0,0,0.2);
+}
+
+/* --- Glass badge (small pill on dark bg) --- */
+.glass-badge {
+  background: linear-gradient(-45deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.22);
+  color: #b3d0ff;
+}
+
+/* --- Glass filter chip (on light bg) --- */
+.glass-chip {
+  background: linear-gradient(-45deg, rgba(255,255,255,0.95) 0%, rgba(245,248,252,0.85) 100%);
+  backdrop-filter: blur(4px) saturate(1.5);
+  -webkit-backdrop-filter: blur(4px) saturate(1.5);
+  border: 1px solid rgba(76,127,210,0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,1),
+    0 1px 6px rgba(76,127,210,0.07);
+  color: #374151;
+  transition: all 0.18s;
+}
+.glass-chip:hover {
+  background: linear-gradient(-45deg, rgba(76,127,210,0.1) 0%, rgba(39,65,108,0.06) 100%);
+  border-color: rgba(76,127,210,0.32);
+  color: #27416C;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    0 2px 8px rgba(76,127,210,0.12);
+}
+.glass-chip.active {
+  background: linear-gradient(-45deg, #4C7FD2 0%, #27416C 100%);
+  border-color: #27416C;
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(39,65,108,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* Dark mode chip */
+.dark .glass-chip {
+  background: linear-gradient(-45deg, rgba(76,127,210,0.14) 0%, rgba(39,65,108,0.08) 100%);
+  border-color: rgba(173,198,255,0.15);
+  color: #c2c6d6;
+}
+.dark .glass-chip:hover {
+  background: linear-gradient(-45deg, rgba(76,127,210,0.22) 0%, rgba(39,65,108,0.14) 100%);
+  border-color: rgba(173,198,255,0.3);
+  color: #dae2fd;
+}
+.dark .glass-chip.active {
+  background: linear-gradient(-45deg, #4C7FD2 0%, #27416C 100%);
+  border-color: #4C7FD2;
+  color: #fff;
+}
+
+/* --- Glass dropdown trigger (on light bg) --- */
+.glass-dropdown {
+  background: linear-gradient(-45deg, rgba(255,255,255,0.96) 0%, rgba(248,250,253,0.90) 100%);
+  backdrop-filter: blur(4px) saturate(1.5);
+  -webkit-backdrop-filter: blur(4px) saturate(1.5);
+  border: 1px solid rgba(76,127,210,0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,1),
+    0 2px 8px rgba(76,127,210,0.06);
+  color: #374151;
+  transition: all 0.18s;
+}
+.glass-dropdown:hover {
+  border-color: rgba(76,127,210,0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,1),
+    0 4px 14px rgba(76,127,210,0.12);
+}
+.dark .glass-dropdown {
+  background: linear-gradient(-45deg, rgba(76,127,210,0.12) 0%, rgba(39,65,108,0.07) 100%);
+  border-color: rgba(173,198,255,0.14);
+  color: #c2c6d6;
+}
+.dark .glass-dropdown:hover {
+  border-color: rgba(173,198,255,0.28);
 }

@@ -1,4 +1,4 @@
-import { authors, getPosts } from "@/lib/data";
+import { getPosts, getAuthors } from "@/lib/data.server";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,20 +7,21 @@ import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 
 export async function generateStaticParams() {
-  return Object.keys(authors).map((slug) => ({
-    slug,
-  }));
+  const authorsMap = await getAuthors();
+  return Object.keys(authorsMap).map((slug) => ({ slug }));
 }
 
 export default async function AuthorPage({ params }) {
   const { slug } = await params;
-  const author = authors[slug];
+  const authorsMap = await getAuthors();
+  const author = authorsMap[slug];
 
   if (!author) {
     notFound();
   }
 
-  const authorPosts = getPosts().filter(p => p.authorId === slug);
+  const allPosts = await getPosts();
+  const authorPosts = allPosts.filter(p => p.authorId === slug);
 
   return (
     <div className="min-h-screen flex flex-col pt-16 font-[family-name:var(--font-body)] bg-background dark:bg-[#0b1326] text-on-background dark:text-[#dae2fd]">
@@ -83,7 +84,7 @@ export default async function AuthorPage({ params }) {
               <Link
                 key={post.id}
                 className="group flex flex-col bg-surface-container-lowest dark:bg-[#131b2e] rounded-3xl overflow-hidden hover:shadow-xl dark:hover:shadow-[#060e20]/50 transition-all border border-transparent hover:border-outline-variant/20 dark:border-[#424754]/20"
-                href="/article"
+                href={`/article/${post.slug}`}
               >
                 <div className="aspect-[16/10] relative overflow-hidden bg-slate-100 dark:bg-slate-800">
                   <Image
