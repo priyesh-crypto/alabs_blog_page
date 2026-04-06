@@ -1,6 +1,6 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export async function POST(req) {
   const { question, context } = await req.json();
@@ -33,19 +33,18 @@ Guidelines:
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        const messageStream = await client.messages.stream({
-          model: "claude-haiku-4-5-20251001",
-          max_tokens: 300,
-          system: systemPrompt,
-          messages: [{ role: "user", content: question.trim() }],
+        const model = genAI.getGenerativeModel({
+          model: "gemini-2.0-flash",
+          systemInstruction: systemPrompt,
+          generationConfig: { maxOutputTokens: 300 },
         });
 
-        for await (const chunk of messageStream) {
-          if (
-            chunk.type === "content_block_delta" &&
-            chunk.delta.type === "text_delta"
-          ) {
-            controller.enqueue(encoder.encode(chunk.delta.text));
+        const result = await model.generateContentStream(question.trim());
+
+        for await (const chunk of result.stream) {
+          const text = chunk.text();
+          if (text) {
+            controller.enqueue(encoder.encode(text));
           }
         }
         controller.close();
