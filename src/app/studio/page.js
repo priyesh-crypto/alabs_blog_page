@@ -191,7 +191,11 @@ export default function AuthorStudio() {
           />
         )}
         {state.showShareModal && (
-          <ShareModal slug={state.slug} onClose={() => set("showShareModal", false)} />
+          <ShareModal
+            slug={state.slug}
+            onClose={() => set("showShareModal", false)}
+            currentAuthor={dynamicAuthor}
+          />
         )}
         {state.showVersionHistory && (
           <VersionHistoryModal
