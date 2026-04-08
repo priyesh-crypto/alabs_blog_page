@@ -18,5 +18,7 @@ export function getServiceClient() {
     // Fall back to anon key during local dev if service key not set
     return supabase;
   }
-  return createClient(supabaseUrl, serviceKey);
+  return createClient(supabaseUrl, serviceKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
 }

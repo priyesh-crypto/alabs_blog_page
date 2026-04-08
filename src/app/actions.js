@@ -613,10 +613,14 @@ export async function adminCreateUserAction({
     });
 
     if (createUserErr) {
-      // If user already exists in auth, we fallback to just upserting them into authors gracefully
-      if (!createUserErr.message.includes('already exists')) {
-         throw createUserErr;
-      }
+      // Supabase returns these codes/messages when the auth user already exists
+      const alreadyExists =
+        createUserErr.message?.toLowerCase().includes('already') ||
+        createUserErr.message?.toLowerCase().includes('registered') ||
+        createUserErr.code === 'email_exists' ||
+        createUserErr.code === 'user_already_exists' ||
+        createUserErr.status === 422;
+      if (!alreadyExists) throw createUserErr;
     }
 
     // 3. Create or update Author Record
@@ -650,15 +654,28 @@ export async function adminCreateUserAction({
       image
     };
 
-    const { error: dbErr } = await db
-      .from('authors')
-      .upsert(row, { onConflict: 'email', ignoreDuplicates: false });
+    let dbErr;
+    if (existingAuthor) {
+      // Update existing row by slug (primary key)
+      const { error } = await db
+        .from('authors')
+        .update(row)
+        .eq('slug', existingAuthor.slug);
+      dbErr = error;
+    } else {
+      const { error } = await db.from('authors').insert(row);
+      dbErr = error;
+    }
 
     if (dbErr) throw dbErr;
 
     return { success: true };
   } catch (error) {
     console.error('adminCreateUserAction failed:', error);
+    // Surface specific known errors to the UI for clarity
+    const msg = error?.message || '';
+    if (msg.toLowerCase().includes('password')) return { success: false, error: 'Password too weak (min 6 characters).' };
+    if (msg.toLowerCase().includes('email')) return { success: false, error: 'Invalid or already-registered email.' };
     return { success: false, error: 'Failed to create user. Please try again.' };
   }
 }
