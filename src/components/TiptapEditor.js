@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import { Node, mergeAttributes } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
@@ -8,10 +8,13 @@ import Document from '@tiptap/extension-document';
 import Placeholder from '@tiptap/extension-placeholder';
 import TiptapImage from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
+import { TextStyle, FontFamily } from '@tiptap/extension-text-style';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { common, createLowlight } from 'lowlight';
 import './TiptapEditor.css';
-import { ImageIcon, Video, Code, Plus } from 'lucide-react';
+import { ImageIcon, Video, Code, Plus, MessageSquare } from 'lucide-react';
+import { CommentMark } from './studio/CommentMark';
+import TiptapComments from './studio/TiptapComments';
 
 // ── Custom Video Node ────────────────────────────────────────
 const VideoNode = Node.create({
@@ -21,49 +24,92 @@ const VideoNode = Node.create({
   addAttributes() {
     return {
       src: { default: null },
+      alt: { default: "" },
+      commentId: { default: null },
     };
   },
   parseHTML() {
     return [{ tag: 'video[src]' }];
   },
   renderHTML({ HTMLAttributes }) {
-    return ['video', mergeAttributes(HTMLAttributes, {
+    const { commentId, ...rest } = HTMLAttributes;
+    return ['video', mergeAttributes(rest, {
       controls: true,
-      style: 'max-width:100%;border-radius:8px;margin:16px 0;display:block;',
+      'data-comment-id': commentId,
+      class: commentId ? 'commented-media' : '',
+      style: 'max-width:100%;border-radius:12px;margin:28px 0;display:block;box-shadow: 0 4px 24px rgba(0,0,0,0.08);' + (commentId ? 'outline: 3px solid var(--blue-dim); outline-offset: 4px;' : ''),
     })];
+  },
+});
+
+const CustomImage = TiptapImage.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      commentId: {
+        default: null,
+        parseHTML: element => element.getAttribute('data-comment-id'),
+        renderHTML: attributes => {
+          if (!attributes.commentId) return {};
+          return {
+            'data-comment-id': attributes.commentId,
+            class: 'commented-media',
+          };
+        },
+      },
+    };
   },
 });
 
 const lowlight = createLowlight(common);
 
-const CustomDocument = Document.extend({
-  content: 'heading block*',
-});
 
 // ── Bubble Menu (renders on text selection) ──────────────────
-function SelectionMenu({ editor, outerRef }) {
+function SelectionMenu({ editor, outerRef, comments, onUpdateComments, currentAuthor }) {
   const [pos, setPos] = useState(null);
   const [showLinkInput, setShowLinkInput] = useState(false);
+  const [showAltInput, setShowAltInput] = useState(false);
+  const [showCommentInput, setShowCommentInput] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
+  const [altText, setAltText] = useState('');
+  const [commentDraft, setCommentDraft] = useState('');
   const menuRef = useRef(null);
 
   useEffect(() => {
     if (!editor) return;
 
     const update = () => {
-      const { from, to, empty } = editor.state.selection;
-      if (empty) { setPos(null); setShowLinkInput(false); return; }
+      const { selection } = editor.state;
+      const { from, to, empty } = selection;
+      
+      const isNodeSelection = selection.node;
+      const nodeType = isNodeSelection?.type.name;
+      const isMediaSelected = nodeType === 'image' || nodeType === 'video';
+
+      if (empty && !isMediaSelected) { setPos(null); setShowLinkInput(false); setShowAltInput(false); setShowCommentInput(false); return; }
       if (!outerRef?.current) return;
 
       const view = editor.view;
-      const start = view.coordsAtPos(from);
-      const end = view.coordsAtPos(to);
       const outerRect = outerRef.current.getBoundingClientRect();
 
-      setPos({
-        left: (start.left + end.left) / 2 - outerRect.left,
-        top: start.top - outerRect.top - 52,
-      });
+      if (isMediaSelected) {
+        const node = view.nodeDOM(from);
+        if (node) {
+          const rect = node.getBoundingClientRect();
+          setPos({
+            left: (rect.left + rect.right) / 2 - outerRect.left,
+            top: rect.top - outerRect.top - 58,
+          });
+          setAltText(isNodeSelection.attrs.alt || "");
+        }
+      } else {
+        const start = view.coordsAtPos(from);
+        const end = view.coordsAtPos(to);
+        setPos({
+          left: (start.left + end.left) / 2 - outerRect.left,
+          top: start.top - outerRect.top - 52,
+        });
+      }
     };
 
     editor.on('selectionUpdate', update);
@@ -87,6 +133,52 @@ function SelectionMenu({ editor, outerRef }) {
   const removeLink = () => {
     editor.chain().focus().unsetLink().run();
     setShowLinkInput(false);
+  };
+
+  const handleAddComment = () => {
+    if (!commentDraft.trim() || !onUpdateComments) return;
+    const commentId = Date.now().toString();
+    const { selection } = editor.state;
+
+    if (selection.node && (selection.node.type.name === 'image' || selection.node.type.name === 'video')) {
+      editor.chain().focus().updateAttributes(selection.node.type.name, { commentId }).run();
+    } else {
+      editor.chain().focus().setComment(commentId).run();
+    }
+    
+    // Add to state
+    onUpdateComments([
+      ...(comments || []),
+      {
+        id: commentId,
+        authorName: currentAuthor?.name || "Author",
+        authorAvatar: currentAuthor?.image || "/authors/default.png",
+        text: commentDraft.trim(),
+        createdAt: new Date().toISOString(),
+        replies: []
+      }
+    ]);
+
+    setCommentDraft('');
+    setShowCommentInput(false);
+  };
+
+  const applyAlt = () => {
+    const { selection } = editor.state;
+    if (selection.node) {
+      editor.chain().focus().updateAttributes(selection.node.type.name, { alt: altText.trim() }).run();
+    }
+    setShowAltInput(false);
+  };
+
+  const handleAltKeyDown = (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); applyAlt(); }
+    if (e.key === 'Escape') { setShowAltInput(false); }
+  };
+
+  const handleCommentKeyDown = (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); handleAddComment(); }
+    if (e.key === 'Escape') { setShowCommentInput(false); setCommentDraft(''); }
   };
 
   const handleLinkKeyDown = (e) => {
@@ -122,8 +214,35 @@ function SelectionMenu({ editor, outerRef }) {
           title="Add link"
         >🔗</button>
       )}
+      <div className="bmenu-sep" />
+      <button 
+        onClick={() => {
+          if (showCommentInput) handleAddComment();
+          else setShowCommentInput(true);
+        }} 
+        className={showCommentInput ? 'is-active' : ''} 
+        title="Add Comment"
+      >
+        <MessageSquare size={14} style={{ marginBottom: -2 }} />
+      </button>
+
+      {/* Media specific toggle */}
+      {(editor.isActive('image') || editor.state.selection.node?.type.name === 'video') && (
+        <>
+          <div className="bmenu-sep" />
+          <button 
+            onClick={() => setShowAltInput(s => !s)} 
+            className={showAltInput ? 'is-active' : ''}
+            title="Edit Alt Text"
+            style={{ fontSize: 11, fontWeight: 700 }}
+          >
+            ALT
+          </button>
+        </>
+      )}
+
       {showLinkInput && !isLinkActive && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginLeft: 6 }}>
           <input
             autoFocus
             type="text"
@@ -131,10 +250,71 @@ function SelectionMenu({ editor, outerRef }) {
             onChange={e => setLinkUrl(e.target.value)}
             onKeyDown={handleLinkKeyDown}
             placeholder="https://…"
-            style={{ background: '#2a2a2a', color: '#fff', border: '1px solid #555', borderRadius: 4, padding: '3px 7px', fontSize: 12, width: 160, outline: 'none' }}
+            style={{ 
+              background: 'var(--bg2)', 
+              color: 'var(--text)', 
+              border: '1px solid var(--border)', 
+              borderRadius: 6, 
+              padding: '4px 8px', 
+              fontSize: 12, 
+              width: 170, 
+              outline: 'none',
+              boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.05)'
+            }}
           />
-          <button onClick={applyLink} title="Apply" style={{ fontSize: 13 }}>✓</button>
-          <button onClick={() => { setShowLinkInput(false); setLinkUrl(''); }} title="Cancel" style={{ fontSize: 13 }}>✕</button>
+          <button onClick={applyLink} title="Apply" style={{ fontSize: 13, color: 'var(--green)' }}>✓</button>
+          <button onClick={() => { setShowLinkInput(false); setLinkUrl(''); }} title="Cancel" style={{ fontSize: 13, color: 'var(--text4)' }}>✕</button>
+        </div>
+      )}
+
+      {showCommentInput && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginLeft: 6 }}>
+          <input
+            autoFocus
+            type="text"
+            value={commentDraft}
+            onChange={e => setCommentDraft(e.target.value)}
+            onKeyDown={handleCommentKeyDown}
+            placeholder="Type your comment..."
+            style={{ 
+              background: 'var(--bg2)', 
+              color: 'var(--text)', 
+              border: '1px solid var(--border)', 
+              borderRadius: 6, 
+              padding: '4px 8px', 
+              fontSize: 12, 
+              width: 180, 
+              outline: 'none',
+              boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.05)'
+            }}
+          />
+          <button onClick={handleAddComment} title="Post" style={{ fontSize: 13, color: 'var(--green)' }}>✓</button>
+          <button onClick={() => { setShowCommentInput(false); setCommentDraft(''); }} title="Cancel" style={{ fontSize: 13, color: 'var(--text4)' }}>✕</button>
+        </div>
+      )}
+
+      {showAltInput && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginLeft: 6 }}>
+          <input
+            autoFocus
+            type="text"
+            value={altText}
+            onChange={e => setAltText(e.target.value)}
+            onKeyDown={handleAltKeyDown}
+            placeholder="Add alt text..."
+            style={{ 
+              background: 'var(--bg2)', 
+              color: 'var(--text)', 
+              border: '1px solid var(--border)', 
+              borderRadius: 6, 
+              padding: '4px 8px', 
+              fontSize: 12, 
+              width: 170, 
+              outline: 'none'
+            }}
+          />
+          <button onClick={applyAlt} title="Apply" style={{ fontSize: 13, color: 'var(--green)' }}>✓</button>
+          <button onClick={() => setShowAltInput(false)} title="Cancel" style={{ fontSize: 13, color: 'var(--text4)' }}>✕</button>
         </div>
       )}
     </div>
@@ -184,7 +364,13 @@ function PlusMenu({ editor, outerRef }) {
         const view = editor.view;
         const coords = view.coordsAtPos($from.pos);
         const outerRect = outerRef.current.getBoundingClientRect();
-        setPos({ top: coords.top - outerRect.top });
+        
+        // Ensure the menu doesn't go off-screen if left padding is restricted
+        const isNarrow = window.innerWidth < 900;
+        setPos({ 
+          top: coords.top - outerRect.top,
+          left: isNarrow ? 8 : -44 
+        });
       } else {
         setPos(null);
       }
@@ -237,7 +423,7 @@ function PlusMenu({ editor, outerRef }) {
     <div
       ref={menuRef}
       className="floating-menu"
-      style={{ position: 'absolute', left: -44, top: pos.top - 17, zIndex: 50 }}
+      style={{ position: 'absolute', left: pos.left, top: pos.top - 17, zIndex: 100 }}
       onMouseDown={(e) => e.stopPropagation()}
     >
       {/* Hidden file inputs */}
@@ -293,41 +479,68 @@ function PlusMenu({ editor, outerRef }) {
 }
 
 // ── Main Editor ──────────────────────────────────────────────
-const TiptapEditor = ({ content, onChange }) => {
+import { forwardRef, useImperativeHandle } from 'react';
+
+const TiptapEditor = forwardRef(function TiptapEditor({ content, onChange, onStateChange, editorComments, onUpdateComments, currentAuthor }, ref) {
   const outerRef = useRef(null);
+  const onStateChangeRef = useRef(onStateChange);
+  useEffect(() => { onStateChangeRef.current = onStateChange; }, [onStateChange]);
+
+  const syncToolbarState = useCallback((editor) => {
+    if (!onStateChangeRef.current) return;
+    onStateChangeRef.current({
+      bold:       editor.isActive('bold'),
+      italic:     editor.isActive('italic'),
+      underline:  editor.isActive('underline'),
+      strike:     editor.isActive('strike'),
+      h2:         editor.isActive('heading', { level: 2 }),
+      h3:         editor.isActive('heading', { level: 3 }),
+      bullet:     editor.isActive('bulletList'),
+      ordered:    editor.isActive('orderedList'),
+      fontFamily: editor.getAttributes('textStyle').fontFamily || '',
+    });
+  }, []);
 
   const editor = useEditor({
     extensions: [
-      CustomDocument,
-      StarterKit.configure({ document: false, codeBlock: false }),
-      Placeholder.configure({
-        placeholder: ({ node }) => {
-          if (node.type.name === 'heading') return 'Article title…';
-          return 'Tell your story…';
-        },
-      }),
-      TiptapImage.configure({ inline: false, allowBase64: true }),
+      StarterKit.configure({ codeBlock: false }),
+      Placeholder.configure({ placeholder: 'Tell your story…' }),
+      CustomImage.configure({ inline: false, allowBase64: true }),
       VideoNode,
       Link.configure({
         openOnClick: false,
         HTMLAttributes: { rel: 'noopener noreferrer', target: '_blank' },
       }),
       CodeBlockLowlight.configure({ lowlight }),
+      CommentMark,
+      TextStyle,
+      FontFamily.configure({ types: ['textStyle'] }),
     ],
-    content: content || '<h1></h1><p></p>',
+    content: content || '<p></p>',
     immediatelyRender: false,
-    onUpdate: ({ editor }) => onChange && onChange(editor.getHTML()),
+    onUpdate:          ({ editor }) => { onChange && onChange(editor.getHTML()); syncToolbarState(editor); },
+    onSelectionUpdate: ({ editor }) => syncToolbarState(editor),
   });
+
+  // Expose the editor instance so parent can call commands from toolbar
+  useImperativeHandle(ref, () => editor, [editor]);
 
   return (
     <div ref={outerRef} className="tiptap-outer" style={{ position: 'relative' }}>
-      <SelectionMenu editor={editor} outerRef={outerRef} />
+      <SelectionMenu editor={editor} outerRef={outerRef} comments={editorComments} onUpdateComments={onUpdateComments} currentAuthor={currentAuthor} />
       <PlusMenu editor={editor} outerRef={outerRef} />
       <div className="tiptap-prose">
         <EditorContent editor={editor} />
       </div>
+      <TiptapComments 
+        editor={editor} 
+        outerRef={outerRef} 
+        comments={editorComments} 
+        onUpdateComments={onUpdateComments} 
+        currentAuthor={currentAuthor} 
+      />
     </div>
   );
-};
+});
 
 export default TiptapEditor;

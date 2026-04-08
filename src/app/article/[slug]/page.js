@@ -1,6 +1,24 @@
 import { getPostBySlug, getRecommendations, getCourseMatch, getAuthorPostCount } from "@/lib/data.server";
 import { notFound } from "next/navigation";
 import ArticleContent from "./ArticleContent";
+import { SITE_NAME } from "@/lib/config";
+
+/** Generate dynamic SEO metadata for each article */
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+  if (!post) return { title: "Article Not Found" };
+  return {
+    title: `${post.title} | ${SITE_NAME}`,
+    description: post.excerpt || post.title,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt || post.title,
+      type: "article",
+      ...(post.image ? { images: [{ url: post.image }] } : {}),
+    },
+  };
+}
 
 /**
  * Extracts FAQ pairs from HTML content.

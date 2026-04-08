@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SITE_NAME, COPYRIGHT_YEAR, FOOTER_LINKS } from "@/lib/config";
 
 export default function Footer() {
   return (
@@ -6,18 +7,18 @@ export default function Footer() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:justify-between items-center max-w-7xl mx-auto px-8 py-12">
         <div className="mb-8 lg:mb-0">
           <div className="text-lg font-bold text-slate-900 dark:text-[#dae2fd] mb-2 font-[family-name:var(--font-headline)]">
-            AnalytixLabs Editorial
+            {SITE_NAME}
           </div>
           <p className="font-[family-name:var(--font-label)] text-xs uppercase tracking-widest text-slate-500 dark:text-[#c2c6d6]">
-            © 2024 AnalytixLabs Editorial. All rights reserved.
+            © {COPYRIGHT_YEAR} {SITE_NAME}. All rights reserved.
           </p>
         </div>
         <div className="flex flex-wrap gap-x-8 gap-y-4">
-          {["About Us", "Research Methodology", "Careers", "Privacy Policy", "Terms of Service"].map((label) => (
+          {FOOTER_LINKS.map(({ label, href }) => (
             <Link
               key={label}
               className="font-[family-name:var(--font-label)] text-xs uppercase tracking-widest text-slate-500 dark:text-[#c2c6d6] hover:text-blue-700 dark:hover:text-[#ffb787] underline-offset-4 hover:underline transition-colors"
-              href="#"
+              href={href}
             >
               {label}
             </Link>

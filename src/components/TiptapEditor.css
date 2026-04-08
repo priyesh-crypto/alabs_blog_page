@@ -13,7 +13,8 @@
 
 @media (min-width: 900px) {
   .tiptap-outer {
-    padding: 64px 0 120px;
+    padding: 64px 60px 120px;
+    max-width: 860px;
   }
 }
 
@@ -161,8 +162,14 @@
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
 }
 .tiptap-prose img.ProseMirror-selectednode {
-  outline: 3px solid #003b93;
-  outline-offset: 2px;
+  outline: 3px solid var(--blue);
+  outline-offset: 4px;
+}
+.tiptap-prose img.commented-media,
+.tiptap-prose .commented-media {
+  outline: 3px solid #60a5fa; /* var(--blue-dim) equivalent */
+  outline-offset: 4px;
+  background-color: rgba(96, 165, 250, 0.1);
 }
 
 /* ── YouTube embed ─────────────────── */

@@ -6,19 +6,15 @@
 import { supabase } from './supabase';
 import { courses, salaryData, authors as staticAuthors } from './data';
 
-// ── Author cache (hydrated on first call) ─────────────────────────
-let _authorsCache = null;
-
+// ── Author fetcher (no module-level cache — serverless can't rely on it) ──
 async function getAuthorsMap() {
-  if (_authorsCache) return _authorsCache;
-  const { data, error } = await supabase.from('authors').select('*');
-  if (error || !data?.length) {
-    // Fall back to static if DB isn't reachable yet
-    _authorsCache = staticAuthors;
-  } else {
-    _authorsCache = Object.fromEntries(data.map(a => [a.slug, a]));
+  try {
+    const { data, error } = await supabase.from('authors').select('*');
+    if (error || !data?.length) return staticAuthors;
+    return Object.fromEntries(data.map(a => [a.slug, a]));
+  } catch {
+    return staticAuthors;
   }
-  return _authorsCache;
 }
 
 // ── Column mapping: DB snake_case → app camelCase ─────────────────

@@ -6,9 +6,16 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 
+// Allow dynamic slugs not returned by generateStaticParams
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  const authorsMap = await getAuthors();
-  return Object.keys(authorsMap).map((slug) => ({ slug }));
+  try {
+    const authorsMap = await getAuthors();
+    return Object.keys(authorsMap).map((slug) => ({ slug }));
+  } catch {
+    return [];
+  }
 }
 
 export default async function AuthorPage({ params }) {

@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { ToastProvider, useToast } from "@/components/Toast";
-import { courses } from "@/lib/data";
+import CoursesGrid from "@/components/CoursesGrid";
 import AskAI from "@/components/AskAI";
+import { postCommentAction, fetchCommentsAction, likeCommentAction } from "@/app/actions";
 import "@/components/TiptapEditor.css";
 
 // Generate a deterministic background color from a username string
@@ -83,23 +84,23 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
   const author = post.author || {};
   const suggestedQuestions = buildSuggestedQuestions(post);
 
-  // Restore state from localStorage
+  // Load comments from Supabase
+  const loadComments = useCallback(async () => {
+    const result = await fetchCommentsAction(post.slug);
+    if (result.success) setComments(result.comments);
+  }, [post.slug]);
+
+  // Restore local-only state from localStorage + fetch comments from DB
   useEffect(() => {
     setBookmarked(localStorage.getItem(`bookmark_${post.slug}`) === "true");
     const wasLiked = localStorage.getItem(`like_${post.slug}`) === "true";
     setLiked(wasLiked);
     const storedCount = localStorage.getItem(`likeCount_${post.slug}`);
     if (storedCount !== null) setLikeCount(Number(storedCount));
-    const storedComments = localStorage.getItem(`comments_${post.slug}`);
-    if (storedComments) { try { setComments(JSON.parse(storedComments)); } catch {} }
     const storedLiked = localStorage.getItem(`likedComments_${post.slug}`);
     if (storedLiked) { try { setLikedComments(new Set(JSON.parse(storedLiked))); } catch {} }
-  }, [post.slug]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined")
-      localStorage.setItem(`comments_${post.slug}`, JSON.stringify(comments));
-  }, [comments, post.slug]);
+    loadComments();
+  }, [post.slug, loadComments]);
 
   // Reading progress
   useEffect(() => {
@@ -186,31 +187,39 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
     }
   }
 
-  function handleSidebarSearch(e) {
-    if (e.key === "Enter" && sidebarSearch.trim())
-      window.location.href = `/article?q=${encodeURIComponent(sidebarSearch.trim())}`;
-  }
+  // Sidebar search removed — use FilterBar on /article page instead
 
-  function handlePostComment(e) {
+  async function handlePostComment(e) {
     e.preventDefault();
     if (!newComment.trim()) { addToast("Please write something!", "error"); return; }
-    setComments([{ id: Date.now(), user: "You", time: "Just now", text: newComment, likes: 0, replies: [] }, ...comments]);
-    setNewComment("");
-    addToast("Comment posted!", "success");
+    const result = await postCommentAction({ postSlug: post.slug, userName: "You", text: newComment });
+    if (result.success) {
+      setComments([result.comment, ...comments]);
+      setNewComment("");
+      addToast("Comment posted!", "success");
+    } else {
+      addToast(result.error || "Failed to post", "error");
+    }
   }
 
-  function handlePostReply(commentId) {
+  async function handlePostReply(commentId) {
     if (!replyText.trim()) return;
-    setComments(prev => prev.map(c =>
-      c.id === commentId
-        ? { ...c, replies: [...c.replies, { id: Date.now(), user: "You", time: "Just now", text: replyText, likes: 0 }] }
-        : c
-    ));
-    setReplyText(""); setReplyingTo(null);
-    addToast("Reply posted!", "success");
+    const result = await postCommentAction({ postSlug: post.slug, userName: "You", text: replyText, parentCommentId: commentId });
+    if (result.success) {
+      setComments(prev => prev.map(c =>
+        c.id === commentId
+          ? { ...c, replies: [...c.replies, result.comment] }
+          : c
+      ));
+      setReplyText(""); setReplyingTo(null);
+      addToast("Reply posted!", "success");
+    } else {
+      addToast(result.error || "Failed to reply", "error");
+    }
   }
 
-  function handleCommentLike(commentId, replyId = null) {
+  async function handleCommentLike(commentId, replyId = null) {
+    const targetId = replyId || commentId;
     const key = replyId ? `${commentId}_${replyId}` : `${commentId}`;
     const already = likedComments.has(key);
     const delta = already ? -1 : 1;
@@ -218,12 +227,15 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
     already ? next.delete(key) : next.add(key);
     setLikedComments(next);
     localStorage.setItem(`likedComments_${post.slug}`, JSON.stringify([...next]));
+    // Optimistic UI update
     setComments(prev => prev.map(c => {
       if (replyId && c.id === commentId)
-        return { ...c, replies: c.replies.map(r => r.id === replyId ? { ...r, likes: r.likes + delta } : r) };
-      if (!replyId && c.id === commentId) return { ...c, likes: c.likes + delta };
+        return { ...c, replies: c.replies.map(r => r.id === replyId ? { ...r, likes: Math.max(0, r.likes + delta) } : r) };
+      if (!replyId && c.id === commentId) return { ...c, likes: Math.max(0, c.likes + delta) };
       return c;
     }));
+    // Persist to DB
+    await likeCommentAction(targetId, delta);
   }
 
   const likeDisplay = likeCount >= 1000 ? (likeCount / 1000).toFixed(1) + "k" : likeCount;
@@ -466,11 +478,21 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
                 <p className="text-blue-200 text-sm mb-5">
                   Get our 2026 edition — covering top roles, skills, salaries, and learning paths. Trusted by 80,000+ learners.
                 </p>
-                <form className="flex flex-col sm:flex-row gap-3" onSubmit={e => { e.preventDefault(); addToast("Roadmap PDF sent to your email!", "success"); }}>
-                  <input type="text" placeholder="Your name"
+                <form className="flex flex-col sm:flex-row gap-3" onSubmit={async (e) => {
+                    e.preventDefault();
+                    const fd = new FormData(e.target);
+                    const name = fd.get("name")?.toString().trim();
+                    const email = fd.get("email")?.toString().trim();
+                    if (!email || !email.includes("@")) { addToast("Please enter a valid email", "error"); return; }
+                    const { subscribeAction } = await import("@/app/actions");
+                    const result = await subscribeAction({ email, name, source: "article-pdf" });
+                    if (result.success) { addToast("Roadmap PDF sent to your email!", "success"); e.target.reset(); }
+                    else addToast(result.error || "Failed to subscribe", "error");
+                  }}>
+                  <input type="text" name="name" placeholder="Your name"
                     className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none"
                     style={{ background: "rgba(255,255,255,0.12)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)" }} />
-                  <input type="email" placeholder="Enter your work email"
+                  <input type="email" name="email" placeholder="Enter your work email"
                     className="flex-[2] px-4 py-2.5 rounded-xl text-sm outline-none"
                     style={{ background: "rgba(255,255,255,0.12)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)" }} />
                   <button type="submit"
@@ -740,34 +762,7 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
       </div>
 
       {/* ── Related Courses ── */}
-      <section className="bg-surface-container-low dark:bg-[#131b2e] py-16 border-t border-outline-variant/10 dark:border-[#424754] fade-in-section">
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="font-[family-name:var(--font-headline)] text-2xl font-extrabold text-on-background dark:text-[#dae2fd] mb-8">
-            Related Courses
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {courses.slice(0, 3).map(course => (
-              <div key={course.title}
-                className="bg-surface-container-lowest dark:bg-[#0b1326] rounded-2xl overflow-hidden border border-outline-variant/20 dark:border-[#424754] flex flex-col hover:shadow-lg transition-shadow group">
-                <div className="aspect-video overflow-hidden relative">
-                  <Image alt={course.title} fill
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    src={course.image} sizes="33vw" />
-                </div>
-                <div className="p-5 flex-1 flex flex-col">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-primary dark:text-[#adc6ff] mb-2">{course.label}</span>
-                  <h3 className="font-[family-name:var(--font-headline)] text-base font-bold mb-2 group-hover:text-primary dark:group-hover:text-[#adc6ff] transition-colors dark:text-[#dae2fd]">{course.title}</h3>
-                  <p className="text-on-surface-variant dark:text-[#c2c6d6] text-sm mb-4 flex-1 line-clamp-2">{course.desc}</p>
-                  <a href="#"
-                    className="glass-chip active block w-full text-center py-2.5 rounded-xl font-bold text-sm">
-                    View Courses
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <CoursesGrid showViewAll={false} />
 
       <Footer />
       <MobileBottomNav activePage="insights" />

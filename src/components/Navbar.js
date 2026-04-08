@@ -3,15 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { NAV_CATEGORIES } from "@/lib/config";
 
-const categories = [
-  { label: "Data Science", href: "/" },
-  { label: "Machine Learning", href: "/" },
-  { label: "AI", href: "/" },
-  { label: "Analytics", href: "/" },
-  { label: "Deep Learning", href: "/" },
-  { label: "Salary Hub", href: "/salary-hub" },
-];
 
 export default function Navbar({ activeCategory = "Data Science" }) {
   const [isDark, setIsDark] = useState(false);
@@ -60,7 +53,7 @@ export default function Navbar({ activeCategory = "Data Science" }) {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
-            {categories.map((cat) => (
+            {NAV_CATEGORIES.map((cat) => (
               <Link
                 key={cat.label}
                 href={cat.href}
@@ -147,7 +140,7 @@ export default function Navbar({ activeCategory = "Data Science" }) {
           <Image src="/logo.svg" alt="AnalytixLabs" width={120} height={28} style={{ objectFit: "contain" }} />
         </Link>
         <nav className="flex flex-col gap-4">
-          {categories.map((cat) => (
+          {NAV_CATEGORIES.map((cat) => (
             <Link
               key={cat.label}
               href={cat.href}
