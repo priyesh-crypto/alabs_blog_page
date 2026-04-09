@@ -48,7 +48,7 @@ export default function Navbar({ activeCategory = "Data Science" }) {
         <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <Image src="/logo.svg" alt="AnalytixLabs" width={140} height={32} priority style={{ objectFit: "contain" }} />
+            <Image src={isDark ? "/white.svg" : "/logo.svg"} alt="AnalytixLabs" width={140} height={32} priority style={{ objectFit: "contain" }} />
           </Link>
 
           {/* Desktop Nav */}
@@ -137,7 +137,7 @@ export default function Navbar({ activeCategory = "Data Science" }) {
         } md:hidden overflow-y-auto p-8`}
       >
         <Link href="/" className="block mb-8">
-          <Image src="/logo.svg" alt="AnalytixLabs" width={120} height={28} style={{ objectFit: "contain" }} />
+          <Image src={isDark ? "/white.svg" : "/logo.svg"} alt="AnalytixLabs" width={120} height={28} style={{ objectFit: "contain" }} />
         </Link>
         <nav className="flex flex-col gap-4">
           {NAV_CATEGORIES.map((cat) => (
