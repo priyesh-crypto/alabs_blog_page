@@ -71,6 +71,7 @@ export default function AuthorStudio() {
   };
 
   const schedulePost = async (date) => {
+    if (!state.postTitle.trim()) return showToast("Please enter a title", "err");
     set("isPublishing", true);
     const payload = buildPublishPayload(state, authorSlug);
     const res = await schedulePostAction(payload, date);

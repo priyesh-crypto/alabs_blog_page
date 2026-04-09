@@ -12,7 +12,7 @@ export default function HeroBanner({ post, bookmarked = false, onToggleBookmark 
 
   return (
     <section
-      className="pt-24 pb-16"
+      className="mt-16 pt-12 pb-16"
       style={{ background: "linear-gradient(135deg,#4C7FD2 57%,#27416C 100%)" }}
     >
       <div className="max-w-7xl mx-auto px-6">

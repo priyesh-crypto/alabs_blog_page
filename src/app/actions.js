@@ -161,7 +161,7 @@ export async function saveDraftAction(payload, id = null) {
       const row = {
         ...toRow({ ...payload, slug }),
         status:       'Draft',
-        published_at: null,
+        published_at: '',
         updated_at:   formatDate(),
       };
       const { data, error } = await db.from('posts').insert(row).select('id, slug').single();
@@ -171,8 +171,9 @@ export async function saveDraftAction(payload, id = null) {
       return { success: true, id: data.id, slug: data.slug };
     }
   } catch (error) {
-    console.error('saveDraftAction failed:', error);
-    return { success: false, error: 'Failed to save draft. Please try again.' };
+    const msg = error?.message || error?.toString() || 'Unknown error';
+    console.error('saveDraftAction failed:', msg, error?.code, error?.details);
+    return { success: false, error: msg };
   }
 }
 
@@ -213,8 +214,9 @@ export async function publishPostAction(payload) {
     revalidatePath(`/article/${data.slug}`);
     return { success: true, slug: data.slug };
   } catch (error) {
-    console.error('publishPostAction failed:', error);
-    return { success: false, error: 'Failed to publish post. Please try again.' };
+    const msg = error?.message || error?.toString() || 'Unknown error';
+    console.error('publishPostAction failed:', msg, error?.code);
+    return { success: false, error: msg };
   }
 }
 
@@ -352,10 +354,21 @@ export async function schedulePostAction(payload, scheduledDate) {
     const { slug: callerSlug } = await getCallerSlug();
     const db = getServiceClient();
 
+    // Validate alt text
+    const altErr = validateAltText(payload.image, payload.alt_text);
+    if (altErr) return { success: false, error: altErr };
+
     // Ensure author_id is always a valid slug
     if (payload.authorId) payload = { ...payload, authorId: callerSlug || payload.authorId };
 
-    const slug = payload.slug || toSlug(payload.title);
+    // Build and de-duplicate slug
+    let slug = payload.slug || toSlug(payload.title);
+    const { data: existing } = await db
+      .from('posts')
+      .select('id')
+      .eq('slug', slug)
+      .maybeSingle();
+    if (existing) slug = `${slug}-${Date.now()}`;
 
     // Validate and format the scheduled date
     const parsedDate = scheduledDate ? new Date(scheduledDate) : null;
@@ -378,8 +391,9 @@ export async function schedulePostAction(payload, scheduledDate) {
     revalidatePath('/article');
     return { success: true, slug };
   } catch (error) {
-    console.error('schedulePostAction failed:', error);
-    return { success: false, error: 'Failed to schedule post. Please try again.' };
+    const msg = error?.message || error?.toString() || 'Unknown error';
+    console.error('schedulePostAction failed:', msg, error?.code);
+    return { success: false, error: msg };
   }
 }
 
