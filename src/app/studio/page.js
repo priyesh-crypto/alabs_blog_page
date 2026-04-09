@@ -242,7 +242,7 @@ export default function AuthorStudio() {
           {/* ── Top Bar ── */}
           <header className="topbar">
             <span className="tb-crumb">Article&nbsp;<span style={{ color: "var(--text4)", margin: "0 4px" }}>/</span></span>
-            <input className="tb-title" value={state.postTitle} placeholder="Enter article title..." readOnly />
+            <input className="tb-title" value={state.postTitle} placeholder="Enter article title..." onChange={(e) => set("postTitle", e.target.value)} />
             <div className="tb-saved-wrap">
               <div className="tb-saved-dot" style={{ background: state.isSaved ? "var(--green)" : "var(--orange)" }} />
               {state.saveStatus}
