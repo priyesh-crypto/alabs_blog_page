@@ -403,7 +403,7 @@ export default function AdminDashboard() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                     <div style={{ position: 'relative' }}>
                       <img 
-                        src={a.image || "/authors/default.png"} 
+                        src={a.image || "/authors/default.svg"} 
                         alt="" 
                         style={{ width: 44, height: 44, borderRadius: 12, objectFit: 'cover', border: '2px solid var(--bg)' }} 
                         onError={(e) => e.target.src = "https://ui-avatars.com/api/?background=27416C&color=fff&bold=true&name=" + a.name} 

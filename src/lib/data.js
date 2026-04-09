@@ -16,7 +16,7 @@ export const authors = {
     linkedin: "https://linkedin.com/company/analytixlabs",
     expertise: ["Data Science Education", "Career Advice"],
     experience: "12 Years",
-    image: "/authors/default.png",
+    image: "/authors/default.svg",
   },
 };
 

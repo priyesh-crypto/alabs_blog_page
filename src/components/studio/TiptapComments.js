@@ -106,7 +106,7 @@ export default function TiptapComments({ editor, outerRef, comments = [], onUpda
             {
               id: Date.now().toString(),
               author: currentAuthor?.name || "Author",
-              avatar: currentAuthor?.image || "/authors/default.png",
+              avatar: currentAuthor?.image || "/authors/default.svg",
               text: replyText.trim(),
               createdAt: new Date().toISOString()
             }
@@ -149,7 +149,7 @@ export default function TiptapComments({ editor, outerRef, comments = [], onUpda
                 display: 'flex', alignItems: 'center', justifyContent: 'center'
               }}
             >
-              <img src={comment.authorAvatar || "/authors/default.png"} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => e.target.src = "https://ui-avatars.com/api/?name=" + comment.authorName} />
+              <img src={comment.authorAvatar || "/authors/default.svg"} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => e.target.src = "https://ui-avatars.com/api/?name=" + comment.authorName} />
             </button>
 
             {/* Comment Popover */}
@@ -176,7 +176,7 @@ export default function TiptapComments({ editor, outerRef, comments = [], onUpda
 
                 {/* Main Comment */}
                 <div style={{ padding: '14px', borderBottom: '1px solid var(--border)', display: 'flex', gap: 12, background: 'var(--bg)' }}>
-                  <img src={comment.authorAvatar || "/authors/default.png"} alt="" style={{ width: 30, height: 30, borderRadius: '8px', objectFit: 'cover', flexShrink: 0, border: '1px solid var(--border)' }} onError={(e) => e.target.src = "https://ui-avatars.com/api/?name=" + comment.authorName} />
+                  <img src={comment.authorAvatar || "/authors/default.svg"} alt="" style={{ width: 30, height: 30, borderRadius: '8px', objectFit: 'cover', flexShrink: 0, border: '1px solid var(--border)' }} onError={(e) => e.target.src = "https://ui-avatars.com/api/?name=" + comment.authorName} />
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                       <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)' }}>{comment.authorName}</span>
@@ -189,7 +189,7 @@ export default function TiptapComments({ editor, outerRef, comments = [], onUpda
                 {/* Replies */}
                 {comment.replies && comment.replies.map(reply => (
                   <div key={reply.id} style={{ padding: '12px 14px 12px 32px', borderBottom: '1px solid var(--border)', display: 'flex', gap: 10, background: 'var(--bg2)' }}>
-                    <img src={reply.avatar || "/authors/default.png"} alt="" style={{ width: 24, height: 24, borderRadius: '6px', objectFit: 'cover', flexShrink: 0, border: '1px solid var(--border)' }} onError={(e) => e.target.src = "https://ui-avatars.com/api/?name=" + reply.author} />
+                    <img src={reply.avatar || "/authors/default.svg"} alt="" style={{ width: 24, height: 24, borderRadius: '6px', objectFit: 'cover', flexShrink: 0, border: '1px solid var(--border)' }} onError={(e) => e.target.src = "https://ui-avatars.com/api/?name=" + reply.author} />
                     <div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
                         <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{reply.author}</span>
@@ -202,7 +202,7 @@ export default function TiptapComments({ editor, outerRef, comments = [], onUpda
 
                 {/* Reply Input */}
                 <div style={{ padding: '12px 14px', display: 'flex', gap: 10, alignItems: 'center', background: 'var(--bg2)', borderBottomLeftRadius: 12, borderBottomRightRadius: 12 }}>
-                  <img src={currentAuthor?.image || "/authors/default.png"} alt="" style={{ width: 24, height: 24, borderRadius: '6px', objectFit: 'cover', border: '1px solid var(--border)' }} onError={(e) => e.target.src = "https://ui-avatars.com/api/?name=" + (currentAuthor?.name || "Author")} />
+                  <img src={currentAuthor?.image || "/authors/default.svg"} alt="" style={{ width: 24, height: 24, borderRadius: '6px', objectFit: 'cover', border: '1px solid var(--border)' }} onError={(e) => e.target.src = "https://ui-avatars.com/api/?name=" + (currentAuthor?.name || "Author")} />
                   <input 
                     type="text" 
                     value={replyText} 

@@ -7,7 +7,6 @@ import StarterKit from '@tiptap/starter-kit';
 import Document from '@tiptap/extension-document';
 import Placeholder from '@tiptap/extension-placeholder';
 import TiptapImage from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
 import { TextStyle, FontFamily } from '@tiptap/extension-text-style';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { common, createLowlight } from 'lowlight';
@@ -152,7 +151,7 @@ function SelectionMenu({ editor, outerRef, comments, onUpdateComments, currentAu
       {
         id: commentId,
         authorName: currentAuthor?.name || "Author",
-        authorAvatar: currentAuthor?.image || "/authors/default.png",
+        authorAvatar: currentAuthor?.image || "/authors/default.svg",
         text: commentDraft.trim(),
         createdAt: new Date().toISOString(),
         replies: []
@@ -503,14 +502,16 @@ const TiptapEditor = forwardRef(function TiptapEditor({ content, onChange, onSta
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ codeBlock: false }),
+      StarterKit.configure({
+        codeBlock: false,
+        link: {
+          openOnClick: false,
+          HTMLAttributes: { rel: 'noopener noreferrer', target: '_blank' },
+        },
+      }),
       Placeholder.configure({ placeholder: 'Tell your story…' }),
       CustomImage.configure({ inline: false, allowBase64: true }),
       VideoNode,
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: { rel: 'noopener noreferrer', target: '_blank' },
-      }),
       CodeBlockLowlight.configure({ lowlight }),
       CommentMark,
       TextStyle,

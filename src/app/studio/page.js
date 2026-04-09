@@ -51,7 +51,7 @@ export default function AuthorStudio() {
   const dynamicAuthor = {
     slug: authorSlug,
     name: authorProfile?.name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Author",
-    image: authorProfile?.image || user?.user_metadata?.avatar_url || "/authors/default.png",
+    image: authorProfile?.image || user?.user_metadata?.avatar_url || "/authors/default.svg",
     initials: authorProfile?.initials || user?.user_metadata?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || "U",
     is_super_admin: authorProfile?.is_super_admin || false,
     email: user?.email
