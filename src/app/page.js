@@ -96,7 +96,10 @@ function HomeContent() {
     const matchSkill  = activeSkill === "All" || p.skill_level === activeSkill;
     return matchSearch && matchTopic && matchSkill;
   });
-  const gridPosts   = heroPost ? filtered.filter((p) => p.id !== heroPost.id) : filtered;
+  // If there's only 1 post, show it in the grid too so the page isn't empty
+  const gridPosts = heroPost && filtered.length > 1
+    ? filtered.filter((p) => p.id !== heroPost.id)
+    : filtered;
   const recommended = heroPost
     ? allPosts
         .filter((p) => p.id !== heroPost.id)

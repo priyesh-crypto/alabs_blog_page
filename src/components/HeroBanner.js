@@ -12,17 +12,38 @@ export default function HeroBanner({ post, bookmarked = false, onToggleBookmark 
 
   return (
     <section
-      className="mt-16 pt-12 pb-16"
+      className="mt-16 pt-12 pb-16 relative overflow-hidden"
       style={{ background: "linear-gradient(135deg,#4C7FD2 57%,#27416C 100%)" }}
     >
-      <div className="max-w-7xl mx-auto px-6">
+      {/* Featured image as background */}
+      {post.image && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={post.image}
+          alt=""
+          aria-hidden="true"
+          style={{
+            position: "absolute", inset: 0,
+            width: "100%", height: "100%",
+            objectFit: "cover", objectPosition: "center",
+            opacity: 0.35,
+            zIndex: 0,
+          }}
+        />
+      )}
+      <div className="max-w-7xl mx-auto px-6 relative" style={{ zIndex: 1 }}>
         <div className="max-w-3xl">
           <span className="glass-badge inline-block mb-5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest">
             Featured Analysis
           </span>
-          <h1 className="font-[family-name:var(--font-headline)] font-extrabold text-4xl md:text-5xl text-white leading-tight mb-6">
+          <h1 className="font-[family-name:var(--font-headline)] font-extrabold text-4xl md:text-5xl text-white leading-tight mb-4">
             {post.title}
           </h1>
+          {post.excerpt && (
+            <p className="text-blue-100 text-base leading-relaxed mb-6 max-w-xl line-clamp-2">
+              {post.excerpt}
+            </p>
+          )}
           <div className="flex flex-wrap items-center gap-4 mb-8 text-blue-200 text-sm">
             <span className="flex items-center gap-1.5">
               <span className="material-symbols-outlined text-sm">schedule</span>

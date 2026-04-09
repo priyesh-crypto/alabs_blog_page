@@ -1,16 +1,49 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Toggle, Section, I } from "./StudioIcons";
 import {
   STUDIO_CATEGORIES,
-  STUDIO_COURSES,
   STUDIO_LEAD_MAGNETS,
   STUDIO_NEWSLETTER_PLACEMENTS,
 } from "@/lib/config";
 
 export default function DetailsPanel({ state, dispatch, set, showToast }) {
   const fileInputRef = useRef(null);
+  const [categories, setCategories] = useState(STUDIO_CATEGORIES);
+  const [studioCourses, setStudioCourses] = useState([]);
+
+  // Fetch topics from DB (admin-managed) and merge with config defaults
+  useEffect(() => {
+    fetch("/api/topics")
+      .then((r) => r.ok ? r.json() : [])
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setCategories(data);
+        } else {
+          // fallback: merge from published post categories
+          fetch("/api/categories")
+            .then((r) => r.ok ? r.json() : [])
+            .then((cats) => {
+              if (Array.isArray(cats) && cats.length > 0) {
+                setCategories(Array.from(new Set([...STUDIO_CATEGORIES, ...cats])));
+              }
+            })
+            .catch(() => {});
+        }
+      })
+      .catch(() => {});
+
+    // Fetch courses from DB
+    fetch("/api/courses")
+      .then((r) => r.ok ? r.json() : [])
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setStudioCourses(data.map((c) => ({ id: c.id, name: c.title })));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
@@ -114,7 +147,7 @@ export default function DetailsPanel({ state, dispatch, set, showToast }) {
       <div className="pp-field">
         <div className="f-lbl">TOPICS</div>
         <div className="topics-row">
-          {STUDIO_CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <button key={cat} className={`topic-pill ${state.category === cat ? "sel" : ""}`} onClick={() => set("category", cat)}>{cat}</button>
           ))}
         </div>
@@ -149,7 +182,7 @@ export default function DetailsPanel({ state, dispatch, set, showToast }) {
       {/* Course Mapping T2 */}
       <Section title="Course Mapping" tier="T2" open={state.openSections.courses} onToggle={() => dispatch({ type: "TOGGLE_SECTION", key: "courses" })}>
         <div style={{ fontSize: 11, color: "var(--text3)", marginBottom: 4, fontWeight: 600 }}>Map to Courses</div>
-        {STUDIO_COURSES.map((course) => (
+        {studioCourses.map((course) => (
           <label key={course.id} className="course-item">
             <input type="checkbox" checked={state.mappedCourses.includes(course.id)} onChange={() => dispatch({ type: "TOGGLE_COURSE", value: course.id })} />
             <span className="course-lbl">{course.name}</span>

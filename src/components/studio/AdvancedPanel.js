@@ -1,18 +1,30 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Toggle } from "./StudioIcons";
-import { authors } from "@/lib/data";
 import { STUDIO_MODERATION_MODES } from "@/lib/config";
 
 export default function AdvancedPanel({ state, set }) {
+  const [authors, setAuthors] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/authors")
+      .then((r) => r.ok ? r.json() : [])
+      .then((data) => Array.isArray(data) && data.length > 0 && setAuthors(data))
+      .catch(() => {});
+  }, []);
   return (
     <>
       <div className="pp-field">
         <div className="f-lbl" style={{ marginBottom: 8 }}>AUTHOR</div>
         <select value={state.authorId} onChange={(e) => set("authorId", e.target.value)}>
-          {Object.entries(authors).map(([key, a]) => (
-            <option key={key} value={key}>{a.name}</option>
-          ))}
+          {authors.length === 0 ? (
+            <option value={state.authorId}>{state.authorId}</option>
+          ) : (
+            authors.map((a) => (
+              <option key={a.slug} value={a.slug}>{a.name}</option>
+            ))
+          )}
         </select>
         <div style={{ marginTop: 10 }}>
           <div className="f-lbl" style={{ marginBottom: 6 }}>

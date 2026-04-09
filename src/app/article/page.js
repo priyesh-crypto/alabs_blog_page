@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { ToastProvider, useToast } from "@/components/Toast";
-import { authors, courses } from "@/lib/data";
+import { courses } from "@/lib/data";
 import { SUGGESTED_AI_QUERIES, AI_CONTEXT, FEATURED_AUTHOR_SLUG, NEWSLETTER } from "@/lib/config";
 import AskAI from "@/components/AskAI";
 import PostCard from "@/components/PostCard";
@@ -30,6 +30,7 @@ function BlogListingContent() {
   const [postsLoading, setPostsLoading] = useState(true);
   const [bookmarked, setBookmarked]   = useState(new Set());
   const [authorPostCount, setAuthorPostCount] = useState(0);
+  const [spotlight, setSpotlight]     = useState(null);
 
   useEffect(() => {
     fetch("/api/posts")
@@ -37,17 +38,23 @@ function BlogListingContent() {
       .then((data) => {
         const posts = Array.isArray(data) ? data : [];
         setAllPosts(posts);
-        setAuthorPostCount(
-          posts.filter((p) => p.authorId === FEATURED_AUTHOR_SLUG).length
-        );
+        setAuthorPostCount(posts.filter((p) => p.authorId === FEATURED_AUTHOR_SLUG).length);
         setPostsLoading(false);
       })
       .catch(() => setPostsLoading(false));
+
+    fetch("/api/authors")
+      .then((r) => r.ok ? r.json() : [])
+      .then((authors) => {
+        const featured = authors.find((a) => a.slug === FEATURED_AUTHOR_SLUG) || authors[0] || null;
+        setSpotlight(featured);
+      })
+      .catch(() => {});
   }, []);
 
   const featuredPost = allPosts[0];
 
-  const filtered = allPosts.slice(1).filter((p) => {
+  const allFiltered = allPosts.filter((p) => {
     const q = search.toLowerCase();
     const matchSearch = !q ||
       p.title.toLowerCase().includes(q) ||
@@ -59,7 +66,11 @@ function BlogListingContent() {
     return matchSearch && matchTopic && matchSkill;
   });
 
-  const spotlight = authors[FEATURED_AUTHOR_SLUG];
+  // Only hide hero post from grid when no filters are active and there are more posts
+  const isFiltering = search || activeTopic || activeSkill !== "All";
+  const filtered = !isFiltering && allFiltered.length > 1
+    ? allFiltered.filter((p) => p.id !== featuredPost?.id)
+    : allFiltered;
 
   const toggleBookmark = (slug) => {
     const next = new Set(bookmarked);

@@ -7,12 +7,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
-        pathname: "/aida-public/**",
-      },
-      {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com",
-        pathname: "/aida/**",
+        pathname: "/**",
       },
       {
         protocol: "https",
@@ -20,9 +15,21 @@ const nextConfig = {
         pathname: "/**",
       },
       {
+        // Supabase Storage — covers all projects
         protocol: "https",
         hostname: "*.supabase.co",
-        pathname: "/storage/**",
+        pathname: "/**",
+      },
+      {
+        // Local dev uploads served from public/uploads/
+        protocol: "http",
+        hostname: "localhost",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        pathname: "/uploads/**",
       },
     ],
   },

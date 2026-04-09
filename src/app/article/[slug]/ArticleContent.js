@@ -67,10 +67,11 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
   const [toc, setToc]           = useState([]);
   const [activeSection, setActiveSection] = useState("");
   const [liked, setLiked]       = useState(false);
-  const [likeCount, setLikeCount] = useState(post.likeCount ?? 1200);
+  const [likeCount, setLikeCount] = useState(post.likeCount ?? 0);
   const [bookmarked, setBookmarked] = useState(false);
   const [comments, setComments]   = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [commentName, setCommentName] = useState("Anonymous");
   const [quizAnswer, setQuizAnswer] = useState(null);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [activeQuizIndex, setActiveQuizIndex] = useState(0);
@@ -192,7 +193,7 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
   async function handlePostComment(e) {
     e.preventDefault();
     if (!newComment.trim()) { addToast("Please write something!", "error"); return; }
-    const result = await postCommentAction({ postSlug: post.slug, userName: "You", text: newComment });
+    const result = await postCommentAction({ postSlug: post.slug, userName: commentName.trim() || "Anonymous", text: newComment });
     if (result.success) {
       setComments([result.comment, ...comments]);
       setNewComment("");
@@ -204,7 +205,7 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
 
   async function handlePostReply(commentId) {
     if (!replyText.trim()) return;
-    const result = await postCommentAction({ postSlug: post.slug, userName: "You", text: replyText, parentCommentId: commentId });
+    const result = await postCommentAction({ postSlug: post.slug, userName: commentName.trim() || "Anonymous", text: replyText, parentCommentId: commentId });
     if (result.success) {
       setComments(prev => prev.map(c =>
         c.id === commentId
@@ -346,9 +347,16 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
           <header className="mb-10">
             {/* Badge */}
             <div className="flex items-center gap-2 mb-5 flex-wrap">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest border border-green-500/60 text-green-700 dark:text-green-400 dark:border-green-500/40 bg-green-50 dark:bg-green-900/20">
-                Featured Analysis
-              </span>
+              {post.category && (
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest border border-green-500/60 text-green-700 dark:text-green-400 dark:border-green-500/40 bg-green-50 dark:bg-green-900/20">
+                  {post.category}
+                </span>
+              )}
+              {post.skill_level && (
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest border border-outline-variant/30 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] bg-surface-container dark:bg-[#131b2e]">
+                  {post.skill_level}
+                </span>
+              )}
             </div>
 
             <h1 className="font-[family-name:var(--font-headline)] font-extrabold text-4xl md:text-5xl text-on-background dark:text-[#dae2fd] leading-[1.08] tracking-tight mb-6">
@@ -472,7 +480,7 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
                 <div className="flex items-center gap-2 mb-2">
                   <span className="material-symbols-outlined text-blue-300 text-xl">download</span>
                   <h4 className="font-[family-name:var(--font-headline)] font-bold text-lg text-white">
-                    Free Resource: Data Science Career Roadmap PDF
+                    Free Resource: {post.domain_tags?.[0] || "Data Science"} Career Roadmap PDF
                   </h4>
                 </div>
                 <p className="text-blue-200 text-sm mb-5">
@@ -585,9 +593,9 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
               <div className="p-5 bg-surface-container-lowest dark:bg-[#060e20] grid grid-cols-2 gap-3">
                 {[
                   { icon: "quiz",         label: "Take a quick quiz",           href: "#discussion" },
-                  { icon: "download",     label: "Download PDF Guide",          href: "#" },
-                  { icon: "school",       label: `View ${post.domain_tags?.[0] || "Deep Learning"} Curriculum`, href: "#" },
-                  { icon: "group",        label: "Join Study Community",        href: "#" },
+                  { icon: "download",     label: "Download PDF Guide",          href: "#newsletter" },
+                  { icon: "school",       label: `View ${post.domain_tags?.[0] || "AI"} Curriculum`, href: "https://www.analytixlabs.co.in/courses" },
+                  { icon: "group",        label: "Join Study Community",        href: "https://www.analytixlabs.co.in/community" },
                 ].map(({ icon, label, href }) => (
                   <a key={label} href={href}
                     className="flex items-center gap-2.5 px-4 py-3 rounded-xl border text-sm font-medium transition-colors bg-surface-container dark:bg-[#131b2e] border-outline-variant/20 dark:border-[#424754] text-on-surface dark:text-[#dae2fd] hover:border-primary/40 hover:text-primary dark:hover:border-[#adc6ff]/40 dark:hover:text-[#adc6ff]">
@@ -639,6 +647,13 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
                 <span className="material-symbols-outlined text-secondary dark:text-[#c2c6d6]">person</span>
               </div>
               <div className="flex-1 flex flex-col gap-3 min-w-0">
+                <input
+                  type="text"
+                  className="w-full p-3 bg-surface-container-lowest dark:bg-[#060e20] dark:text-[#dae2fd] border border-outline-variant/30 dark:border-[#424754] rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-outline/60 dark:placeholder:text-slate-500 outline-none"
+                  placeholder="Your name (optional)"
+                  value={commentName === "Anonymous" ? "" : commentName}
+                  onChange={e => setCommentName(e.target.value || "Anonymous")}
+                />
                 <textarea
                   className="w-full p-4 bg-surface-container-lowest dark:bg-[#060e20] dark:text-[#dae2fd] border border-outline-variant/30 dark:border-[#424754] rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-outline/60 dark:placeholder:text-slate-500 resize-none outline-none"
                   placeholder="Ask a question or share your thoughts..."

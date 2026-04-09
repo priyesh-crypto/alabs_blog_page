@@ -22,7 +22,7 @@ export async function GET(request) {
     const db = getServiceClient();
     const { data, error } = await db
       .from('posts')
-      .select('id,title,slug,status,category,image,alt_text,published_at,read_time,author_id,domain_tags,skill_level,excerpt,content,seo,course_mappings,course_cta,newsletter,quiz,ai_hints,trust,discussion,advanced')
+      .select('id,title,slug,status,category,image,alt_text,published_at,updated_at,read_time,author_id,domain_tags,skill_level,excerpt,content,seo,course_mappings,course_cta,newsletter,quiz,ai_hints,trust,discussion,advanced')
       .order('id', { ascending: false });
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     // Map snake_case → camelCase for the client
@@ -31,6 +31,7 @@ export async function GET(request) {
       readTime: r.read_time,
       authorId: r.author_id,
       publishedAt: r.published_at,
+      updatedAt: r.updated_at,
       altText: r.alt_text,
     }));
     return NextResponse.json(posts);

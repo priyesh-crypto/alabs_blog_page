@@ -24,7 +24,7 @@ export default function PostsTable({ allPosts, clearEditor, loadPostForEdit, han
                   <th>Topic</th>
                   <th>Status</th>
                   <th>Date</th>
-                  <th style={{ width: 52, textAlign: "center" }}>Status</th>
+                  <th style={{ width: 52, textAlign: "center" }}>Toggle</th>
                   <th style={{ width: 52, textAlign: "center" }}>History</th>
                   <th style={{ width: 36, textAlign: "center" }}>Edit</th>
                   <th style={{ width: 36, textAlign: "center" }}>View</th>

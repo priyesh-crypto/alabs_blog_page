@@ -1,16 +1,26 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { courses } from "@/lib/data";
 
 /**
- * "Related Courses" grid section — reused on homepage, blog listing, and article pages.
+ * "Related Courses" grid section — fetches from /api/courses (Supabase-backed).
  *
  * @param {{ limit?: number, showViewAll?: boolean }} props
  */
 export default function CoursesGrid({ limit = 3, showViewAll = true }) {
-  const displayedCourses = courses.slice(0, limit);
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/courses")
+      .then((r) => r.ok ? r.json() : [])
+      .then((data) => setCourses(Array.isArray(data) ? data : []))
+      .catch(() => {});
+  }, []);
+
+  const displayed = courses.slice(0, limit);
+
+  if (displayed.length === 0) return null;
 
   return (
     <section
@@ -23,29 +33,37 @@ export default function CoursesGrid({ limit = 3, showViewAll = true }) {
             Related Courses
           </h2>
           {showViewAll && (
-            <Link
-              href="#"
+            <a
+              href="https://www.analytixlabs.co.in/courses"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-1 text-sm font-bold text-primary dark:text-[#adc6ff] hover:opacity-80 transition-opacity"
             >
               View All Courses{" "}
               <span className="material-symbols-outlined text-sm">arrow_forward</span>
-            </Link>
+            </a>
           )}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {displayedCourses.map((course) => (
+          {displayed.map((course) => (
             <div
               key={course.id}
               className="flex flex-col rounded-2xl overflow-hidden border bg-surface-container-lowest dark:bg-[#0b1326] border-outline-variant/20 dark:border-[#424754] group hover:shadow-lg transition-shadow"
             >
               <div className="aspect-video overflow-hidden relative bg-surface-container-high dark:bg-[#131b2e]">
-                <Image
-                  src={course.image}
-                  alt={course.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="33vw"
-                />
+                {course.image ? (
+                  <Image
+                    src={course.image}
+                    alt={course.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="33vw"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-primary/10">
+                    <span className="material-symbols-outlined text-4xl text-primary/40">school</span>
+                  </div>
+                )}
               </div>
               <div className="p-5 flex-1 flex flex-col">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-primary dark:text-[#adc6ff] mb-2">
@@ -55,13 +73,15 @@ export default function CoursesGrid({ limit = 3, showViewAll = true }) {
                   {course.title}
                 </h3>
                 <p className="text-sm text-on-surface-variant dark:text-[#c2c6d6] mb-4 flex-1 line-clamp-2">
-                  {course.desc}
+                  {course.description}
                 </p>
                 <a
-                  href="#"
+                  href={course.url || "#"}
+                  target={course.url && course.url !== "#" ? "_blank" : undefined}
+                  rel="noopener noreferrer"
                   className="glass-chip active block w-full text-center py-2.5 rounded-xl font-bold text-sm"
                 >
-                  View Courses
+                  View Course
                 </a>
               </div>
             </div>
