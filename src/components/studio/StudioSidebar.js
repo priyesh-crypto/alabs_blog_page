@@ -19,7 +19,7 @@ export default function StudioSidebar({
     <nav className="sidebar">
       {/* Brand Logo */}
       <div className="sb-logo" onClick={onGoHome} title="Go to home">
-        <img src="/logo.svg" alt="AnalytixLabs Studio" />
+        <img src="/white.svg" alt="AnalytixLabs Studio" />
       </div>
 
       {/* New Post Button */}

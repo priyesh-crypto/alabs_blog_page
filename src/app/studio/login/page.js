@@ -45,7 +45,7 @@ export default function StudioLogin() {
         
         {/* Logo Header */}
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <img src="/logo.svg" alt="Alabs" style={{ height: 58, width: 'auto', marginBottom: 16, display: 'inline-block' }} />
+          <img src="/white.svg" alt="Alabs" style={{ height: 58, width: 'auto', marginBottom: 16, display: 'inline-block' }} />
           <h1 style={{ fontSize: 26, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.5px', marginTop: 8 }}>Studio Access</h1>
           <p style={{ marginTop: 6, fontSize: 15, color: 'var(--text3)' }}>Sign in to manage editorial content.</p>
         </div>
