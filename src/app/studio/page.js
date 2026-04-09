@@ -4,7 +4,7 @@ import { useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   publishPostAction, schedulePostAction, updatePostAction, deletePostAction,
-  togglePostStatusAction, fetchVersionsAction, restoreVersionAction,
+  togglePostStatusAction, fetchVersionsAction, restoreVersionAction, saveDraftAction,
 } from "@/app/actions";
 import TiptapEditor from "@/components/TiptapEditor";
 import useStudioDraft, { buildPublishPayload } from "@/hooks/useStudioDraft";
@@ -39,7 +39,6 @@ export default function AuthorStudio() {
     fetchAllPosts,
     clearEditor,
     loadPostForEdit,
-    saveDraftManually,
     restoreDraft,
     discardDraft,
     clearDraftOnSuccess,
@@ -93,6 +92,20 @@ export default function AuthorStudio() {
       fetchAllPosts();
       set("isPublishing", false);
     } else { showToast(res.error || "Update failed", "err"); set("isPublishing", false); }
+  };
+
+  const handleSaveDraft = async () => {
+    if (!state.postTitle.trim()) return showToast("Please enter a title", "err");
+    set("isPublishing", true);
+    const payload = buildPublishPayload(state, authorSlug);
+    const res = await saveDraftAction(payload, state.editingPostId || null);
+    if (res.success) {
+      clearDraftOnSuccess();
+      showToast("Draft saved!");
+      fetchAllPosts();
+      if (!state.editingPostId) setMany({ editingPostId: res.id, slug: res.slug, isPublishing: false });
+      else set("isPublishing", false);
+    } else { showToast(res.error || "Failed to save draft", "err"); set("isPublishing", false); }
   };
 
   const handleDeletePost = async (post) => {
@@ -402,7 +415,7 @@ export default function AuthorStudio() {
                       >
                         {I.trash} Delete
                       </button>
-                      <button className="pub-save" onClick={saveDraftManually}>
+                      <button className="pub-save" onClick={handleSaveDraft}>
                         {I.save} Save
                       </button>
                     </div>
@@ -416,7 +429,7 @@ export default function AuthorStudio() {
                       <button className="pub-schedule" onClick={() => set("showScheduleModal", true)} disabled={state.isPublishing}>
                         {I.clock} SCHEDULE
                       </button>
-                      <button className="pub-save" onClick={saveDraftManually} disabled={state.isPublishing}>
+                      <button className="pub-save" onClick={handleSaveDraft} disabled={state.isPublishing}>
                         {I.save} SAVE DRAFT
                       </button>
                     </div>

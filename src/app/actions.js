@@ -112,6 +112,70 @@ async function snapshotVersion(db, postId) {
   });
 }
 
+// ── saveDraftAction ───────────────────────────────────────────────
+export async function saveDraftAction(payload, id = null) {
+  try {
+    const { slug: callerSlug } = await getCallerSlug();
+    const db = getServiceClient();
+
+    if (payload.authorId) payload = { ...payload, authorId: callerSlug || payload.authorId };
+
+    if (id) {
+      // Update existing post — preserve its current status
+      const { data: original, error: fetchErr } = await db
+        .from('posts')
+        .select('slug, status, author_id')
+        .eq('id', id)
+        .single();
+      if (fetchErr) throw fetchErr;
+
+      let slug = payload.slug || toSlug(payload.title);
+      const { data: collision } = await db
+        .from('posts')
+        .select('id')
+        .eq('slug', slug)
+        .neq('id', id)
+        .maybeSingle();
+      if (collision) slug = `${slug}-${id}`;
+
+      const row = {
+        ...toRow({ ...payload, slug }),
+        status:     original.status || 'Draft',
+        updated_at: formatDate(),
+      };
+      const { error } = await db.from('posts').update(row).eq('id', id);
+      if (error) throw error;
+
+      revalidatePath('/');
+      return { success: true, id, slug };
+    } else {
+      // New draft — INSERT with status="Draft"
+      let slug = payload.slug || toSlug(payload.title);
+      const { data: existing } = await db
+        .from('posts')
+        .select('id')
+        .eq('slug', slug)
+        .maybeSingle();
+      if (existing) slug = `${slug}-${Date.now()}`;
+
+      const row = {
+        ...toRow({ ...payload, slug }),
+        status:       'Draft',
+        published_at: null,
+        updated_at:   formatDate(),
+      };
+      const { data, error } = await db.from('posts').insert(row).select('id, slug').single();
+      if (error) throw error;
+
+      revalidatePath('/');
+      return { success: true, id: data.id, slug: data.slug };
+    }
+  } catch (error) {
+    console.error('saveDraftAction failed:', error);
+    return { success: false, error: 'Failed to save draft. Please try again.' };
+  }
+}
+
 // ── publishPostAction ─────────────────────────────────────────────
 export async function publishPostAction(payload) {
   try {
