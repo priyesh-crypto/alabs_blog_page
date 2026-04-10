@@ -73,6 +73,12 @@ const INITIAL_STATE = {
   darkModeCompat: true,
   progressBarColor: "#0f2554",
 
+  // Layout Visibility
+  showLeadGen: true,
+  showNextSteps: true,
+  showCourseCta: true,
+  showRightSidebar: true,
+
   // UI
   isPublishing: false,
   saveStatus: "Draft",
@@ -239,6 +245,10 @@ function studioReducer(state, action) {
         salaryHubEnabled: d.salaryHubEnabled || false,
         darkModeCompat: d.darkModeCompat !== false,
         progressBarColor: d.progressBarColor || "#0f2554",
+        showLeadGen: d.showLeadGen !== false,
+        showNextSteps: d.showNextSteps !== false,
+        showCourseCta: d.showCourseCta !== false,
+        showRightSidebar: d.showRightSidebar !== false,
         widgets: d.widgets || {},
         activeWidgetId: null,
         editorInitContent: d.postBody || "<h1></h1><p></p>",
@@ -294,6 +304,10 @@ function studioReducer(state, action) {
         salaryHubEnabled: p.advanced?.salaryHub || false,
         darkModeCompat: p.advanced?.darkModeCompat !== false,
         progressBarColor: p.advanced?.progressBarColor || "#0f2554",
+        showLeadGen: p.advanced?.showLeadGen !== false,
+        showNextSteps: p.advanced?.showNextSteps !== false,
+        showCourseCta: p.advanced?.showCourseCta !== false,
+        showRightSidebar: p.advanced?.showRightSidebar !== false,
         widgets: p.advanced?.widgets || {},
         activeWidgetId: null,
         editorInitContent: p.content || "<h1></h1><p></p>",
@@ -336,6 +350,8 @@ function buildDraftPayload(s) {
     semanticIndexEnabled: s.semanticIndexEnabled, salaryHubEnabled: s.salaryHubEnabled,
     darkModeCompat: s.darkModeCompat, progressBarColor: s.progressBarColor,
     widgets: s.widgets,
+    showLeadGen: s.showLeadGen, showNextSteps: s.showNextSteps,
+    showCourseCta: s.showCourseCta, showRightSidebar: s.showRightSidebar,
     savedAt: new Date().toISOString(),
   };
 }
@@ -356,7 +372,7 @@ export function buildPublishPayload(s, userId) {
     aiHints: { entityTags: s.entityTags, relatedPostIds: s.relatedPostIds.split(",").map((x) => x.trim()).filter(Boolean), enabled: s.aiInclusionEnabled },
     trust: { authorBio: s.authorBio, factChecker: s.factChecker, lastReviewedDate: s.lastReviewedDate },
     discussion: { qa: s.qaEnabled, faqSchema: s.faqSchemaEnabled, moderation: s.moderationMode, editorComments: s.editorComments || [] },
-    advanced: { semanticIndex: s.semanticIndexEnabled, salaryHub: s.salaryHubEnabled, darkModeCompat: s.darkModeCompat, progressBarColor: s.progressBarColor, cardImage: s.cardImage, squareImage: s.squareImage, widgets: s.widgets },
+    advanced: { semanticIndex: s.semanticIndexEnabled, salaryHub: s.salaryHubEnabled, darkModeCompat: s.darkModeCompat, progressBarColor: s.progressBarColor, cardImage: s.cardImage, squareImage: s.squareImage, widgets: s.widgets, showLeadGen: s.showLeadGen, showNextSteps: s.showNextSteps, showCourseCta: s.showCourseCta, showRightSidebar: s.showRightSidebar },
   };
 }
 
@@ -422,6 +438,7 @@ export default function useStudioDraft() {
     state.factChecker, state.lastReviewedDate, state.qaEnabled,
     state.faqSchemaEnabled, state.moderationMode, state.semanticIndexEnabled,
     state.salaryHubEnabled, state.darkModeCompat, state.progressBarColor,
+    state.showLeadGen, state.showNextSteps, state.showCourseCta, state.showRightSidebar,
   ]);
 
   // Manual save

@@ -60,9 +60,34 @@ const DEFAULT_ARTICLE_SIDEBAR = [
   },
 ];
 
+const DEFAULT_HOMEPAGE_WIDGETS = [
+  {
+    id: 'hp-posts',
+    type: 'posts_grid',
+    enabled: true,
+    label: 'Recent Blog Posts',
+    config: { title: 'Recent Blog Posts' },
+  },
+  {
+    id: 'hp-newsletter',
+    type: 'newsletter_section',
+    enabled: true,
+    label: 'Weekly Data Science Digest',
+    config: {},
+  },
+  {
+    id: 'hp-courses',
+    type: 'courses_grid',
+    enabled: true,
+    label: 'Featured Courses',
+    config: {},
+  },
+];
+
+
 export const DEFAULT_ZONES = {
   article_sidebar: DEFAULT_ARTICLE_SIDEBAR,
-  homepage: [],
+  homepage: DEFAULT_HOMEPAGE_WIDGETS,
   course_page: [],
   global_footer: [],
 };
@@ -84,14 +109,24 @@ export async function getSiteConfig() {
     if (error) throw error;
 
     const rawZones = data?.zones;
-    const zones = rawZones && typeof rawZones === 'object'
-      ? {
-          article_sidebar: Array.isArray(rawZones.article_sidebar) ? rawZones.article_sidebar : DEFAULT_ARTICLE_SIDEBAR,
-          homepage:        Array.isArray(rawZones.homepage)        ? rawZones.homepage        : [],
-          course_page:     Array.isArray(rawZones.course_page)     ? rawZones.course_page     : [],
-          global_footer:   Array.isArray(rawZones.global_footer)   ? rawZones.global_footer   : [],
-        }
-      : DEFAULT_ZONES;
+    const homepageRaw = (rawZones && Array.isArray(rawZones.homepage) && rawZones.homepage.length > 0) 
+        ? rawZones.homepage 
+        : DEFAULT_HOMEPAGE_WIDGETS;
+
+    const zones = {
+        article_sidebar: (rawZones && Array.isArray(rawZones.article_sidebar) && rawZones.article_sidebar.length > 0) ? rawZones.article_sidebar : DEFAULT_ARTICLE_SIDEBAR,
+        homepage:        homepageRaw,
+        course_page:     (rawZones && Array.isArray(rawZones.course_page)) ? rawZones.course_page : [],
+        global_footer:   (rawZones && Array.isArray(rawZones.global_footer)) ? rawZones.global_footer : [],
+    };
+
+    // Safety Net: Ensure 'homepage' ALWAYS contains a 'posts_grid' widget
+    if (!zones.homepage.some(w => w.type === 'posts_grid')) {
+        zones.homepage = [
+            { id: 'safety-posts', type: 'posts_grid', enabled: true, config: { title: 'Recent Blog Posts' } },
+            ...zones.homepage
+        ];
+    }
 
     return {
       zones,

@@ -14,6 +14,8 @@ import SidebarSalaryWidget from "@/components/SidebarSalaryWidget";
 import SidebarCourseCard from "@/components/SidebarCourseCard";
 import { postCommentAction, fetchCommentsAction, likeCommentAction } from "@/app/actions";
 import "@/components/TiptapEditor.css";
+import parse from "html-react-parser";
+import FrontendKnowledgeCheck from "@/components/FrontendKnowledgeCheck";
 
 // Generate a deterministic background color from a username string
 const AVATAR_COLORS = [
@@ -65,6 +67,15 @@ function buildSuggestedQuestions(post) {
 }
 
 function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCount = 0, sidebarWidgets = [] }) {
+  // Layout visibility flags — opt-out by default.
+  // These blocks render unless explicitly disabled by the author in the CMS.
+  // This ensures that globally configured sidebar widgets are visible on all articles.
+  const layout = {
+    showLeadGen:      post.advanced?.showLeadGen      !== false,
+    showNextSteps:    post.advanced?.showNextSteps     !== false,
+    showCourseCta:    post.advanced?.showCourseCta     !== false,
+    showRightSidebar: post.advanced?.showRightSidebar  !== false,
+  };
   const addToast      = useToast();
   const [progress, setProgress] = useState(0);
   const [toc, setToc]           = useState([]);
@@ -75,9 +86,6 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
   const [comments, setComments]   = useState([]);
   const [newComment, setNewComment] = useState("");
   const [commentName, setCommentName] = useState("Anonymous");
-  const [quizAnswer, setQuizAnswer] = useState(null);
-  const [quizSubmitted, setQuizSubmitted] = useState(false);
-  const [activeQuizIndex, setActiveQuizIndex] = useState(0);
   const [replyingTo, setReplyingTo]   = useState(null);
   const [replyText, setReplyText]     = useState("");
   const [showMobileToc, setShowMobileToc] = useState(false);
@@ -214,22 +222,6 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
     setShowShare(false);
   }
 
-  function handleQuizSubmit() {
-    if (quizAnswer === null) { addToast("Please select an answer.", "error"); return; }
-    setQuizSubmitted(true);
-    const q = (post.quiz?.questions || [])[activeQuizIndex];
-    if (quizAnswer === q?.correctIndex) addToast("Correct! Well done.", "success");
-    else addToast("Not quite — try re-reading the section.", "error");
-  }
-
-  function handleNextQuestion() {
-    const qs = post.quiz?.questions || [];
-    if (activeQuizIndex < qs.length - 1) {
-      setActiveQuizIndex(activeQuizIndex + 1);
-      setQuizAnswer(null);
-      setQuizSubmitted(false);
-    }
-  }
 
   // Sidebar search removed — use FilterBar on /article page instead
 
@@ -332,55 +324,16 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
               </>
             )}
 
-            {/* Author Card */}
-            <div className="p-6 flex flex-col gap-4">
-              {/* Avatar */}
-              <div className="flex items-center gap-3">
-                {author.image ? (
-                  <Image alt={author.name || "Author"} src={author.image} width={40} height={40}
-                    className="w-10 h-10 rounded-full object-cover shadow-sm" />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white/90 font-bold text-sm shadow-sm">
-                    {author.initials || "?"}
-                  </div>
-                )}
-                <div>
-                  <h3 className="font-[family-name:var(--font-headline)] font-semibold text-sm text-white/95 tracking-wide">
-                    {author.name || "Author"}
-                  </h3>
-                  <p className="text-[10px] text-blue-100/70 mt-0.5">
-                    {author.expertise?.[0] || "Contributor"} · AnalytixLabs
-                  </p>
-                </div>
-              </div>
-
-              {/* Bio */}
-              <p className="text-[13px] text-white/90 leading-relaxed font-medium">
-                {author.bio || ""}
-              </p>
-
-              {/* Stats */}
-              <div className="flex items-center gap-3 text-xs text-blue-100/70">
-                <span className="flex items-center gap-1">
-                  <span className="font-bold text-white">{authorPostCount}</span> articles
-                </span>
-                <span className="w-px h-3 bg-white/20" />
-                <span className="flex items-center gap-1">
-                  <span className="font-bold text-white">{author.experience?.replace(" Years", "") || "10"}</span> yrs exp
-                </span>
-              </div>
-
-              {/* LinkedIn */}
-              {author.linkedin && (
-                <a href={author.linkedin} target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all bg-white text-[#27416C] shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0">
-                  <svg viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
-                    <path d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" />
-                  </svg>
-                  LinkedIn
-                </a>
-              )}
-            </div>
+            {/* Author Spotlight (Left Sidebar) */}
+            {(() => {
+              console.log('Author Data Payload (Article - Left):', author);
+              return (
+                <SidebarAuthorSpotlight 
+                  author={author} 
+                  articleCount={authorPostCount} 
+                />
+              );
+            })()}
           </div>
         </aside>
 
@@ -517,16 +470,16 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
                 return <p className="text-xl font-medium text-on-surface dark:text-[#dae2fd] leading-relaxed mb-10">{post.excerpt}</p>;
               }
 
-              // Widgets mapping
+              // Legacy shortcode mapping — these only render when the author explicitly placed
+              // the shortcode in content AND the corresponding CMS layout flag is enabled.
+              // [[quiz]] is intentionally excluded — quizzes are now inline Tiptap widget nodes.
               const WIDGETS = {
-                "[[newsletter]]": "newsletter",
-                "[[quiz]]":       "quiz",
+                "[[newsletter]]":  "newsletter",
                 "[[nextsteps]]":   "nextsteps",
-                "[[coursematch]]": "coursematch"
+                "[[coursematch]]": "coursematch",
               };
 
-              const used = new Set();
-              const parts = content.split(/(\[\[newsletter\]\]|\[\[quiz\]\]|\[\[nextsteps\]\]|\[\[coursematch\]\])/gi);
+              const parts = content.split(/(\[\[newsletter\]\]|\[\[nextsteps\]\]|\[\[coursematch\]\])/gi);
 
               // Helper to render specific widget
               const renderWidget = (type) => {
@@ -566,71 +519,6 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
                     </div>
                   </div>
                 );
-
-                if (type === "quiz" && post.quiz?.questions?.length > 0) {
-                  const qs = post.quiz.questions;
-                  const q  = qs[activeQuizIndex];
-                  return (
-                    <div key="quiz-widget" className="my-10 rounded-2xl border border-outline-variant/20 dark:border-[#424754] overflow-hidden">
-                      <div className="px-6 py-3 flex items-center gap-2"
-                        style={{ background: "rgba(0,59,147,0.06)" }}>
-                        <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest"
-                          style={{ background: "rgba(22,163,74,0.12)", color: "#16a34a" }}>
-                          <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
-                          Knowledge Check
-                        </span>
-                        <span className="text-xs font-[family-name:var(--font-label)] font-bold text-on-surface-variant dark:text-[#8c909f] uppercase tracking-wider ml-auto">
-                          {activeQuizIndex + 1} / {qs.length}
-                        </span>
-                      </div>
-                      <div className="p-6 bg-surface-container-lowest dark:bg-[#060e20]">
-                        <p className="text-on-surface dark:text-[#dae2fd] font-medium mb-5 leading-relaxed">{q.question}</p>
-                        <div className="space-y-3 mb-5">
-                          {q.options.map((opt, idx) => (
-                            <button key={idx}
-                              onClick={() => !quizSubmitted && setQuizAnswer(idx)}
-                              className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-all ${
-                                quizSubmitted
-                                  ? idx === q.correctIndex
-                                    ? "bg-green-50 dark:bg-green-900/20 border-green-500 text-green-800 dark:text-green-300 font-semibold"
-                                    : idx === quizAnswer
-                                    ? "bg-red-50 dark:bg-red-900/20 border-red-400 text-red-700 dark:text-red-300 opacity-70"
-                                    : "bg-surface-container dark:bg-[#131b2e] border-outline-variant/20 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] opacity-40"
-                                  : quizAnswer === idx
-                                  ? "bg-primary/10 dark:bg-[#adc6ff]/10 border-primary dark:border-[#adc6ff] text-on-surface dark:text-[#dae2fd]"
-                                  : "bg-surface-container dark:bg-[#131b2e] border-outline-variant/20 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] hover:border-primary/50 cursor-pointer"
-                              }`}>
-                              <span className="font-bold mr-2 text-primary dark:text-[#adc6ff]">{String.fromCharCode(65 + idx)}.</span>
-                              {opt}
-                            </button>
-                          ))}
-                        </div>
-                        {!quizSubmitted ? (
-                          <button onClick={handleQuizSubmit}
-                            className="px-6 py-2.5 rounded-full font-bold text-sm text-white transition-opacity hover:opacity-90"
-                            style={{ background: "#16a34a" }}>
-                            Submit Answer
-                          </button>
-                        ) : (
-                          <div className="flex flex-wrap items-center gap-4">
-                            <span className={`flex items-center gap-1.5 text-sm font-bold ${quizAnswer === q.correctIndex ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}`}>
-                              <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: "'FILL' 1" }}>
-                                {quizAnswer === q.correctIndex ? "check_circle" : "cancel"}
-                              </span>
-                              {quizAnswer === q.correctIndex ? "Correct! Keep learning." : `Correct: ${q.options[q.correctIndex]}`}
-                            </span>
-                            {activeQuizIndex < qs.length - 1 && (
-                              <button onClick={handleNextQuestion}
-                                className="flex items-center gap-1.5 px-5 py-2 bg-primary text-on-primary rounded-full font-bold text-sm hover:opacity-90 transition-opacity">
-                                Next Question <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                              </button>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                }
 
                 if (type === "nextsteps") return (
                   <div key="nextsteps-widget" className="my-10 rounded-2xl border border-slate-200 overflow-hidden shadow-sm"
@@ -689,20 +577,49 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
               const renderedElements = parts.map((part, idx) => {
                 const lowerPart = part.toLowerCase();
                 if (WIDGETS[lowerPart]) {
-                  used.add(WIDGETS[lowerPart]);
-                  return renderWidget(WIDGETS[lowerPart]);
+                  const wType = WIDGETS[lowerPart];
+                  // Respect layout flags — shortcodes placed by the author only render
+                  // if the corresponding flag is explicitly enabled in the CMS.
+                  if (wType === "newsletter"  && !layout.showLeadGen)   return null;
+                  if (wType === "nextsteps"   && !layout.showNextSteps)  return null;
+                  if (wType === "coursematch" && !layout.showCourseCta)  return null;
+                  return renderWidget(wType);
                 }
-                return <div key={idx} className="tiptap-prose" dangerouslySetInnerHTML={{ __html: part }} />;
+                return (
+                  <div key={idx} className="tiptap-prose">
+                    {parse(part, {
+                      replace(domNode) {
+                        if (
+                          domNode.type === "tag" &&
+                          domNode.name === "div" &&
+                          domNode.attribs?.["data-widget"]
+                        ) {
+                          const widgetType = domNode.attribs["data-widget"];
+                          let attrs = {};
+                          try {
+                            attrs = JSON.parse(domNode.attribs["data-widget-attrs"] || "{}");
+                          } catch {}
+
+                          if (widgetType === "quiz") {
+                            return (
+                              <FrontendKnowledgeCheck
+                                question={attrs.question}
+                                options={attrs.options}
+                                correctIndex={attrs.correctIndex}
+                                explanation={attrs.explanation}
+                              />
+                            );
+                          }
+                          // other widget types can be mapped here as they are built
+                          return <></>;
+                        }
+                      },
+                    })}
+                  </div>
+                );
               });
 
-              // Fallback: Append unused widgets to the end
-              const fallbacks = [];
-              if (!used.has("newsletter")) fallbacks.push(renderWidget("newsletter"));
-              if (!used.has("quiz"))       fallbacks.push(renderWidget("quiz"));
-              if (!used.has("nextsteps"))  fallbacks.push(renderWidget("nextsteps"));
-              if (!used.has("coursematch")) fallbacks.push(renderWidget("coursematch"));
-
-              return [...renderedElements, ...fallbacks];
+              return renderedElements;
             })()}
           </article>
 
@@ -816,8 +733,8 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
         </main>
 
         {/* ── Right Sidebar ── */}
-        <aside className="hidden lg:flex flex-col gap-5">
-          <div className="sticky top-24 flex flex-col gap-5">
+        <aside className={`${layout.showRightSidebar ? "hidden lg:flex" : "hidden"} flex-col gap-5`}>
+          <div className="sticky top-24 flex flex-col gap-5 max-h-[calc(100vh-8rem)] overflow-y-auto overscroll-contain scrollbar-hide">
             {sidebarWidgets.filter(w => w.enabled).map(widget => {
               switch (widget.type) {
 
@@ -855,6 +772,7 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
                   ) : null;
 
                 case 'author_spotlight':
+                  console.log('Author Data Payload (Article - Right):', post.author);
                   return (
                     <SidebarAuthorSpotlight
                       key={widget.id}
@@ -866,15 +784,30 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
                 case 'salary_table':
                   return <SidebarSalaryWidget key={widget.id} config={widget.config} />;
 
+                case 'course_cta':
                 case 'course_card': {
                   const cfg = widget.config ?? {};
-                  const course = cfg.use_article_match && courseMatch
-                    ? { ...courseMatch, ctaUrl: cfg.cta_url, ctaLabel: cfg.cta_label }
-                    : { title: cfg.fallback_title, duration: cfg.fallback_duration, rating: cfg.fallback_rating, ctaUrl: cfg.cta_url, ctaLabel: cfg.cta_label };
-                  return course?.title ? <SidebarCourseCard key={widget.id} course={course} /> : null;
+                  const baseCourse = (cfg.use_article_match && courseMatch) ? courseMatch : null;
+                  
+                  // Stabilize derivation: prioritization must be identical on SSR and Hydration
+                  const title = cfg.fallback_title || baseCourse?.title || "Data Science Master Program";
+                  
+                  const course = {
+                    title,
+                    duration: cfg.fallback_duration || baseCourse?.duration || "6 months",
+                    rating:   cfg.fallback_rating   || baseCourse?.rating   || 4.8,
+                    ctaUrl:   cfg.cta_url           || baseCourse?.ctaUrl   || "",
+                    ctaLabel: cfg.cta_label         || baseCourse?.ctaLabel || "Enroll Now →",
+                    image:    baseCourse?.image     || ""
+                  };
+
+                  return <SidebarCourseCard key={widget.id} course={course} />;
                 }
 
                 default:
+                  if (process.env.NODE_ENV === 'development') {
+                    console.warn(`[Sidebar] Unknown widget type: ${widget.type}`, widget);
+                  }
                   return null;
               }
             })}

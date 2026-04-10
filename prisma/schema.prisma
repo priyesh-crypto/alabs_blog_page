@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model SiteConfig {
+  id          String   @id @map("key")
+  value       Json     @default("{}")
+  updatedAt   DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  updatedBy   String?  @default("system") @map("updated_by")
+  layoutZones Json     @default("{}") @map("zones")
+
+  @@map("site_config")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model authors {
+  slug           String   @id
+  name           String
+  initials       String?
+  color          String?
+  bio            String?
+  linkedin       String?
+  expertise      String[] @default([])
+  experience     String?
+  image          String?
+  email          String?  @unique
+  is_super_admin Boolean? @default(false)
+  posts          posts[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model comments {
+  id                Int        @id @default(autoincrement())
+  post_slug         String
+  parent_comment_id Int?
+  user_name         String     @default("Anonymous")
+  text              String
+  likes             Int?       @default(0)
+  created_at        DateTime?  @default(now()) @db.Timestamptz(6)
+  comments          comments?  @relation("commentsTocomments", fields: [parent_comment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  other_comments    comments[] @relation("commentsTocomments")
+
+  @@index([parent_comment_id], map: "comments_parent_idx")
+  @@index([post_slug])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model courses {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  label       String   @default("")
+  description String   @default("")
+  image       String   @default("")
+  url         String   @default("#")
+  duration    String   @default("")
+  rating      Decimal? @default(4.5) @db.Decimal(3, 1)
+  domain_tags String[] @default([])
+  is_active   Boolean  @default(true)
+  sort_order  Int      @default(0)
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime @default(now()) @db.Timestamptz(6)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model post_versions {
+  id              Int       @id @default(autoincrement())
+  post_id         Int
+  title           String    @default("")
+  content         String?   @default("")
+  excerpt         String?   @default("")
+  category        String?   @default("")
+  domain_tags     String[]  @default([])
+  skill_level     String?   @default("Beginner")
+  image           String?   @default("")
+  alt_text        String?   @default("")
+  seo             Json?     @default("{}")
+  course_mappings String[]  @default([])
+  course_cta      String?   @default("")
+  newsletter      Json?     @default("{}")
+  quiz            Json?     @default("{}")
+  ai_hints        Json?     @default("{}")
+  trust           Json?     @default("{}")
+  discussion      Json?     @default("{}")
+  advanced        Json?     @default("{}")
+  updated_by      String?   @default("al-editorial")
+  version_number  Int
+  created_at      DateTime? @default(now()) @db.Timestamptz(6)
+  posts           posts     @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([post_id])
+  @@index([post_id, version_number], map: "post_versions_version_idx")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model posts {
+  id              Int             @id @default(autoincrement())
+  title           String
+  slug            String          @unique
+  excerpt         String?         @default("")
+  content         String?         @default("")
+  category        String?         @default("")
+  domain_tags     String[]        @default([])
+  skill_level     String?         @default("Beginner")
+  read_time       String?         @default("")
+  author_id       String          @default("al-editorial")
+  image           String?         @default("")
+  status          String?         @default("Published")
+  published_at    String?         @default("")
+  updated_at      String?         @default("")
+  seo             Json?           @default("{}")
+  course_mappings String[]        @default([])
+  course_cta      String?         @default("")
+  newsletter      Json?           @default("{}")
+  quiz            Json?           @default("{}")
+  ai_hints        Json?           @default("{}")
+  trust           Json?           @default("{}")
+  discussion      Json?           @default("{}")
+  advanced        Json?           @default("{}")
+  created_at      DateTime?       @default(now()) @db.Timestamptz(6)
+  alt_text        String?         @default("")
+  post_versions   post_versions[]
+  authors         authors         @relation(fields: [author_id], references: [slug], onDelete: NoAction)
+
+  @@index([author_id])
+  @@index([category])
+  @@index([created_at(sort: Desc)])
+  @@index([domain_tags], type: Gin)
+  @@index([slug])
+  @@index([status])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model subscribers {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  name          String?   @default("")
+  source        String?   @default("newsletter")
+  subscribed_at DateTime? @default(now()) @db.Timestamptz(6)
+  is_active     Boolean?  @default(true)
+
+  @@index([email])
+}

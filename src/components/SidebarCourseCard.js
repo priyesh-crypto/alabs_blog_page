@@ -7,8 +7,11 @@
  * `ctaUrl`   — when provided, the button becomes a real anchor tag.
  * `ctaLabel` — button label (defaults to "Enroll Now →").
  */
-export default function SidebarCourseCard({ course }) {
-  if (!course) return null;
+export default function SidebarCourseCard({ course = {} }) {
+  if (!course && process.env.NODE_ENV === 'development') {
+    console.warn("SidebarCourseCard received null course prop");
+  }
+
 
   const stars      = course.rating ? Math.round(course.rating) : 4;
   const starDisplay = "★".repeat(stars) + "☆".repeat(5 - stars);

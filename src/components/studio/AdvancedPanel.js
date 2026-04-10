@@ -24,6 +24,28 @@ export default function AdvancedPanel({ state, set }) {
         </div>
       </div>
       <div className="pp-field">
+        <div className="f-lbl" style={{ marginBottom: 8 }}>LAYOUT VISIBILITY</div>
+        <div style={{ fontSize: 10, color: "var(--text4)", marginBottom: 10 }}>
+          Override which global template blocks appear on this post.
+        </div>
+        <div className="toggle-row" style={{ marginBottom: 10 }}>
+          <span className="toggle-lbl">Show lead gen (PDF download)</span>
+          <Toggle checked={state.showLeadGen} onChange={(v) => set("showLeadGen", v)} />
+        </div>
+        <div className="toggle-row" style={{ marginBottom: 10 }}>
+          <span className="toggle-lbl">Show AI next steps</span>
+          <Toggle checked={state.showNextSteps} onChange={(v) => set("showNextSteps", v)} />
+        </div>
+        <div className="toggle-row" style={{ marginBottom: 10 }}>
+          <span className="toggle-lbl">Show course CTA</span>
+          <Toggle checked={state.showCourseCta} onChange={(v) => set("showCourseCta", v)} />
+        </div>
+        <div className="toggle-row" style={{ marginBottom: 0 }}>
+          <span className="toggle-lbl">Show right sidebar</span>
+          <Toggle checked={state.showRightSidebar} onChange={(v) => set("showRightSidebar", v)} />
+        </div>
+      </div>
+      <div className="pp-field">
         <div className="f-lbl" style={{ marginBottom: 8 }}>ACCESSIBILITY</div>
         <div className="toggle-row" style={{ marginBottom: 10 }}>
           <span className="toggle-lbl">Semantic search index</span>
