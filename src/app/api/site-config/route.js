@@ -6,26 +6,36 @@ export const dynamic = 'force-dynamic';
 
 const CONFIG_KEY = 'global';
 
+const DEFAULT_ZONES = {
+  article_sidebar: [],
+  homepage: [],
+  course_page: [],
+  global_footer: [],
+};
+
 export async function GET() {
   try {
     const db = getServiceClient();
     const { data, error } = await db
       .from('site_config')
-      .select('sidebar_widgets, homepage_hero, updated_at, updated_by')
+      .select('zones, updated_at, updated_by')
       .eq('key', CONFIG_KEY)
       .single();
 
     if (error) throw error;
-    return NextResponse.json(data ?? { sidebar_widgets: [], homepage_hero: {} });
+    return NextResponse.json({
+      zones: data?.zones ?? DEFAULT_ZONES,
+      updated_at: data?.updated_at ?? '',
+      updated_by: data?.updated_by ?? '',
+    });
   } catch (err) {
     console.error('GET /api/site-config:', err);
-    return NextResponse.json({ sidebar_widgets: [], homepage_hero: {} });
+    return NextResponse.json({ zones: DEFAULT_ZONES, updated_at: '', updated_by: '' });
   }
 }
 
 export async function PUT(request) {
   try {
-    // Require an authenticated session
     const supabase = await createClient();
     const { data: { user }, error: authErr } = await supabase.auth.getUser();
     if (authErr || !user) {
@@ -37,15 +47,16 @@ export async function PUT(request) {
       return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
     }
 
+    // Accept either a full zones dict or a partial one; merge with defaults
+    const zones = body.zones && typeof body.zones === 'object'
+      ? { ...DEFAULT_ZONES, ...body.zones }
+      : DEFAULT_ZONES;
+
     const db = getServiceClient();
     const { error } = await db.from('site_config').upsert(
       {
         key: CONFIG_KEY,
-        sidebar_widgets: Array.isArray(body.sidebar_widgets) ? body.sidebar_widgets : [],
-        homepage_hero:
-          body.homepage_hero && typeof body.homepage_hero === 'object'
-            ? body.homepage_hero
-            : {},
+        zones,
         updated_at: new Date().toISOString(),
         updated_by: user.email ?? user.id,
       },

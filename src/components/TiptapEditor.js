@@ -504,13 +504,15 @@ const WidgetNode = Node.create({
     ];
   },
   renderHTML({ HTMLAttributes }) {
-    // Serialize all non-type attrs as a JSON blob for round-trip fidelity
+    // Serialize all non-type attrs as a JSON blob for round-trip fidelity.
+    // atom: true nodes must NOT include a content hole (the trailing 0) —
+    // ProseMirror throws "Content hole not allowed in a leaf node spec" if present.
     const { type, ...rest } = HTMLAttributes;
     return ['div', mergeAttributes({
       'data-widget':       type,
       'data-widget-attrs': JSON.stringify(rest),
       class: 'widget-placeholder',
-    }), 0];
+    })];
   },
   addNodeView() {
     return ReactNodeViewRenderer(WidgetView);

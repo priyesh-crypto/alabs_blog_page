@@ -3,6 +3,36 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import {
+  Plus,
+  Send,
+  Layout,
+  ArrowLeft,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  SidebarOpen,
+  Home,
+  GraduationCap,
+  AlignJustify,
+} from "lucide-react";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+
+import WidgetCard from "@/components/studio/WidgetCard";
+import WidgetSettingsDrawer from "@/components/studio/WidgetSettingsDrawer";
 
 // ── Widget type registry ──────────────────────────────────────────
 const WIDGET_TYPES = {
@@ -41,239 +71,73 @@ const WIDGET_DEFAULTS = {
   },
 };
 
+// ── Zone definitions ─────────────────────────────────────────────
+const ZONES = [
+  {
+    id: "article_sidebar",
+    label: "Article Sidebar",
+    description: "Widgets rendered in the right column on article pages.",
+    Icon: SidebarOpen,
+    color: "#4f46e5",
+  },
+  {
+    id: "homepage",
+    label: "Homepage",
+    description: "Content blocks shown on the site homepage.",
+    Icon: Home,
+    color: "#0e7490",
+  },
+  {
+    id: "course_page",
+    label: "Course Page",
+    description: "Widgets rendered on individual course detail pages.",
+    Icon: GraduationCap,
+    color: "#b45309",
+  },
+  {
+    id: "global_footer",
+    label: "Global Footer",
+    description: "Content blocks displayed in the site-wide footer.",
+    Icon: AlignJustify,
+    color: "#16a34a",
+  },
+];
+
+const EMPTY_ZONES = {
+  article_sidebar: [],
+  homepage: [],
+  course_page: [],
+  global_footer: [],
+};
+
 function newId() {
   return "w-" + Math.random().toString(36).slice(2, 9);
 }
 
-// ── Config sub-forms ──────────────────────────────────────────────
-
-function AskAiConfig() {
-  return (
-    <p style={{ fontSize: 12, color: "var(--text3)", margin: 0 }}>
-      No configuration needed. The AI widget automatically uses the article title, excerpt, and domain tags as context.
-    </p>
-  );
-}
-
-function RecommendedConfig({ config, onChange }) {
-  return (
-    <div>
-      <FieldLabel>Max articles to show</FieldLabel>
-      <input
-        type="number" min={1} max={10}
-        value={config.count ?? 3}
-        onChange={e => onChange({ ...config, count: Number(e.target.value) })}
-        style={inputStyle}
-      />
-    </div>
-  );
-}
-
-function AuthorSpotlightConfig({ config, onChange }) {
-  return (
-    <p style={{ fontSize: 12, color: "var(--text3)", margin: 0 }}>
-      Always displays the article's own author. No additional configuration required.
-    </p>
-  );
-}
-
-function SalaryTableConfig({ config, onChange }) {
-  const rows = config.rows ?? [];
-  const setRows = (next) => onChange({ ...config, rows: next });
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-      <div>
-        <FieldLabel>Widget title</FieldLabel>
-        <input type="text" value={config.title ?? ""} onChange={e => onChange({ ...config, title: e.target.value })} style={inputStyle} placeholder="India DS Salaries" />
-      </div>
-      <div>
-        <FieldLabel>Salary rows</FieldLabel>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {rows.map((row, i) => (
-            <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 80px 28px", gap: 6, alignItems: "center" }}>
-              <input type="text" value={row.role} onChange={e => { const r=[...rows]; r[i]={...r[i],role:e.target.value}; setRows(r); }} style={inputSmall} placeholder="Role" />
-              <input type="text" value={row.range} onChange={e => { const r=[...rows]; r[i]={...r[i],range:e.target.value}; setRows(r); }} style={inputSmall} placeholder="₹18–28 LPA" />
-              <input type="text" value={row.meta} onChange={e => { const r=[...rows]; r[i]={...r[i],meta:e.target.value}; setRows(r); }} style={inputSmall} placeholder="City · exp" />
-              <input type="text" value={row.badge ?? ""} onChange={e => { const r=[...rows]; r[i]={...r[i],badge:e.target.value}; setRows(r); }} style={inputSmall} placeholder="badge" />
-              <button onClick={() => setRows(rows.filter((_, j) => j !== i))} style={rmBtnStyle}>×</button>
-            </div>
-          ))}
-          {rows.length < 8 && (
-            <button onClick={() => setRows([...rows, { role: "", range: "", meta: "", badge: "" }])}
-              style={{ fontSize: 12, color: "var(--text3)", background: "none", border: "1px dashed var(--border)", borderRadius: 6, padding: "5px 10px", cursor: "pointer" }}>
-              + Add row
-            </button>
-          )}
-        </div>
-        <p style={{ fontSize: 11, color: "var(--text4)", marginTop: 6 }}>Columns: Role · Range · Meta (location/exp) · Badge (optional)</p>
-      </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-        <div>
-          <FieldLabel>CTA label</FieldLabel>
-          <input type="text" value={config.cta_label ?? ""} onChange={e => onChange({ ...config, cta_label: e.target.value })} style={inputStyle} placeholder="Full Salary Report →" />
-        </div>
-        <div>
-          <FieldLabel>CTA URL</FieldLabel>
-          <input type="text" value={config.cta_url ?? ""} onChange={e => onChange({ ...config, cta_url: e.target.value })} style={inputStyle} placeholder="/salary-hub" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CourseCardConfig({ config, onChange }) {
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-      <div className="toggle-row" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div>
-          <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text)" }}>Match to article domain tags</div>
-          <div style={{ fontSize: 11, color: "var(--text3)" }}>Uses the article's domain tags to find the closest course from the DB.</div>
-        </div>
-        <button
-          onClick={() => onChange({ ...config, use_article_match: !config.use_article_match })}
-          style={{
-            width: 40, height: 22, borderRadius: 11, border: "none", cursor: "pointer", flexShrink: 0,
-            background: config.use_article_match ? "var(--primary)" : "var(--border)",
-            position: "relative", transition: "background 0.2s",
-          }}
-        >
-          <span style={{
-            position: "absolute", top: 3, left: config.use_article_match ? 21 : 3,
-            width: 16, height: 16, borderRadius: "50%", background: "#fff", transition: "left 0.2s",
-          }} />
-        </button>
-      </div>
-      <p style={{ fontSize: 11, color: "var(--text4)", margin: 0 }}>
-        Fallback values are used when no course match is found.
-      </p>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-        <div>
-          <FieldLabel>Fallback title</FieldLabel>
-          <input type="text" value={config.fallback_title ?? ""} onChange={e => onChange({ ...config, fallback_title: e.target.value })} style={inputStyle} placeholder="Data Science Master Program" />
-        </div>
-        <div>
-          <FieldLabel>Fallback duration</FieldLabel>
-          <input type="text" value={config.fallback_duration ?? ""} onChange={e => onChange({ ...config, fallback_duration: e.target.value })} style={inputStyle} placeholder="6 months" />
-        </div>
-      </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-        <div>
-          <FieldLabel>Fallback rating (0–5)</FieldLabel>
-          <input type="number" min={0} max={5} step={0.1} value={config.fallback_rating ?? ""} onChange={e => onChange({ ...config, fallback_rating: Number(e.target.value) })} style={inputStyle} />
-        </div>
-        <div>
-          <FieldLabel>CTA URL (overrides DB link)</FieldLabel>
-          <input type="text" value={config.cta_url ?? ""} onChange={e => onChange({ ...config, cta_url: e.target.value })} style={inputStyle} placeholder="https://..." />
-        </div>
-      </div>
-      <div>
-        <FieldLabel>CTA label</FieldLabel>
-        <input type="text" value={config.cta_label ?? "Enroll Now →"} onChange={e => onChange({ ...config, cta_label: e.target.value })} style={inputStyle} />
-      </div>
-    </div>
-  );
-}
-
-const CONFIG_FORMS = {
-  ask_ai:            AskAiConfig,
-  recommended_posts: RecommendedConfig,
-  author_spotlight:  AuthorSpotlightConfig,
-  salary_table:      SalaryTableConfig,
-  course_card:       CourseCardConfig,
-};
-
-// ── Micro helpers ─────────────────────────────────────────────────
-const inputStyle = {
-  width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid var(--border)",
-  background: "var(--bg2)", color: "var(--text)", fontSize: 13, boxSizing: "border-box",
-};
-const inputSmall = { ...inputStyle, padding: "6px 8px", fontSize: 12 };
-const rmBtnStyle = {
-  background: "none", border: "none", cursor: "pointer", color: "var(--text3)",
-  fontSize: 18, lineHeight: 1, padding: "0 2px", alignSelf: "center",
-};
-function FieldLabel({ children }) {
-  return <div style={{ fontSize: 11, fontWeight: 700, color: "var(--text3)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 5 }}>{children}</div>;
-}
-
-// ── Widget card ───────────────────────────────────────────────────
-function WidgetCard({ widget, index, total, onMove, onToggle, onDelete, onConfigChange }) {
-  const [expanded, setExpanded] = useState(false);
-  const meta = WIDGET_TYPES[widget.type] || { label: widget.type, color: "#888" };
-  const ConfigForm = CONFIG_FORMS[widget.type];
-
-  return (
-    <div style={{
-      border: `1.5px solid ${widget.enabled ? meta.color + "55" : "var(--border)"}`,
-      borderRadius: 12, background: "var(--bg2)", overflow: "hidden",
-      opacity: widget.enabled ? 1 : 0.55, transition: "opacity 0.2s",
-    }}>
-      {/* Header row */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px" }}>
-        {/* Reorder */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 2, flexShrink: 0 }}>
-          <button disabled={index === 0} onClick={() => onMove(index, -1)}
-            style={{ background: "none", border: "none", cursor: index === 0 ? "default" : "pointer", color: index === 0 ? "var(--text4)" : "var(--text3)", fontSize: 12, lineHeight: 1, padding: 0 }}>▲</button>
-          <button disabled={index === total - 1} onClick={() => onMove(index, 1)}
-            style={{ background: "none", border: "none", cursor: index === total - 1 ? "default" : "pointer", color: index === total - 1 ? "var(--text4)" : "var(--text3)", fontSize: 12, lineHeight: 1, padding: 0 }}>▼</button>
-        </div>
-
-        {/* Color dot + label */}
-        <div style={{ width: 8, height: 8, borderRadius: "50%", background: meta.color, flexShrink: 0 }} />
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: "var(--text)" }}>{widget.label || meta.label}</div>
-          <div style={{ fontSize: 11, color: "var(--text3)" }}>{meta.description}</div>
-        </div>
-
-        {/* Enable toggle */}
-        <button onClick={() => onToggle(index)} style={{
-          width: 36, height: 20, borderRadius: 10, border: "none", cursor: "pointer", flexShrink: 0,
-          background: widget.enabled ? meta.color : "var(--border)", position: "relative", transition: "background 0.2s",
-        }}>
-          <span style={{
-            position: "absolute", top: 2, left: widget.enabled ? 18 : 2,
-            width: 16, height: 16, borderRadius: "50%", background: "#fff", transition: "left 0.2s",
-          }} />
-        </button>
-
-        {/* Expand */}
-        {ConfigForm && (
-          <button onClick={() => setExpanded(e => !e)}
-            style={{ background: "none", border: "1px solid var(--border)", borderRadius: 6, cursor: "pointer", color: "var(--text3)", fontSize: 11, padding: "3px 10px", fontWeight: 600 }}>
-            {expanded ? "Close" : "Edit"}
-          </button>
-        )}
-
-        {/* Delete */}
-        <button onClick={() => onDelete(index)}
-          style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text4)", fontSize: 18, lineHeight: 1, padding: 0, marginLeft: 2 }}>
-          ×
-        </button>
-      </div>
-
-      {/* Config form */}
-      {expanded && ConfigForm && (
-        <div style={{ padding: "14px 14px 16px", borderTop: "1px solid var(--border)", background: "var(--bg3)" }}>
-          <ConfigForm
-            config={widget.config ?? {}}
-            onChange={(next) => onConfigChange(index, next)}
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ── Main page ─────────────────────────────────────────────────────
 export default function SiteLayoutPage() {
   const router = useRouter();
   const { authorProfile, loading: authLoading } = useAuth();
-  const [widgets, setWidgets] = useState([]);
+
+  // Data state: zones dict
+  const [zones, setZones] = useState(EMPTY_ZONES);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(null);
-  const [addType, setAddType] = useState("ask_ai");
   const [updatedBy, setUpdatedBy] = useState("");
+
+  // Active zone
+  const [activeZone, setActiveZone] = useState("article_sidebar");
+
+  // Drawer state
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [editingWidget, setEditingWidget] = useState(null);
+  const [isNewWidget, setIsNewWidget] = useState(false);
+
+  // DnD sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
 
   useEffect(() => {
     if (!authLoading && !authorProfile) router.replace("/studio/login");
@@ -283,8 +147,8 @@ export default function SiteLayoutPage() {
     fetch("/api/site-config")
       .then(r => r.ok ? r.json() : null)
       .then(data => {
-        if (data?.sidebar_widgets) {
-          setWidgets(data.sidebar_widgets);
+        if (data?.zones) {
+          setZones({ ...EMPTY_ZONES, ...data.zones });
           setUpdatedBy(data.updated_by || "");
         }
       })
@@ -292,55 +156,78 @@ export default function SiteLayoutPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const move = (index, dir) => {
-    const next = [...widgets];
-    const swap = index + dir;
-    if (swap < 0 || swap >= next.length) return;
-    [next[index], next[swap]] = [next[swap], next[index]];
-    setWidgets(next);
+  // ── Zone-scoped widget helpers ───────────────────────────────
+  const widgets = zones[activeZone] ?? [];
+
+  const setWidgets = (updater) => {
+    setZones(prev => ({
+      ...prev,
+      [activeZone]: typeof updater === "function" ? updater(prev[activeZone] ?? []) : updater,
+    }));
   };
 
-  const toggle = (index) => {
-    const next = [...widgets];
-    next[index] = { ...next[index], enabled: !next[index].enabled };
-    setWidgets(next);
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (active.id !== over?.id) {
+      setWidgets(items => {
+        const oldIndex = items.findIndex(i => i.id === active.id);
+        const newIndex = items.findIndex(i => i.id === over.id);
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
   };
 
-  const remove = (index) => {
-    setWidgets(widgets.filter((_, i) => i !== index));
+  const handleToggle = (id) => {
+    setWidgets(prev => prev.map(w => w.id === id ? { ...w, enabled: !w.enabled } : w));
   };
 
-  const updateConfig = (index, config) => {
-    const next = [...widgets];
-    next[index] = { ...next[index], config };
-    setWidgets(next);
+  const handleDelete = (id) => {
+    if (confirm("Remove this widget?")) {
+      setWidgets(prev => prev.filter(w => w.id !== id));
+    }
   };
 
-  const addWidget = () => {
-    const defaults = WIDGET_DEFAULTS[addType] || { config: {} };
-    const meta = WIDGET_TYPES[addType] || { label: addType };
-    setWidgets(prev => [...prev, {
-      id: newId(),
-      type: addType,
-      enabled: true,
-      label: meta.label,
-      ...defaults,
-    }]);
+  const handleEdit = (widget) => {
+    setEditingWidget(widget);
+    setIsNewWidget(false);
+    setIsDrawerOpen(true);
   };
 
-  const save = async () => {
+  const handleAddNew = () => {
+    setEditingWidget(null);
+    setIsNewWidget(true);
+    setIsDrawerOpen(true);
+  };
+
+  const handleSaveWidget = (updatedWidget) => {
+    if (isNewWidget) {
+      const defaults = WIDGET_DEFAULTS[updatedWidget.type] || { config: {} };
+      const newWidget = {
+        ...updatedWidget,
+        id: newId(),
+        config: { ...defaults.config, ...updatedWidget.config },
+      };
+      setWidgets(prev => [...prev, newWidget]);
+    } else {
+      setWidgets(prev => prev.map(w => w.id === updatedWidget.id ? updatedWidget : w));
+    }
+    setIsDrawerOpen(false);
+  };
+
+  const saveLayout = async () => {
     setSaving(true);
     setMessage(null);
     try {
       const res = await fetch("/api/site-config", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sidebar_widgets: widgets }),
+        body: JSON.stringify({ zones }),
       });
       const data = await res.json();
       if (data.success) {
-        setMessage({ type: "ok", text: "Layout saved. Changes are live immediately." });
+        setMessage({ type: "ok", text: "Layout saved. Changes are live." });
         setUpdatedBy(authorProfile?.name || "you");
+        setTimeout(() => setMessage(null), 5000);
       } else {
         setMessage({ type: "err", text: data.error || "Save failed." });
       }
@@ -353,114 +240,203 @@ export default function SiteLayoutPage() {
 
   if (authLoading || loading) {
     return (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: "var(--bg)" }}>
-        <div style={{ width: 32, height: 32, border: "3px solid var(--border)", borderTop: "3px solid var(--primary)", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
-        <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--color-surface)]">
+        <Loader2 className="w-10 h-10 text-[var(--color-primary)] animate-spin mb-4" />
+        <span className="text-sm font-medium text-[var(--color-on-surface-variant)]">Loading layout settings…</span>
       </div>
     );
   }
 
+  const activeZoneMeta = ZONES.find(z => z.id === activeZone);
+
   return (
-    <div style={{ background: "var(--bg)", minHeight: "100vh", overflowY: "auto" }}>
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "48px 24px 80px" }}>
-
-        {/* Back nav */}
-        <button onClick={() => router.push("/studio")}
-          style={{ background: "none", border: "none", color: "var(--text3)", display: "flex", alignItems: "center", gap: 6, cursor: "pointer", fontSize: 13, fontWeight: 500, marginBottom: 32, padding: 0 }}>
-          ← Back to Studio
-        </button>
-
-        {/* Header */}
-        <div style={{ marginBottom: 36 }}>
-          <h1 style={{ fontSize: 26, fontWeight: 800, color: "var(--text)", margin: "0 0 6px", letterSpacing: "-0.3px" }}>
-            Site Layout
-          </h1>
-          <p style={{ margin: 0, fontSize: 14, color: "var(--text3)" }}>
-            Configure the right sidebar shown on all article pages. Changes are reflected immediately on publish.
-          </p>
-          {updatedBy && (
-            <p style={{ margin: "6px 0 0", fontSize: 11, color: "var(--text4)" }}>Last saved by {updatedBy}</p>
-          )}
-        </div>
-
-        {/* Toast */}
-        {message && (
-          <div style={{
-            padding: "12px 16px", borderRadius: 10, marginBottom: 24, fontSize: 13, fontWeight: 500,
-            background: message.type === "ok" ? "var(--green-dim, #dcfce7)" : "var(--red-dim, #fee2e2)",
-            color: message.type === "ok" ? "var(--green, #16a34a)" : "var(--red, #ef4444)",
-            border: `1px solid ${message.type === "ok" ? "rgba(34,197,94,.2)" : "rgba(239,68,68,.2)"}`,
-          }}>
-            {message.text}
-          </div>
-        )}
-
-        {/* Section: Right Sidebar Widgets */}
-        <div style={{ marginBottom: 32 }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+    <div className="min-h-screen bg-[var(--color-background)]">
+      {/* Sticky Header */}
+      <header className="sticky top-0 z-40 bg-[var(--color-surface)]/80 backdrop-blur-md border-b border-[var(--color-outline-variant)] px-6 py-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => router.push("/studio")}
+              className="p-2 hover:bg-black/5 rounded-full transition-colors"
+            >
+              <ArrowLeft size={20} />
+            </button>
             <div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "var(--text3)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 2 }}>
-                RIGHT SIDEBAR — ARTICLE PAGES
-              </div>
-              <div style={{ fontSize: 12, color: "var(--text4)" }}>
-                Drag up/down to reorder. Toggle to show/hide. Widgets render top-to-bottom.
-              </div>
+              <h1 className="text-xl font-bold text-[var(--color-on-surface)] flex items-center gap-2">
+                Site Layout
+                <span className="text-[10px] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] px-2 py-0.5 rounded-full uppercase tracking-wider">Editor</span>
+              </h1>
+              {updatedBy && (
+                <p className="text-[10px] text-[var(--color-on-surface-variant)]">Last saved by {updatedBy}</p>
+              )}
             </div>
-            <span style={{ fontSize: 12, color: "var(--text3)", background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: 20, padding: "3px 12px", fontWeight: 600 }}>
-              {widgets.filter(w => w.enabled).length} active
-            </span>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {widgets.length === 0 && (
-              <div style={{ padding: 24, textAlign: "center", color: "var(--text4)", border: "1px dashed var(--border)", borderRadius: 12, fontSize: 13 }}>
-                No widgets configured. Add one below.
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => router.push("/studio")}
+              className="hidden sm:block px-4 py-2 text-sm font-bold text-[var(--color-on-surface-variant)] hover:bg-black/5 rounded-xl transition-all"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={saveLayout}
+              disabled={saving}
+              className="px-6 py-2 bg-[var(--color-primary)] text-white rounded-xl font-bold text-sm shadow-lg shadow-[var(--color-primary)]/20 hover:opacity-90 active:scale-[0.98] transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {saving ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
+              Publish Changes
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* 2-column layout */}
+      <div className="max-w-6xl mx-auto flex min-h-[calc(100vh-73px)]">
+        {/* ── Left Zone Nav ─────────────────────────────────── */}
+        <aside className="w-[250px] shrink-0 border-r border-[var(--color-outline-variant)] bg-[var(--color-surface)] py-8 px-4">
+          <p className="text-[10px] font-bold text-[var(--color-on-surface-variant)] uppercase tracking-widest mb-4 ml-2">
+            Zones
+          </p>
+          <nav className="space-y-1">
+            {ZONES.map(({ id, label, Icon, color }) => {
+              const isActive = id === activeZone;
+              const count = (zones[id] ?? []).filter(w => w.enabled).length;
+              return (
+                <button
+                  key={id}
+                  onClick={() => setActiveZone(id)}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all ${
+                    isActive
+                      ? "bg-[var(--color-primary)] text-white font-bold shadow-md"
+                      : "text-[var(--color-on-surface-variant)] hover:bg-[var(--color-surface-container-high)] font-medium"
+                  }`}
+                >
+                  <Icon size={17} style={{ color: isActive ? "white" : color }} />
+                  <span className="flex-1 text-sm">{label}</span>
+                  {count > 0 && (
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                      isActive
+                        ? "bg-white/20 text-white"
+                        : "bg-[var(--color-primary-container)]/30 text-[var(--color-primary)]"
+                    }`}>
+                      {count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+        </aside>
+
+        {/* ── Right Canvas ──────────────────────────────────── */}
+        <main className="flex-1 px-8 py-8 pb-24 overflow-y-auto">
+          {/* Toast */}
+          {message && (
+            <div className={`mb-8 p-4 rounded-xl flex items-center gap-3 border shadow-sm animate-in slide-in-from-top duration-300 ${
+              message.type === "ok"
+                ? "bg-green-50 border-green-200 text-green-700"
+                : "bg-red-50 border-red-200 text-red-700"
+            }`}>
+              {message.type === "ok" ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
+              <span className="text-sm font-medium">{message.text}</span>
+            </div>
+          )}
+
+          {/* Zone header */}
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-lg font-bold text-[var(--color-on-surface)] flex items-center gap-2">
+                {activeZoneMeta?.Icon && (
+                  <activeZoneMeta.Icon size={20} style={{ color: activeZoneMeta.color }} />
+                )}
+                {activeZoneMeta?.label}
+              </h2>
+              <p className="text-xs text-[var(--color-on-surface-variant)] mt-1">
+                {activeZoneMeta?.description}
+              </p>
+            </div>
+            <p className="text-xs font-bold text-[var(--color-primary)] bg-[var(--color-primary-container)]/20 px-3 py-1 rounded-full">
+              {widgets.filter(w => w.enabled).length} Active
+            </p>
+          </div>
+
+          {/* Widget list */}
+          <div className="space-y-3 max-w-xl">
+            {widgets.length === 0 ? (
+              <div className="py-20 flex flex-col items-center justify-center border-2 border-dashed border-[var(--color-outline-variant)] rounded-3xl bg-[var(--color-surface-container-low)]">
+                <div className="w-16 h-16 bg-[var(--color-surface-container-highest)] rounded-full flex items-center justify-center mb-4">
+                  <Layout size={32} className="text-[var(--color-on-surface-variant)] opacity-40" />
+                </div>
+                <h3 className="text-lg font-bold text-[var(--color-on-surface)]">No widgets yet</h3>
+                <p className="text-sm text-[var(--color-on-surface-variant)] text-center max-w-[240px] mt-2 mb-8 leading-relaxed">
+                  Add your first widget to populate this zone.
+                </p>
+                <button
+                  onClick={handleAddNew}
+                  className="px-8 py-3 bg-[var(--color-primary)] text-white rounded-2xl font-bold flex items-center gap-2 hover:shadow-xl hover:shadow-[var(--color-primary)]/20 active:scale-95 transition-all"
+                >
+                  <Plus size={20} />
+                  Add Your First Widget
+                </button>
               </div>
+            ) : (
+              <>
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEnd}
+                >
+                  <SortableContext
+                    items={widgets.map(w => w.id)}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    <div className="space-y-4">
+                      {widgets.map(widget => (
+                        <WidgetCard
+                          key={widget.id}
+                          widget={widget}
+                          meta={WIDGET_TYPES[widget.type]}
+                          onEdit={handleEdit}
+                          onDelete={handleDelete}
+                          onToggle={handleToggle}
+                        />
+                      ))}
+                    </div>
+                  </SortableContext>
+                </DndContext>
+
+                <button
+                  onClick={handleAddNew}
+                  className="w-full mt-6 py-4 flex items-center justify-center gap-2 border-2 border-dashed border-[var(--color-outline-variant)] text-[var(--color-on-surface-variant)] rounded-2xl font-bold text-sm hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 transition-all"
+                >
+                  <Plus size={18} />
+                  Add Another Widget
+                </button>
+              </>
             )}
-            {widgets.map((widget, i) => (
-              <WidgetCard
-                key={widget.id}
-                widget={widget}
-                index={i}
-                total={widgets.length}
-                onMove={move}
-                onToggle={toggle}
-                onDelete={remove}
-                onConfigChange={updateConfig}
-              />
-            ))}
           </div>
-        </div>
-
-        {/* Add widget */}
-        <div style={{ display: "flex", gap: 10, alignItems: "center", padding: "14px 16px", border: "1px dashed var(--border)", borderRadius: 12, marginBottom: 32 }}>
-          <div style={{ fontSize: 12, fontWeight: 600, color: "var(--text3)", flexShrink: 0 }}>Add widget:</div>
-          <select value={addType} onChange={e => setAddType(e.target.value)}
-            style={{ flex: 1, padding: "7px 10px", borderRadius: 8, border: "1px solid var(--border)", background: "var(--bg2)", color: "var(--text)", fontSize: 13 }}>
-            {Object.entries(WIDGET_TYPES).map(([type, meta]) => (
-              <option key={type} value={type}>{meta.label}</option>
-            ))}
-          </select>
-          <button onClick={addWidget}
-            style={{ padding: "7px 18px", borderRadius: 8, background: "var(--primary)", color: "#fff", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700, flexShrink: 0 }}>
-            + Add
-          </button>
-        </div>
-
-        {/* Save */}
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: 12 }}>
-          <button onClick={() => router.push("/studio")}
-            style={{ padding: "10px 22px", borderRadius: 8, border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text2)", fontWeight: 600, fontSize: 13, cursor: "pointer" }}>
-            Cancel
-          </button>
-          <button onClick={save} disabled={saving}
-            style={{ padding: "10px 28px", borderRadius: 8, background: "var(--primary)", color: "#fff", border: "none", fontWeight: 700, fontSize: 13, cursor: saving ? "not-allowed" : "pointer", display: "flex", alignItems: "center", gap: 8, opacity: saving ? 0.75 : 1 }}>
-            {saving && <span style={{ width: 14, height: 14, border: "2px solid rgba(255,255,255,.4)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.8s linear infinite", display: "inline-block" }} />}
-            {saving ? "Saving…" : "Save Layout"}
-          </button>
-        </div>
+        </main>
       </div>
-      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+
+      {/* Widget Settings Drawer */}
+      <WidgetSettingsDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        onSave={handleSaveWidget}
+        widget={editingWidget}
+        widgetTypes={WIDGET_TYPES}
+        isNew={isNewWidget}
+      />
+
+      {/* Bottom status pill */}
+      {!saving && updatedBy && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-[var(--color-surface-container-highest)]/90 backdrop-blur-sm border border-[var(--color-outline-variant)] rounded-full shadow-lg pointer-events-none">
+          <p className="text-[10px] font-medium text-[var(--color-on-surface-variant)] uppercase tracking-wider">
+            Latest configuration active • Saved by {updatedBy}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

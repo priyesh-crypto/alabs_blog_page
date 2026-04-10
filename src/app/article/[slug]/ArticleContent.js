@@ -9,6 +9,9 @@ import MobileBottomNav from "@/components/MobileBottomNav";
 import { ToastProvider, useToast } from "@/components/Toast";
 import CoursesGrid from "@/components/CoursesGrid";
 import AskAI from "@/components/AskAI";
+import SidebarAuthorSpotlight from "@/components/SidebarAuthorSpotlight";
+import SidebarSalaryWidget from "@/components/SidebarSalaryWidget";
+import SidebarCourseCard from "@/components/SidebarCourseCard";
 import { postCommentAction, fetchCommentsAction, likeCommentAction } from "@/app/actions";
 import "@/components/TiptapEditor.css";
 
@@ -61,7 +64,7 @@ function buildSuggestedQuestions(post) {
   return [...found, ...fromTags, ...fallback].filter((v, i, a) => a.indexOf(v) === i).slice(0, 5);
 }
 
-function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCount = 0 }) {
+function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCount = 0, sidebarWidgets = [] }) {
   const addToast      = useToast();
   const [progress, setProgress] = useState(0);
   const [toc, setToc]           = useState([]);
@@ -815,37 +818,66 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
         {/* ── Right Sidebar ── */}
         <aside className="hidden lg:flex flex-col gap-5">
           <div className="sticky top-24 flex flex-col gap-5">
+            {sidebarWidgets.filter(w => w.enabled).map(widget => {
+              switch (widget.type) {
 
-            {/* Ask the AI */}
-            <AskAI
-              questions={suggestedQuestions}
-              context={`Title: ${post.title}\nExcerpt: ${post.excerpt || ""}\nTopics: ${(post.domain_tags || []).join(", ")}`}
-              placeholder="Ask anything about this article…"
-            />
+                case 'ask_ai':
+                  return (
+                    <AskAI
+                      key={widget.id}
+                      questions={suggestedQuestions}
+                      context={`Title: ${post.title}\nExcerpt: ${post.excerpt || ""}\nTopics: ${(post.domain_tags || []).join(", ")}`}
+                      placeholder="Ask anything about this article…"
+                    />
+                  );
 
-            {/* Recommended articles */}
-            {recommendedArticles?.length > 0 && (
-              <div className="rounded-2xl border p-5 bg-surface-container-lowest dark:bg-[#0b1326] border-outline-variant/20 dark:border-[#424754]">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-[family-name:var(--font-headline)] font-bold text-base dark:text-[#dae2fd]">Recommended</h3>
-                  <span className="material-symbols-outlined text-primary dark:text-[#adc6ff] text-xl"
-                    style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
-                </div>
-                <ul className="flex flex-col gap-4">
-                  {recommendedArticles.map(item => (
-                    <li key={item.id}>
-                      <Link href={`/article/${item.slug}`} className="group block">
-                        <p className="text-[10px] font-[family-name:var(--font-label)] uppercase text-on-surface-variant dark:text-[#8c909f] mb-0.5">{item.category}</p>
-                        <h5 className="text-[13px] font-bold leading-snug group-hover:text-primary dark:group-hover:text-[#adc6ff] transition-colors dark:text-[#dae2fd]">
-                          {item.title}
-                        </h5>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+                case 'recommended_posts':
+                  return recommendedArticles?.length > 0 ? (
+                    <div key={widget.id} className="rounded-2xl border p-5 bg-surface-container-lowest dark:bg-[#0b1326] border-outline-variant/20 dark:border-[#424754]">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="font-[family-name:var(--font-headline)] font-bold text-base dark:text-[#dae2fd]">Recommended</h3>
+                        <span className="material-symbols-outlined text-primary dark:text-[#adc6ff] text-xl"
+                          style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
+                      </div>
+                      <ul className="flex flex-col gap-4">
+                        {recommendedArticles.slice(0, widget.config?.count ?? 3).map(item => (
+                          <li key={item.id}>
+                            <Link href={`/article/${item.slug}`} className="group block">
+                              <p className="text-[10px] font-[family-name:var(--font-label)] uppercase text-on-surface-variant dark:text-[#8c909f] mb-0.5">{item.category}</p>
+                              <h5 className="text-[13px] font-bold leading-snug group-hover:text-primary dark:group-hover:text-[#adc6ff] transition-colors dark:text-[#dae2fd]">
+                                {item.title}
+                              </h5>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null;
 
+                case 'author_spotlight':
+                  return (
+                    <SidebarAuthorSpotlight
+                      key={widget.id}
+                      author={post.author}
+                      articleCount={authorPostCount}
+                    />
+                  );
+
+                case 'salary_table':
+                  return <SidebarSalaryWidget key={widget.id} config={widget.config} />;
+
+                case 'course_card': {
+                  const cfg = widget.config ?? {};
+                  const course = cfg.use_article_match && courseMatch
+                    ? { ...courseMatch, ctaUrl: cfg.cta_url, ctaLabel: cfg.cta_label }
+                    : { title: cfg.fallback_title, duration: cfg.fallback_duration, rating: cfg.fallback_rating, ctaUrl: cfg.cta_url, ctaLabel: cfg.cta_label };
+                  return course?.title ? <SidebarCourseCard key={widget.id} course={course} /> : null;
+                }
+
+                default:
+                  return null;
+              }
+            })}
           </div>
         </aside>
       </div>
@@ -859,10 +891,10 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
   );
 }
 
-export default function ArticlePageWrapper({ post, recommendedArticles, courseMatch, authorPostCount }) {
+export default function ArticlePageWrapper({ post, recommendedArticles, courseMatch, authorPostCount, sidebarWidgets }) {
   return (
     <ToastProvider>
-      <ArticleContent post={post} recommendedArticles={recommendedArticles} courseMatch={courseMatch} authorPostCount={authorPostCount} />
+      <ArticleContent post={post} recommendedArticles={recommendedArticles} courseMatch={courseMatch} authorPostCount={authorPostCount} sidebarWidgets={sidebarWidgets} />
     </ToastProvider>
   );
 }

@@ -1,4 +1,5 @@
 import { getPostBySlug, getRecommendations, getCourseMatch, getAuthorPostCount } from "@/lib/data.server";
+import { getSiteConfig } from "@/lib/site-config.server";
 import { notFound } from "next/navigation";
 import ArticleContent from "./ArticleContent";
 import { SITE_NAME } from "@/lib/config";
@@ -72,10 +73,11 @@ export default async function ArticlePage({ params }) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) notFound();
-  const [recommendedArticles, courseMatch, authorPostCount] = await Promise.all([
+  const [recommendedArticles, courseMatch, authorPostCount, siteConfig] = await Promise.all([
     getRecommendations(slug, 3),
     Promise.resolve(getCourseMatch(post.domain_tags)),
     getAuthorPostCount(post.authorId),
+    getSiteConfig(),
   ]);
 
   const faqJsonLd = post.discussion?.faqSchema && post.content
@@ -90,7 +92,7 @@ export default async function ArticlePage({ params }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
-      <ArticleContent post={post} recommendedArticles={recommendedArticles} courseMatch={courseMatch} authorPostCount={authorPostCount} />
+      <ArticleContent post={post} recommendedArticles={recommendedArticles} courseMatch={courseMatch} authorPostCount={authorPostCount} sidebarWidgets={siteConfig.zones.article_sidebar} />
     </>
   );
 }

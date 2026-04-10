@@ -5,8 +5,7 @@
 import { getServiceClient } from './supabase';
 import { SALARY_PREVIEW_ROWS } from './config';
 
-/** Mirrors the default row inserted by migration 012. Used as in-memory fallback. */
-export const DEFAULT_SIDEBAR_WIDGETS = [
+const DEFAULT_ARTICLE_SIDEBAR = [
   {
     id: 'w-ask-ai',
     type: 'ask_ai',
@@ -61,33 +60,47 @@ export const DEFAULT_SIDEBAR_WIDGETS = [
   },
 ];
 
+export const DEFAULT_ZONES = {
+  article_sidebar: DEFAULT_ARTICLE_SIDEBAR,
+  homepage: [],
+  course_page: [],
+  global_footer: [],
+};
+
 /**
  * Fetch the global site config from Supabase.
- * Falls back to DEFAULT_SIDEBAR_WIDGETS if the table is empty or unavailable.
+ * Returns a `zones` dict keyed by zone name.
+ * Falls back to DEFAULT_ZONES if the table is empty or unavailable.
  */
 export async function getSiteConfig() {
   try {
     const db = getServiceClient();
     const { data, error } = await db
       .from('site_config')
-      .select('sidebar_widgets, homepage_hero, updated_at, updated_by')
+      .select('zones, updated_at, updated_by')
       .eq('key', 'global')
       .single();
 
     if (error) throw error;
 
+    const rawZones = data?.zones;
+    const zones = rawZones && typeof rawZones === 'object'
+      ? {
+          article_sidebar: Array.isArray(rawZones.article_sidebar) ? rawZones.article_sidebar : DEFAULT_ARTICLE_SIDEBAR,
+          homepage:        Array.isArray(rawZones.homepage)        ? rawZones.homepage        : [],
+          course_page:     Array.isArray(rawZones.course_page)     ? rawZones.course_page     : [],
+          global_footer:   Array.isArray(rawZones.global_footer)   ? rawZones.global_footer   : [],
+        }
+      : DEFAULT_ZONES;
+
     return {
-      sidebarWidgets: Array.isArray(data?.sidebar_widgets) && data.sidebar_widgets.length > 0
-        ? data.sidebar_widgets
-        : DEFAULT_SIDEBAR_WIDGETS,
-      homepageHero: data?.homepage_hero ?? {},
+      zones,
       updatedAt: data?.updated_at ?? '',
       updatedBy: data?.updated_by ?? '',
     };
   } catch {
     return {
-      sidebarWidgets: DEFAULT_SIDEBAR_WIDGETS,
-      homepageHero: {},
+      zones: DEFAULT_ZONES,
       updatedAt: '',
       updatedBy: '',
     };
