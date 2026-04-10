@@ -2,6 +2,117 @@
 
 import { useRef, useState, useEffect } from "react";
 import { Toggle, Section, I } from "./StudioIcons";
+
+// ── Per-widget config forms ───────────────────────────────────
+function QuizWidgetForm({ widget, update }) {
+  const opts = widget.options || ["", "", "", ""];
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div>
+        <div className="f-lbl" style={{ marginBottom: 5 }}>Question</div>
+        <textarea value={widget.question || ""} onChange={(e) => update({ question: e.target.value })} placeholder="Enter your quiz question…" style={{ minHeight: 52, resize: "vertical" }} />
+      </div>
+      <div>
+        <div className="f-lbl" style={{ marginBottom: 5 }}>Options <span style={{ fontSize: 10, color: "var(--text3)", fontWeight: 400 }}>click ✓ to mark correct</span></div>
+        {opts.map((opt, i) => (
+          <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
+            <button
+              onClick={() => update({ correctIndex: i })}
+              style={{ width: 22, height: 22, borderRadius: "50%", border: `2px solid ${widget.correctIndex === i ? "#16a34a" : "var(--border)"}`, background: widget.correctIndex === i ? "#16a34a" : "var(--bg)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 11, flexShrink: 0, fontWeight: 700 }}
+            >{widget.correctIndex === i ? "✓" : ""}</button>
+            <input type="text" value={opt} onChange={(e) => { const next = [...opts]; next[i] = e.target.value; update({ options: next }); }} placeholder={`Option ${i + 1}`} style={{ flex: 1 }} />
+          </div>
+        ))}
+      </div>
+      <div>
+        <div className="f-lbl" style={{ marginBottom: 5 }}>Explanation <span style={{ fontSize: 10, color: "var(--text3)", fontWeight: 400 }}>shown after answering</span></div>
+        <textarea value={widget.explanation || ""} onChange={(e) => update({ explanation: e.target.value })} placeholder="Brief explanation of the correct answer…" style={{ minHeight: 44, resize: "vertical" }} />
+      </div>
+    </div>
+  );
+}
+
+function NewsletterWidgetForm({ widget, update }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div>
+        <div className="f-lbl" style={{ marginBottom: 5 }}>Headline</div>
+        <input type="text" value={widget.headline || ""} onChange={(e) => update({ headline: e.target.value })} placeholder="Get the Data Science Career Guide" />
+      </div>
+      <div>
+        <div className="f-lbl" style={{ marginBottom: 5 }}>Subtext</div>
+        <textarea value={widget.subtext || ""} onChange={(e) => update({ subtext: e.target.value })} placeholder="Join 40,000+ learners…" style={{ minHeight: 44, resize: "vertical" }} />
+      </div>
+      <div>
+        <div className="f-lbl" style={{ marginBottom: 5 }}>Button label</div>
+        <input type="text" value={widget.ctaLabel || ""} onChange={(e) => update({ ctaLabel: e.target.value })} placeholder="Subscribe →" />
+      </div>
+    </div>
+  );
+}
+
+function CourseMatchWidgetForm({ widget, update, studioCourses }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div>
+        <div className="f-lbl" style={{ marginBottom: 5 }}>Course</div>
+        <select value={widget.courseId || ""} onChange={(e) => update({ courseId: e.target.value || null })}>
+          <option value="">— Auto-match by domain tags —</option>
+          {studioCourses.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+        </select>
+      </div>
+      <div>
+        <div className="f-lbl" style={{ marginBottom: 5 }}>CTA headline</div>
+        <input type="text" value={widget.ctaHeadline || ""} onChange={(e) => update({ ctaHeadline: e.target.value })} placeholder="Ready to go deeper? Enroll now →" />
+      </div>
+    </div>
+  );
+}
+
+function NextStepsWidgetForm({ widget, update }) {
+  const steps = widget.steps || ["", "", ""];
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <div className="f-lbl" style={{ marginBottom: 2 }}>Steps</div>
+      {steps.map((step, i) => (
+        <div key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "var(--text3)", width: 16, flexShrink: 0, textAlign: "right" }}>{i + 1}.</span>
+          <input type="text" value={step} onChange={(e) => { const next = [...steps]; next[i] = e.target.value; update({ steps: next }); }} placeholder={`Step ${i + 1}…`} style={{ flex: 1 }} />
+          {steps.length > 1 && (
+            <button onClick={() => update({ steps: steps.filter((_, j) => j !== i) })} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text4)", fontSize: 16, lineHeight: 1, padding: "0 2px" }}>×</button>
+          )}
+        </div>
+      ))}
+      {steps.length < 6 && (
+        <button onClick={() => update({ steps: [...steps, ""] })} style={{ fontSize: 12, color: "var(--text3)", background: "none", border: "1px dashed var(--border)", borderRadius: 6, padding: "5px 10px", cursor: "pointer", marginTop: 2 }}>+ Add step</button>
+      )}
+    </div>
+  );
+}
+
+function WidgetConfigPanel({ widgetId, widget, dispatch, studioCourses }) {
+  const update = (data) => dispatch({ type: "UPDATE_WIDGET", id: widgetId, data });
+  const typeLabels = { quiz: "Knowledge Check", newsletter: "Newsletter CTA", coursematch: "Course CTA", nextsteps: "AI Next Steps" };
+  const typeColors = { quiz: "#16a34a", newsletter: "#003b93", coursematch: "#4f46e5", nextsteps: "#b45309" };
+  const color = typeColors[widget.type] || "#888";
+  return (
+    <div style={{ background: "var(--bg2)", border: `2px solid ${color}`, borderRadius: 12, padding: 14, marginBottom: 0 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+          <div style={{ width: 8, height: 8, borderRadius: "50%", background: color, flexShrink: 0 }} />
+          <span style={{ fontSize: 11, fontWeight: 700, color, letterSpacing: "0.06em", textTransform: "uppercase" }}>
+            {typeLabels[widget.type] || widget.type} Widget
+          </span>
+        </div>
+        <button onClick={() => dispatch({ type: "SET_ACTIVE_WIDGET", id: null })} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text3)", fontSize: 16, lineHeight: 1, padding: 0 }}>×</button>
+      </div>
+      {widget.type === "quiz"        && <QuizWidgetForm       widget={widget} update={update} />}
+      {widget.type === "newsletter"  && <NewsletterWidgetForm  widget={widget} update={update} />}
+      {widget.type === "coursematch" && <CourseMatchWidgetForm widget={widget} update={update} studioCourses={studioCourses} />}
+      {widget.type === "nextsteps"   && <NextStepsWidgetForm   widget={widget} update={update} />}
+    </div>
+  );
+}
 import {
   STUDIO_CATEGORIES,
   STUDIO_LEAD_MAGNETS,
@@ -10,6 +121,8 @@ import {
 
 export default function DetailsPanel({ state, dispatch, set, showToast }) {
   const fileInputRef = useRef(null);
+  const cardImageInputRef = useRef(null);
+  const squareImageInputRef = useRef(null);
   const [categories, setCategories] = useState(STUDIO_CATEGORIES);
   const [studioCourses, setStudioCourses] = useState([]);
 
@@ -60,6 +173,36 @@ export default function DetailsPanel({ state, dispatch, set, showToast }) {
     finally { set("isUploadingImage", false); e.target.value = ""; }
   };
 
+  const handleCardImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    set("isUploadingCardImage", true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (data.url) set("cardImage", data.url);
+      else showToast("Upload failed: " + (data.error || "unknown"), "err");
+    } catch { showToast("Upload failed. Please try again.", "err"); }
+    finally { set("isUploadingCardImage", false); e.target.value = ""; }
+  };
+
+  const handleSquareImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    set("isUploadingSquareImage", true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (data.url) set("squareImage", data.url);
+      else showToast("Upload failed: " + (data.error || "unknown"), "err");
+    } catch { showToast("Upload failed. Please try again.", "err"); }
+    finally { set("isUploadingSquareImage", false); e.target.value = ""; }
+  };
+
   const handleTagKeyDown = (e) => {
     if (e.key === "Enter" || e.key === ",") { e.preventDefault(); dispatch({ type: "ADD_TAG", value: state.tagInput }); }
     else if (e.key === "Backspace" && !state.tagInput && state.tags.length > 0) dispatch({ type: "POP_TAG" });
@@ -74,6 +217,18 @@ export default function DetailsPanel({ state, dispatch, set, showToast }) {
 
   return (
     <>
+      {/* Active Widget Configuration */}
+      {state.activeWidgetId && state.widgets?.[state.activeWidgetId] && (
+        <div className="pp-field">
+          <WidgetConfigPanel
+            widgetId={state.activeWidgetId}
+            widget={state.widgets[state.activeWidgetId]}
+            dispatch={dispatch}
+            studioCourses={studioCourses}
+          />
+        </div>
+      )}
+
       {/* Featured Image */}
       <div className="pp-field">
         <div className="f-lbl">FEATURED IMAGE</div>
@@ -89,6 +244,40 @@ export default function DetailsPanel({ state, dispatch, set, showToast }) {
             <div className="img-drop-text">
               {state.isUploadingImage ? "Uploading…" : <><b>Click to upload</b> or drag &amp; drop</>}
             </div>
+          </div>
+        )}
+      </div>
+
+      {/* Card Image 4:3 */}
+      <div className="pp-field" style={{ paddingTop: 0 }}>
+        <div className="f-lbl" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span>CARD IMAGE <span style={{ fontSize: 10, color: "var(--text3)", fontWeight: 400 }}>4:3 — post grid</span></span>
+          {state.cardImage && <button onClick={() => set("cardImage", "")} style={{ background: "none", border: "none", color: "var(--text3)", cursor: "pointer", fontSize: 11, padding: 0 }}>Remove</button>}
+        </div>
+        <input ref={cardImageInputRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleCardImageUpload} />
+        {state.cardImage ? (
+          <img src={state.cardImage} alt="Card" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", borderRadius: "var(--radius)", display: "block" }} />
+        ) : (
+          <div className="img-drop" onClick={() => cardImageInputRef.current?.click()} style={{ opacity: state.isUploadingCardImage ? 0.6 : 1, aspectRatio: "4/3" }}>
+            <div className="img-drop-icon">{I.image}</div>
+            <div className="img-drop-text">{state.isUploadingCardImage ? "Uploading…" : <><b>Click to upload</b> 4:3</>}</div>
+          </div>
+        )}
+      </div>
+
+      {/* Square Image 1:1 */}
+      <div className="pp-field" style={{ paddingTop: 0 }}>
+        <div className="f-lbl" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span>SQUARE IMAGE <span style={{ fontSize: 10, color: "var(--text3)", fontWeight: 400 }}>1:1 — social / OG</span></span>
+          {state.squareImage && <button onClick={() => set("squareImage", "")} style={{ background: "none", border: "none", color: "var(--text3)", cursor: "pointer", fontSize: 11, padding: 0 }}>Remove</button>}
+        </div>
+        <input ref={squareImageInputRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleSquareImageUpload} />
+        {state.squareImage ? (
+          <img src={state.squareImage} alt="Square" style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", borderRadius: "var(--radius)", display: "block" }} />
+        ) : (
+          <div className="img-drop" onClick={() => squareImageInputRef.current?.click()} style={{ opacity: state.isUploadingSquareImage ? 0.6 : 1, aspectRatio: "1/1" }}>
+            <div className="img-drop-icon">{I.image}</div>
+            <div className="img-drop-text">{state.isUploadingSquareImage ? "Uploading…" : <><b>Click to upload</b> 1:1</>}</div>
           </div>
         )}
       </div>
@@ -129,18 +318,6 @@ export default function DetailsPanel({ state, dispatch, set, showToast }) {
           <span className={`f-cnt ${excerptLen > 160 ? "bad" : excerptLen > 100 ? "warn" : ""}`}>{excerptLen}/100</span>
         </div>
         <textarea value={state.excerpt} onChange={(e) => set("excerpt", e.target.value)} placeholder="A brief summary for search results..." style={{ minHeight: 68 }} />
-      </div>
-
-      {/* URL Slug */}
-       <div className="pp-field">
-        <div className="f-lbl">URL SLUG</div>
-        <input type="text" value={state.slug} onChange={(e) => set("slug", e.target.value)} placeholder="your-post-slug" />
-        <div className="slug-path">
-          /article/{state.slug || "your-post-slug"}
-          <div className="slug-hint" style={{ fontSize: 11, color: "var(--text4)", marginTop: 4, fontStyle: "italic" }}>
-            This determines the public URL. Changes will update the redirection path.
-          </div>
-        </div>
       </div>
 
       {/* Topics */}
@@ -215,38 +392,6 @@ export default function DetailsPanel({ state, dispatch, set, showToast }) {
         <div className="toggle-row">
           <span className="toggle-lbl">Exit-intent popup</span>
           <Toggle checked={state.exitIntentEnabled} onChange={(v) => set("exitIntentEnabled", v)} />
-        </div>
-      </Section>
-
-      {/* Knowledge Check T2 */}
-      <Section title="Knowledge Check" tier="T2" open={state.openSections.quiz} onToggle={() => dispatch({ type: "TOGGLE_SECTION", key: "quiz" })}>
-        {state.quizQuestions.length > 0 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {state.quizQuestions.map((q, qi) => (
-              <div key={q.id} className="quiz-card">
-                <div className="quiz-hd">
-                  <span className="quiz-num">Q{qi + 1}</span>
-                  <button className="quiz-rm" onClick={() => dispatch({ type: "REMOVE_QUIZ_QUESTION", id: q.id })}>Remove</button>
-                </div>
-                <input className="quiz-q-in" type="text" value={q.question} onChange={(e) => dispatch({ type: "UPDATE_QUIZ_QUESTION", id: q.id, field: "question", value: e.target.value })} placeholder="Enter question..." />
-                <div className="quiz-opts">
-                  {q.options.map((opt, oi) => (
-                    <div key={oi} className="quiz-opt-wrap">
-                      <input type="text" className={`quiz-opt-in ${q.correctIndex === oi ? "correct" : ""}`} value={opt} onChange={(e) => dispatch({ type: "UPDATE_QUIZ_OPTION", qId: q.id, optIdx: oi, value: e.target.value })} placeholder={`Option ${oi + 1}`} />
-                      <button className={`quiz-opt-mark ${q.correctIndex === oi ? "picked" : ""}`} onClick={() => dispatch({ type: "UPDATE_QUIZ_QUESTION", id: q.id, field: "correctIndex", value: oi })} title="Mark correct">{q.correctIndex === oi ? "✓" : ""}</button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-        <button className="quiz-add" onClick={() => dispatch({ type: "ADD_QUIZ_QUESTION" })}>
-          <span style={{ fontSize: 16 }}>+</span> Add Question
-        </button>
-        <div className="toggle-row">
-          <span className="toggle-lbl">GA4 event tracking</span>
-          <Toggle checked={state.ga4TrackingEnabled} onChange={(v) => set("ga4TrackingEnabled", v)} />
         </div>
       </Section>
 

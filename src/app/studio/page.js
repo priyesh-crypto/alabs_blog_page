@@ -345,6 +345,7 @@ export default function AuthorStudio() {
                         editorComments={state.editorComments}
                         onUpdateComments={(c) => set("editorComments", c)}
                         currentAuthor={dynamicAuthor}
+
                       />
                     </div>
                   </>
@@ -382,7 +383,7 @@ export default function AuthorStudio() {
                   <DetailsPanel state={state} dispatch={dispatch} set={set} showToast={showToast} />
                 )}
                 {state.activeTab === "seo" && (
-                  <SeoPanel state={state} set={set} />
+                  <SeoPanel state={state} set={set} showToast={showToast} />
                 )}
                 {state.activeTab === "advanced" && (
                   <AdvancedPanel state={state} set={set} />

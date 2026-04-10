@@ -82,6 +82,7 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
   const [showShare, setShowShare] = useState(false);
 
   const articleRef = useRef(null);
+  const headingRefs = useRef({});
   const author = post.author || {};
   const suggestedQuestions = buildSuggestedQuestions(post);
 
@@ -118,24 +119,37 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
     if (!articleRef.current) return;
     const headings = articleRef.current.querySelectorAll("h2, h3");
     const extracted = [];
+    headingRefs.current = {};
     headings.forEach((h, i) => {
       const id = h.textContent.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") + "-" + i;
       h.id = id;
+      headingRefs.current[id] = h;
       extracted.push({ id, label: h.textContent.trim(), level: h.tagName.toLowerCase() });
     });
     setToc(extracted);
     if (extracted.length > 0) setActiveSection(extracted[0].id);
   }, [post.content]);
 
-  // TOC observer
+  // TOC scroll tracker — highlights the last heading that has passed the navbar line
   useEffect(() => {
     if (toc.length === 0) return;
-    const obs = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); }),
-      { rootMargin: "-20% 0px -60% 0px" }
-    );
-    toc.forEach(s => { const el = document.getElementById(s.id); if (el) obs.observe(el); });
-    return () => obs.disconnect();
+    const OFFSET = 96; // navbar height + small buffer
+
+    const allIds = [...toc.map((s) => s.id), "discussion"];
+
+    const onScroll = () => {
+      let current = allIds[0];
+      for (const id of allIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top <= OFFSET) current = id;
+      }
+      setActiveSection(current);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll(); // set correct active section on mount
+    return () => window.removeEventListener("scroll", onScroll);
   }, [toc]);
 
   // Fade-in
@@ -147,6 +161,32 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
     document.querySelectorAll(".fade-in-section").forEach(el => obs.observe(el));
     return () => obs.disconnect();
   }, []);
+
+  const handleTocClick = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setActiveSection(id);
+    if (showMobileToc) setShowMobileToc(false);
+    window.history.pushState(null, "", `${window.location.pathname}#${id}`);
+
+    // Re-query the heading fresh at click time by DOM index.
+    // Stored refs can go stale when React re-renders the content IIFE; index-based
+    // lookup against the live DOM is always correct.
+    requestAnimationFrame(() => {
+      const idx = toc.findIndex((t) => t.id === id);
+      let target = null;
+      if (idx !== -1 && articleRef.current) {
+        target = articleRef.current.querySelectorAll("h2, h3")[idx] || null;
+      }
+      if (!target) target = document.getElementById(id);
+      if (!target) return;
+
+      const NAVBAR = 88;
+      const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - NAVBAR);
+      // Use the two-argument form — widest browser compatibility, no cancellation.
+      window.scrollTo(0, top);
+    });
+  };
 
   function handleLike() {
     const n = !liked;
@@ -259,30 +299,53 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
       </div>
 
       {/* ── 3-col layout ─────────────────────────────────────── */}
-      <div className="pt-20 pb-12 w-full max-w-7xl mx-auto px-4 lg:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="pt-20 pb-12 w-full max-w-[1400px] mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)_240px] xl:grid-cols-[260px_minmax(0,1fr)_260px] gap-8 xl:gap-12">
 
         {/* ── Left Sidebar ── */}
-        <aside className="hidden lg:flex flex-col gap-0 lg:col-span-3">
-          <div className="sticky top-24 flex flex-col gap-0 rounded-2xl overflow-hidden border border-white/10 shadow-xl"
-            style={{ background: "linear-gradient(180deg, #4C7FD2 38%, #27416C 100%)" }}>
+        <aside className="hidden lg:flex flex-col gap-0">
+          <div className="sticky top-24 flex flex-col gap-0 rounded-2xl overflow-hidden border border-white/10 shadow-xl max-h-[calc(100vh-8rem)]"
+            style={{ background: "linear-gradient(180deg, #003369 38%, #001f4d 100%)" }}>
+
+            {/* TOC */}
+            {tocItems.length > 0 && (
+              <>
+                <nav className="p-6 flex flex-col gap-1 overflow-y-auto min-h-0">
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-100 mb-3">
+                    In this article
+                  </h4>
+                  {tocWithDiscussion.map((s, i) => (
+                    <a key={s.id + i} href={`#${s.id}`}
+                      onClick={(e) => handleTocClick(e, s.id)}
+                      className={`py-1.5 pl-3 border-l-2 text-[13px] transition-colors ${
+                        activeSection === s.id
+                          ? "border-white text-white font-bold"
+                          : "border-white/10 text-blue-100/60 hover:text-white"
+                      } ${s.level === "h3" ? "pl-6 text-xs" : ""}`}>
+                      {s.label}
+                    </a>
+                  ))}
+                </nav>
+                <div className="mx-6 border-t border-white/20" />
+              </>
+            )}
 
             {/* Author Card */}
             <div className="p-6 flex flex-col gap-4">
               {/* Avatar */}
-              <div className="flex flex-col items-start gap-3">
+              <div className="flex items-center gap-3">
                 {author.image ? (
-                  <Image alt={author.name || "Author"} src={author.image} width={64} height={64}
-                    className="w-16 h-16 rounded-full object-cover" />
+                  <Image alt={author.name || "Author"} src={author.image} width={40} height={40}
+                    className="w-10 h-10 rounded-full object-cover shadow-sm" />
                 ) : (
-                  <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-xl">
+                  <div className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white/90 font-bold text-sm shadow-sm">
                     {author.initials || "?"}
                   </div>
                 )}
                 <div>
-                  <h3 className="font-[family-name:var(--font-headline)] font-bold text-base text-white">
+                  <h3 className="font-[family-name:var(--font-headline)] font-semibold text-sm text-white/95 tracking-wide">
                     {author.name || "Author"}
                   </h3>
-                  <p className="text-[11px] text-blue-100/80 mt-0.5">
+                  <p className="text-[10px] text-blue-100/70 mt-0.5">
                     {author.expertise?.[0] || "Contributor"} · AnalytixLabs
                   </p>
                 </div>
@@ -315,33 +378,11 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
                 </a>
               )}
             </div>
-
-            {/* TOC */}
-            {tocItems.length > 0 && (
-              <>
-                <div className="mx-6 border-t border-white/20" />
-                <nav className="p-6 flex flex-col gap-1">
-                  <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-100 mb-3">
-                    In this article
-                  </h4>
-                  {tocWithDiscussion.map((s, i) => (
-                    <a key={s.id + i} href={`#${s.id}`}
-                      className={`py-1.5 pl-3 border-l-2 text-[13px] transition-colors ${
-                        activeSection === s.id
-                          ? "border-white text-white font-bold"
-                          : "border-white/10 text-blue-100/60 hover:text-white"
-                      } ${s.level === "h3" ? "pl-6 text-xs" : ""}`}>
-                      {s.label}
-                    </a>
-                  ))}
-                </nav>
-              </>
-            )}
           </div>
         </aside>
 
         {/* ── Article Canvas ── */}
-        <main className="w-full min-w-0 lg:col-span-6">
+        <main className="w-full min-w-0">
 
           {/* ── Article Header ── */}
           <header className="mb-10">
@@ -379,13 +420,14 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
                 </button>
                 {showMobileToc && (
                   <nav className="mt-2 p-4 bg-surface-container-low dark:bg-[#131b2e] border border-outline-variant/20 dark:border-[#424754] rounded-xl flex flex-col gap-2">
-                    {tocItems.map(s => (
-                      <a key={s.id} href={`#${s.id}`} onClick={() => setShowMobileToc(false)}
-                        className={`text-sm pl-3 border-l-2 transition-colors ${
+                    {tocWithDiscussion.map((s, i) => (
+                      <a key={s.id + i} href={`#${s.id}`}
+                        onClick={(e) => handleTocClick(e, s.id)}
+                        className={`block py-3 px-4 rounded-xl text-sm transition-all ${
                           activeSection === s.id
-                            ? "border-primary dark:border-[#adc6ff] text-primary dark:text-[#adc6ff] font-semibold"
-                            : "border-transparent text-on-surface-variant dark:text-[#c2c6d6]"
-                        } ${s.level === "h3" ? "pl-6 text-xs" : ""}`}>
+                            ? "bg-primary text-white font-bold shadow-lg"
+                            : "bg-surface-container-high dark:bg-[#171f33] text-on-surface-variant dark:text-[#c2c6d6]"
+                        }`}>
                         {s.label}
                       </a>
                     ))}
@@ -465,168 +507,200 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
           </header>
 
           {/* ── Article Body ── */}
-          <article className="prose max-w-none min-w-0">
-            {post.content?.startsWith("<") ? (
-              <div ref={articleRef} className="tiptap-prose"
-                dangerouslySetInnerHTML={{ __html: post.content }} />
-            ) : (
-              <p className="text-xl font-medium text-on-surface dark:text-[#dae2fd] leading-relaxed mb-10">{post.excerpt}</p>
-            )}
+          <article className="prose max-w-none min-w-0" ref={articleRef}>
+            {(() => {
+              const content = post.content || "";
+              if (!content.startsWith("<")) {
+                return <p className="text-xl font-medium text-on-surface dark:text-[#dae2fd] leading-relaxed mb-10">{post.excerpt}</p>;
+              }
 
-            {/* ── Newsletter CTA ── */}
-            <div className="my-10 rounded-2xl overflow-hidden"
-              style={{ background: "linear-gradient(135deg,#4C7FD2 57%,#27416C 100%)" }}>
-              <div className="p-7">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-blue-300 text-xl">download</span>
-                  <h4 className="font-[family-name:var(--font-headline)] font-bold text-lg text-white">
-                    Free Resource: {post.domain_tags?.[0] || "Data Science"} Career Roadmap PDF
-                  </h4>
-                </div>
-                <p className="text-blue-200 text-sm mb-5">
-                  Get our 2026 edition — covering top roles, skills, salaries, and learning paths. Trusted by 80,000+ learners.
-                </p>
-                <form className="flex flex-col sm:flex-row gap-3" onSubmit={async (e) => {
-                    e.preventDefault();
-                    const fd = new FormData(e.target);
-                    const name = fd.get("name")?.toString().trim();
-                    const email = fd.get("email")?.toString().trim();
-                    if (!email || !email.includes("@")) { addToast("Please enter a valid email", "error"); return; }
-                    const { subscribeAction } = await import("@/app/actions");
-                    const result = await subscribeAction({ email, name, source: "article-pdf" });
-                    if (result.success) { addToast("Roadmap PDF sent to your email!", "success"); e.target.reset(); }
-                    else addToast(result.error || "Failed to subscribe", "error");
-                  }}>
-                  <input type="text" name="name" placeholder="Your name"
-                    className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none"
-                    style={{ background: "rgba(255,255,255,0.12)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)" }} />
-                  <input type="email" name="email" placeholder="Enter your work email"
-                    className="flex-[2] px-4 py-2.5 rounded-xl text-sm outline-none"
-                    style={{ background: "rgba(255,255,255,0.12)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)" }} />
-                  <button type="submit"
-                    className="glass-btn px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap">
-                    Get Free PDF →
-                  </button>
-                </form>
-              </div>
-            </div>
+              // Widgets mapping
+              const WIDGETS = {
+                "[[newsletter]]": "newsletter",
+                "[[quiz]]":       "quiz",
+                "[[nextsteps]]":   "nextsteps",
+                "[[coursematch]]": "coursematch"
+              };
 
-            {/* ── Knowledge Check ── */}
-            {post.quiz?.questions?.length > 0 && (() => {
-              const qs = post.quiz.questions;
-              const q  = qs[activeQuizIndex];
-              return (
-                <div className="my-10 rounded-2xl border border-outline-variant/20 dark:border-[#424754] overflow-hidden">
-                  <div className="px-6 py-3 flex items-center gap-2"
-                    style={{ background: "rgba(0,59,147,0.06)" }}>
-                    <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest"
-                      style={{ background: "rgba(22,163,74,0.12)", color: "#16a34a" }}>
-                      <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
-                      Knowledge Check
-                    </span>
-                    <span className="text-xs font-[family-name:var(--font-label)] font-bold text-on-surface-variant dark:text-[#8c909f] uppercase tracking-wider ml-auto">
-                      {activeQuizIndex + 1} / {qs.length}
-                    </span>
-                  </div>
-                  <div className="p-6 bg-surface-container-lowest dark:bg-[#060e20]">
-                    <p className="text-on-surface dark:text-[#dae2fd] font-medium mb-5 leading-relaxed">{q.question}</p>
-                    <div className="space-y-3 mb-5">
-                      {q.options.map((opt, idx) => (
-                        <button key={idx}
-                          onClick={() => !quizSubmitted && setQuizAnswer(idx)}
-                          className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-all ${
-                            quizSubmitted
-                              ? idx === q.correctIndex
-                                ? "bg-green-50 dark:bg-green-900/20 border-green-500 text-green-800 dark:text-green-300 font-semibold"
-                                : idx === quizAnswer
-                                ? "bg-red-50 dark:bg-red-900/20 border-red-400 text-red-700 dark:text-red-300 opacity-70"
-                                : "bg-surface-container dark:bg-[#131b2e] border-outline-variant/20 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] opacity-40"
-                              : quizAnswer === idx
-                              ? "bg-primary/10 dark:bg-[#adc6ff]/10 border-primary dark:border-[#adc6ff] text-on-surface dark:text-[#dae2fd]"
-                              : "bg-surface-container dark:bg-[#131b2e] border-outline-variant/20 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] hover:border-primary/50 cursor-pointer"
-                          }`}>
-                          <span className="font-bold mr-2 text-primary dark:text-[#adc6ff]">{String.fromCharCode(65 + idx)}.</span>
-                          {opt}
+              const used = new Set();
+              const parts = content.split(/(\[\[newsletter\]\]|\[\[quiz\]\]|\[\[nextsteps\]\]|\[\[coursematch\]\])/gi);
+
+              // Helper to render specific widget
+              const renderWidget = (type) => {
+                if (type === "newsletter") return (
+                  <div key="newsletter-widget" className="my-10 rounded-2xl overflow-hidden border border-slate-200"
+                    style={{ background: "#f8fafc" }}>
+                    <div className="p-7">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="material-symbols-outlined text-primary text-xl">download</span>
+                        <h4 className="font-[family-name:var(--font-headline)] font-bold text-lg text-slate-900">
+                          Free Resource: {post.domain_tags?.[0] || "Data Science"} Career Roadmap PDF
+                        </h4>
+                      </div>
+                      <p className="text-slate-600 text-sm mb-5">
+                        Get our 2026 edition — covering top roles, skills, salaries, and learning paths. Trusted by 80,000+ learners.
+                      </p>
+                      <form className="flex flex-col sm:flex-row gap-3" onSubmit={async (e) => {
+                          e.preventDefault();
+                          const fd = new FormData(e.target);
+                          const name = fd.get("name")?.toString().trim();
+                          const email = fd.get("email")?.toString().trim();
+                          if (!email || !email.includes("@")) { addToast("Please enter a valid email", "error"); return; }
+                          const { subscribeAction } = await import("@/app/actions");
+                          const result = await subscribeAction({ email, name, source: "article-pdf" });
+                          if (result.success) { addToast("Roadmap PDF sent to your email!", "success"); e.target.reset(); }
+                          else addToast(result.error || "Failed to subscribe", "error");
+                        }}>
+                        <input type="text" name="name" placeholder="Your name"
+                          className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none border border-slate-200 bg-white text-slate-900" />
+                        <input type="email" name="email" placeholder="Enter your work email"
+                          className="flex-[2] px-4 py-2.5 rounded-xl text-sm outline-none border border-slate-200 bg-white text-slate-900" />
+                        <button type="submit"
+                          className="bg-primary text-white hover:bg-primary/90 px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap shadow-sm transition-all">
+                          Get Free PDF →
                         </button>
+                      </form>
+                    </div>
+                  </div>
+                );
+
+                if (type === "quiz" && post.quiz?.questions?.length > 0) {
+                  const qs = post.quiz.questions;
+                  const q  = qs[activeQuizIndex];
+                  return (
+                    <div key="quiz-widget" className="my-10 rounded-2xl border border-outline-variant/20 dark:border-[#424754] overflow-hidden">
+                      <div className="px-6 py-3 flex items-center gap-2"
+                        style={{ background: "rgba(0,59,147,0.06)" }}>
+                        <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest"
+                          style={{ background: "rgba(22,163,74,0.12)", color: "#16a34a" }}>
+                          <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                          Knowledge Check
+                        </span>
+                        <span className="text-xs font-[family-name:var(--font-label)] font-bold text-on-surface-variant dark:text-[#8c909f] uppercase tracking-wider ml-auto">
+                          {activeQuizIndex + 1} / {qs.length}
+                        </span>
+                      </div>
+                      <div className="p-6 bg-surface-container-lowest dark:bg-[#060e20]">
+                        <p className="text-on-surface dark:text-[#dae2fd] font-medium mb-5 leading-relaxed">{q.question}</p>
+                        <div className="space-y-3 mb-5">
+                          {q.options.map((opt, idx) => (
+                            <button key={idx}
+                              onClick={() => !quizSubmitted && setQuizAnswer(idx)}
+                              className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-all ${
+                                quizSubmitted
+                                  ? idx === q.correctIndex
+                                    ? "bg-green-50 dark:bg-green-900/20 border-green-500 text-green-800 dark:text-green-300 font-semibold"
+                                    : idx === quizAnswer
+                                    ? "bg-red-50 dark:bg-red-900/20 border-red-400 text-red-700 dark:text-red-300 opacity-70"
+                                    : "bg-surface-container dark:bg-[#131b2e] border-outline-variant/20 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] opacity-40"
+                                  : quizAnswer === idx
+                                  ? "bg-primary/10 dark:bg-[#adc6ff]/10 border-primary dark:border-[#adc6ff] text-on-surface dark:text-[#dae2fd]"
+                                  : "bg-surface-container dark:bg-[#131b2e] border-outline-variant/20 dark:border-[#424754] text-on-surface-variant dark:text-[#c2c6d6] hover:border-primary/50 cursor-pointer"
+                              }`}>
+                              <span className="font-bold mr-2 text-primary dark:text-[#adc6ff]">{String.fromCharCode(65 + idx)}.</span>
+                              {opt}
+                            </button>
+                          ))}
+                        </div>
+                        {!quizSubmitted ? (
+                          <button onClick={handleQuizSubmit}
+                            className="px-6 py-2.5 rounded-full font-bold text-sm text-white transition-opacity hover:opacity-90"
+                            style={{ background: "#16a34a" }}>
+                            Submit Answer
+                          </button>
+                        ) : (
+                          <div className="flex flex-wrap items-center gap-4">
+                            <span className={`flex items-center gap-1.5 text-sm font-bold ${quizAnswer === q.correctIndex ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}`}>
+                              <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: "'FILL' 1" }}>
+                                {quizAnswer === q.correctIndex ? "check_circle" : "cancel"}
+                              </span>
+                              {quizAnswer === q.correctIndex ? "Correct! Keep learning." : `Correct: ${q.options[q.correctIndex]}`}
+                            </span>
+                            {activeQuizIndex < qs.length - 1 && (
+                              <button onClick={handleNextQuestion}
+                                className="flex items-center gap-1.5 px-5 py-2 bg-primary text-on-primary rounded-full font-bold text-sm hover:opacity-90 transition-opacity">
+                                Next Question <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                }
+
+                if (type === "nextsteps") return (
+                  <div key="nextsteps-widget" className="my-10 rounded-2xl border border-slate-200 overflow-hidden shadow-sm"
+                    style={{ background: "#f8fafc" }}>
+                    <div className="px-6 py-4 border-b border-slate-200"
+                      style={{ background: "linear-gradient(90deg,rgba(0,59,147,0.03) 0%,transparent 100%)" }}>
+                      <h3 className="font-[family-name:var(--font-headline)] font-bold text-base flex items-center gap-2 text-slate-900">
+                        <span className="text-amber-500">✦</span>
+                        AI-Powered Next Steps
+                      </h3>
+                      <p className="text-sm text-slate-600 mt-0.5">
+                        Great progress on {post.domain_tags?.[0] || "this topic"}! Based on your reading, what would you like to do next?
+                      </p>
+                    </div>
+                    <div className="p-5 grid grid-cols-2 gap-3">
+                      {[
+                        { icon: "quiz",         label: "Take a quick quiz",           href: "#discussion" },
+                        { icon: "download",     label: "Download PDF Guide",          href: "#newsletter" },
+                        { icon: "school",       label: `View ${post.domain_tags?.[0] || "AI"} Curriculum`, href: "https://www.analytixlabs.co.in/courses" },
+                        { icon: "group",        label: "Join Study Community",        href: "https://www.analytixlabs.co.in/community" },
+                      ].map(({ icon, label, href }) => (
+                        <a key={label} href={href}
+                          className="flex items-center gap-2.5 px-4 py-3 rounded-xl border text-sm font-medium transition-all bg-white border-slate-200 text-slate-700 hover:border-primary/30 hover:text-primary hover:-translate-y-0.5 shadow-sm">
+                          <span className="material-symbols-outlined text-base text-slate-400">{icon}</span>
+                          <span className="leading-snug">{label}</span>
+                        </a>
                       ))}
                     </div>
-                    {!quizSubmitted ? (
-                      <button onClick={handleQuizSubmit}
-                        className="px-6 py-2.5 rounded-full font-bold text-sm text-white transition-opacity hover:opacity-90"
-                        style={{ background: "#16a34a" }}>
-                        Submit Answer
+                  </div>
+                );
+
+                if (type === "coursematch" && courseMatch) return (
+                  <div key="course-widget" className="my-10 rounded-2xl overflow-hidden flex flex-col md:flex-row border border-slate-200 shadow-sm"
+                    style={{ background: "#f8fafc" }}>
+                    <div className="flex-1 p-7 flex flex-col gap-3">
+                      <p className="text-primary text-xs font-bold uppercase tracking-wider">Reading about {post.domain_tags?.[0] || "AI"}?</p>
+                      <h3 className="font-[family-name:var(--font-headline)] font-bold text-xl text-slate-900 leading-tight">
+                        {courseMatch.title}
+                      </h3>
+                      <p className="text-slate-600 text-sm leading-relaxed">{courseMatch.desc}</p>
+                      <button className="bg-primary text-white hover:bg-primary/90 px-6 py-3 rounded-xl font-bold text-sm shadow-md transition-all mt-2">
+                        View Full Course Details →
                       </button>
-                    ) : (
-                      <div className="flex flex-wrap items-center gap-4">
-                        <span className={`flex items-center gap-1.5 text-sm font-bold ${quizAnswer === q.correctIndex ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}`}>
-                          <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: "'FILL' 1" }}>
-                            {quizAnswer === q.correctIndex ? "check_circle" : "cancel"}
-                          </span>
-                          {quizAnswer === q.correctIndex ? "Correct! Keep learning." : `Correct: ${q.options[q.correctIndex]}`}
-                        </span>
-                        {activeQuizIndex < qs.length - 1 && (
-                          <button onClick={handleNextQuestion}
-                            className="flex items-center gap-1.5 px-5 py-2 bg-primary text-on-primary rounded-full font-bold text-sm hover:opacity-90 transition-opacity">
-                            Next Question <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                          </button>
-                        )}
+                    </div>
+                    {courseMatch.image && (
+                      <div className="w-full md:w-48 aspect-video md:aspect-auto relative overflow-hidden">
+                        <Image src={courseMatch.image} alt={courseMatch.title} fill className="object-cover opacity-70" />
                       </div>
                     )}
                   </div>
-                </div>
-              );
+                );
+
+                return null;
+              };
+
+              const renderedElements = parts.map((part, idx) => {
+                const lowerPart = part.toLowerCase();
+                if (WIDGETS[lowerPart]) {
+                  used.add(WIDGETS[lowerPart]);
+                  return renderWidget(WIDGETS[lowerPart]);
+                }
+                return <div key={idx} className="tiptap-prose" dangerouslySetInnerHTML={{ __html: part }} />;
+              });
+
+              // Fallback: Append unused widgets to the end
+              const fallbacks = [];
+              if (!used.has("newsletter")) fallbacks.push(renderWidget("newsletter"));
+              if (!used.has("quiz"))       fallbacks.push(renderWidget("quiz"));
+              if (!used.has("nextsteps"))  fallbacks.push(renderWidget("nextsteps"));
+              if (!used.has("coursematch")) fallbacks.push(renderWidget("coursematch"));
+
+              return [...renderedElements, ...fallbacks];
             })()}
-
-            {/* ── AI-Powered Next Steps ── */}
-            <div className="my-10 rounded-2xl border border-outline-variant/20 dark:border-[#424754] overflow-hidden">
-              <div className="px-6 py-4 border-b border-outline-variant/10 dark:border-[#424754]"
-                style={{ background: "linear-gradient(90deg,rgba(245,158,11,0.08) 0%,transparent 100%)" }}>
-                <h3 className="font-[family-name:var(--font-headline)] font-bold text-base flex items-center gap-2"
-                  style={{ color: "#b45309" }}>
-                  <span style={{ color: "#f59e0b" }}>✦</span>
-                  AI-Powered Next Steps
-                </h3>
-                <p className="text-sm text-on-surface-variant dark:text-[#c2c6d6] mt-0.5">
-                  Great progress on {post.domain_tags?.[0] || "this topic"}! Based on your reading, what would you like to do next?
-                </p>
-              </div>
-              <div className="p-5 bg-surface-container-lowest dark:bg-[#060e20] grid grid-cols-2 gap-3">
-                {[
-                  { icon: "quiz",         label: "Take a quick quiz",           href: "#discussion" },
-                  { icon: "download",     label: "Download PDF Guide",          href: "#newsletter" },
-                  { icon: "school",       label: `View ${post.domain_tags?.[0] || "AI"} Curriculum`, href: "https://www.analytixlabs.co.in/courses" },
-                  { icon: "group",        label: "Join Study Community",        href: "https://www.analytixlabs.co.in/community" },
-                ].map(({ icon, label, href }) => (
-                  <a key={label} href={href}
-                    className="flex items-center gap-2.5 px-4 py-3 rounded-xl border text-sm font-medium transition-colors bg-surface-container dark:bg-[#131b2e] border-outline-variant/20 dark:border-[#424754] text-on-surface dark:text-[#dae2fd] hover:border-primary/40 hover:text-primary dark:hover:border-[#adc6ff]/40 dark:hover:text-[#adc6ff]">
-                    <span className="material-symbols-outlined text-base text-on-surface-variant dark:text-[#8c909f]">{icon}</span>
-                    <span className="leading-snug">{label}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* ── Related Course CTA ── */}
-            {courseMatch && (
-              <div className="my-10 rounded-2xl overflow-hidden flex flex-col md:flex-row"
-                style={{ background: "linear-gradient(135deg,#4C7FD2 57%,#27416C 100%)" }}>
-                <div className="flex-1 p-7 flex flex-col gap-3">
-                  <p className="text-blue-300 text-xs font-medium">Reading about {post.domain_tags?.[0] || "AI"}?</p>
-                  <h3 className="font-[family-name:var(--font-headline)] font-bold text-xl text-white leading-tight">
-                    {courseMatch.title}
-                  </h3>
-                  <p className="text-blue-200 text-sm leading-relaxed">{courseMatch.desc}</p>
-                  <button className="glass-btn mt-2 w-full py-3 rounded-xl font-bold text-sm">
-                    View Full Course Details →
-                  </button>
-                </div>
-                {courseMatch.image && (
-                  <div className="w-full md:w-48 aspect-video md:aspect-auto relative overflow-hidden">
-                    <Image src={courseMatch.image} alt={courseMatch.title} fill className="object-cover opacity-70" />
-                  </div>
-                )}
-              </div>
-            )}
           </article>
 
           {/* ── Discussion ── */}
@@ -739,7 +813,7 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
         </main>
 
         {/* ── Right Sidebar ── */}
-        <aside className="hidden lg:flex flex-col gap-5 lg:col-span-3">
+        <aside className="hidden lg:flex flex-col gap-5">
           <div className="sticky top-24 flex flex-col gap-5">
 
             {/* Ask the AI */}

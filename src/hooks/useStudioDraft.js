@@ -20,9 +20,17 @@ const INITIAL_STATE = {
   tags: [],
   tagInput: "",
   featuredImage: "",
+  cardImage: "",
+  squareImage: "",
   altText: "",
   altTextError: "",
   isUploadingImage: false,
+  isUploadingCardImage: false,
+  isUploadingSquareImage: false,
+
+  // Inline widgets (keyed by UUID, created on insert)
+  widgets: {},
+  activeWidgetId: null,
 
   // SEO
   focusKeyword: "",
@@ -40,10 +48,6 @@ const INITIAL_STATE = {
   newsletterPlacement: "after-intro",
   leadMagnetPDF: "none",
   exitIntentEnabled: false,
-
-  // Quiz
-  quizQuestions: [],
-  ga4TrackingEnabled: true,
 
   // AI Hints
   entityTags: [],
@@ -63,6 +67,7 @@ const INITIAL_STATE = {
   editorComments: [],
 
   // Advanced
+  noIndex: false,
   semanticIndexEnabled: true,
   salaryHubEnabled: false,
   darkModeCompat: true,
@@ -94,7 +99,7 @@ const INITIAL_STATE = {
 
   // Collapsible sections
   openSections: {
-    courses: false, leadmagnet: false, quiz: false,
+    courses: false, leadmagnet: false,
     ai: false, author: false, discussion: false, advanced: false,
   },
 };
@@ -151,34 +156,45 @@ function studioReducer(state, action) {
       };
     }
 
-    case "ADD_QUIZ_QUESTION":
+    case "ADD_WIDGET": {
+      const widgetDefaults = {
+        quiz:        { question: "", options: ["", "", "", ""], correctIndex: 0, explanation: "" },
+        newsletter:  { headline: "", subtext: "", ctaLabel: "Subscribe →" },
+        coursematch: { courseId: null, ctaHeadline: "" },
+        nextsteps:   { steps: ["", "", ""] },
+      };
       return {
         ...state,
-        quizQuestions: [...state.quizQuestions, {
-          id: Date.now(), question: "", options: ["", "", "", ""], correctIndex: 0,
-        }],
+        activeWidgetId: action.id,
+        widgets: {
+          ...state.widgets,
+          [action.id]: { type: action.widgetType, ...(widgetDefaults[action.widgetType] ?? {}) },
+        },
       };
+    }
 
-    case "UPDATE_QUIZ_QUESTION":
+    case "UPDATE_WIDGET":
+      if (!state.widgets[action.id]) return state;
       return {
         ...state,
-        quizQuestions: state.quizQuestions.map((q) =>
-          q.id === action.id ? { ...q, [action.field]: action.value } : q
-        ),
+        widgets: {
+          ...state.widgets,
+          [action.id]: { ...state.widgets[action.id], ...action.data },
+        },
       };
 
-    case "UPDATE_QUIZ_OPTION":
+    case "REMOVE_WIDGET": {
+      const remaining = { ...state.widgets };
+      delete remaining[action.id];
       return {
         ...state,
-        quizQuestions: state.quizQuestions.map((q) =>
-          q.id === action.qId
-            ? { ...q, options: q.options.map((o, i) => i === action.optIdx ? action.value : o) }
-            : q
-        ),
+        widgets: remaining,
+        activeWidgetId: state.activeWidgetId === action.id ? null : state.activeWidgetId,
       };
+    }
 
-    case "REMOVE_QUIZ_QUESTION":
-      return { ...state, quizQuestions: state.quizQuestions.filter((q) => q.id !== action.id) };
+    case "SET_ACTIVE_WIDGET":
+      return { ...state, activeWidgetId: action.id ?? null };
 
     case "RESTORE_DRAFT": {
       const d = action.draft;
@@ -193,6 +209,8 @@ function studioReducer(state, action) {
         skill: d.skill || "Beginner",
         tags: d.tags || [],
         featuredImage: d.featuredImage || "",
+        cardImage: d.cardImage || "",
+        squareImage: d.squareImage || "",
         altText: d.altText || "",
         altTextError: "",
         focusKeyword: d.focusKeyword || "",
@@ -206,8 +224,6 @@ function studioReducer(state, action) {
         newsletterPlacement: d.newsletterPlacement || "after-intro",
         leadMagnetPDF: d.leadMagnetPDF || "none",
         exitIntentEnabled: d.exitIntentEnabled || false,
-        quizQuestions: d.quizQuestions || [],
-        ga4TrackingEnabled: d.ga4TrackingEnabled !== false,
         entityTags: d.entityTags || [],
         relatedPostIds: d.relatedPostIds || "",
         aiInclusionEnabled: d.aiInclusionEnabled !== false,
@@ -218,10 +234,13 @@ function studioReducer(state, action) {
         faqSchemaEnabled: d.faqSchemaEnabled || false,
         moderationMode: d.moderationMode || "auto",
         editorComments: d.editorComments || [],
+        noIndex: d.noIndex || false,
         semanticIndexEnabled: d.semanticIndexEnabled !== false,
         salaryHubEnabled: d.salaryHubEnabled || false,
         darkModeCompat: d.darkModeCompat !== false,
         progressBarColor: d.progressBarColor || "#0f2554",
+        widgets: d.widgets || {},
+        activeWidgetId: null,
         editorInitContent: d.postBody || "<h1></h1><p></p>",
         editorKey: state.editorKey + 1,
         showDraftBanner: false,
@@ -245,6 +264,8 @@ function studioReducer(state, action) {
         tags: p.domain_tags || [],
         tagInput: "",
         featuredImage: p.image || "",
+        cardImage: p.advanced?.cardImage || "",
+        squareImage: p.advanced?.squareImage || "",
         altText: p.alt_text || p.altText || "",
         altTextError: "",
         focusKeyword: p.seo?.focusKeyword || "",
@@ -258,8 +279,6 @@ function studioReducer(state, action) {
         newsletterPlacement: p.newsletter?.placement || "after-intro",
         leadMagnetPDF: p.newsletter?.leadMagnet || "none",
         exitIntentEnabled: p.newsletter?.exitIntent || false,
-        quizQuestions: p.quiz?.questions || [],
-        ga4TrackingEnabled: p.quiz?.ga4Tracking !== false,
         entityTags: p.aiHints?.entityTags || [],
         relatedPostIds: (p.aiHints?.relatedPostIds || []).join(", "),
         aiInclusionEnabled: p.aiHints?.enabled !== false,
@@ -270,10 +289,13 @@ function studioReducer(state, action) {
         faqSchemaEnabled: p.discussion?.faqSchema || false,
         moderationMode: p.discussion?.moderation || "auto",
         editorComments: p.discussion?.editorComments || [],
+        noIndex: p.seo?.noIndex || false,
         semanticIndexEnabled: p.advanced?.semanticIndex !== false,
         salaryHubEnabled: p.advanced?.salaryHub || false,
         darkModeCompat: p.advanced?.darkModeCompat !== false,
         progressBarColor: p.advanced?.progressBarColor || "#0f2554",
+        widgets: p.advanced?.widgets || {},
+        activeWidgetId: null,
         editorInitContent: p.content || "<h1></h1><p></p>",
         editorKey: state.editorKey + 1,
         saveStatus: "Saved",
@@ -302,17 +324,18 @@ function buildDraftPayload(s) {
   return {
     postBody: s.postBody, postTitle: s.postTitle, slug: s.slug, excerpt: s.excerpt,
     category: s.category, authorId: s.authorId, skill: s.skill, tags: s.tags,
-    featuredImage: s.featuredImage, altText: s.altText, focusKeyword: s.focusKeyword, metaTitle: s.metaTitle,
+    featuredImage: s.featuredImage, cardImage: s.cardImage, squareImage: s.squareImage,
+    altText: s.altText, focusKeyword: s.focusKeyword, metaTitle: s.metaTitle,
     metaDesc: s.metaDesc, ogImage: s.ogImage, schemaType: s.schemaType, canonicalUrl: s.canonicalUrl,
     mappedCourses: s.mappedCourses, courseCTA: s.courseCTA,
     newsletterPlacement: s.newsletterPlacement, leadMagnetPDF: s.leadMagnetPDF,
-    exitIntentEnabled: s.exitIntentEnabled, quizQuestions: s.quizQuestions,
-    ga4TrackingEnabled: s.ga4TrackingEnabled, entityTags: s.entityTags,
+    exitIntentEnabled: s.exitIntentEnabled, entityTags: s.entityTags,
     relatedPostIds: s.relatedPostIds, aiInclusionEnabled: s.aiInclusionEnabled,
     authorBio: s.authorBio, factChecker: s.factChecker, lastReviewedDate: s.lastReviewedDate,
     qaEnabled: s.qaEnabled, faqSchemaEnabled: s.faqSchemaEnabled, moderationMode: s.moderationMode, editorComments: s.editorComments,
     semanticIndexEnabled: s.semanticIndexEnabled, salaryHubEnabled: s.salaryHubEnabled,
     darkModeCompat: s.darkModeCompat, progressBarColor: s.progressBarColor,
+    widgets: s.widgets,
     savedAt: new Date().toISOString(),
   };
 }
@@ -327,14 +350,13 @@ export function buildPublishPayload(s, userId) {
     readTime: `${s.readTime} min read`, authorId: userId || s.authorId,
     image: s.featuredImage,
     alt_text: s.altText,
-    seo: { focusKeyword: s.focusKeyword, metaTitle: s.metaTitle || s.postTitle, metaDesc: s.metaDesc || s.excerpt, ogImage: s.ogImage || s.featuredImage, schemaType: s.schemaType, canonicalUrl: s.canonicalUrl },
+    seo: { focusKeyword: s.focusKeyword, metaTitle: s.metaTitle || s.postTitle, metaDesc: s.metaDesc || s.excerpt, ogImage: s.ogImage || s.featuredImage, schemaType: s.schemaType, canonicalUrl: s.canonicalUrl, noIndex: s.noIndex },
     courseMappings: s.mappedCourses, courseCTA: s.courseCTA,
     newsletter: { placement: s.newsletterPlacement, leadMagnet: s.leadMagnetPDF, exitIntent: s.exitIntentEnabled },
-    quiz: { questions: s.quizQuestions, ga4Tracking: s.ga4TrackingEnabled },
     aiHints: { entityTags: s.entityTags, relatedPostIds: s.relatedPostIds.split(",").map((x) => x.trim()).filter(Boolean), enabled: s.aiInclusionEnabled },
     trust: { authorBio: s.authorBio, factChecker: s.factChecker, lastReviewedDate: s.lastReviewedDate },
     discussion: { qa: s.qaEnabled, faqSchema: s.faqSchemaEnabled, moderation: s.moderationMode, editorComments: s.editorComments || [] },
-    advanced: { semanticIndex: s.semanticIndexEnabled, salaryHub: s.salaryHubEnabled, darkModeCompat: s.darkModeCompat, progressBarColor: s.progressBarColor },
+    advanced: { semanticIndex: s.semanticIndexEnabled, salaryHub: s.salaryHubEnabled, darkModeCompat: s.darkModeCompat, progressBarColor: s.progressBarColor, cardImage: s.cardImage, squareImage: s.squareImage, widgets: s.widgets },
   };
 }
 
@@ -391,11 +413,11 @@ export default function useStudioDraft() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     state.postBody, state.postTitle, state.slug, state.excerpt, state.category,
-    state.authorId, state.skill, state.tags, state.featuredImage,
+    state.authorId, state.skill, state.tags, state.featuredImage, state.cardImage, state.squareImage, state.widgets,
     state.focusKeyword, state.metaTitle, state.metaDesc, state.ogImage,
     state.schemaType, state.canonicalUrl, state.mappedCourses, state.courseCTA,
     state.newsletterPlacement, state.leadMagnetPDF, state.exitIntentEnabled,
-    state.quizQuestions, state.ga4TrackingEnabled, state.entityTags,
+    state.entityTags,
     state.relatedPostIds, state.aiInclusionEnabled, state.authorBio,
     state.factChecker, state.lastReviewedDate, state.qaEnabled,
     state.faqSchemaEnabled, state.moderationMode, state.semanticIndexEnabled,

@@ -52,15 +52,16 @@ function HomeContent() {
       .catch(() => setPostsLoading(false));
   }, []);
 
-  // Fade-in observer
+  // Fade-in observer — re-run after posts load so filled grid elements trigger .visible
   useEffect(() => {
+    if (postsLoading) return;
     const obs = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); }),
       { threshold: 0.1 }
     );
     document.querySelectorAll(".fade-in-section").forEach((el) => obs.observe(el));
     return () => obs.disconnect();
-  }, []);
+  }, [postsLoading]);
 
   const createQueryString = (name, value) => {
     const params = new URLSearchParams(searchParams);

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 /**
@@ -25,7 +24,8 @@ export default function RecommendedPosts({ posts = [] }) {
           >
             <div className="w-14 h-14 rounded-xl overflow-hidden bg-surface-container-high dark:bg-[#131b2e] shrink-0 relative">
               {post.image ? (
-                <Image src={post.image} alt="" fill className="object-cover" sizes="56px" />
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={post.image} alt="" className="w-full h-full object-cover" loading="lazy" onError={(e) => { e.target.style.display = "none"; }} />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-surface-container-high dark:bg-[#222a3d]">
                   <span className="material-symbols-outlined text-sm text-outline/40">image</span>

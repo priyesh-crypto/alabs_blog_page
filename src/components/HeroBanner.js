@@ -13,7 +13,7 @@ export default function HeroBanner({ post, bookmarked = false, onToggleBookmark 
   return (
     <section
       className="mt-16 pt-12 pb-16 relative overflow-hidden"
-      style={{ background: "linear-gradient(135deg,#4C7FD2 57%,#27416C 100%)" }}
+      style={{ background: "linear-gradient(135deg,#003369 57%,#001f4d 100%)" }}
     >
       {/* Featured image as background */}
       {post.image && (

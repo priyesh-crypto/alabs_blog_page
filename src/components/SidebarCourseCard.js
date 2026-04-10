@@ -2,15 +2,18 @@
 
 /**
  * Sidebar recommended-course card with gradient background.
- * Accepts a `course` object instead of hardcoded strings.
  *
- * @param {{ course: { title: string, duration?: string, rating?: number } }} props
+ * @param {{ course: { title: string, duration?: string, rating?: number, ctaUrl?: string, ctaLabel?: string, cta_url?: string, cta_label?: string } }} props
+ * `ctaUrl`   — when provided, the button becomes a real anchor tag.
+ * `ctaLabel` — button label (defaults to "Enroll Now →").
  */
 export default function SidebarCourseCard({ course }) {
   if (!course) return null;
 
-  const stars = course.rating ? Math.round(course.rating) : 4;
+  const stars      = course.rating ? Math.round(course.rating) : 4;
   const starDisplay = "★".repeat(stars) + "☆".repeat(5 - stars);
+  const ctaUrl     = course.ctaUrl  || course.cta_url   || null;
+  const ctaLabel   = course.ctaLabel || course.cta_label || "Enroll Now →";
 
   return (
     <div
@@ -34,9 +37,20 @@ export default function SidebarCourseCard({ course }) {
           <span style={{ color: "#fbbf24", letterSpacing: "1px" }}>{starDisplay}</span>
           {course.rating && <span className="text-xs text-blue-200">{course.rating}</span>}
         </div>
-        <button className="glass-btn w-full py-2.5 rounded-xl font-bold text-sm">
-          Enroll Now →
-        </button>
+        {ctaUrl ? (
+          <a
+            href={ctaUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass-btn block w-full py-2.5 rounded-xl font-bold text-sm text-center"
+          >
+            {ctaLabel}
+          </a>
+        ) : (
+          <button className="glass-btn w-full py-2.5 rounded-xl font-bold text-sm">
+            {ctaLabel}
+          </button>
+        )}
       </div>
     </div>
   );

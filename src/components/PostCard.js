@@ -1,10 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 /**
  * Reusable post card used in homepage grid, blog listing, and more.
+ *
+ * Uses plain <img> instead of next/image so posts with images from any
+ * domain (user-uploaded, external URLs) never throw a domain-config error.
  *
  * @param {{ post: object, bookmarked?: boolean, onToggleBookmark?: (slug:string)=>void, onShare?: (slug:string)=>void }} props
  */
@@ -13,12 +15,13 @@ export default function PostCard({ post, bookmarked = false, onToggleBookmark, o
     <article className="flex flex-col rounded-2xl overflow-hidden border bg-surface-container-lowest dark:bg-[#0b1326] border-outline-variant/20 dark:border-[#424754] hover:shadow-lg transition-shadow group">
       <div className="aspect-video relative bg-surface-container-high dark:bg-[#131b2e] overflow-hidden">
         {post.image ? (
-          <Image
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
             src={post.image}
-            alt={post.title}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
-            sizes="(max-width:640px) 100vw, 33vw"
+            alt={post.altText || post.title || ""}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+            onError={(e) => { e.target.style.display = "none"; }}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -44,12 +47,14 @@ export default function PostCard({ post, bookmarked = false, onToggleBookmark, o
         <div className="flex items-center justify-between pt-3 mt-auto border-t border-outline-variant/10 dark:border-[#424754]">
           <div className="flex items-center gap-2">
             {post.author?.image ? (
-              <Image
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
                 src={post.author.image}
                 alt={post.author.name || ""}
                 width={20}
                 height={20}
                 className="w-5 h-5 rounded-full object-cover"
+                onError={(e) => { e.target.style.display = "none"; }}
               />
             ) : (
               <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-white font-bold text-[8px]">

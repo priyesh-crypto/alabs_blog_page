@@ -59,9 +59,10 @@ export default function AskAI({ questions = [], context = "", placeholder = "Ask
   }
 
   return (
-    <div className="rounded-3xl border p-6 bg-white border-outline-variant/10 shadow-sm"
-      style={{ background: "linear-gradient(180deg, #FFFFFF 16%, #4C7FD2 100%)" }}>
-      <h3 className="font-[family-name:var(--font-headline)] font-bold text-lg text-slate-900 mb-4 flex items-center gap-2">
+    <div className="rounded-3xl border p-6 border-white/10 shadow-xl"
+      style={{ background: "#003369" }}>
+      <h3 className="font-[family-name:var(--font-headline)] font-bold text-lg text-white mb-4 flex items-center gap-2">
+        <span className="material-symbols-outlined text-white/80">auto_awesome</span>
         Ask the AI
       </h3>
 
@@ -74,21 +75,21 @@ export default function AskAI({ questions = [], context = "", placeholder = "Ask
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={e => e.key === "Enter" && ask()}
-          className="w-full pl-12 pr-12 py-3.5 rounded-2xl text-sm bg-white text-slate-900 border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] outline-none focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-slate-400"
+          className="w-full pl-12 pr-12 py-3.5 rounded-2xl text-sm bg-white/10 text-white border border-white/10 backdrop-blur-md shadow-lg outline-none focus:ring-2 focus:ring-white/20 transition-all placeholder:text-white/40"
         />
         <button onClick={() => ask()} aria-label="Ask AI"
           className="absolute right-3.5 top-1/2 -translate-y-1/2 hover:scale-110 transition-transform">
           <span className="material-symbols-outlined text-2xl"
-            style={{ color: loading ? "#9ca3af" : "#f59e0b", fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
+            style={{ color: loading ? "#9ca3af" : "#fbbf24", fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
         </button>
       </div>
 
       {/* Answer panel */}
       {asked && (
-        <div className="mb-5 p-4 rounded-2xl bg-white/90 backdrop-blur-sm border border-white/20 shadow-sm">
+        <div className="mb-5 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-sm">
 
           {/* Question label */}
-          <p className="text-[10px] font-bold uppercase tracking-widest text-primary mb-2">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-white/60 mb-2">
             AI Thinking about: "{query}"
           </p>
 
@@ -98,20 +99,20 @@ export default function AskAI({ questions = [], context = "", placeholder = "Ask
               <span className="flex gap-1">
                 {[0, 150, 300].map(delay => (
                   <span key={delay}
-                    className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce"
+                    className="w-1.5 h-1.5 rounded-full bg-white animate-bounce"
                     style={{ animationDelay: `${delay}ms` }} />
                 ))}
               </span>
-              <span className="text-xs text-slate-600">Thinking…</span>
+              <span className="text-xs text-white/80">Thinking…</span>
             </div>
           )}
 
           {/* Streamed answer */}
           {answer && (
-            <p className="text-[13px] leading-relaxed text-slate-800">
+            <p className="text-[13px] leading-relaxed text-white">
               {answer}
               {loading && (
-                <span className="inline-block w-0.5 h-3.5 bg-primary animate-pulse ml-0.5 translate-y-0.5 rounded-full" />
+                <span className="inline-block w-0.5 h-3.5 bg-white animate-pulse ml-0.5 translate-y-0.5 rounded-full" />
               )}
             </p>
           )}
@@ -121,13 +122,13 @@ export default function AskAI({ questions = [], context = "", placeholder = "Ask
       {/* Suggested chips — shown when not in answer state */}
       {!asked && questions.length > 0 && (
         <div className="space-y-3">
-          <p className="text-[11px] font-bold text-slate-800 uppercase tracking-widest px-1">
+          <p className="text-[11px] font-bold text-white/50 uppercase tracking-widest px-1">
             Suggested by AI
           </p>
           <div className="flex flex-col gap-2">
             {questions.map((q, i) => (
               <button key={i} onClick={() => ask(q)}
-                className="text-left px-4 py-3 rounded-2xl text-[13px] font-medium transition-all bg-white text-slate-700 border border-white/50 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0">
+                className="text-left px-4 py-3 rounded-2xl text-[13px] font-medium transition-all bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0">
                 {q}
               </button>
             ))}

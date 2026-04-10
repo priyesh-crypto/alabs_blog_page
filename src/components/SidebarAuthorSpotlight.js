@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 /**
@@ -23,12 +22,12 @@ export default function SidebarAuthorSpotlight({ author, articleCount = 0 }) {
       </span>
       <div className="flex items-center gap-3 mb-3">
         {author.image ? (
-          <Image
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
             src={author.image}
             alt={author.name}
-            width={48}
-            height={48}
             className="w-12 h-12 rounded-full object-cover shrink-0"
+            onError={(e) => { e.target.style.display = "none"; }}
           />
         ) : (
           <div className="w-12 h-12 rounded-full bg-surface-container-high dark:bg-[#2d3449] flex items-center justify-center text-on-surface-variant dark:text-[#c2c6d6] font-bold text-base shrink-0">

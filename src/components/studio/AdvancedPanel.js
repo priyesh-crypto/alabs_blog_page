@@ -1,63 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Toggle } from "./StudioIcons";
-import { STUDIO_MODERATION_MODES } from "@/lib/config";
 
 export default function AdvancedPanel({ state, set }) {
-  const [authors, setAuthors] = useState([]);
-
-  useEffect(() => {
-    fetch("/api/authors")
-      .then((r) => r.ok ? r.json() : [])
-      .then((data) => Array.isArray(data) && data.length > 0 && setAuthors(data))
-      .catch(() => {});
-  }, []);
   return (
     <>
       <div className="pp-field">
-        <div className="f-lbl" style={{ marginBottom: 8 }}>AUTHOR</div>
-        <select value={state.authorId} onChange={(e) => set("authorId", e.target.value)}>
-          {authors.length === 0 ? (
-            <option value={state.authorId}>{state.authorId}</option>
-          ) : (
-            authors.map((a) => (
-              <option key={a.slug} value={a.slug}>{a.name}</option>
-            ))
-          )}
-        </select>
-        <div style={{ marginTop: 10 }}>
-          <div className="f-lbl" style={{ marginBottom: 6 }}>
-            Author bio <span style={{ fontSize: 9, color: "var(--text3)", background: "var(--bg3)", padding: "1px 5px", borderRadius: 3, border: "1px solid var(--border)", fontWeight: 400, letterSpacing: 0, textTransform: "none" }}>override</span>
-          </div>
-          <textarea value={state.authorBio} onChange={(e) => set("authorBio", e.target.value)} placeholder="Short bio for this article..." style={{ minHeight: 56 }} />
+        <div className="f-lbl" style={{ marginBottom: 6 }}>
+          CANONICAL URL
+          <span style={{ fontSize: 9, color: "var(--text4)", fontWeight: 400, letterSpacing: 0, textTransform: "none", marginLeft: 5 }}>optional</span>
         </div>
-        <div style={{ marginTop: 10 }}>
-          <div className="f-lbl" style={{ marginBottom: 6 }}>Fact-Checker</div>
-          <input type="text" value={state.factChecker} onChange={(e) => set("factChecker", e.target.value)} placeholder="Review name or credential" />
-        </div>
-        <div style={{ marginTop: 10 }}>
-          <div className="f-lbl" style={{ marginBottom: 6 }}>Last Reviewed Date</div>
-          <input type="date" value={state.lastReviewedDate} onChange={(e) => set("lastReviewedDate", e.target.value)} />
-        </div>
+        <input type="text" value={state.canonicalUrl} onChange={(e) => set("canonicalUrl", e.target.value)} placeholder="https://analytixlabs.co.in/..." />
+        <div style={{ fontSize: 10, color: "var(--text4)", marginTop: 4 }}>Leave empty to use the default article URL.</div>
       </div>
       <div className="pp-field">
-        <div className="f-lbl" style={{ marginBottom: 8 }}>DISCUSSION</div>
-        <div className="toggle-row" style={{ marginBottom: 10 }}>
-          <span className="toggle-lbl">Enable Q&amp;A section</span>
-          <Toggle checked={state.qaEnabled} onChange={(v) => set("qaEnabled", v)} />
+        <div className="f-lbl" style={{ marginBottom: 8 }}>INDEXING</div>
+        <div className="toggle-row">
+          <span className="toggle-lbl">No-index (hide from search engines)</span>
+          <Toggle checked={state.noIndex} onChange={(v) => set("noIndex", v)} />
         </div>
-        <div className="toggle-row" style={{ marginBottom: 10 }}>
-          <span className="toggle-lbl">Enable FAQ schema</span>
-          <Toggle checked={state.faqSchemaEnabled} onChange={(v) => set("faqSchemaEnabled", v)} />
-        </div>
-        <div className="f-lbl" style={{ marginBottom: 6 }}>Moderation Mode</div>
-        <div className="mode-row">
-          {STUDIO_MODERATION_MODES.map((mode) => (
-            <button key={mode} className={`mode-btn ${state.moderationMode === mode ? "on" : ""}`} onClick={() => set("moderationMode", mode)}>
-              {mode.charAt(0).toUpperCase() + mode.slice(1)}
-            </button>
-          ))}
+        <div style={{ fontSize: 10, color: "var(--text4)", marginTop: 4 }}>
+          When on, a <code style={{ fontSize: 10 }}>noindex</code> meta tag is added. Use for drafts or thin content.
         </div>
       </div>
       <div className="pp-field">

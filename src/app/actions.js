@@ -13,6 +13,53 @@ function formatDate() {
   return new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
+// ── Widget content sanitizer ─────────────────────────────────────
+// Runs server-side before DB storage. Normalizes widget data-widget-attrs:
+//   - Migrates old string-array steps → {text,url}[] for nextsteps widgets
+//   - Removes any leaked editor-only keys
+function sanitizeContent(html) {
+  if (!html || typeof html !== 'string') return '';
+  return html.replace(
+    /data-widget-attrs="([^"]+)"/g,
+    (match, encoded) => {
+      try {
+        const raw = encoded.replace(/&quot;/g, '"').replace(/&#34;/g, '"');
+        const attrs = JSON.parse(raw);
+
+        // Migrate nextsteps string-array steps → object array
+        if (attrs.steps) {
+          let parsed = attrs.steps;
+          if (typeof parsed === 'string') {
+            try { parsed = JSON.parse(parsed); } catch { parsed = []; }
+          }
+          if (Array.isArray(parsed)) {
+            attrs.steps = JSON.stringify(
+              parsed.map(s => typeof s === 'string' ? { text: s, url: '' } : { text: s.text ?? '', url: s.url ?? '' })
+            );
+          }
+        }
+
+        // Strip any editor-only runtime keys that should never reach the DB
+        delete attrs.isEditing;
+
+        const serialized = JSON.stringify(attrs).replace(/"/g, '&quot;');
+        return `data-widget-attrs="${serialized}"`;
+      } catch {
+        return match; // leave unchanged if JSON is malformed
+      }
+    }
+  );
+}
+
+// ── Payload validation ────────────────────────────────────────────
+function validatePayload(payload) {
+  if (!payload || typeof payload !== 'object') return 'Invalid payload';
+  if (!payload.title?.trim()) return 'Title is required';
+  if (payload.content !== undefined && typeof payload.content !== 'string') return 'Content must be a string';
+  if (payload.slug && !/^[a-z0-9-]+$/.test(payload.slug)) return 'Slug may only contain lowercase letters, numbers, and hyphens';
+  return null;
+}
+
 // ── Alt text validation ──────────────────────────────────────────
 function validateAltText(image, altText) {
   if (!image) return null; // no image = no alt needed
@@ -29,7 +76,7 @@ function toRow(payload) {
     title:           payload.title,
     slug:            payload.slug,
     excerpt:         payload.excerpt ?? '',
-    content:         payload.content ?? '',
+    content:         sanitizeContent(payload.content ?? ''),
     category:        payload.category ?? '',
     domain_tags:     payload.domain_tags ?? [],
     skill_level:     payload.skill_level ?? 'Beginner',
@@ -41,7 +88,6 @@ function toRow(payload) {
     course_mappings: payload.courseMappings ?? [],
     course_cta:      payload.courseCTA ?? '',
     newsletter:      payload.newsletter ?? {},
-    quiz:            payload.quiz ?? {},
     ai_hints:        payload.aiHints ?? {},
     trust:           payload.trust ?? {},
     discussion:      payload.discussion ?? {},
@@ -102,7 +148,6 @@ async function snapshotVersion(db, postId) {
     course_mappings: current.course_mappings,
     course_cta:      current.course_cta,
     newsletter:      current.newsletter,
-    quiz:            current.quiz,
     ai_hints:        current.ai_hints,
     trust:           current.trust,
     discussion:      current.discussion,
@@ -114,6 +159,8 @@ async function snapshotVersion(db, postId) {
 
 // ── saveDraftAction ───────────────────────────────────────────────
 export async function saveDraftAction(payload, id = null) {
+  const validationError = validatePayload(payload);
+  if (validationError) return { success: false, error: validationError };
   try {
     const { slug: callerSlug } = await getCallerSlug();
     const db = getServiceClient();
@@ -179,6 +226,8 @@ export async function saveDraftAction(payload, id = null) {
 
 // ── publishPostAction ─────────────────────────────────────────────
 export async function publishPostAction(payload) {
+  const validationError = validatePayload(payload);
+  if (validationError) return { success: false, error: validationError };
   try {
     const { slug: callerSlug } = await getCallerSlug();
     const db = getServiceClient();
@@ -222,6 +271,8 @@ export async function publishPostAction(payload) {
 
 // ── updatePostAction ──────────────────────────────────────────────
 export async function updatePostAction(id, payload) {
+  const validationError = validatePayload(payload);
+  if (validationError) return { success: false, error: validationError };
   try {
     const { slug: callerSlug, isSuperAdmin } = await getCallerSlug();
     const db = getServiceClient();
@@ -405,7 +456,7 @@ export async function fetchVersionsAction(postId) {
 
     const { data, error } = await db
       .from('post_versions')
-      .select('id, post_id, title, content, excerpt, category, domain_tags, skill_level, image, alt_text, seo, course_mappings, course_cta, newsletter, quiz, ai_hints, trust, discussion, advanced, updated_by, version_number, created_at')
+      .select('id, post_id, title, content, excerpt, category, domain_tags, skill_level, image, alt_text, seo, course_mappings, course_cta, newsletter, ai_hints, trust, discussion, advanced, updated_by, version_number, created_at')
       .eq('post_id', postId)
       .order('version_number', { ascending: false });
 
@@ -466,7 +517,6 @@ export async function restoreVersionAction(postId, versionId) {
       course_mappings: ver.course_mappings,
       course_cta:      ver.course_cta,
       newsletter:      ver.newsletter,
-      quiz:            ver.quiz,
       ai_hints:        ver.ai_hints,
       trust:           ver.trust,
       discussion:      ver.discussion,

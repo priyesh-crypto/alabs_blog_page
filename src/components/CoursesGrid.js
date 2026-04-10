@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 
 /**
  * "Related Courses" grid section — fetches from /api/courses (Supabase-backed).
@@ -52,12 +51,13 @@ export default function CoursesGrid({ limit = 3, showViewAll = true }) {
             >
               <div className="aspect-video overflow-hidden relative bg-surface-container-high dark:bg-[#131b2e]">
                 {course.image ? (
-                  <Image
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
                     src={course.image}
                     alt={course.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="33vw"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    onError={(e) => { e.target.style.display = "none"; }}
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-primary/10">
