@@ -1,25 +1,29 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
+import { DEFAULT_ZONES } from '@/lib/site-config.server';
 
 export const dynamic = 'force-dynamic';
 
 const CONFIG_KEY = 'global';
 
-const DEFAULT_ZONES = {
-  article_sidebar: [],
-  homepage: [],
-  course_page: [],
-  global_footer: [],
-};
-
+/**
+ * Merge raw DB zones with DEFAULT_ZONES so any missing or empty zone falls
+ * back to the rich defaults defined in site-config.server.js — keeping the
+ * layout builder and the frontend (getSiteConfig) in sync.
+ */
 function normalizeZones(raw) {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return DEFAULT_ZONES;
   return {
-    article_sidebar: Array.isArray(raw.article_sidebar) ? raw.article_sidebar : [],
-    homepage:        Array.isArray(raw.homepage)        ? raw.homepage        : [],
-    course_page:     Array.isArray(raw.course_page)     ? raw.course_page     : [],
-    global_footer:   Array.isArray(raw.global_footer)   ? raw.global_footer   : [],
+    article_sidebar: (Array.isArray(raw.article_sidebar) && raw.article_sidebar.length > 0)
+      ? raw.article_sidebar
+      : DEFAULT_ZONES.article_sidebar,
+    homepage: (Array.isArray(raw.homepage) && raw.homepage.length > 0)
+      ? raw.homepage
+      : DEFAULT_ZONES.homepage,
+    course_page: Array.isArray(raw.course_page)  ? raw.course_page  : [],
+    global_footer: Array.isArray(raw.global_footer) ? raw.global_footer : [],
   };
 }
 
@@ -29,6 +33,7 @@ export async function GET() {
       where: { id: CONFIG_KEY }
     });
 
+    // No row yet — return rich defaults so the layout builder pre-populates
     if (!config) {
       return NextResponse.json({ zones: DEFAULT_ZONES, updated_at: '', updated_by: '' });
     }
@@ -69,24 +74,27 @@ export async function PUT(request) {
 
     const zones = normalizeZones(body.zones);
 
-    // ── Prisma Upsert ──────────────────────────────────────────────
-    // Implementing robust upsert logic as per requirements
+    // ── Prisma Upsert ─────────────────────────────────────────────
+    const now = new Date();
     const config = await prisma.siteConfig.upsert({
       where: { id: CONFIG_KEY },
       update: {
         layoutZones: zones,
-        updatedAt: new Date().toISOString(),
+        updatedAt: now,
         updatedBy: user.email ?? user.id,
       },
       create: {
         id: CONFIG_KEY,
         layoutZones: zones,
-        updatedAt: new Date().toISOString(),
+        updatedAt: now,
         updatedBy: user.email ?? user.id,
       },
     });
 
-    console.log('Successfully updated site-config via Prisma:', config.id);
+    // Flush Next.js cache so homepage and articles immediately reflect the new layout
+    revalidatePath('/');
+    revalidatePath('/article/[slug]', 'page');
+
     return NextResponse.json({ success: true, data: config });
 
   } catch (error) {
