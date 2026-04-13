@@ -190,7 +190,7 @@ export default function CommentsModerationPage() {
             {/* Action Bar */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
               <div>
-                <h2 style={{ fontSize: 24, fontWeight: 800, color: "var(--text)", margin: 0, letter-spacing: "-0.5px" }}>
+                <h2 style={{ fontSize: 24, fontWeight: 800, color: "var(--text)", margin: 0, letterSpacing: "-0.5px" }}>
                   Pending Review
                 </h2>
                 <p style={{ color: "var(--text3)", fontSize: 13, margin: "4px 0 0" }}>
