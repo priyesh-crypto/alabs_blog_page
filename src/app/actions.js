@@ -567,6 +567,10 @@ export async function subscribeAction({ email, name = '', source = 'newsletter' 
 }
 
 // ── postCommentAction ─────────────────────────────────────────────
+// Comments are inserted with status='pending' and must be approved
+// by an admin before appearing publicly. Returns { pending: true }
+// so the UI can show a "awaiting moderation" message instead of
+// immediately appending the comment.
 export async function postCommentAction({ postSlug, userName, text, parentCommentId = null }) {
   try {
     if (!postSlug || !text?.trim()) {
@@ -581,24 +585,15 @@ export async function postCommentAction({ postSlug, userName, text, parentCommen
       text: text.trim().slice(0, 2000),
       parent_comment_id: parentCommentId || null,
       likes: 0,
+      status: 'pending',
     };
 
-    const { data, error } = await db.from('comments').insert(row).select().single();
+    const { error } = await db.from('comments').insert(row);
     if (error) throw error;
 
-    return {
-      success: true,
-      comment: {
-        id: data.id,
-        user: data.user_name,
-        text: data.text,
-        likes: data.likes,
-        time: 'Just now',
-        parentCommentId: data.parent_comment_id,
-        createdAt: data.created_at,
-        replies: [],
-      },
-    };
+    // Return pending flag — do NOT return the comment object.
+    // The UI should show a moderation notice, not append to the list.
+    return { success: true, pending: true };
   } catch (error) {
     console.error('postCommentAction failed:', error);
     return { success: false, error: 'Failed to post comment.' };
@@ -634,6 +629,7 @@ export async function likeCommentAction(commentId, delta = 1) {
 }
 
 // ── fetchCommentsAction ───────────────────────────────────────────
+// Only returns comments with status='approved' for public display.
 export async function fetchCommentsAction(postSlug) {
   try {
     if (!postSlug) return { success: true, comments: [] };
@@ -644,6 +640,7 @@ export async function fetchCommentsAction(postSlug) {
       .from('comments')
       .select('*')
       .eq('post_slug', postSlug)
+      .eq('status', 'approved')
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -682,6 +679,116 @@ export async function fetchCommentsAction(postSlug) {
   } catch (error) {
     console.error('fetchCommentsAction failed:', error);
     return { success: true, comments: [] }; // graceful fallback
+  }
+}
+
+// ── fetchPendingCommentsAction ────────────────────────────────────
+// Returns all comments awaiting moderation. Super-admin only.
+export async function fetchPendingCommentsAction() {
+  try {
+    const { isSuperAdmin } = await getCallerSlug();
+    if (!isSuperAdmin) return { success: false, error: 'Unauthorized' };
+
+    const db = getServiceClient();
+    const { data, error } = await db
+      .from('comments')
+      .select('*, parent:parent_comment_id(text, user_name)')
+      .eq('status', 'pending')
+      .order('created_at', { ascending: true });
+
+    if (error) throw error;
+
+    const comments = (data || []).map(row => ({
+      id: row.id,
+      postSlug: row.post_slug,
+      user: row.user_name,
+      text: row.text,
+      likes: row.likes || 0,
+      parentCommentId: row.parent_comment_id,
+      parentContext: row.parent ? { text: row.parent.text, user: row.parent.user_name } : null,
+      createdAt: row.created_at,
+      time: formatRelativeTime(row.created_at),
+    }));
+
+    return { success: true, comments };
+  } catch (error) {
+    console.error('fetchPendingCommentsAction failed:', error);
+    return { success: false, error: 'Failed to fetch pending comments.' };
+  }
+}
+
+// ── approveCommentAction ──────────────────────────────────────────
+// Sets a comment status to 'approved', making it publicly visible.
+export async function approveCommentAction(commentId) {
+  try {
+    const { isSuperAdmin } = await getCallerSlug();
+    if (!isSuperAdmin) return { success: false, error: 'Unauthorized' };
+
+    const db = getServiceClient();
+    const { error } = await db
+      .from('comments')
+      .update({ status: 'approved' })
+      .eq('id', commentId);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (error) {
+    console.error('approveCommentAction failed:', error);
+    return { success: false, error: 'Failed to approve comment.' };
+  }
+}
+
+// ── rejectCommentAction ───────────────────────────────────────────
+// Permanently deletes a rejected comment from the database.
+export async function rejectCommentAction(commentId) {
+  try {
+    const { isSuperAdmin } = await getCallerSlug();
+    if (!isSuperAdmin) return { success: false, error: 'Unauthorized' };
+
+    const db = getServiceClient();
+    const { error } = await db
+      .from('comments')
+      .delete()
+      .eq('id', commentId);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (error) {
+    console.error('rejectCommentAction failed:', error);
+    return { success: false, error: 'Failed to reject comment.' };
+  }
+}
+
+// ── batchModerateCommentsAction ──────────────────────────────────
+// Approves or rejects multiple comments in one call.
+export async function batchModerateCommentsAction(commentIds, action) {
+  try {
+    if (!Array.isArray(commentIds) || commentIds.length === 0) {
+      return { success: false, error: 'No comments provided' };
+    }
+    const { isSuperAdmin } = await getCallerSlug();
+    if (!isSuperAdmin) return { success: false, error: 'Unauthorized' };
+
+    const db = getServiceClient();
+
+    if (action === 'approve') {
+      const { error } = await db
+        .from('comments')
+        .update({ status: 'approved' })
+        .in('id', commentIds);
+      if (error) throw error;
+    } else if (action === 'reject') {
+      const { error } = await db
+        .from('comments')
+        .delete()
+        .in('id', commentIds);
+      if (error) throw error;
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error('batchModerateCommentsAction failed:', error);
+    return { success: false, error: `Failed to ${action} comments.` };
   }
 }
 

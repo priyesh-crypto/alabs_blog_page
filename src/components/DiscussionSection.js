@@ -68,9 +68,9 @@ export default function DiscussionSection({ postSlug, title = "Discussion" }) {
         text: commentInput,
       });
       if (result.success) {
-        setComments((c) => [result.comment, ...c]);
         setCommentInput("");
-        addToast("Comment posted!", "success");
+        // Comment is pending moderation — do not append to UI
+        addToast("Your comment has been submitted and is awaiting moderation.", "success");
       } else {
         addToast(result.error || "Failed to post", "error");
       }
@@ -92,16 +92,10 @@ export default function DiscussionSection({ postSlug, title = "Discussion" }) {
         parentCommentId: parentId,
       });
       if (result.success) {
-        setComments((prev) =>
-          prev.map((c) =>
-            c.id === parentId
-              ? { ...c, replies: [...c.replies, result.comment] }
-              : c
-          )
-        );
         setReplyText("");
         setReplyingTo(null);
-        addToast("Reply posted!", "success");
+        // Reply is pending moderation — do not append to UI
+        addToast("Your reply has been submitted and is awaiting moderation.", "success");
       } else {
         addToast(result.error || "Failed to reply", "error");
       }
