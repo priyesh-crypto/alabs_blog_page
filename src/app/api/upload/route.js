@@ -122,9 +122,10 @@ export async function POST(request) {
 
     const uniqueName = `${Date.now()}-${sanitizedBase}${outputExt}`;
 
-    // Use Supabase in production (Vercel sets VERCEL=1); local filesystem in dev
-    const isProduction = !!(process.env.VERCEL || process.env.NODE_ENV === "production");
-    const url = isProduction
+    // Prioritise Supabase if service role key is available (ensures production-ready URLs even in dev).
+    // This fixes the issue where images uploaded in dev (local) don't work in production (Vercel).
+    const canUseCloud = !!(process.env.SUPABASE_SERVICE_ROLE_KEY && process.env.NEXT_PUBLIC_SUPABASE_URL);
+    const url = canUseCloud
       ? await uploadToSupabase(buffer, uniqueName, contentType)
       : await uploadToLocal(buffer, uniqueName);
 
