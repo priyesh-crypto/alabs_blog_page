@@ -292,13 +292,13 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
 
         {/* ── Left Sidebar ── */}
         <aside className="hidden lg:flex flex-col gap-0">
-          <div className="sticky top-24 flex flex-col gap-0 rounded-2xl overflow-hidden border border-white/10 shadow-xl max-h-[calc(100vh-8rem)]"
+          <div className="sticky top-24 flex flex-col gap-0 rounded-2xl overflow-hidden border border-white/10 shadow-xl max-h-[calc(100vh-8rem)] pb-6"
             style={{ background: "linear-gradient(180deg, #003369 38%, #001f4d 100%)" }}>
 
             {/* TOC */}
             {tocItems.length > 0 && (
               <>
-                <nav className="p-6 flex flex-col gap-1 overflow-y-auto min-h-0">
+                <nav className="p-6 flex flex-col gap-1 overflow-y-auto min-h-0 flex-1">
                   <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-100 mb-3">
                     In this article
                   </h4>

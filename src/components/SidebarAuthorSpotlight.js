@@ -22,7 +22,7 @@ export default function SidebarAuthorSpotlight({ author, articleCount: propArtic
   const yearsExpDisplay = experience ? `${String(experience).replace(" Years", "")} yrs exp` : null;
 
   return (
-    <div className="rounded-2xl border border-white/10 p-4 bg-white/5 backdrop-blur-lg shadow-2xl h-fit min-h-0 overflow-hidden">
+    <div className="rounded-2xl border border-white/10 p-4 bg-white/5 backdrop-blur-lg shadow-2xl h-fit min-h-0">
       <span className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 text-slate-200 uppercase tracking-wider text-xs font-bold mb-3">
         Author Spotlight
       </span>
