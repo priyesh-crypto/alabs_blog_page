@@ -937,6 +937,16 @@ function PlusMenu({ editor, outerRef }) {
             <span style={{ fontSize: 16, fontWeight: 700, lineHeight: 1 }}>—</span>
             <span>Divider</span>
           </button>
+          <button
+            onClick={() => {
+              editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+              setOpen(false);
+            }}
+            className="fod-btn"
+          >
+            <Table2 size={15} strokeWidth={1.5} />
+            <span>Table</span>
+          </button>
           <div className="fod-sep" />
           <div className="px-2 py-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Widgets</div>
           {[
@@ -970,27 +980,6 @@ const TiptapEditor = forwardRef(function TiptapEditor({ content, onChange, onSta
   const outerRef = useRef(null);
   const onStateChangeRef = useRef(onStateChange);
   useEffect(() => { onStateChangeRef.current = onStateChange; }, [onStateChange]);
-
-  // ── HTML Source Mode ─────────────────────────────────────────
-  const [htmlMode, setHtmlMode] = useState(false);
-  const [rawHtml, setRawHtml] = useState('');
-
-  const enterHtmlMode = useCallback(() => {
-    if (!editor) return;
-    setRawHtml(editor.getHTML());
-    setHtmlMode(true);
-  }, [editor]);
-
-  const applyHtml = useCallback(() => {
-    if (!editor) return;
-    editor.commands.setContent(rawHtml, true);
-    onChange && onChange(rawHtml);
-    setHtmlMode(false);
-  }, [editor, rawHtml, onChange]);
-
-  const cancelHtml = useCallback(() => {
-    setHtmlMode(false);
-  }, []);
 
   const syncToolbarState = useCallback((editor) => {
     if (!onStateChangeRef.current) return;
@@ -1034,6 +1023,7 @@ const TiptapEditor = forwardRef(function TiptapEditor({ content, onChange, onSta
     ],
     content: content || '<p></p>',
     immediatelyRender: false,
+    shouldRerenderOnTransaction: false,
     onUpdate:          ({ editor }) => { onChange && onChange(editor.getHTML()); syncToolbarState(editor); },
     onSelectionUpdate: ({ editor }) => syncToolbarState(editor),
   });
@@ -1041,20 +1031,98 @@ const TiptapEditor = forwardRef(function TiptapEditor({ content, onChange, onSta
   // Expose the editor instance so parent can call commands from toolbar
   useImperativeHandle(ref, () => editor, [editor]);
 
+  // ── HTML Source Mode (declared after editor) ─────────────────
+  const [htmlMode, setHtmlMode] = useState(false);
+  const [rawHtml, setRawHtml] = useState('');
+
+  const enterHtmlMode = useCallback(() => {
+    if (!editor) return;
+    setRawHtml(editor.getHTML());
+    setHtmlMode(true);
+  }, [editor]);
+
+  const applyHtml = useCallback(() => {
+    if (!editor) return;
+    editor.commands.setContent(rawHtml, true);
+    onChange && onChange(rawHtml);
+    setHtmlMode(false);
+  }, [editor, rawHtml, onChange]);
+
+  const cancelHtml = useCallback(() => {
+    setHtmlMode(false);
+  }, []);
+
   return (
     <div ref={outerRef} className="tiptap-outer" style={{ position: 'relative' }}>
-      <SelectionMenu editor={editor} outerRef={outerRef} comments={editorComments} onUpdateComments={onUpdateComments} currentAuthor={currentAuthor} />
-      <PlusMenu editor={editor} outerRef={outerRef} />
-      <div className="tiptap-prose">
-        <EditorContent editor={editor} />
+      {/* HTML Source Mode toggle button */}
+      <button
+        onMouseDown={(e) => { e.preventDefault(); htmlMode ? cancelHtml() : enterHtmlMode(); }}
+        title={htmlMode ? "Exit HTML source mode" : "Edit raw HTML source"}
+        style={{
+          position: 'absolute', top: 16, right: 16, zIndex: 30,
+          background: htmlMode ? 'var(--blue)' : 'var(--bg3)',
+          color: htmlMode ? '#fff' : 'var(--text3)',
+          border: `1px solid ${htmlMode ? 'var(--blue)' : 'var(--border)'}`,
+          borderRadius: 6, padding: '4px 10px', fontSize: 11, fontWeight: 700,
+          cursor: 'pointer', letterSpacing: '0.04em', transition: 'all 0.15s',
+        }}
+      >
+        {'</>'}
+      </button>
+
+      {/* ── HTML Source Editor (always in DOM when active; hidden otherwise) ── */}
+      {htmlMode && (
+        <div style={{ paddingTop: 48 }}>
+          <textarea
+            value={rawHtml}
+            onChange={(e) => setRawHtml(e.target.value)}
+            spellCheck={false}
+            style={{
+              width: '100%', minHeight: 520, fontFamily: "'Courier New', monospace",
+              fontSize: 13, lineHeight: 1.6, color: 'var(--text)', background: 'var(--bg2)',
+              border: '1px solid var(--border)', borderRadius: 10, padding: '16px 20px',
+              resize: 'vertical', outline: 'none', boxSizing: 'border-box',
+              whiteSpace: 'pre', overflowWrap: 'normal', overflowX: 'auto',
+            }}
+          />
+          <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
+            <button
+              onClick={applyHtml}
+              style={{
+                background: 'var(--blue)', color: '#fff', border: 'none',
+                borderRadius: 7, padding: '8px 20px', fontSize: 13, fontWeight: 700, cursor: 'pointer',
+              }}
+            >
+              Apply HTML
+            </button>
+            <button
+              onClick={cancelHtml}
+              style={{
+                background: 'var(--bg3)', color: 'var(--text2)', border: '1px solid var(--border)',
+                borderRadius: 7, padding: '8px 16px', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Rich Text Editor (keep mounted; hide with CSS to avoid ProseMirror re-init) ── */}
+      <div style={{ display: htmlMode ? 'none' : 'block' }}>
+        <SelectionMenu editor={editor} outerRef={outerRef} comments={editorComments} onUpdateComments={onUpdateComments} currentAuthor={currentAuthor} />
+        <PlusMenu editor={editor} outerRef={outerRef} />
+        <div className="tiptap-prose">
+          <EditorContent editor={editor} />
+        </div>
+        <TiptapComments
+          editor={editor}
+          outerRef={outerRef}
+          comments={editorComments}
+          onUpdateComments={onUpdateComments}
+          currentAuthor={currentAuthor}
+        />
       </div>
-      <TiptapComments
-        editor={editor}
-        outerRef={outerRef}
-        comments={editorComments}
-        onUpdateComments={onUpdateComments}
-        currentAuthor={currentAuthor}
-      />
     </div>
   );
 });

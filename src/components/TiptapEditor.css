@@ -509,3 +509,59 @@
   outline-offset: 4px;
 }
 
+
+/* ── Table styles (editor) ─────────────────────────────────── */
+.tiptap-prose table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 24px 0;
+  font-size: 15px;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.tiptap-prose table td,
+.tiptap-prose table th {
+  border: 1px solid #e5e7eb;
+  padding: 10px 14px;
+  vertical-align: top;
+  position: relative;
+  min-width: 60px;
+}
+
+.tiptap-prose table th {
+  background: #f9fafb;
+  font-weight: 700;
+  color: #111827;
+  text-align: left;
+}
+
+.tiptap-prose table td {
+  color: #374151;
+}
+
+.tiptap-prose table tr:nth-child(even) td {
+  background: #f9fafb;
+}
+
+/* Selected cells */
+.tiptap-prose .selectedCell:after {
+  z-index: 2;
+  position: absolute;
+  content: "";
+  left: 0; right: 0; top: 0; bottom: 0;
+  background: rgba(59, 130, 246, 0.12);
+  pointer-events: none;
+}
+
+/* Column resize handle */
+.tiptap-prose .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: -2px;
+  width: 4px;
+  background-color: #3b82f6;
+  pointer-events: none;
+}

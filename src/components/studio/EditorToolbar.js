@@ -73,11 +73,40 @@ export default function EditorToolbar({ tbState, cmd }) {
         style={{ fontStyle: "italic", fontWeight: 700, fontSize: 14 }}
       >I</button>
       <button
+        className={`ed-btn ${tbState.underline ? "on" : ""}`}
+        title="Underline (⌘U)"
+        onClick={() => cmd((e) => e.chain().focus().toggleUnderline().run())}
+        style={{ textDecoration: "underline", fontSize: 14 }}
+      >U</button>
+      <button
         className={`ed-btn ${tbState.strike ? "on" : ""}`}
         title="Strikethrough"
         onClick={() => cmd((e) => e.chain().focus().toggleStrike().run())}
         style={{ textDecoration: "line-through", fontSize: 14 }}
       >S</button>
+
+      {/* Text color picker */}
+      <label
+        title="Text color"
+        style={{ position: "relative", display: "inline-flex", alignItems: "center", cursor: "pointer" }}
+      >
+        <span
+          className="ed-btn"
+          style={{ fontSize: 13, fontWeight: 800, borderBottom: `3px solid ${tbState.color || "transparent"}` }}
+        >A</span>
+        <input
+          type="color"
+          value={tbState.color || "#111827"}
+          onChange={(e) => cmd((editor) => editor.chain().focus().setColor(e.target.value).run())}
+          style={{ position: "absolute", opacity: 0, width: "100%", height: "100%", cursor: "pointer", top: 0, left: 0 }}
+        />
+      </label>
+      <button
+        className="ed-btn"
+        title="Remove text color"
+        onClick={() => cmd((e) => e.chain().focus().unsetColor().run())}
+        style={{ fontSize: 11, color: "var(--text3)" }}
+      >✕A</button>
 
       <div className="ed-sep" />
 
