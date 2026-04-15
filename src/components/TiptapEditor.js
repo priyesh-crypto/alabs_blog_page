@@ -7,10 +7,13 @@ import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import TiptapImage from '@tiptap/extension-image';
 import { TextStyle, FontFamily } from '@tiptap/extension-text-style';
+import Color from '@tiptap/extension-color';
+import Underline from '@tiptap/extension-underline';
+import { Table, TableRow, TableHeader, TableCell } from '@tiptap/extension-table';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { common, createLowlight } from 'lowlight';
 import './TiptapEditor.css';
-import { ImageIcon, Video, Code, Plus, MessageSquare, HelpCircle, Mail, LayoutGrid, GraduationCap } from 'lucide-react';
+import { ImageIcon, Video, Code, Plus, MessageSquare, HelpCircle, Mail, LayoutGrid, GraduationCap, Table2 } from 'lucide-react';
 import { CommentMark } from './studio/CommentMark';
 import TiptapComments from './studio/TiptapComments';
 
@@ -968,6 +971,27 @@ const TiptapEditor = forwardRef(function TiptapEditor({ content, onChange, onSta
   const onStateChangeRef = useRef(onStateChange);
   useEffect(() => { onStateChangeRef.current = onStateChange; }, [onStateChange]);
 
+  // ── HTML Source Mode ─────────────────────────────────────────
+  const [htmlMode, setHtmlMode] = useState(false);
+  const [rawHtml, setRawHtml] = useState('');
+
+  const enterHtmlMode = useCallback(() => {
+    if (!editor) return;
+    setRawHtml(editor.getHTML());
+    setHtmlMode(true);
+  }, [editor]);
+
+  const applyHtml = useCallback(() => {
+    if (!editor) return;
+    editor.commands.setContent(rawHtml, true);
+    onChange && onChange(rawHtml);
+    setHtmlMode(false);
+  }, [editor, rawHtml, onChange]);
+
+  const cancelHtml = useCallback(() => {
+    setHtmlMode(false);
+  }, []);
+
   const syncToolbarState = useCallback((editor) => {
     if (!onStateChangeRef.current) return;
     onStateChangeRef.current({
@@ -980,6 +1004,7 @@ const TiptapEditor = forwardRef(function TiptapEditor({ content, onChange, onSta
       bullet:     editor.isActive('bulletList'),
       ordered:    editor.isActive('orderedList'),
       fontFamily: editor.getAttributes('textStyle').fontFamily || '',
+      color:      editor.getAttributes('textStyle').color || '',
     });
   }, []);
 
@@ -1000,6 +1025,12 @@ const TiptapEditor = forwardRef(function TiptapEditor({ content, onChange, onSta
       CommentMark,
       TextStyle,
       FontFamily.configure({ types: ['textStyle'] }),
+      Color.configure({ types: ['textStyle'] }),
+      Underline,
+      Table.configure({ resizable: false }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
     content: content || '<p></p>',
     immediatelyRender: false,
