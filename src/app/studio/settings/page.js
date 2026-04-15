@@ -16,6 +16,7 @@ export default function SettingsPage() {
   const [experience, setExperience] = useState("");
   const [expertise, setExpertise] = useState("");
   const [image, setImage] = useState("");
+  const [position, setPosition] = useState("");
   
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
@@ -26,6 +27,7 @@ export default function SettingsPage() {
   useEffect(() => {
     if (!authLoading && authorProfile) {
       setName(authorProfile.name || "");
+      setPosition(authorProfile.position || "");
       setBio(authorProfile.bio || "");
       setLinkedin(authorProfile.linkedin || "");
       setExperience(authorProfile.experience || "");
@@ -65,7 +67,7 @@ export default function SettingsPage() {
     setMessage(null);
 
     const res = await updateAuthorProfileAction({ 
-      name, bio, linkedin, experience, expertise, image 
+      name, bio, linkedin, experience, expertise, image, position
     });
     
     if (res.success) {
@@ -139,6 +141,11 @@ export default function SettingsPage() {
               <div>
                 <Label>Full Name</Label>
                 <Input value={name} onChange={e => setName(e.target.value)} placeholder="Your display name" required />
+              </div>
+
+              <div>
+                <Label>Professional Title</Label>
+                <Input value={position} onChange={e => setPosition(e.target.value)} placeholder="e.g. Lead Data Scientist" />
               </div>
 
               <div>

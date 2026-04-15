@@ -16,13 +16,15 @@ export default function SidebarAuthorSpotlight({ author, articleCount: propArtic
   const bio          = author.bio || "";
   const avatarUrl    = author.avatarUrl || author.image;
   const experience   = author.experience;
+  const position     = author.position;
+  const expertise    = Array.isArray(author.expertise) ? author.expertise : [];
   const articleCount = author.articleCount || propArticleCount;
   const initials     = author.initials || name.split(" ").map(w => w[0] || "").join("").toUpperCase().slice(0, 2);
 
   const yearsExpDisplay = experience ? `${String(experience).replace(" Years", "")} yrs exp` : null;
 
   return (
-    <div className="rounded-2xl border border-white/10 p-4 bg-white/5 backdrop-blur-lg shadow-2xl h-fit min-h-0">
+    <div className="rounded-2xl border border-white/10 p-4 bg-white/5 backdrop-blur-lg shadow-2xl h-fit min-h-0" suppressHydrationWarning>
       <span className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 text-slate-200 uppercase tracking-wider text-xs font-bold mb-3">
         Author Spotlight
       </span>
@@ -48,10 +50,29 @@ export default function SidebarAuthorSpotlight({ author, articleCount: propArtic
           >
             {name}
           </Link>
+          {position && (
+            <p className="text-[11px] font-medium text-blue-200 uppercase tracking-widest mt-1 mb-1">
+              {position}
+            </p>
+          )}
           {bio && (
             <p className="text-[12px] text-slate-300 leading-snug line-clamp-2 mt-0.5">
               {bio}
             </p>
+          )}
+          {expertise.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-2">
+              {expertise.slice(0, 3).map((skill, i) => (
+                <span key={i} className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-white/10 text-slate-300 uppercase tracking-wider">
+                  {skill}
+                </span>
+              ))}
+              {expertise.length > 3 && (
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-white/5 text-slate-400 uppercase tracking-wider">
+                  +{expertise.length - 3}
+                </span>
+              )}
+            </div>
           )}
         </div>
       </div>

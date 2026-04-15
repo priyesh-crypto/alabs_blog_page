@@ -812,7 +812,7 @@ function formatRelativeTime(dateStr) {
 // ── adminCreateUserAction ─────────────────────────────────────────
 export async function adminCreateUserAction({ 
   email, name, password, role, 
-  bio = '', linkedin = '', experience = '', expertise = '', image = '' 
+  bio = '', linkedin = '', experience = '', expertise = '', image = '', position = ''
 }) {
   try {
     if (!email || !password || !name) {
@@ -886,7 +886,8 @@ export async function adminCreateUserAction({
       linkedin,
       experience,
       expertise: expertise.split(',').map(t => t.trim()).filter(Boolean),
-      image
+      image,
+      position
     };
 
     let dbErr;
@@ -916,7 +917,7 @@ export async function adminCreateUserAction({
 }
 
 // ── updateAuthorProfileAction ────────────────────────────────────
-export async function updateAuthorProfileAction({ name, bio, linkedin, experience, expertise, image }) {
+export async function updateAuthorProfileAction({ name, bio, linkedin, experience, expertise, image, position }) {
   try {
     const supabaseSession = await createClient();
     const { data: { user }, error: authErr } = await supabaseSession.auth.getUser();
@@ -940,6 +941,7 @@ export async function updateAuthorProfileAction({ name, bio, linkedin, experienc
         experience,
         expertise: (expertise || '').split(',').map(t => t.trim()).filter(Boolean),
         image,
+        position,
       })
       .ilike('email', user.email);
 
