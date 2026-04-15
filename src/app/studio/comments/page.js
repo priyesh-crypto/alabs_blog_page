@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
-import useStudioDraft from "@/hooks/useStudioDraft";
 import { 
   fetchPendingCommentsAction, 
   approveCommentAction, 
@@ -11,13 +10,13 @@ import {
   batchModerateCommentsAction
 } from "@/app/actions";
 import { I } from "@/components/studio/StudioIcons";
-import StudioSidebar from "@/components/studio/StudioSidebar";
 import StudioToast from "@/components/studio/StudioToast";
+import { useStudioContext } from "@/components/studio/StudioSidebarContext";
 
 export default function CommentsModerationPage() {
   const router = useRouter();
   const { user, authorProfile, loading: authLoading, signOut } = useAuth();
-  const { state: studioState, set: setStudio, fetchAllPosts, clearEditor, loadPostForEdit } = useStudioDraft();
+  const { dynamicAuthor } = useStudioContext();
 
   const [comments, setComments] = useState([]);
   const [fetching, setFetching] = useState(true);
@@ -45,9 +44,8 @@ export default function CommentsModerationPage() {
   useEffect(() => {
     if (authorProfile?.is_super_admin) {
       load();
-      fetchAllPosts();
     }
-  }, [authorProfile, load, fetchAllPosts]);
+  }, [authorProfile, load]);
 
   const showToast = (msg, type = "ok") => setToast({ msg, type, id: Date.now() });
 
@@ -111,48 +109,19 @@ export default function CommentsModerationPage() {
     setFetching(false);
   }
 
-  // ── Derived View Props ──────────────────────────────────────
-  const authorSlug = authorProfile?.slug || "al-editorial";
-  const dynamicAuthor = {
-    slug: authorSlug,
-    name: authorProfile?.name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Author",
-    image: authorProfile?.image || user?.user_metadata?.avatar_url || "/authors/default.svg",
-    initials: authorProfile?.initials || user?.user_metadata?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || "U",
-    is_super_admin: authorProfile?.is_super_admin || false,
-    email: user?.email
-  };
-
   if (authLoading) return null;
 
   return (
-    <div className="studio-wrapper">
-      <div className="app">
-        {toast && (
-          <StudioToast 
-            key={toast.id} 
-            msg={toast.msg} 
-            type={toast.type} 
-            onDone={() => setToast(null)} 
-          />
-        )}
-
-        {/* ── Sidebar ── */}
-        <StudioSidebar
-          viewMode="write"
-          postsViewMode="posts"
-          allPosts={studioState.allPosts}
-          clearEditor={() => { clearEditor(); router.push("/studio"); }}
-          loadPostForEdit={(p) => { loadPostForEdit(p); router.push("/studio"); }}
-          fetchAllPosts={fetchAllPosts}
-          set={setStudio}
-          setMany={setStudio}
-          onGoHome={() => router.push("/")}
-          signOut={signOut}
-          dynamicAuthor={dynamicAuthor}
+    <>
+      {toast && (
+        <StudioToast
+          key={toast.id}
+          msg={toast.msg}
+          type={toast.type}
+          onDone={() => setToast(null)}
         />
-
-        {/* ── Main Area ── */}
-        <main className="main">
+      )}
+      <main className="main">
           {/* Topbar */}
           <header className="topbar">
             <span className="tb-crumb">
@@ -367,7 +336,6 @@ export default function CommentsModerationPage() {
 
           </div>
         </main>
-      </div>
 
       <style jsx>{`
         .glass-chip {
@@ -388,6 +356,6 @@ export default function CommentsModerationPage() {
           box-shadow: 0 8px 32px rgba(59, 130, 246, 0.12) !important;
         }
       `}</style>
-    </div>
+    </>
   );
 }

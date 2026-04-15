@@ -8,7 +8,7 @@ import { User, Mail, Link, Award, Briefcase, Image as ImageIcon, Loader2, ArrowL
 
 export default function SettingsPage() {
   const router = useRouter();
-  const { authorProfile, loading: authLoading } = useAuth();
+  const { authorProfile, loading: authLoading, signOut } = useAuth();
   
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
@@ -81,14 +81,14 @@ export default function SettingsPage() {
   };
 
   if (authLoading) {
-    return <div className="studio-wrapper" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg)' }}><Loader2 className="spinning" size={32} color="var(--primary)" /></div>;
+    return <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}><Loader2 className="spinning" size={32} color="var(--primary)" /></div>;
   }
 
   return (
-    <div className="studio-wrapper" style={{ background: 'var(--bg)', minHeight: '100vh', overflowY: 'auto' }}>
-      <div style={{ maxWidth: 800, margin: '0 auto', padding: '60px 24px' }}>
-        
-        {/* Navigation */}
+    <div style={{ flex: 1, background: 'var(--bg)', overflowY: 'auto' }}>
+          <div style={{ maxWidth: 800, margin: '0 auto', padding: '60px 24px' }}>
+            
+            {/* Navigation */}
         <button 
           onClick={() => router.push("/studio")} 
           style={{ 
@@ -260,7 +260,6 @@ export default function SettingsPage() {
             </button>
           </div>
         </form>
-      </div>
       
       <style dangerouslySetInnerHTML={{__html: `
         .spinning { animation: spin 1s linear infinite; }
@@ -274,7 +273,8 @@ export default function SettingsPage() {
         .upload-zone-settings:hover { border-color: var(--blue); background: var(--bg3); }
         .upload-zone-settings:hover .upload-overlay { opacity: 1; }
       `}} />
-    </div>
+          </div>
+        </div>
   );
 }
 

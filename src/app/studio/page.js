@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   publishPostAction, schedulePostAction, updatePostAction, deletePostAction,
   togglePostStatusAction, fetchVersionsAction, restoreVersionAction, saveDraftAction,
 } from "@/app/actions";
 import TiptapEditor from "@/components/TiptapEditor";
-import useStudioDraft, { buildPublishPayload } from "@/hooks/useStudioDraft";
+import { buildPublishPayload } from "@/hooks/useStudioDraft";
 import { useAuth } from "@/hooks/useAuth";
 
 // Studio sub-components
@@ -16,7 +16,7 @@ import ScheduleModal from "@/components/studio/ScheduleModal";
 import ShareModal from "@/components/studio/ShareModal";
 import StatusConfirmModal from "@/components/studio/StatusConfirmModal";
 import VersionHistoryModal from "@/components/studio/VersionHistoryModal";
-import StudioSidebar from "@/components/studio/StudioSidebar";
+import { useStudioContext } from "@/components/studio/StudioSidebarContext";
 import EditorToolbar from "@/components/studio/EditorToolbar";
 import PreviewPane from "@/components/studio/PreviewPane";
 import PostsTable from "@/components/studio/PostsTable";
@@ -27,7 +27,7 @@ import { I } from "@/components/studio/StudioIcons";
 
 export default function AuthorStudio() {
   const router = useRouter();
-  const { user, authorProfile, signOut } = useAuth();
+  useAuth(); // keeps the auth session alive; no values needed here
   const editorRef = useRef(null);
 
   const {
@@ -42,19 +42,12 @@ export default function AuthorStudio() {
     restoreDraft,
     discardDraft,
     clearDraftOnSuccess,
-  } = useStudioDraft();
+    dynamicAuthor,
+  } = useStudioContext();
 
   // ── Derived State ────────────────────────────────────────
   // authorProfile.slug is the FK used in posts.author_id — never use user.id (UUID)
-  const authorSlug = authorProfile?.slug || "al-editorial";
-  const dynamicAuthor = {
-    slug: authorSlug,
-    name: authorProfile?.name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Author",
-    image: authorProfile?.image || user?.user_metadata?.avatar_url || "/authors/default.svg",
-    initials: authorProfile?.initials || user?.user_metadata?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || "U",
-    is_super_admin: authorProfile?.is_super_admin || false,
-    email: user?.email
-  };
+  const authorSlug = dynamicAuthor?.slug || "al-editorial";
 
   // ── Actions ──────────────────────────────────────────────
   const publishPost = async () => {
@@ -147,10 +140,6 @@ export default function AuthorStudio() {
     }
   }, []);
 
-  useEffect(() => {
-    fetchAllPosts();
-  }, [fetchAllPosts]);
-
   // ── Version History ──────────────────────────────────────
   const handleShowVersions = useCallback(async (post) => {
     const res = await fetchVersionsAction(post.id);
@@ -180,9 +169,7 @@ export default function AuthorStudio() {
 
   // ══════════════════════════════════════════════════════════
   return (
-    <div className="studio-wrapper">
-      <div className="app">
-
+    <>
         {/* Toast */}
         {state.toast && (
           <StudioToast key={state.toast.id} msg={state.toast.msg} type={state.toast.type} onDone={() => set("toast", null)} />
@@ -221,21 +208,6 @@ export default function AuthorStudio() {
             loading={state.isPublishing}
           />
         )}
-
-        {/* ═══════ LEFT SIDEBAR ═══════ */}
-        <StudioSidebar
-          viewMode={state.viewMode}
-          postsViewMode={state.postsViewMode}
-          allPosts={state.allPosts}
-          clearEditor={clearEditor}
-          loadPostForEdit={loadPostForEdit}
-          fetchAllPosts={fetchAllPosts}
-          set={set}
-          setMany={setMany}
-          onGoHome={() => router.push("/")}
-          signOut={signOut}
-          dynamicAuthor={dynamicAuthor}
-        />
 
         {/* ═══════ MAIN AREA ═══════ */}
         <div className="main">
@@ -443,8 +415,7 @@ export default function AuthorStudio() {
 
           </div>
         </div>
-      </div>
-    </div>
+    </>
   );
 }
 

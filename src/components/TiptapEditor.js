@@ -563,8 +563,11 @@ function SelectionMenu({ editor, outerRef, comments, onUpdateComments, currentAu
       } else {
         const start = view.coordsAtPos(from);
         const end = view.coordsAtPos(to);
+        const desiredLeft = (start.left + end.left) / 2 - outerRect.left;
+        const minLeft = 260; // Increased to 260 to accommodate wider menu translations
+        const maxLeft = outerRect.width - 260;
         setPos({
-          left: (start.left + end.left) / 2 - outerRect.left,
+          left: Math.max(minLeft, Math.min(maxLeft, desiredLeft)),
           top: start.top - outerRect.top - 52,
         });
       }
@@ -823,11 +826,12 @@ function PlusMenu({ editor, outerRef }) {
         const coords = view.coordsAtPos($from.pos);
         const outerRect = outerRef.current.getBoundingClientRect();
         
-        // Ensure the menu doesn't go off-screen if left padding is restricted
-        const isNarrow = window.innerWidth < 900;
+        // The tiptap-outer container has padding-left of 64px or 80px.
+        // A fixed left of 16px is guaranteed to be completely visible and 
+        // ~48px-64px to the left of the active text cursor.
         setPos({ 
-          top: coords.top - outerRect.top,
-          left: isNarrow ? 8 : -44 
+          top: coords.top - outerRect.top - 4,
+          left: 16
         });
       } else {
         setPos(null);

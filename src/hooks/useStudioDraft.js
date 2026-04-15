@@ -40,14 +40,6 @@ const INITIAL_STATE = {
   schemaType: "Article",
   canonicalUrl: "",
 
-  // Course Mapping
-  mappedCourses: [],
-  courseCTA: "",
-
-  // Lead Magnet
-  newsletterPlacement: "after-intro",
-  leadMagnetPDF: "none",
-  exitIntentEnabled: false,
 
   // AI Hints
   entityTags: [],
@@ -105,7 +97,6 @@ const INITIAL_STATE = {
 
   // Collapsible sections
   openSections: {
-    courses: false, leadmagnet: false,
     ai: false, author: false, discussion: false, advanced: false,
   },
 };
@@ -151,16 +142,6 @@ function studioReducer(state, action) {
 
     case "POP_ENTITY_TAG":
       return { ...state, entityTags: state.entityTags.slice(0, -1) };
-
-    case "TOGGLE_COURSE": {
-      const id = action.value;
-      return {
-        ...state,
-        mappedCourses: state.mappedCourses.includes(id)
-          ? state.mappedCourses.filter((c) => c !== id)
-          : [...state.mappedCourses, id],
-      };
-    }
 
     case "ADD_WIDGET": {
       const widgetDefaults = {
@@ -225,11 +206,6 @@ function studioReducer(state, action) {
         ogImage: d.ogImage || "",
         schemaType: d.schemaType || "Article",
         canonicalUrl: d.canonicalUrl || "",
-        mappedCourses: d.mappedCourses || [],
-        courseCTA: d.courseCTA || "",
-        newsletterPlacement: d.newsletterPlacement || "after-intro",
-        leadMagnetPDF: d.leadMagnetPDF || "none",
-        exitIntentEnabled: d.exitIntentEnabled || false,
         entityTags: d.entityTags || [],
         relatedPostIds: d.relatedPostIds || "",
         aiInclusionEnabled: d.aiInclusionEnabled !== false,
@@ -284,11 +260,6 @@ function studioReducer(state, action) {
         ogImage: p.seo?.ogImage || "",
         schemaType: p.seo?.schemaType || "Article",
         canonicalUrl: p.seo?.canonicalUrl || "",
-        mappedCourses: p.courseMappings || [],
-        courseCTA: p.courseCTA || "",
-        newsletterPlacement: p.newsletter?.placement || "after-intro",
-        leadMagnetPDF: p.newsletter?.leadMagnet || "none",
-        exitIntentEnabled: p.newsletter?.exitIntent || false,
         entityTags: p.aiHints?.entityTags || [],
         relatedPostIds: (p.aiHints?.relatedPostIds || []).join(", "),
         aiInclusionEnabled: p.aiHints?.enabled !== false,
@@ -341,9 +312,7 @@ function buildDraftPayload(s) {
     featuredImage: s.featuredImage, cardImage: s.cardImage, squareImage: s.squareImage,
     altText: s.altText, focusKeyword: s.focusKeyword, metaTitle: s.metaTitle,
     metaDesc: s.metaDesc, ogImage: s.ogImage, schemaType: s.schemaType, canonicalUrl: s.canonicalUrl,
-    mappedCourses: s.mappedCourses, courseCTA: s.courseCTA,
-    newsletterPlacement: s.newsletterPlacement, leadMagnetPDF: s.leadMagnetPDF,
-    exitIntentEnabled: s.exitIntentEnabled, entityTags: s.entityTags,
+    entityTags: s.entityTags,
     relatedPostIds: s.relatedPostIds, aiInclusionEnabled: s.aiInclusionEnabled,
     authorBio: s.authorBio, factChecker: s.factChecker, lastReviewedDate: s.lastReviewedDate,
     qaEnabled: s.qaEnabled, faqSchemaEnabled: s.faqSchemaEnabled, moderationMode: s.moderationMode, editorComments: s.editorComments,
@@ -367,8 +336,6 @@ export function buildPublishPayload(s, userId) {
     image: s.featuredImage,
     alt_text: s.altText,
     seo: { focusKeyword: s.focusKeyword, metaTitle: s.metaTitle || s.postTitle, metaDesc: s.metaDesc || s.excerpt, ogImage: s.ogImage || s.featuredImage, schemaType: s.schemaType, canonicalUrl: s.canonicalUrl, noIndex: s.noIndex },
-    courseMappings: s.mappedCourses, courseCTA: s.courseCTA,
-    newsletter: { placement: s.newsletterPlacement, leadMagnet: s.leadMagnetPDF, exitIntent: s.exitIntentEnabled },
     aiHints: { entityTags: s.entityTags, relatedPostIds: s.relatedPostIds.split(",").map((x) => x.trim()).filter(Boolean), enabled: s.aiInclusionEnabled },
     trust: { authorBio: s.authorBio, factChecker: s.factChecker, lastReviewedDate: s.lastReviewedDate },
     discussion: { qa: s.qaEnabled, faqSchema: s.faqSchemaEnabled, moderation: s.moderationMode, editorComments: s.editorComments || [] },
@@ -431,8 +398,7 @@ export default function useStudioDraft() {
     state.postBody, state.postTitle, state.slug, state.excerpt, state.category,
     state.authorId, state.skill, state.tags, state.featuredImage, state.cardImage, state.squareImage, state.widgets,
     state.focusKeyword, state.metaTitle, state.metaDesc, state.ogImage,
-    state.schemaType, state.canonicalUrl, state.mappedCourses, state.courseCTA,
-    state.newsletterPlacement, state.leadMagnetPDF, state.exitIntentEnabled,
+    state.schemaType, state.canonicalUrl, 
     state.entityTags,
     state.relatedPostIds, state.aiInclusionEnabled, state.authorBio,
     state.factChecker, state.lastReviewedDate, state.qaEnabled,

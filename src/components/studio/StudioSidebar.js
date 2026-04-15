@@ -1,6 +1,8 @@
 "use client";
 
 import { I } from "./StudioIcons";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function StudioSidebar({
   viewMode,
@@ -15,6 +17,10 @@ export default function StudioSidebar({
   signOut,
   dynamicAuthor,
 }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const isEditorRoute = pathname === '/studio';
+
   return (
     <nav className="sidebar">
       {/* Brand Logo */}
@@ -31,14 +37,14 @@ export default function StudioSidebar({
       {/* Workspace */}
       <div className="sb-label">WORKSPACE</div>
       <div
-        className={`sb-nav ${viewMode === "write" && postsViewMode === "editor" ? "active" : ""}`}
-        onClick={() => setMany({ viewMode: "write", postsViewMode: "editor" })}
+        className={`sb-nav ${isEditorRoute && viewMode === "write" && postsViewMode === "editor" ? "active" : ""}`}
+        onClick={() => { setMany({ viewMode: "write", postsViewMode: "editor" }); if (!isEditorRoute) router.push('/studio'); }}
       >
         {I.edit} Edit
       </div>
       <div
-        className={`sb-nav ${viewMode === "preview" && postsViewMode === "editor" ? "active" : ""}`}
-        onClick={() => setMany({ viewMode: "preview", postsViewMode: "editor" })}
+        className={`sb-nav ${isEditorRoute && viewMode === "preview" && postsViewMode === "editor" ? "active" : ""}`}
+        onClick={() => { setMany({ viewMode: "preview", postsViewMode: "editor" }); if (!isEditorRoute) router.push('/studio'); }}
       >
         {I.eye} Preview
       </div>
@@ -47,44 +53,48 @@ export default function StudioSidebar({
         onClick={() => {
           set("postsViewMode", postsViewMode === "posts" ? "editor" : "posts");
           fetchAllPosts();
+          if (!isEditorRoute) router.push('/studio');
         }}
       >
         {I.list} All Posts
       </div>
-      <div
-        className={`sb-nav ${postsViewMode === "settings" ? "active" : ""}`}
-        onClick={() => { window.location.href = '/studio/settings'; }}
+      
+      <Link
+        href="/studio/settings"
+        className={`sb-nav ${pathname === '/studio/settings' ? "active" : ""}`}
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings
-      </div>
-      <div
-        className="sb-nav"
-        onClick={() => { window.location.href = '/studio/settings/layout'; }}
+      </Link>
+      
+      <Link
+        href="/studio/settings/layout"
+        className={`sb-nav ${pathname === '/studio/settings/layout' ? "active" : ""}`}
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="18"/><rect x="14" y="3" width="7" height="11"/><rect x="14" y="18" width="7" height="3"/></svg> Site Layout
-      </div>
-      <div
-        className="sb-nav"
-        onClick={() => { window.location.href = '/studio/content'; }}
+      </Link>
+      
+      <Link
+        href="/studio/content"
+        className={`sb-nav ${pathname === '/studio/content' ? "active" : ""}`}
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Content
-      </div>
+      </Link>
 
       {/* Super Admin Nav */}
       {dynamicAuthor?.is_super_admin ? (
          <>
            <div className="sb-label" style={{ marginTop: 20 }}>ADMINISTRATION</div>
-           <div className={`sb-nav ${postsViewMode === 'admin' ? 'active' : ''}`} onClick={() => window.location.href = '/studio/admin'}>
+           <Link href="/studio/admin" className={`sb-nav ${pathname === '/studio/admin' ? 'active' : ''}`}>
              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
              Manage Team
-           </div>
-           <div 
-              className={`sb-nav ${window.location.pathname === '/studio/comments' ? 'active' : ''}`} 
-              onClick={() => window.location.pathname !== '/studio/comments' && (window.location.href = '/studio/comments')}
+           </Link>
+           <Link 
+              href="/studio/comments"
+              className={`sb-nav ${pathname === '/studio/comments' ? 'active' : ''}`} 
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
               Comments
-            </div>
+            </Link>
          </>
       ) : (
         // Recovery link for the designated super admin
@@ -121,7 +131,7 @@ export default function StudioSidebar({
       <div style={{ flex: 1 }} />
       
       {/* User Profile Footer */}
-      <div className="sb-user" onClick={() => window.location.href = '/studio/settings'}>
+      <Link href="/studio/settings" className="sb-user" style={{ textDecoration: 'none' }}>
         <div className="sb-avatar">
           {dynamicAuthor?.image ? (
             <img src={dynamicAuthor.image} alt="" className="sb-avatar" style={{ border: 'none' }} />
@@ -135,7 +145,7 @@ export default function StudioSidebar({
         </div>
         <div className="sb-footer-acts" onClick={e => e.stopPropagation()}>
           {signOut && (
-            <button className="sb-foot-btn" onClick={signOut} title="Sign Out">
+            <button className="sb-foot-btn" onClick={(e) => { e.preventDefault(); signOut(); }} title="Sign Out">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                 <polyline points="16 17 21 12 16 7" />
@@ -144,7 +154,7 @@ export default function StudioSidebar({
             </button>
           )}
         </div>
-      </div>
+      </Link>
     </nav>
   );
 }

@@ -115,8 +115,6 @@ function WidgetConfigPanel({ widgetId, widget, dispatch, studioCourses }) {
 }
 import {
   STUDIO_CATEGORIES,
-  STUDIO_LEAD_MAGNETS,
-  STUDIO_NEWSLETTER_PLACEMENTS,
 } from "@/lib/config";
 
 export default function DetailsPanel({ state, dispatch, set, showToast }) {
@@ -356,44 +354,7 @@ export default function DetailsPanel({ state, dispatch, set, showToast }) {
 
       {/* ── Collapsible Sections ── */}
 
-      {/* Course Mapping T2 */}
-      <Section title="Course Mapping" tier="T2" open={state.openSections.courses} onToggle={() => dispatch({ type: "TOGGLE_SECTION", key: "courses" })}>
-        <div style={{ fontSize: 11, color: "var(--text3)", marginBottom: 4, fontWeight: 600 }}>Map to Courses</div>
-        {studioCourses.map((course) => (
-          <label key={course.id} className="course-item">
-            <input type="checkbox" checked={state.mappedCourses.includes(course.id)} onChange={() => dispatch({ type: "TOGGLE_COURSE", value: course.id })} />
-            <span className="course-lbl">{course.name}</span>
-          </label>
-        ))}
-        {state.mappedCourses.length > 0 && (
-          <div style={{ marginTop: 6 }}>
-            <div className="f-lbl" style={{ marginBottom: 6 }}>Custom CTA Headline</div>
-            <input type="text" value={state.courseCTA} onChange={(e) => set("courseCTA", e.target.value)} placeholder="Ready to go deeper? Enroll now →" />
-          </div>
-        )}
-      </Section>
 
-      {/* Lead Magnet T2 */}
-      <Section title="Lead Magnet & CTA" tier="T2" open={state.openSections.leadmagnet} onToggle={() => dispatch({ type: "TOGGLE_SECTION", key: "leadmagnet" })}>
-        <div>
-          <div className="f-lbl" style={{ marginBottom: 6 }}>Newsletter Placement</div>
-          <select value={state.newsletterPlacement} onChange={(e) => set("newsletterPlacement", e.target.value)}>
-            {STUDIO_NEWSLETTER_PLACEMENTS.map((p) => (
-              <option key={p.id} value={p.id}>{p.label}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <div className="f-lbl" style={{ marginBottom: 6 }}>CTA URL</div>
-          <select value={state.leadMagnetPDF} onChange={(e) => set("leadMagnetPDF", e.target.value)}>
-            {STUDIO_LEAD_MAGNETS.map((lm) => <option key={lm.id} value={lm.id}>{lm.name}</option>)}
-          </select>
-        </div>
-        <div className="toggle-row">
-          <span className="toggle-lbl">Exit-intent popup</span>
-          <Toggle checked={state.exitIntentEnabled} onChange={(v) => set("exitIntentEnabled", v)} />
-        </div>
-      </Section>
 
       {/* AI Hints T1 */}
       <Section title="AI Recommendation Hints" tier="T1" open={state.openSections.ai} onToggle={() => dispatch({ type: "TOGGLE_SECTION", key: "ai" })}>

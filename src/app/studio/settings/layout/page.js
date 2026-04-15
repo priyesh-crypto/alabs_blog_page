@@ -114,9 +114,10 @@ function newId() {
   return "w-" + Math.random().toString(36).slice(2, 9);
 }
 
+
 export default function SiteLayoutPage() {
   const router = useRouter();
-  const { authorProfile, loading: authLoading } = useAuth();
+  const { authorProfile, loading: authLoading, signOut } = useAuth();
 
   // Data state: zones dict
   const [zones, setZones] = useState(EMPTY_ZONES);
@@ -250,8 +251,9 @@ export default function SiteLayoutPage() {
   const activeZoneMeta = ZONES.find(z => z.id === activeZone);
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)]">
-      {/* Sticky Header */}
+    <div style={{ flex: 1, overflowY: 'auto' }}>
+          <div className="min-h-screen bg-[var(--color-background)]">
+            {/* Sticky Header */}
       <header className="sticky top-0 z-40 bg-[var(--color-surface)]/80 backdrop-blur-md border-b border-[var(--color-outline-variant)] px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -437,6 +439,7 @@ export default function SiteLayoutPage() {
           </p>
         </div>
       )}
-    </div>
+          </div>
+        </div>
   );
 }

@@ -9,7 +9,7 @@ import { ShieldAlert, UserPlus, Users, Loader2, ArrowLeft, Key, Mail, CheckCircl
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const { authorProfile, loading: authLoading } = useAuth();
+  const { authorProfile, loading: authLoading, signOut } = useAuth();
   const supabase = createClient();
   
   const [authorsList, setAuthorsList] = useState([]);
@@ -226,15 +226,15 @@ export default function AdminDashboard() {
   };
 
   if (authLoading || fetching) {
-    return <div className="studio-wrapper" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg)' }}><Loader2 className="spinning" size={32} color="var(--primary)" /></div>;
+    return <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}><Loader2 className="spinning" size={32} color="var(--primary)" /></div>;
   }
 
   // Double check client side bounce to prevent flash
   if (!authorProfile?.is_super_admin) return null;
 
   return (
-    <div className="studio-wrapper" style={{ background: 'var(--bg)', minHeight: '100vh', overflowY: 'auto' }}>
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '60px 24px' }}>
+    <div style={{ flex: 1, background: 'var(--bg)', overflowY: 'auto' }}>
+          <div style={{ maxWidth: 1000, margin: '0 auto', padding: '60px 24px' }}>
         
         {/* Top Header Navigation */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40 }}>
@@ -755,7 +755,6 @@ export default function AdminDashboard() {
           )}
         </div>
 
-      </div>
       <style dangerouslySetInnerHTML={{__html: `
         .spinning { animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -765,6 +764,7 @@ export default function AdminDashboard() {
           background: var(--bg) !important;
         }
       `}} />
-    </div>
+          </div>
+        </div>
   );
 }

@@ -13,7 +13,7 @@ import {
 
 export default function ContentSettings() {
   const router = useRouter();
-  const { authorProfile, loading: authLoading } = useAuth();
+  const { authorProfile, loading: authLoading, signOut } = useAuth();
 
   // ── Topics state ──────────────────────────────────────────────────
   const [topics, setTopics] = useState([]);
@@ -136,9 +136,9 @@ export default function ContentSettings() {
   }
 
   return (
-    <div className="studio-wrapper" style={{ background: "var(--bg)", minHeight: "100vh", overflowY: "auto" }}>
-      <div style={{ maxWidth: 860, margin: "0 auto", padding: "60px 24px" }}>
-
+    <div style={{ flex: 1, background: "var(--bg)", overflowY: "auto" }}>
+          <div style={{ maxWidth: 860, margin: "0 auto", padding: "60px 24px" }}>
+        
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 40 }}>
           <button onClick={() => router.push("/studio")} style={{ background: "none", border: "none", color: "var(--text3)", display: "flex", alignItems: "center", gap: 6, cursor: "pointer", fontSize: 14, fontWeight: 500, padding: "8px 0" }}>
@@ -335,8 +335,8 @@ export default function ContentSettings() {
             </div>
           )}
         </section>
-      </div>
       <style dangerouslySetInnerHTML={{ __html: `.spinning { animation: spin 1s linear infinite; } @keyframes spin { 100% { transform: rotate(360deg); } }` }} />
-    </div>
+          </div>
+        </div>
   );
 }
