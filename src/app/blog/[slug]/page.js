@@ -32,10 +32,11 @@ export async function generateMetadata({ params }) {
   }
 
   const seo = post.seo || {};
+  const canonical = seo.canonicalUrl || `https://www.analytixlabs.co.in/blog/${post.slug}`;
   return {
     title: seo.metaTitle || `${post.title} | ${SITE_NAME}`,
     description: seo.metaDesc || post.excerpt || post.title,
-    ...(seo.noIndex ? { robots: { index: false, follow: false } } : {}),
+    robots: { index: false, follow: false },
     openGraph: {
       title: post.title,
       description: post.excerpt || post.title,
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }) {
       modifiedTime: post.updatedAt,
       ...(seo.ogImage || post.image ? { images: [{ url: seo.ogImage || post.image }] } : {}),
     },
-    ...(seo.canonicalUrl ? { alternates: { canonical: seo.canonicalUrl } } : {}),
+    alternates: { canonical },
   };
 }
 

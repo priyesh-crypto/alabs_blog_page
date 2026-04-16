@@ -23,6 +23,11 @@ export const metadata = {
   title: "AnalytixLabs Editorial | Data Science & AI Insights",
   description:
     "Deep, authoritative insights into Data Science, Machine Learning, AI, and Analytics from industry experts at AnalytixLabs.",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -33,6 +38,7 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <head>
+        <meta name="robots" content="noindex, nofollow" />
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"
