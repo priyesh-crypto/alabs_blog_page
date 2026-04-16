@@ -1,0 +1,21 @@
+{
+  "name": "wp-migration-scripts",
+  "version": "1.0.0",
+  "description": "WordPress → MDX migration toolkit",
+  "scripts": {
+    "migrate": "node migrate.js",
+    "migrate:resume": "node migrate.js --resume",
+    "validate": "node validate-images.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0",
+    "fs-extra": "^11.3.0",
+    "turndown": "^7.2.0",
+    "turndown-plugin-gfm": "^1.0.2",
+    "xml2js": "^0.6.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
