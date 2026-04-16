@@ -1,0 +1,406 @@
+---
+title: What is Sampling Technique in Statistics - Types and Importance
+slug: sampling-techniques
+date: "2023-07-20T15:29:24+00:00"
+modified: "2024-09-09T04:59:26+00:00"
+description: "Know the sampling techniques used and the importance of the same. Learn everything about sampling, its types and methodologies"
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2023/07/sampling-techniques.webp"
+author: AnalytixLabs
+categories:
+  - Uncategorized
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/sampling-techniques/"
+noindex: true
+---
+
+Statistics is an important aspect of Data Science. It helps make sense of the data at hand through various statistical techniques. However, multiple sampling techniques are employed to get the correct data.
+
+This article will answer questions like what is sampling, what is sampling in research, its importance, etc., and will teach you about sampling techniques, methods, types, uses, etc.
+
+Let us first start with understanding the basics.
+
+## What is Sampling?
+
+Sampling is choosing a group from the population from which you will collect data to conclude the population. 
+
+<table><tbody><tr><td>To understand sampling, you must first understand the difference between population, sample, parameter, and statistic.</td></tr></tbody></table>
+
+-   ### Population vs. Sampling
+    
+
+![Population-vs-Sample](https://www.analytixlabs.co.in/wp-content/uploads/2023/07/Population-vs-Sample.jpg)
+
+Suppose someone asks you the age of all the employees in your company. In that case, you can call it a criterion – anyone working in your company comes under it and will be part of the _population_ in question.
+
+> Population refers to the entire group based on which you want to draw some conclusion. The scope of a population can be very broad or narrow depending on the criteria.
+> 
+> For example, the adult population of the whole world is broad, while the number of family members residing in your house is an example of a narrow population.
+
+However, due to various reasons, working with the population can be problematic. That’s when a subset of the population is used that _aims to represent the population_.
+
+> This population subset is known as a sample, and the process of creating the subset is known as sampling.
+
+-   ### Parameter vs. Statistics
+    
+
+![Parameter-vs-Statistic](https://www.analytixlabs.co.in/wp-content/uploads/2023/07/Parameter-vs-Statistic.jpg)
+
+Let’s assume to extend the above population sample to find out the average age of all the employees in your company. To do this, you will perform some arithmetic operations on the data set.
+
+The result is called a parameter when such an arithmetic operation is performed on the entire population. When it is done on a _sample_, it’s called a **statistic**.
+
+Putting this concept into action as below:
+
+<table dir="ltr" border="1" cellspacing="0" cellpadding="0"><colgroup><col width="244"> <col width="272"></colgroup><tbody><tr><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;If average age is calculated using information from all the company employees, the result will be a parameter&quot;}" data-sheets-textstyleruns="{&quot;1&quot;:0}{&quot;1&quot;:100,&quot;2&quot;:{&quot;6&quot;:1}}">If the average age is calculated using information from all the company employees, the result will be a <em>parameter</em></td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;If average age is calculated using a sample of the company's employees, the result will be a statistic&quot;}" data-sheets-textstyleruns="{&quot;1&quot;:0}{&quot;1&quot;:93,&quot;2&quot;:{&quot;6&quot;:1}}">If the average age is calculated using a sample of the company’s employees, then the result will be a <em>statistic</em></td></tr></tbody></table>
+
+When performing sampling, there are several things that you should be aware of and need to take care of.
+
+Let’s now discuss them one by one.
+
+### #1. Why do you need a _Sample_?
+
+_What is sampling_ is always followed by the reasons to have a sample. There are multiple reasons for it.
+
+1.  _**Time-saving**_: When the population is broad and collecting information from them is accessible, creating samples becomes exceptionally time-saving.
+2.  _**Money and resource-saving**_: Collecting information on the population can be costly and take significant human and money resources. Creating samples is an efficient process of collecting information about the population.
+    
+3.  _**Get appropriate data**_: Samples can help you get the appropriate data. In some cases, while the population is narrow, the information required can be a lot. For example, asking detailed questions about a person or collecting financial records of all bank members may be too difficult to store and process.  
+    An opposite case can also be there where the information required is not much, but the population is broad, as with opinion polls. In both cases, sampling helps researchers to gain deep insights into the population.
+
+ Apart from understanding why you need a sample, you must know a few more things before exploring sampling techniques.  
+
+-   #### Sampling frame
+    
+
+The next important concept for understanding sampling is to understand the sampling frame. It refers to the group, i.e., a list of individuals from which you will draw the sample. Ideally sampling frame should be the entire population and nobody outside of it.
+
+-   #### Sample size
+    
+
+The number of individuals or subjects (commonly referred to as elements) in a sample refers to the sample size.
+
+The sample size is determined by various factors such as effect size, the objective of the statistical analysis, and various other factors.
+
+A small sample size (that may less stress the resources, such as money, time, and humans) may prevent getting the required information causing the analysis to become inconclusive.
+
+-   #### Sample design
+    
+
+Sample designing incurs the following steps –
+
+1.  _**Target population**_: Identifying the target population based on the objective of the analysis. The objective can define the people, subjects, or things researchers and analysts are interested in.
+2.  _**Sampling frame**_: Select the sampling frame, i.e., the group of individuals to be considered for creating a sample. As discussed earlier, typically, it is all the individuals in the population.
+3.  _**Sampling techniques**_: Selecting the sampling techniques is the next crucial step. This can be any technique from the two major types- probability and non-probability sampling methods.
+4.  _**Sample size**_: Selecting a sample size is the next crucial step. Here the number of individuals in a sample is determined based on cost, time, facility, etc.
+5.  _**Execution**_: The last step is executing the sampling plan and gathering data, i.e.,  collecting information.
+
+### #2. Principles of Sampling
+
+Before sampling, you must be aware of certain tenets of sampling. 
+
+-   #### Unbiased
+    
+
+> Each subject in the population should have an equal probability of being considered in the sample, as this reduces the chances of selection bias.
+
+This can be achieved by randomly choosing beneficiaries. This tenet applies in all scenarios except when you want to achieve oversampling for specific sub-groups or when a researcher deliberately wants to prioritize a group or certain types of individuals.
+
+-   #### Accuracy vs. viability
+    
+
+Ensure that the sampling technique is accurate enough to make the derived conclusions reliable. Simultaneously, the technique should be reasonable regarding its feasibility and associated cost. 
+
+-   #### Sample size
+    
+
+Researchers should always try to increase the sample size to achieve high precision.
+
+### #3. Sample Survey
+
+Often samples are collected using surveys where responses from the subjects are collected. The crucial aspects of designing a sample survey include the following-
+
+1.  Having a clear objective for the survey
+2.  Getting rid of irrelevant questions
+3.  Prescribe the required degree of precision
+4.  Prepare the questionnaire meticulously
+5.  Select a sample design (it can be the same as the one discussed earlier)
+6.  Conduct a pre-test to improve the questionnaire
+7.  Organize fieldwork to assess the quality of the samples
+8.  See if it is possible to collect information that may also help any other related or future research
+
+### #4. Sample Distribution
+
+The sampling distribution is one of the most crucial concepts you want to understand in sampling.
+
+The idea of collecting a sample is to have a sample statistic and make an estimate about the population parameter. The concept of sampling distribution lies in the middle of this journey.
+
+If you have one sample, estimating the population parameter based on a single statistic becomes difficult. This is because if you conduct two more samples, then the statistics gained from them might be different from the first one.
+
+![Sampling-Distribution](https://www.analytixlabs.co.in/wp-content/uploads/2023/07/Sampling-Distribution.jpg)
+
+It happens due to the natural fluctuation or the random “luck of the draw” phenomenon that happens when selecting the subjects for a sample.
+
+To address this issue, multiple samples are conducted, and the statistic gained from each of these samples is plotted, which provides us with a distribution known as the sampling distribution.
+
+As per the central limit theorem, if the number of samples is more than 30, then the sampling distribution is always normal, i.e., it follows the _Gaussian distribution_, and its mean is the same as the population’s mean.
+
+This allows the researchers to exploit the properties of the normal distribution to make estimates about the population.
+
+Let’s understand this with an example.
+
+Suppose you want to learn about the average income of individuals in Mumbai. You collect 30 samples, wherein the income of 100 Mumbai dwellers is obtained for each sample.
+
+You then calculate the average income of Mumbai dwellers in each sample, providing you with 30 statistics (income averages).
+
+If you plot these 30 sample averages, the distribution will be Gaussian, and the mean of this sampling distribution will be the same as the mean of the population.
+
+### #5. Sampling Error
+
+The next crucial concept after sampling distribution is sampling error. Sampling error indicates the precision of the statistical estimate with a lower value meaning that the sample is more precise.
+
+> It is calculated by looking at the variability or range in the sampling distribution, known as the standard error. The sampling error is derived from the standard deviation of the samples.
+> 
+> If the standard deviation is less in the samples, there is less variability in the sampling distribution (less stand error), leading to low sampling error. There are many ways to reduce sampling error.
+
+The most common way is to increase the sample size. As bigger the sample size, the closer the sample is to the population.
+
+Technically speaking, if the sample size is the same as the population, then the sampling error is zero, and the statistic is the same as the parameter.
+
+### #6. Sampling Bias
+
+Sampling error can significantly adversely impact the quality of the samples and the conclusions drawn from the sampling distribution. Another major source of concern for samples is sampling bias.
+
+> Sampling bias occurs when there is partiality when selecting the subjects for the samples.
+
+Sampling bias can happen due to a variety of reasons that include the flowing-
+
+-   Deviation from pre-agreed sampling rules
+-   Omission of hard-to-reach subjects
+-   Subjects in the sampling frame get replaced with others because the original ones are hard to contact
+-   Incorrect sample frame due to obsolete information
+-   Low response rate
+
+ As the key concept of sampling has been explored, it’s time to understand the importance of sampling in research now, as it is the field where sampling is most performed. 
+
+## What is Sampling in Research?
+
+![sampling technique in research](https://www.analytixlabs.co.in/wp-content/uploads/2023/07/What-is-sampling-in-research.jpg)
+
+One of the most commonly asked questions is: _what is sampling in research_?
+
+Sampling methods in research play a crucial role as generalization is an important concept in this domain.
+
+> The researchers use an approach known as the **sampling model**, where the population that needs to be generalized is identified. Then a sample is drawn from the population to conduct the research.
+> 
+> As the sample is fair and representative of the population, various hypothesis tests can be performed on the sample.
+
+The idea is that [various inferential statistical tests](https://www.analytixlabs.co.in/blog/descriptive-and-inferential-statistics/) can explain the characteristics of the population.
+
+> The issue with this approach is that the generalization solely depends on the quality of the sample. If the sample is not fair and representative of the population, the inferences drawn from it about the population will also be incorrect, which can severely affect the decision(s) based on its downstream.
+
+Another issue is that it’s difficult to generalize across all time. For example, collecting a sample again next year will be required as the population keeps evolving and changing. Therefore the sampling processes should be repeatable and feasible.
+
+To resolve all these issues, the detailed discussion on sampling done so far and the knowledge of sampling methods in research are useful.
+
+## Types of Sampling
+
+There are multiple sampling techniques in statistics. All these techniques can be divided into two categories providing us with two types of sampling –
+
+1.  Probability Sampling
+2.  Non-Probability Sampling
+
+![Types-of-sampling](https://www.analytixlabs.co.in/wp-content/uploads/2023/07/Types-of-sampling.jpg)
+
+_Probability sampling_ utilizes random selection based on one or more criteria so that all the eligible candidates in the population have an equal and fair chance to be included in the sample. While costly, this method has a higher chance of accurately representing the population.
+
+_Non-Probability sampling_ is where random selection is replaced with the subjective judgment of the researchers. In this sampling method, the sampling frame doesn’t contain all of the individuals of the population, or not all subjects have an equal probability of making the sample. While this method is less stringent, it requires a high level of expertise from the researchers.
+
+### Probability vs. Non-probability Sampling
+
+Let’s now understand the difference between these two types of sampling methods. Look at the table below to understand the major differences between these two methods of sampling.
+
+![probability vs nonprobability sampling](https://www.analytixlabs.co.in/wp-content/uploads/2023/07/Comparison.jpg)
+
+As you can see, there are significant differences between these two methods of drawing samples. To understand these methods better, let’s explore the various sampling techniques under each type.
+
+## Probability Sampling Methods
+
+Probability sampling methods perform random sampling based on some criteria such that all subjects have equal chances of making it to the sample. There are five most common forms of probability sampling.
+
+![Probability-Sampling-Methods](https://www.analytixlabs.co.in/wp-content/uploads/2023/07/Probability-Sampling-Methods.jpg)
+
+### #1. Simple random sampling
+
+It’s the most simple, reliable, time and resource-saving sampling technique of the many probability sampling types. Here the individuals are selected randomly from the population, with each having the same probability of being chosen.
+
+For example, we assign each of the 2000 employees in a company a number and select 100 employees randomly from the company using a random number generator program.
+
+### #2. Systematic random sampling
+
+It is similar to the simple random sampling method but is easier and less time-consuming as the range is predefined. In this method, subjects in the population are randomly ordered (with respect to the characteristics being measured), and a random starting point is picked. Then subjects are selected at regular intervals to achieve the determined sample size.
+
+For example, to create a sample with a sample size of 50 for finding out the average income in the company, the employees are sorted based on their name in alphabetical order (such ordering has nothing to do with the income), and then assigned with a number from 1 to N with N being the total number of employees.
+
+You then select a random number from 1 to 9. Suppose you get seven, then you select every 10th person from seven onwards, making your sample list look like 7,17,27,37,47, and so on till you select 50 employees.
+
+### #3. Stratified random sampling
+
+Under stratified sampling, the population is divided into smaller strata (groups) that are-
+
+-   Homogeneous based on some characteristics but differ in many other important ways
+-   Don’t overlap each other
+-   Represent an entire population.
+
+The samples are then drawn from each of these groups in proportion to the size of those groups.
+
+To analyze the income of people in a small town having 1000 people belonging to different ages, you create groups in the population.
+
+The groups are individuals aged <18, 18-30, 30-60, and 60+, with the number of individuals in each group being 400,300,200,100, respectively.
+
+You create a sample of 100 individuals by randomly selecting 40 from the <18 groups, 30 from the 18-30 group, 20 from the 30-60 group, and ten from the 60+ group.
+
+### #4. Cluster sampling
+
+In cluster sampling, the population is divided into sections (clusters), but each section needs to have similar characteristics to the whole sample.
+
+Random selection is then conducted to select these clusters whose elements are used to create the sample. This process is known as a single-stage cluster.
+
+If, after this process, the elements are randomly selected from each of these clusters to form the sample, then such a method is known as two-stage cluster sampling.
+
+![Cluster sampling](https://www.analytixlabs.co.in/wp-content/uploads/2023/07/Cluster-sampling.png)
+
+For example, a bank has 200 branches nationwide and would like to know the average amount deposited.
+
+Rather than performing random sampling on each branch, the branches are divided into forty clusters, each having five branches. You then randomly select 10 clusters.
+
+The information of client deposits in these 10 clusters \* 5 branches = 50 branches will form the sample.
+
+> This is an example of a one-stage sampling. If you go further and randomly select the clients on each of these 10 clusters, you will perform two-stage cluster sampling.
+> 
+> Also read: [Clustering Methods and Applications](https://www.analytixlabs.co.in/blog/types-of-clustering-algorithms/)
+
+### #5. Multi-stage sampling
+
+Multistage sampling amalgamates all the probabilistic sampling techniques discussed so far.
+
+Here the population is divided into clusters, and each cluster is divided and grouped into strata based on similar characteristics.
+
+Then, one or more clusters are selected randomly from each stratum, and the process repeats until the cluster cannot be divided.
+
+![Multistage-Sampling](https://www.analytixlabs.co.in/wp-content/uploads/2023/07/Multistage-Sampling.jpg)
+
+> Example: We divide a county’s population into states, cities, towns, and districts, and merge all areas with similar characteristics to form a strata.
+
+## Non-probability Sampling Techniques
+
+Non-Probability sampling methods perform sampling based on the researcher’s subjective judgment where all subjects don’t have an equal chance of making it to the sample.
+
+![Non-Probability-Sampling-Methods](https://www.analytixlabs.co.in/wp-content/uploads/2023/07/Non-Probability-Sampling-Methods.jpg)
+
+While there are many non-probability sampling types of techniques, such as Model Instance sampling, Expert sampling, Heterogeneity sampling, etc., the _five most common forms_ of non-probability sampling are discussed below.
+
+### #1. Convenience/accidental/haphazard sampling
+
+It’s a very common form of sampling where surveyors collect information from individuals in malls, streets, etc.
+
+As it’s extremely easy to reach out to individuals, this sampling technique is known as convenience sampling. _Representativeness is not a factor_, and researchers cannot select the sample elements.
+
+This technique is extremely useful when there are severe budget and time constraints and is typically used in the initial stages of research.
+
+For example, employees outside the mall ask for feedback regarding their experience and ease of purchase at the mall. 
+
+### #2. Voluntary response sampling
+
+Like the convenience sampling technique, this sampling technique is also designed to keep the ease of access in mind.
+
+However, it’s different because rather than contacting participants directly, the subjects volunteer by typically responding to an online survey or any other such survey they can access.
+
+> While voluntary response sampling is easy, it can be highly biased as people responding to the survey might have some inherent reason to volunteer, creating a self-selection bias in the sample.
+
+For example, after a flight, an email is sent to all the passengers to rate the flight from 1 to 5 on different parameters such as onboard video entrainment, food, assistance, punctuality of the flight, etc. It is on the boarders to respond to the survey. 
+
+### #3. Judgemental/purposive/authoritative sampling
+
+In Judgmental sampling, researchers use their expertise to select the elements that go into the sample as they know what elements will serve the purpose of the research.
+
+It’s typically designed keeping a purpose in mind and is typically used in fields like market research. While on the face of it, it looks like convenience sampling, the difference here is that the subjects are selected at the researcher’s discretion.
+
+For example, you want to know the driving experience of individuals. Therefore, as a researcher, you set the selection criteria for individuals with a driving license to narrow your search.
+
+### #4. Snowball/referral sampling
+
+As the name suggests, this technique uses referrals to get to the subjects of interest to gain information from them. Such a technique is used when subjects are difficult to find due to the sensitive nature of their situation.
+
+These can include collecting information from illegal immigrants, homeless individuals, HIV aids patients, etc. In such scenarios, a chain-referral sampling technique is employed where identified population members are asked to find and connect researchers to other target individuals.
+
+For example, getting in touch with opioid addicts regarding their experiences and asking them to connect researchers with individuals with similar addictions.
+
+### #5. Quota sampling
+
+It’s a highly rapid method of collecting samples where standard traits and qualities are pre-set, and the sample is based on these pre-set attributes. The sample must have the attributes in the same proportion as there in the population.
+
+The researchers must ensure that the sample meets their quota criteria and that the qualities found in the sample are the same as those found in the total population. There are two types of quota sampling – controlled and uncontrolled sampling.
+
+For example, the population has 45% females and 55% males; therefore, the proportion of females and males should be the same in the sample.
+
+## Probability and Nonprobability Sampling: Uses
+
+Probabilistic and Non-Probabilistic sampling methods have advantages and disadvantages that dictate their uses. Let’s now focus on the uses of both these techniques.
+
+### Probability sampling methods: uses
+
+Probability sampling methods tend to be useful in the scenarios when-
+
+-   There is a need to draw conclusion(s) about a large population
+-   Required to perform market research by understanding consumer usage for developing new products, understanding factors leading to product purchase, identifying emerging categories, and understanding buyer attitudes towards new services and products
+-   When there is a need to reduce sample bias
+-   When dealing with a diverse population
+-   Require a highly accurate sample that represents the population with high precision
+-   Don’t have a lot of technical expertise and need a simple, user-friendly sampling technique
+
+### Nonprobability sampling methods: uses
+
+Non-Probability sampling techniques are helpful when-
+
+-   There is a need to create a hypothesis
+-   Required to perform exploratory, pilot, or qualitative research
+-   There is  a constraint on the available time and budget for performing sampling
+-   There is a need to create a sample for a study that aims to do an in-depth analysis of a problem
+-   Need to perform a study where there is no need to generalize the entire population
+
+## In Conclusion
+
+There are a lot of sampling techniques that researchers have to choose from. Choosing the right sampling techniques is essential for any research study; therefore, knowing about them is crucial.
+
+As both the probabilistic and non-probabilistic methods and every technique under each of these methods have their advantage, the researchers are increasingly studying mixed sampling techniques too, which in the future can be proven to be beneficial.
+
+## FAQs
+
+-   **What are the five main types of sampling?**
+
+The five main types of sampling include random sampling, stratified sampling, cluster sampling, convenience sampling, and judgmental sampling.
+
+-   **What are the five kinds of mixed sampling?**
+
+Common mixed sampling techniques are Identical, Parallel, Nested, Multilevel, and Mixed Purposeful.
+
+-   **Why are sampling techniques important?**
+
+Sampling techniques are important as researchers, based on the samples, generalize the population, and the sample is expected to represent the population it has been drawn from. If the employed sampling technique is incorrect, then the conclusion and inferences drawn about the population can be incorrect too. Therefore having a decent knowledge of the various types of sampling methods is crucial.
+
+-   **What are the steps of sampling techniques?**
+
+There are four main steps of sampling techniques.
+
+1.  Determine the Population of Interest
+2.  Find Sample Frame
+3.  Determine Sampling Strategy
+4.  Start collecting Sample
+
+Additional Reading Resources
+
+-   [KNN Algorithm: The most common distance-based algorithm](https://www.analytixlabs.co.in/blog/knn-algorithm/)
+-   [Understanding Classification in machine learning](https://www.analytixlabs.co.in/blog/classification-in-machine-learning/)
+-   [Fundamentals of Statistics in Data Science](https://www.analytixlabs.co.in/blog/basic-statistics-concepts-for-data-science/)
+-   [Data Science Salary Report 2023](https://www.analytixlabs.co.in/blog/data-science-salary-report-2023/)

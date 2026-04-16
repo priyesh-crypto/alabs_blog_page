@@ -1,0 +1,178 @@
+---
+title: "How Univariate Analysis Helps in Understanding Data?"
+slug: univariate-analysis
+date: "2022-07-11T08:03:56+00:00"
+modified: ""
+description: "Learn more about the Univariate Analysis, its examples, and testing methods. Also explore the Univariate data, tables, and more."
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2022/07/cover-1.jpeg"
+author: AnalytixLabs
+categories:
+  - Analytics
+  - Data Analytics
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/univariate-analysis/"
+noindex: true
+---
+
+Data analytics deploy many techniques with their use and advantages. These techniques include methods to describe data, understand relationships between variables, and assess how a feature set can have a combined effect on a variable. In this article, we will go over these techniques, especially, the univariate analysis.
+
+Let’s get started.
+
+## What is Univariate Analysis?
+
+Before we get into what is univariate analysis, let’s first understand the meaning of ‘univariate’.
+
+> While ‘uni’ means one, variate indicates a variable. Therefore, univariate analysis is a form of analysis that only involves a single variable.  In a practical setting, a univariate analysis means the analysis of a single variable (or column) in a dataset (data table).
+
+Among all the forms of analytical methods that data analysts practice, univariate analysis is considered one of the basic forms of analysis. It is typically the first step to understanding a dataset. The idea of univariate analysis is to first understand the variables individually. Then, you move into analyzing two or more variables simultaneously. There are specific steps to do this, which are discussed next.
+
+### Steps to conduct univariate analysis
+
+There are 4 steps to conducting univariate analysis, as follows:
+
+1.  Accessing the dataset of interest
+2.  Identifying the variable that needs to be analyzed
+3.  Identifying the questions that need to be answered through the analysis
+4.  Determining the appropriate type of univariate analysis techniques to answer the above-identified questions
+
+Statistical languages like SPSS, SAS, and R are typically used to deploy the various types of univariate techniques. It is also done through other languages common in data analytics and data science like Python. Spreadsheets like MS Excel are commonly used for fundamental univariate analysis involving limited data. However, before you start using any of these tools, you must understand the basic concepts of what is a dataset, specifically the types of columns that form a dataset. This is essential to know because different univariate analysis techniques are used for different types of variables.
+
+## What is Univariate data?
+
+A dataset (also known as a feature set or simply a table) is a _**multidimensional heterogeneous data structure**_. It is formed by combining multiple one-dimensional data structures that are homogeneous.
+
+For example, a dataset can have multiple columns such as ‘Employee Number’, ‘Name’, ‘Income’, ‘No. of Family Members’, ‘Date of Birth’, ‘Location’, ‘Designation’. These variables can have different data types such as text, number, logical, date, etc. However, univariate data works differently.
+
+> The univariate data is not categorized by data type but rather by the purpose they serve or their nature.
+
+In this sense, univariate data (i.e., a single column) can be divided into ID, Numerical, and Categorical. This classification is essential because different types of univariate analysis are required for each type.
+
+To understand univariate data and its classifications, first, follow the dataset below.
+
+<table dir="ltr" border="1" cellspacing="0" cellpadding="0"><colgroup><col width="100"> <col width="100"> <col width="100"> <col width="100"> <col width="100"> <col width="100"> <col width="100"></colgroup><tbody><tr><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Employee No.&quot;}"><strong>Employee No.</strong></td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Name&quot;}"><strong>Name</strong></td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Income&quot;}"><strong>Income</strong></td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;No. of Family Members&quot;}"><strong>No. of Family Members</strong></td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;DOB&quot;}"><strong>DOB</strong></td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Location&quot;}"><strong>Location</strong></td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Designation&quot;}"><strong>Designation</strong></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:1}">1</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Alex&quot;}">Alex</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:21060}" data-sheets-numberformat="{&quot;1&quot;:4,&quot;2&quot;:&quot;\&quot;$\&quot;#,##0&quot;,&quot;3&quot;:1}">$21,060</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:3}">3</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:31017}" data-sheets-numberformat="{&quot;1&quot;:5,&quot;2&quot;:&quot;mm/dd/yyyy&quot;,&quot;3&quot;:1}">12/01/1984</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;NY&quot;}">NY</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Sr. Manager&quot;}">Sr. Manager</td></tr><tr><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:2}">2</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Mate&quot;}">Mate</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:59879}" data-sheets-numberformat="{&quot;1&quot;:4,&quot;2&quot;:&quot;\&quot;$\&quot;#,##0&quot;,&quot;3&quot;:1}">$59,879.95</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:2}">2</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;31/08/1990&quot;}">31/08/1990</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;LA&quot;}">LA</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;CEO&quot;}">CEO</td></tr><tr><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:3}">3</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Philip&quot;}">Philip</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:30126}" data-sheets-numberformat="{&quot;1&quot;:4,&quot;2&quot;:&quot;\&quot;$\&quot;#,##0&quot;,&quot;3&quot;:1}">$30,126.30</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:1}">1</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:31054}" data-sheets-numberformat="{&quot;1&quot;:5,&quot;2&quot;:&quot;mm/dd/yyyy&quot;,&quot;3&quot;:1}">01/07/1985</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;LA&quot;}">LA</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Co-founder&quot;}">Co-founder</td></tr><tr><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:4}">4</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Lucy&quot;}">Lucy</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:19898}" data-sheets-numberformat="{&quot;1&quot;:4,&quot;2&quot;:&quot;\&quot;$\&quot;#,##0&quot;,&quot;3&quot;:1}">$19,898</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:3}">3</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:31666}" data-sheets-numberformat="{&quot;1&quot;:5,&quot;2&quot;:&quot;mm/dd/yyyy&quot;,&quot;3&quot;:1}">09/11/1986</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;NY&quot;}">NY</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Accountant&quot;}">Accountant</td></tr><tr><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:5}">5</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Rez&quot;}">Rez</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:47876}" data-sheets-numberformat="{&quot;1&quot;:4,&quot;2&quot;:&quot;\&quot;$\&quot;#,##0&quot;,&quot;3&quot;:1}">$47,876</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:3}">3</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:33156}" data-sheets-numberformat="{&quot;1&quot;:5,&quot;2&quot;:&quot;m/d/yyyy&quot;,&quot;3&quot;:1}">10/10/1990</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;NY&quot;}">NY</td><td style="text-align: center;" data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Sr. Analyst&quot;}">Sr. Analyst</td></tr></tbody></table>
+
+Univariate data classifications are as follows:
+
+-   ID: This data has no statistical or aggregative properties, and they are used to identify a subject uniquely. For example, the column ‘**Employee Number**’.
+-   Numerical (Quantitative): This data has statistical properties. They can be of two types- Discrete and Continuous. 
+    -   _Discrete_: This dataset has discrete values (i.e., cannot have decimals). For example- ‘No of Family Members.
+    -   _Continuous_: This dataset can have numbers with decimals. For example- ‘Income’.
+-   Categorical (Qualitative): Categorical data deals with descriptions or categories. They have aggregative properties and are of two types- Ordinal and Nominal. (Note- categorical univariate data can have numeric datatype)
+    -   _Ordinal:_ These categories have an order. For example- ‘Designation’ where the order can be Manager, Sr Manager, CEO and cannot be any other.
+    -   _Nominal_: These categories do not have any order. For example- ‘Location’ has mutually exclusive categories.
+
+Typically, a univariate is data that belongs to any of the types mentioned above. Now, to analyze such a dataset, different types of univariate analysis techniques are used depending on the type of variable in question.
+
+## Types of Univariate Analysis
+
+![univariate analysis types](https://www.analytixlabs.co.in/wp-content/uploads/2022/07/Types-of-Univariate-Analysis.jpeg)
+
+The primary purpose of univariate analysis is to describe data. Using different techniques, these descriptions are found. These techniques can be categorized into the following groups:
+
+1.  Graphical
+2.  Tables
+3.  Descriptive statistics
+4.  Inferential statistics (i.e., use of frequency distributions)
+
+Each of these techniques provides information about the data in a unique way. Typically, a data analyst uses more than one technique to form their opinion about the data they are dealing with, as this helps them make important decisions related to data preparation. Let’s understand each technique. 
+
+### Graphical analysis
+
+Various types of graphs can be used to understand data. The standard type of graphs include-
+
+1.  **Histograms:** A histogram displays the frequency of each value or group of values (bins) in numerical data. This helps in understanding how the values are distributed.
+2.  **Boxplot:** A boxplot provides several important information such as minimum, maximum, median, 1st, and 3rd quartiles. It is beneficial in identifying outliers in the data.
+3.  **Density Curve:** The density curve helps in understanding the shape of the data’s distribution. It helps answer questions such as if the data is bimodal, normally distributed, skewed, etc. 
+4.  **Bar Chart:** Bar Charts, mainly frequency bar charts, is a univariate chart used to find the frequency of the different categories of categorical data.
+5.  **Pie Chart:** Frequency Pie charts convey similar information to bar charts. The difference is that they have a circular formation with each slice indicating the share of each category in the data.
+
+### Univariate tables
+
+Tables help in univariate analysis and are typically used with categorical data or numerical data with limited cardinality. Different types of tables include:
+
+1.  **Frequency Tables**: Each unique value and its respective frequency in the data is shown through a table. Thus, it summarizes the frequency the way a histogram, frequency bar, or pie chart does but in a tabular manner.
+2.  **Grouped Tables**: Rather than finding the count of each unique value, the values are binned or grouped, and the frequency of each group is reflected in the table. It is typically used for numerical data with high cardinality.
+3.  **Percentage (Proportion) Tables**: Rather than showing the frequency of the unique values (or groups), such a table shows their proportion in the data (in percentage).
+4.  **Cumulative Proportion Tables**: It is similar to the proportion table, with the difference being that the proportion is shown cumulatively. It is typically used with binned data having a distinct order (or with categorical ordinal data).
+
+> _In some instances, all such univariate tables can be used as an alternative to a more graph-based way of describing the analysis._
+
+### Univariate Statistics
+
+Univariate analysis can be performed in a statistical setting. Two types of statistics can be used here- Descriptive and Inferential.
+
+![univariate statistics](https://www.analytixlabs.co.in/wp-content/uploads/2022/07/Univariate-Analysis-in-a-statistical-Setting.jpeg)
+
+#### Descriptive Statistics
+
+As the name suggests, descriptive statistics are used to describe data. The statistics used here are commonly referred to as _summary statistics._
+
+For instance, if you have to describe a cube, you have to ‘measure’ it. By measuring its length, breadth, and height, you can describe it. Similarly, these descriptive or univariate statistics have specific measures that help us in describing the data. These measures are-
+
+1.  **Measure of Central Tendency**: Statistics such as mean, median, and mode are considered here. They help in summarizing all the data through a single central value.
+2.  **Measure of Variability**: Analysts also need to understand how the data varies from the central point. To understand this, specific univariate statistics can be calculated, such as range, interquartile range, variance, standard deviation, etc.
+3.  **Measure of Shape**: The shape of the data distribution can explain a great deal about the data as the shape can help in identifying the type of distribution followed by the data. Each of these distributions has specific properties that can be used to your advantage. By analyzing the shapes, you will know if the data is symmetrical, non-symmetrical, left or right-skewed, is suffering from positive or negative kurtosis, among other things.
+
+These descriptive statistics can be used for calculating things like missing value proportions, upper and lower limits for outliers, level of variance through the coefficient of variance, etc. 
+
+#### Inferential Statistics
+
+Often, the data you are dealing with is a subset (sample) of the complete data (population). Thus, the common question here is –
+
+Can the findings of the sample be extrapolated to the population? i.e., Is the sample representative of the population, or has the population changed? Such questions are answered using specific hypothesis tests designed to deal with such univariate data-based problems. 
+
+_**Hypothesis tests**_ help us answer crucial questions about the data and their relation with the population from where they are drawn. Several hypotheses or univariate testing mechanisms come in handy here, such as-
+
+![univariate testing](https://www.analytixlabs.co.in/wp-content/uploads/2022/07/Univariate-testing-mechanisms.jpeg)
+
+1.  **Z Test**: Used for numerical (quantitative) data where the sample size is greater than 30 and the population’s standard deviation is known.
+2.  **One-Sample t-Test**: Used for numerical (quantitative) data where the sample size is less than 30 or the population’s standard deviation is unknown.
+3.  **Chi-Square Test**: Used with ordinal categorical data
+4.  **Kolmogorov-Smirnov Test**: Used with nominal categorical data
+
+> All such univariate testing methods generate p-values that can be used to accept or reject different types of hypotheses.
+
+![univarte testing mechanism](https://www.analytixlabs.co.in/wp-content/uploads/2022/07/Univariate-Testing-Methods-Generate-p-values.jpeg)
+
+In real-time, all these techniques are used depending upon the situation, type of data, and problem statement. 
+
+### Univariate Analysis Examples
+
+While there can be hundreds of univariate analysis examples where univariate analysis is used, some of them are-
+
+1.  Finding the average height of a country’s men from a sample.
+2.  Calculate how reliable a batsman is by calculating the variance of their runs.
+3.  Finding which country is the most frequent in winning Olympic Gold Medal by creating a frequency bar chart or frequency table.
+4.  Understanding the income distribution of a county by analyzing the distribution’s shape. A right-skewed distribution can indicate an unequal society.
+5.  Checking if the price of sugar has statistically significantly risen from the generally accepted price by using sample survey data. Hypothesis tests such as the Z or t-test solve such questions.
+6.  Assessing the predictive capability of a variable by calculating the coefficient of variance.
+
+## Bi-variate and Multi-variate Analysis
+
+-   **Bivariate Analysis**: Bivariate analysis is performed when two variables are involved. Here, you typically try to understand how two variables affect each other, how they are related, or how they compare to each other. Like univariate analysis that is performed through graphs, tables, and statistics, bivariate analysis can also be performed somewhat similarly. For example- scatterplots, bar charts, pie charts, multi-line charts, cross-frequency tables, and tests such as dependent t-test, independent t-test, and one-way ANOVA are used for bivariate analysis.
+-   **Multivariate Analysis**: So far we have discussed the analysis of single variables. However, when more than two variables are to be analyzed, such an analysis is called multivariate analysis. Typically, predictive problems are solved under such an analysis where many variables are used to predict another variable. However, non-predictive analysis is also performed by creating a correlation matrix, cross-frequency tables, dodged or stacked bar charts, etc.
+
+This brings us to the end of understanding what univariate analysis is, the techniques and methodologies. Below are a few commonly asked questions that can help you get more clarity on this \[more like a recapitulation\]. If you have more questions, do let us know in the comments below.
+
+## Univariate Analysis: FAQs
+
+**1\. What is the use of Univariate analysis?**
+
+It is used to:
+
+1.  Describe/summarize
+2.  Find patterns
+3.  Data preparation such as missing value imputation, outlier treatment, feature reduction, feature transformation, normalization, scaling, etc.
+
+**2\. How do you analyze univariate data?** 
+
+There are multiple ways to describe data. This includes creating and using graphs, tables, descriptive statistics, hypothesis tests, etc., using spreadsheets, statistical, or programming languages.
+
+> **You may also like to read:**
+> 
+> -   _**[What is Data Analytics?](https://www.analytixlabs.co.in/blog/what-is-data-analytics-complete-career-guide/)**_
+> -   _**[Difference between machine learning, pattern recognition, and data mining](https://www.analytixlabs.co.in/blog/difference-between-machine-learning-pattern-recognition-and-data-mining/)**_
+> -   _**[10 Data analytics tools for everyone](https://www.analytixlabs.co.in/blog/free-data-analytics-tools-anyone-can-use/)**_
+> -   _**[Difference between data and information](https://www.analytixlabs.co.in/blog/difference-between-data-and-information/)**_
+> -   _**[Understanding data structures: Types and application](https://www.analytixlabs.co.in/blog/types-of-data/)**_

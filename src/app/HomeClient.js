@@ -116,7 +116,7 @@ export default function HomeClient({ initialPosts, homepageWidgets }) {
   };
 
   const handleShare = (slug) => {
-    navigator.clipboard?.writeText(window.location.origin + `/article/${slug}`);
+    navigator.clipboard?.writeText(window.location.origin + `/blog/${slug}`);
     addToast("Link copied!", "success");
   };
 

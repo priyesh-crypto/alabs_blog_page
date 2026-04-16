@@ -259,8 +259,8 @@ export async function publishPostAction(payload) {
     if (error) throw error;
 
     revalidatePath('/');
-    revalidatePath('/article');
-    revalidatePath(`/article/${data.slug}`);
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${data.slug}`);
     return { success: true, slug: data.slug };
   } catch (error) {
     const msg = error?.message || error?.toString() || 'Unknown error';
@@ -318,9 +318,9 @@ export async function updatePostAction(id, payload) {
     if (error) throw error;
 
     revalidatePath('/');
-    revalidatePath('/article');
-    revalidatePath(`/article/${slug}`);
-    if (original.slug !== slug) revalidatePath(`/article/${original.slug}`);
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${slug}`);
+    if (original.slug !== slug) revalidatePath(`/blog/${original.slug}`);
     return { success: true, slug };
   } catch (error) {
     console.error('updatePostAction failed:', error);
@@ -350,8 +350,8 @@ export async function deletePostAction(id) {
     if (error) throw error;
 
     revalidatePath('/');
-    revalidatePath('/article');
-    revalidatePath(`/article/${post.slug}`);
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${post.slug}`);
     return { success: true };
   } catch (error) {
     console.error('deletePostAction failed:', error);
@@ -390,8 +390,8 @@ export async function togglePostStatusAction(id) {
     if (error) throw error;
 
     revalidatePath('/');
-    revalidatePath('/article');
-    revalidatePath(`/article/${post.slug}`);
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${post.slug}`);
     return { success: true, newStatus };
   } catch (error) {
     console.error('togglePostStatusAction failed:', error);
@@ -439,7 +439,7 @@ export async function schedulePostAction(payload, scheduledDate) {
     if (error) throw error;
 
     revalidatePath('/');
-    revalidatePath('/article');
+    revalidatePath('/blog');
     return { success: true, slug };
   } catch (error) {
     const msg = error?.message || error?.toString() || 'Unknown error';
@@ -533,8 +533,8 @@ export async function restoreVersionAction(postId, versionId) {
       .single();
 
     revalidatePath('/');
-    revalidatePath('/article');
-    if (updated) revalidatePath(`/article/${updated.slug}`);
+    revalidatePath('/blog');
+    if (updated) revalidatePath(`/blog/${updated.slug}`);
     return { success: true, restoredVersion: ver.version_number };
   } catch (error) {
     console.error('restoreVersionAction failed:', error);
@@ -1007,7 +1007,7 @@ export async function createCourseAction({ title, label, description, image, url
 
     if (error) throw error;
     revalidatePath('/');
-    revalidatePath('/article');
+    revalidatePath('/blog');
     return { success: true, course: data };
   } catch (error) {
     console.error('createCourseAction failed:', error);
@@ -1032,7 +1032,7 @@ export async function updateCourseAction(id, { title, label, description, image,
 
     if (error) throw error;
     revalidatePath('/');
-    revalidatePath('/article');
+    revalidatePath('/blog');
     return { success: true };
   } catch (error) {
     console.error('updateCourseAction failed:', error);
@@ -1047,7 +1047,7 @@ export async function deleteCourseAction(id) {
     const { error } = await db.from('courses').delete().eq('id', id);
     if (error) throw error;
     revalidatePath('/');
-    revalidatePath('/article');
+    revalidatePath('/blog');
     return { success: true };
   } catch (error) {
     console.error('deleteCourseAction failed:', error);
@@ -1066,7 +1066,7 @@ export async function upsertTopicsAction(topics) {
     );
     if (error) throw error;
     revalidatePath('/');
-    revalidatePath('/article');
+    revalidatePath('/blog');
     return { success: true };
   } catch (error) {
     console.error('upsertTopicsAction failed:', error);

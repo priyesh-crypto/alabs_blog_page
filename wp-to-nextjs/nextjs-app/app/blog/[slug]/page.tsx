@@ -21,12 +21,13 @@ export function generateStaticParams() {
 
 /* ---------- metadata ---------- */
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
-}): Metadata {
-  const post = getPostBySlug(params.slug);
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const post = getPostBySlug(resolvedParams.slug);
   if (!post) return {};
 
   return {
@@ -129,15 +130,16 @@ function RelatedCard({ post }: { post: PostMeta }) {
 
 /* ---------- page ---------- */
 
-export default function BlogPostPage({
+export default async function BlogPostPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const post = getPostBySlug(params.slug);
+  const resolvedParams = await params;
+  const post = getPostBySlug(resolvedParams.slug);
   if (!post) notFound();
 
-  const related = getRelatedPosts(params.slug, 4);
+  const related = getRelatedPosts(resolvedParams.slug, 4);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6">

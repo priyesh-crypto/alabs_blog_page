@@ -1,0 +1,1449 @@
+---
+title: "How to Build Custom Deep Learning Models in Python?"
+slug: deep-learning-models-in-python
+date: "2024-05-22T11:05:55+00:00"
+modified: "2024-09-06T12:00:58+00:00"
+description: Deep Learning Models offer flexibility and adaptability when built from scratch. Learn to develop these models using Python.
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2024/05/building-custom-deep-learning-models-in-python.webp"
+author: AnalytixLabs
+categories:
+  - Deep Learning
+  - Python
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/deep-learning-models-in-python/"
+noindex: true
+---
+
+Deep learning models have led to major advancements in natural language processing, computer vision, autonomous systems, and personalized recommendations and have revolutionized the healthcare and finance industry.
+
+Organizations today have many ways to create such models, including custom model design, transfer learning, ensemble learning, AutoML, etc. This article will focus on building deep learning models in Python, particularly custom deep learning models.
+
+Let’s start by understanding customer deep learning models and how they differ from other deep learning model development techniques.
+
+## **What are Custom Deep Learning Models?**
+
+Custom deep learning models are neural networks specifically designed and trained to meet the unique requirements of a particular application or problem. These models are tailored by adjusting architecture, hyperparameters, and training data to optimize performance for specific tasks such as image recognition, natural language processing, or predictive analytics.
+
+There are many ways to develop a deep learning model, namely –
+
+-   **Custom Model Design**
+
+Designing a deep learning model from scratch involves defining the architecture, layers, and parameters tailored to specific task requirements. This approach ensures high performance, as the model can be optimized using domain knowledge and available data. Such models are developed specifically for particular tasks or domains, making them well-suited to meet specific requirements.
+
+-   **Transfer Learning (Pretrained Models)**
+
+Using pre-trained models trained on large datasets for related tasks improves training efficiency and performance by fine-tuning or reusing learned features. Performance varies based on the similarity between source and target tasks and the quality of the pre-trained model, potentially falling short for highly specialized tasks. Pre-trained models are effective for general tasks but might not be optimized for specific domains.
+
+-   **Ensemble Learning**
+
+Combining predictions from multiple models, known as ensemble methods, improves overall performance, robustness, and generalization. Techniques like bagging, boosting, and stacking are used when a single model isn’t sufficient for optimal performance, achieving high-performance levels in specific tasks.
+
+-   **AutoML**
+
+Automated machine learning (AutoML) automates model selection, hyperparameter tuning, and architecture search, enabling the creation of deep learning models with minimal manual intervention.
+
+Performance levels vary based on the platform’s algorithms and optimization strategies. AutoML often achieves high performance for simple tasks. It is particularly useful for rapid experimentation and automating the model development process.
+
+Below, we will discuss the differences between the various techniques – 
+
+![techniques to develop deep learning models](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-1-2-e1716462400280.jpg)
+
+As you would have understood by now, custom deep learning models help develop specialized models for solving peculiar problems. This is why such models are developed for autonomous driving, bot trading, recommendation engines, and various predictive tasks crucial for companies.
+
+You must opt for a programming language to develop a custom deep-learning model. The most common language used for developing deep learning models is Python. Let’s understand why that is the case, but before that, a short note – 
+
+Course Alert 👨🏻‍💻
+
+Developing deep learning models from scratch brings adaptability and flexibility to work on. Master building such models with AnalytixLabs.
+
+-   [Deep Learning with Python](https://www.analytixlabs.co.in/deep-learning-with-python)
+-   [Python Machine Learning Course](https://www.analytixlabs.co.in/machine-learning-course-certification-training) 
+
+Explore our signature **data science courses in collaboration with _Electronics & ICT Academy, IIT Guwahati_**, and join us for experiential learning to transform your career.
+
+-   [Certification Course in Data Science](https://www.analytixlabs.co.in/data-science-specialization-course)
+-   [Data Science with R](https://www.analytixlabs.co.in/data-science-r-analytics-training)
+-   [PG in Data Science](https://www.analytixlabs.co.in/pg-in-data-science)
+
+We have [elaborate courses](https://www.analytixlabs.co.in/courses) on AI and business analytics. Choose a learning module that fits your needs—classroom, online, or blended eLearning.
+
+Check out [our upcoming batches](https://www.analytixlabs.co.in/upcoming-batches) or [book a free demo](https://www.analytixlabs.co.in/contact-us) with us. Also, check out our [exclusive enrollment offers](https://www.analytixlabs.co.in/offers)
+
+## **Why Use Python To Build Custom Deep Learning Models?**
+
+Building deep learning models in [Python](https://www.python.org/) is quite common in the data science domain. Python is the most popular choice for developing deep learning models because it is easy to learn and implement and has a huge user support base.
+
+However, the primary reason for its popularity is the wide range of libraries that enable users to perform various tasks in developing custom deep learning models, such as data visualization, data preprocessing, model training, and evaluation.
+
+To build custom deep learning models in Python, you need several libraries. Key libraries available in Python that enable deep learning model development are as follows-
+
+![python libraries for deep learning model development ](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/2-1-1.jpg)
+
+-   ### **TensorFlow**
+    
+
+[Tensorflow](https://www.tensorflow.org/) is a popular deep-learning framework developed by Google Brain that provides a comprehensive ecosystem for model building. It has excellent performance and is highly flexible and scalable.
+
+-   ### **Keras**
+    
+
+[Keras](https://keras.io/) is a high-level API written in Python that can run on common deep-learning frameworks like TensorFlow or Theano. It provides a user-friendly interface, is highly simple and intuitive, and offers decent flexibility. It’s ideal for beginners who want to build deep-learning models in Python.  
+
+-   ### **PyTorch**
+    
+
+[PyTorch](https://pytorch.org/) enables model development and debugging. Developed by Facebook’s AI Research lab, it is popular due to its flexibility. PyTorch is often used for experimentation and prototype research. 
+
+> Also read: [Pytorch vs. TensorFlow: Which Framework to Choose?](https://www.analytixlabs.co.in/blog/pytorch-vs-tensorflow/)
+
+-   ### **Fastai**
+    
+
+Fatai is a deep learning library built on Pytorch that provides simple-to-use APIs for various deep learning tasks. 
+
+-   ### **Pandas**
+    
+
+[Pandas](https://pandas.pydata.org/) is a powerful Python library for data manipulation and preprocessing tasks. These include encoding, missing value imputation, outlier capping, and more.
+
+-   ### **NumPy**
+    
+
+[NumPy](https://numpy.org/) is a fundamental package that allows various kinds of numerical computations. It efficiently represents input features, labels, and model parameters.
+
+-   ### **Scikit-learn**
+    
+
+While not designed for building deep learning models in Python, [Scikit-learn](https://scikit-learn.org/) is a crucial library that helps in various deep learning workflows such as feature selection, scaling, data splitting, model evaluation, etc.
+
+-   ### **Matplotlib and Seaborn**
+    
+
+[Matplotlib](https://matplotlib.org/) and [Seaborn](https://seaborn.pydata.org/) help visualize the input data, model training progress, evaluation metrics, etc., which help interpret deep learning models.
+
+It’s time to answer the key question—how to build deep learning models in Python? In the next section, we will build our custom deep-learning model and develop a customer churn model that predicts whether or not a bank customer will leave the bank.
+
+## **Guide to Build Your First Deep Learning Model**
+
+This section provides a detailed step-by-step guide for developing a custom deep-learning model. We will start by setting up the environment. 
+
+-   ### **Setup to Build Deep Learning Model**
+    
+
+You must first set up the environment to build deep learning models in Python. There are several steps involved in it, such as
+
+1.  **Framework Selection:** Choose the framework you will use to develop your deep learning model, such as Tensorflow, Keras, or Pytorch. Once selected, install the framework and its dependencies. In our case, we opted for Keras and Tensorflow.
+2.  **Installing Python:** The next step is to install the programming language, which is Python in our case. You can download it from the official website or through package managers like Anaconda. We have used Python 3.9.13.
+3.  **Installing Additional Libraries:** You must install additional libraries to execute the various operations, such as data manipulation, visualization feature engineering, etc., that play a crucial role in model development. Common libraries include NumPy, Pandas, Matplotlib, Scikit-learn, etc. We will use the following libraries.
+4.  **Setting Up Development Environment:** You need an environment to write code in, so you must select an Integrated Development Environment (IDE). The most popular IDEs are Visual Studio Code, PyCharm, Jupyter Notebook, and Spyder. For this exercise, we are using VSCode (1.87.2).
+5.  **GPU Support (Optional):** If you want and have access, you can also set up a GPU as part of the set-up process. Installing GPU drivers and frameworks with GPU support can ensure faster model training. PyTorch and TensorFlow offer GPU versions that can be installed using conda or pip.
+
+Once you are set up, you can begin building custom deep-learning models in Python. The model-building process can be divided into three stages: pre-modeling, modeling, and post-modeling. Let’s start with pre-modeling. 
+
+-   ### **Pre-Modeling**
+    
+
+Pre-modeling is the first stage in model development. Here, you view the data you are dealing with and perform various preprocessing steps. The following tasks are performed as part of pre-modeling.
+
+-   [Exploratory Data Analysis](https://www.analytixlabs.co.in/blog/exploratory-data-analysis-in-python/)
+    1.  Viewing data
+    2.  Visualizing data
+    3.  Calculating summary statistics
+-   Data Cleaning (missing value and outlier treatment)
+-   Feature Selection
+-   Deriving New Features
+-   Feature Reduction
+-   Checking Multicollinearity
+-   Data Encoding
+-   Data Normalization
+-   Handling Imbalanced Classes
+-   Data Splitting
+
+We will execute all of the above tasks. However, the order will depend on the kind of data we are dealing with. 
+
+#### **1\. Viewing Data**
+
+We start by viewing the data. As we are developing a Bank Customer Churn model, our data consists of demographic and bank details of the customers (independent variables) along with the status of whether they left the bank (Exited=1) or not (Exited=0), which acts as the target (dependent) variable.
+
+`# importing libraries and the BankCustInfo dataset`  
+`import pandas as pd`  
+`import numpy as np`  
+`df = pd.read_csv('BankCustInfo.csv')`  
+`# viewing the dataset`  
+`df`
+
+We looked at our data structure and found 10,000 observations and 18 columns, a few of which have missing values and inappropriate data types.
+
+`# viewing the column names, missing values, and data types`  
+`df.info()`
+
+#### **2\. Removing Irrelevant Columns and Deriving Key Features**
+
+Based on the initial analysis, we performed feature reduction and dropped those columns with no predictive value.
+
+`# removing Irrelevant Column`  
+`del df['CustomerId']`  
+`del df['Surname']`
+
+Next, we derive age from the date of birth as a predictor.
+
+`# importing relevant module`  
+`from dateutil.relativedelta import relativedelta`
+
+`# setting the current date`  
+`current_date = pd.to_datetime('today')`
+
+`# creating a user defined function to extract the number of years`  
+`def calculate_age(dob):`  
+`return relativedelta(current_date, pd.to_datetime(dob)).years`
+
+`# applying the function and saving the output in 'Age' column`  
+`df['Age'] = df['DoB'].apply(calculate_age)`
+
+`# deleting the DoB column`  
+`del df['DoB']`
+
+#### **3\. Typecasting**
+
+A few of the column’s data types should have been numeric. We viewed such columns and found that the “$” symbol is causing the issue.
+
+`# viewing the columns where the data types seem incorrect`  
+`df[['EstimatedSalary', 'Balance', 'CrCardEMI']]`
+
+We corrected the datatypes by removing the “$” symbol and performing typecasting.
+
+`# removing the $ sign and converting it to numeric data type`  
+`df[['EstimatedSalary', 'Balance', 'CrCardEMI']] = \`  
+`df[['EstimatedSalary', 'Balance', 'CrCardEMI']].apply(lambda x: \`  
+`pd.to_numeric(x.str.replace('[\$,]', '', regex=True), errors='coerce'))`
+
+`# checking the data types`  
+`df[['EstimatedSalary', 'Balance', 'CrCardEMI']].dtypes`
+
+#### **4\. Missing Value Treatment**
+
+Performing missing value treatment is crucial as it ensures that the deep learning model doesn’t fit on incomplete data, thereby maximizing its potential performance.
+
+In our dataset, a few of the columns had missing values.
+
+`# finding the column names with missing values`  
+`columns_with_missing_vals = df.isna().sum()[df.isna().sum()>0].index.tolist()`  
+`df[columns_with_missing_vals]`
+
+Missing value imputation is performed on such columns where the mean is for continuous numeric, the median is for discreet numerals, and the mode is for a categorical column. Once done, no columns in the data had missing values.
+
+`# calculating imputation values for all columns with missing values`  
+`imputation_values = {`  
+`'NumOfFamilyEarners': df['NumOfFamilyEarners'].median(),`  
+`'EstimatedSalary': df['EstimatedSalary'].mean(),`  
+`'MaritalStatus': df['MaritalStatus'].mode()[0]`  
+`}`
+
+`# imputing missing values with calculated imputation values`  
+`df.fillna(imputation_values, inplace=True)`
+
+`# checking if any missing values are present`  
+`missing_values = df.isna().sum()[df.isna().sum() > 0]`  
+`if missing_values.empty:`  
+`print('No Missing Values in the data')`  
+`else:`  
+`print('Missing values in the following columns:\n', missing_values)`
+
+#### **5\. Outlier Capping**
+
+Data preprocessing plays a crucial role in dealing with outliers, as they can increase model variance, causing inaccurate parameter estimation, increase the variance of models, cause overfitting and skewness in the loss function, inflated errors, disruption in the optimization process, and difficulty in convergence.
+
+We created boxplots for all the numerical independent variables to find outliers in our data. 
+
+`# importing key libraries for visualizing boxplots`  
+`import math`  
+`import matplotlib.pyplot as plt`
+
+`# extracting all the numerical column names`  
+`numerical_columns = df.select_dtypes(include=['number']).columns`
+
+`# excluding the numerical column 'Exited' as it is the dependent column`  
+`numerical_columns = numerical_columns.drop('Exited')`
+
+`# calculating the number of rows and columns required for creating the subplots`  
+`num_columns = len(numerical_columns)`  
+`num_rows = math.ceil(num_columns / 3)  # Display 3 boxplots per row`
+
+`# creating subplots`  
+`fig, axs = plt.subplots(num_rows, 3, figsize=(15, num_rows * 5))`
+
+`# flatenning the axs array (to handle the case if num_columns is not a multiple of 3)`  
+`axs = axs.flatten()`
+
+`# creating boxplots for each numerical column`  
+`for i, column in enumerate(numerical_columns):`  
+`ax = axs[i]`  
+`df.boxplot(column=column, ax=ax)`  
+`ax.set_title(column)`  
+`ax.grid(True)`
+
+`# hiding unused subplots`  
+`for j in range(i + 1, len(axs)):`  
+`axs[j].set_visible(False)`
+
+`# adjusting layout`  
+`plt.tight_layout()`  
+`plt.show()`
+
+![outlier capping](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-3.jpg)
+
+![outlier capping](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-31-e1716359251453.jpg)
+
+Outlier Capping is performed on six columns where outliers were found using the interquartile (IQR) method. Once done, these columns were free of outliers.
+
+`# saving column names that have outliers`  
+`columns_with_outliers = ['Age','NumOfDependents','NumOfFamilyEarners',`  
+`'CreditScore','NumOfProducts','CrCardEMI']`
+
+`# creating a user defined function to perform outlier capping using IQR method`  
+`def cap_outliers_iqr(data, columns):`
+
+`# creating a copy of the DataFrame to avoid modifying the original DataFrame`  
+`data_capped = data.copy()`
+
+`# iterating over each specified column`  
+`for column in columns:`
+
+`# calculating the first (Q1) and third quartile (Q3)`  
+`Q1 = data_capped[column].quantile(0.25)`  
+`Q3 = data_capped[column].quantile(0.75)`
+
+`# calculating the Interquartile Range (IQR)`  
+`IQR = Q3 - Q1`
+
+`# calculating lower and upper bounds for outliers`  
+`lower_bound = Q1 - 1.5 * IQR`  
+`upper_bound = Q3 + 1.5 * IQR`
+
+`# capping outliers in the column`  
+`data_capped[column] = data_capped[column].clip(lower=lower_bound, upper=upper_bound)`
+
+`# returning the data with outlier capped columns`  
+`return data_capped`
+
+`# applying the function on the columns with outliers`  
+`df = cap_outliers_iqr(df, columns = columns_with_outliers)`
+
+`# creating boxplots for the columns where earlier there were outliers`  
+`import seaborn as sns`  
+`plt.figure(figsize=(12, 8))`  
+`for i, column in enumerate(columns_with_outliers, 1):`  
+`plt.subplot(2, 3, i)`  
+`sns.boxplot(data=df[column])`  
+`plt.title(f'Boxplot of {column}')`  
+`plt.xlabel('Values')`  
+`plt.tight_layout()`  
+`plt.show()`
+
+![outlier capping](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-4.jpg)
+
+#### **6\. Deriving Additional Features**
+
+As the data is relatively clean, we derived a few more variables to help the deep-learning model predict the target column.
+
+`# deriving ratio of income to expenses`  
+`df['IncomeExpenseRatio'] = df['CrCardEMI']/df['EstimatedSalary']`
+
+`# deriving income to saving ratio`  
+`df['IncomeSavingRatio'] = df['Balance'] / df['EstimatedSalary']`
+
+`# deriving dependency ratio (number of dependents divided by the number of income earners)`  
+`df['DependencyRatio'] = df['NumOfDependents']/df['NumOfFamilyEarners']`
+
+#### **7\. Summary Statistics**
+
+We calculated a few major summary statistics to understand all the data variables. 
+
+`# finding the key statistical values of the numerical columns`  
+`df.describe().T`
+
+`# finding the key statistical values of the categorical columns`  
+`df.describe(exclude=np.number).T`
+
+#### **8\. Visualization**
+
+A key aspect of EDA is visualization. Thus, we created a few plots to understand the data better.
+
+> Also read: [How To Visualize Data Using Python: Learn Visualization Using Pandas, Matplotlib and Seaborn](https://www.analytixlabs.co.in/blog/python-visualization/)
+
+-   ##### **_Correlation Matrix_**
+    
+
+We created a heatmap to understand the level of correlation in the data.  
+`# computing the correlation matrix`  
+`corr = df.corr()`
+
+`# generating a mask for the upper triangle`  
+`mask = np.triu(np.ones_like(corr, dtype=bool))`
+
+`# setting up the matplotlib figure`  
+`f, ax = plt.subplots(figsize=(11, 9))`
+
+`# generating a custom diverging colormap`  
+`cmap = sns.diverging_palette(230, 20, as_cmap=True)`
+
+`# drawing the heatmap with the mask and correct aspect ratio`  
+`sns.heatmap(corr, mask=mask, vmax=.3, cmap=cmap,`  
+`center=0, square=True, linewidths=.5,`  
+`cbar_kws={"shrink": .5}, annot=True, fmt=".1f",`  
+`annot_kws={"size": 8})`  
+`plt.show()`
+
+![correlation matrix](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-5.jpg)
+
+-   ##### **_Distribution Plot_**
+    
+
+We also created a distribution plot. In this case, we have created only one distribution plot for the “Balance” column.
+
+`# creating distribution plot for Balance column`  
+`sns.distplot(df.Balance, color="blue", label="Balance", kde= True)`  
+`plt.legend()`  
+`plt.show()`
+
+![distribution plot](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-6.jpg)
+
+-   ##### **_Pie Chart_**
+    
+
+Next, we created a pie chart for the target column and found an imbalanced class problem in the data.
+
+`# counting Exit values`  
+`values = df.Exited.value_counts()`  
+`labels = ['Not Exited', 'Exited']`
+
+`# setting custom colors for the pie chart`  
+`colors = ['#2ca02c', '#d62728']  # Green for Not Exited, Red for Exited`
+
+`# setting subplots`  
+`fig, ax = plt.subplots(figsize=(4, 3), dpi=100)`
+
+`# exploding the Exited slice`  
+`explode = (0, 0.09)`
+
+`# defining a custom autopct function to have percentages in the labels`  
+`def autopct_format(pct):`  
+`total = sum(values)`  
+`count = int(pct * total / 100)`  
+`count_str = "{:,}".format(count)  # Format count with commas`  
+`return f'{pct:.2f}%\n({count_str})'  # Add line break between percentage and count`
+
+`# plotting the pie chart with custom autopct function`  
+`patches, texts, autotexts = ax.pie(values, labels=labels, autopct=autopct_format,`  
+`startangle=90, explode=explode, colors=colors)`
+
+`# setting text and label properties`  
+`for text in texts:`  
+`text.set_color('white')  # setting text color to black`  
+`for autotext in autotexts:`  
+`autotext.set_color('white')  # setting percentage text color to black`  
+`autotext.set_fontweight('bold')  # making percentage text bold`
+
+`# showing the plot`  
+`plt.show()`
+
+![pie chart ](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/1-1.jpg)
+
+-   ##### **_Frequency Plot_**
+    
+
+To understand the categorical columns, we created count plots. Here, the frequency of different categories in the target column is counted for various categorical columns.
+
+`# setting subplots`  
+`fig, ax = plt.subplots(5, 2, figsize=(18, 25))`
+
+`# listing the columns to plot`  
+`columns_to_plot = ['Location', 'Gender', 'Tenure', 'NumOfProducts',`  
+`'HasCrCard', 'IsActiveMember', 'NumOfFamilyEarners',`  
+`'MaritalStatus', 'EducationStatus', 'EmploymentStatus']`
+
+`# defining colors for each 'Exited' group`  
+`colors = {0: 'green', 1: 'red'}`
+
+`# iterating over columns and plotting countplot dynamically`  
+`for i, column in enumerate(columns_to_plot):`
+
+`# Plot countplot`  
+`sns.countplot(x=column, hue='Exited', data=df, ax=ax[i//2, i%2], palette=colors)`
+
+`# customizing legend`  
+`ax[i//2, i%2].legend(labels=['Exited = 0','Exited = 1'], loc='upper right', fontsize='small',` `title='Exited', title_fontsize='medium')`
+
+`# showing ouput`  
+`plt.tight_layout()`  
+`plt.show()`
+
+![frequency plot](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-7.jpg)
+
+![frequency plot](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-7-1-e1716361126627.jpg)
+
+#### **9\. Data Encoding**
+
+Deep learning frameworks require numerical data to perform their complex numeric calculations. Therefore, we performed data encoding to represent the categorical columns numerically. 
+
+-   ##### **_One-hot Encoding_**
+    
+
+Label encoding is performed for the nominal categorical variables.
+
+`# performing one hot encoding`  
+`df = pd.get_dummies(df, columns=['Gender', 'Location', 'MaritalStatus'], drop_first=True)`
+
+-   ##### **_Label Encoding_**
+    
+
+To encode ordinal categorical variables, we first found their unique categories.
+
+`# finding the unique values for the ordinal categorical columns`  
+`print("Unique values in EducationStatus: ", ', '.join(df.EducationStatus.unique()))`  
+`print('---------------------------------------------------------------------')`  
+`print("Unique values in EmploymentStatus: ", ', '.join(df.EmploymentStatus.unique()))`
+
+Based on the order of the categories, we performed label encoding for such ordinal variables.
+
+`# defining custom mappings for EducationStatus and EmploymentStatus based on the unique values`  
+`education_mapping = {'High School Graduate': 1,`  
+`"Bachelor's Degree": 2,`  
+`"Master's Degree": 3,`  
+`'Professional Degree': 4,`  
+`'Doctorate (Ph.D.)': 5}`  
+`employment_mapping = {'Full-time': 1,`  
+`'Self-employed': 2,`  
+`'Part-time': 3}`
+
+`# applying custom mappings to EducationStatus and EmploymentStatus columns`  
+`df['EducationStatus'] = df['EducationStatus'].map(education_mapping)`  
+`df['EmploymentStatus'] = df['EmploymentStatus'].map(employment_mapping)`
+
+Lastly, we ensured that all data types are numeric.
+
+`# extracting numeric and non-numeric columns`  
+`num_dtypes = ['int', 'float', 'uint8']`  
+`numeric_columns = df.select_dtypes(include = num_dtypes)`  
+`non_numeric_columns = df.select_dtypes(exclude = num_dtypes)`
+
+`# checking for non-numeric columns`  
+`if non_numeric_columns.empty:`  
+`print("All columns in the DataFrame are numeric.")`  
+`else:`  
+`print("Non-numeric columns found in the DataFrame:", non_numeric_columns.columns.tolist())`
+
+#### **10\. Feature Selection**
+
+Deep learning algorithms utilize a lot of computational resources. Therefore, using only the important predictors to reduce the input data size is crucial. To do so, we started by splitting the predictors and target variables and counting the current number of predictors.
+
+![feature selection](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-8.jpg)`# extracting the independent (x) and dependent (y) features`  
+`X = df.drop('Exited', axis=1)`  
+`Y = df['Exited']`
+
+`# finding the current number of predictors`  
+`print("Current number of independent (x) variables are: ", len(X.columns))`
+
+We then created a user-defined function (UDF) and applied it to the data for feature selection.
+
+`# performing feature selection and find the top 10 performing features`
+
+`# importing key libraries`  
+`from sklearn.ensemble import RandomForestClassifier`  
+`from sklearn.feature_selection import RFE, SelectKBest, f_classif`
+
+`# creating a user defined function for performing feature selection`  
+`def feature_selection(X, Y, method, n_features=10):`
+
+`# using tree-based method`  
+`if method == 'Tree-Based':`  
+`rf_model = RandomForestClassifier()`  
+`rf_model.fit(X, Y)`  
+`feature_importances = rf_model.feature_importances_`  
+`top_features = X.columns[feature_importances.argsort()[-n_features:][::-1]]`
+
+`# using Recursive Feature Elimination (RFE)`  
+`elif method == 'RFE':`  
+`rfe_selector = RFE(estimator=RandomForestClassifier(),`  
+`n_features_to_select=n_features,`  
+`step=1)`  
+`rfe_selector.fit(X, Y)`  
+`top_features = X.columns[rfe_selector.support_]`
+
+`# using Univariate Feature Selection`  
+`elif method == 'Univariate':`  
+`selector = SelectKBest(score_func=f_classif, k=n_features)`  
+`selector.fit(X, Y)`  
+`top_features = X.columns[selector.get_support()]`  
+`else:`  
+`raise ValueError("Invalid feature selection method. Choose from 'Tree-Based', 'RFE', or` ‘Univariate'”)  
+`return top_features`
+
+`# using the function for feature selection using different methods`
+
+`# and extracting names of top 10 feature`  
+`top_10_rf = feature_selection(X, Y, 'Tree-Based', n_features=10)`  
+`top_10_rfe = feature_selection(X, Y, 'RFE', n_features=10)`  
+`top_10_univariate = feature_selection(X, Y, 'Univariate', n_features=10`
+
+We found the ten top-performing independent variables as per each feature selection method.
+
+`# printing the name of selected features`  
+`print("Top 10 features as per Random Forest: ", ', '.join(top_10_rf))`  
+`print("---------------------------------------------------------------------")`  
+`print("Top 10 features as per Recursive Feature Elimination: ", ', '.join(top_10_rfe))`  
+`print("---------------------------------------------------------------------")`  
+`print("Top 10 features as per Univariate Analysis: ", ', '.join(top_10_univariate))`
+
+Those features that are important, as per at least one technique, have been extracted.
+
+`# extracting the relevant columns by picking those column that have appeared in atleast one of the technique`  
+`imp_columns = list(set(top_10_rf.tolist() +  top_10_rfe.tolist() +  top_10_univariate.tolist()))`  
+`X = X[imp_columns]`
+
+#### **11\. Reducing Multicollinearity**
+
+There can be multicollinearity among the selected independent variables. It can cause the deep learning model to become unstable and prone to overfitting. To remove it, we calculated each predictor’s variance inflation factor (VIF), where a value above ten means that the column is causing multicollinearity.
+
+`# importing library for calculating vif`  
+`from statsmodels.stats.outliers_influence import variance_inflation_factor`
+
+`# calculating vif ofthe selected features`  
+`vif_df = pd.DataFrame()`  
+`vif_df["Variable"] = X.columns`  
+`vif_df["VIF"] = [variance_inflation_factor(X.values, i) forWein range(X.shape[1])]`  
+`print("Variance Inflation Factors:")`  
+`print(vif_df.sort_values(by = "VIF", ascending=False).reset_index(drop=True))`
+
+We removed the variable with the highest VIF score and recalculated the VIF score for the remaining columns.
+
+`# removing column with high VIF`  
+`del X['CreditScore']`
+
+`# running VIF again`  
+`vif_df = pd.DataFrame()`  
+`vif_df["Variable"] = X.columns`  
+`vif_df["VIF"] = [variance_inflation_factor(X.values, i) forWein range(X.shape[1])]`  
+`print("Variance Inflation Factors:")`  
+`print(vif_df.sort_values(by = "VIF", ascending=False).reset_index(drop=True))`
+
+We stopped dropping variables as the variable with the highest VIF is marginally above the acceptable value of VIF (which is 10) and froze the final predictors for model development.
+
+`print("Final number of independent (x) variables are: ", len(X.columns))`  
+`print("these are: ", ', '.join(X.columns))`
+
+#### **12\. Data Splitting**
+
+We split the data into train and test to ensure the model doesn’t overfit.
+
+`# converting data to array`  
+`x = X.values`  
+`y = Y.values`
+
+`# importing required library`  
+`from sklearn.model_selection import train_test_split`
+
+`# splitting them in train and test`  
+`x_train, x_test, y_train, y_test = train_test_split(x, y, test_size= 0.2, random_state = 0)`
+
+#### **13\. Handling Imbalanced Classes**
+
+Imbalanced data can cause deep learning models to become biased towards the majority class. This can lead to problems such as bad generalization, model instability, and misleading evaluation metrics, such as accuracy. Asourdata had an imbalanced class problem. We used the SMOTE method to balance the number of classes of the target variable in the training data.
+
+`# finding the current number of Exit category counts`  
+`print('Value Counts before SMOTE:')`  
+`print(pd.Series(y_train).value_counts())`
+
+`# importing SMOTE library`  
+`from imblearn.over_sampling import SMOTE`
+
+`# initializing SMOTE`  
+`smote = SMOTE(random_state=123)`
+
+`# fitting SMOTE on train data`  
+`x_train, y_train = smote.fit_resample(x_train, y_train)`
+
+`# printing the revised number of counts`  
+`print('-------------------------------------------------------')`  
+`print('Value Counts after SMOTE:')`  
+`print(pd.Series(y_train).value_counts())`
+
+#### **14\. Data Normalization**
+
+The different features must be on the same scale as they ensure faster convergence and better stability and reduce vanishing and exploding gradient problems in deep learning models.
+
+We used the standard scalar method to normalize the training and testing data.
+
+`# importing StandardScaler`  
+`from sklearn.preprocessing import StandardScaler`
+
+`# initializing StandardScaler`  
+`sc = StandardScaler()`
+
+`# fitting the StandardScaler model on the train data and scaling train and test data`  
+`x_train = sc.fit_transform(x_train)`  
+`x_test = sc.transform(x_test)`
+
+#### **15\. Creating Validation Data**
+
+We further split the training data into training and validation to minimize data leakage.
+
+`# further splitting data into train and validation sets`  
+`x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, stratify=y_train, test_size=0.2,` random\_state=42)
+
+Lastly, we calculated the dimensions of the various datasets we used for modeling and post-modeling.
+
+`# define split datasets and their corresponding names`  
+`splits = [(x_train, 'Train'), (x_val, 'Validation'), (x_test, 'Test')]`
+
+`# printing number of rows in each dataset`  
+`for data, name in splits:`  
+`print(f"Number of rows in X {name}: {len(data)}")`  
+`print('----------------------------------------')`
+
+`# printing class count in each dataset`  
+`for data, name in [(y_train, 'Train'), (y_val, 'Validation'), (y_test, 'Test')]:`  
+`print(f"Class count in Y {name}:")`  
+`print(pd.Series(data).value_counts())`  
+`print('----------------------------------------')`
+
+-   ### **Modeling**
+    
+
+The second stage in model development is modeling, where a deep learning algorithm fits the model to the training data. We use the classic Multi-Layer Perceptron (MLP), sometimes called ANN, where a feed-forward network is used. In such a network, there are multiple layers of neurons (nodes/units) in a layer, each fully connected to the next layer.
+
+![modeling](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-9.jpg)
+
+-   #### **Building Model – Manual Approach**
+    
+
+We started by manually building a model where we set the key parameters such as the number of hidden layers and units in it, the number of dropout layers and their rate, activation function, optimizer, and learning rate.
+
+-   ##### **_Model Training_**
+    
+
+We trained the ANN model on the train data and calculated the loss and accuracy of the validation data. We used the following parameters-
+
+-   Algorithm: ANN
+-   Framework: Keras
+-   Hidden Layers: 1
+-   Number of Units in Hidden Layer: 8
+-   Hidden Layer Activation Function: Tanh (hyperbolic tangent)
+-   Kernel and Bias Regulizer rate: 0.01
+-   Dropout Layer: 1
+-   Dropout Layer rate: 0.3
+-   Output Layer units: 1
+-   Output Layer Activation Function: Sigmoid
+-   Optimizer: Stochastic Gradient Descent
+-   Loss: Binary Cross Entropy
+-   Performance Metric: Accuracy
+-   Batch Size: 32
+-   Epochs: 100
+
+`# importing key libraries for building ANN model`  
+`import tensorflow as tf`  
+`from keras.regularizers import l2`
+
+`# setting random seed for NumPy and TensorFlow so that`
+
+`# the same results can be reproduced`  
+`np.random.seed(123)`  
+`tf.random.set_seed(123)`
+
+`# initializing the ANN model`  
+`ann_basic = tf.keras.models.Sequential()`
+
+`# adding the input layer and the first hidden layer`
+
+`# with 8 neurons (units), tanh as activation function`
+
+`# along with regularizers to add a penalty for weight size to the loss function`
+
+`# and avoiding overfitting`  
+`ann_basic.add(tf.keras.layers.Dense(units=8,`  
+`kernel_regularizer=l2(0.01),`  
+`bias_regularizer=l2(0.01),`  
+`activation='tanh',`  
+`input_shape=(x_train.shape[1],)))`
+
+`# adding first dropout layer at 30% rate`  
+`ann_basic.add(tf.keras.layers.Dropout(0.3))`
+
+`# adding the output layer with sigmoid as the activation function`  
+`ann_basic.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))`
+
+`# compiling the model using sgd (stochastic gradient descent) as optimizer,`
+
+`# binary_crossentropy as loss function and`
+
+`# accuracy as the performance metric that needs to be maximized`  
+`ann_basic.compile(optimizer='sgd', loss='binary_crossentropy', metrics=['accuracy'])`
+
+`# fitting the model on train data and computing accuracy on the validation data`  
+`ann_basic_history = ann_basic.fit(x_train, y_train, batch_size=32, epochs=100, validation_data=(x_val, y_val))`
+
+-   ##### **_Model Evaluation_**
+    
+
+We evaluated this manually created model (the “basic model” from now on). We used it to predict the target in test data and calculate various performance (evaluation) metrics. While this step is ideally performed in the post-modeling stage, we did it here anyway to get an idea of the performance achieved from the basic model and use it as a benchmark against the upcoming models. As you can see below, 70% accuracy is achieved using this model.
+
+`# importing libraries to calculate key performance metrics`  
+`from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score`
+
+`# using the model to come up with predicted probabilities`  
+`y_prob_ann_basic = ann_basic.predict(x_test)`
+
+`# converting probabilities to binary predictions`  
+`y_pred_ann_basic = (y_prob_ann_basic > 0.5)`
+
+`# calculating binary predictions based performance metrics`  
+`accuracy_ann_basic, precision_ann_basic, recall_ann_basic, f1_ann_basic = map(`  
+`lambda func: round(func(y_test, y_pred_ann_basic), 4),`  
+`[accuracy_score, precision_score, recall_score, f1_score]`  
+`)`
+
+`# calculating AUC score`  
+`auc_ann_basic = round(roc_auc_score(y_test, y_prob_ann_basic), 4)`
+
+`# printing metrics`  
+`print('----------------------------------')`  
+`print("Accuracy:", accuracy_ann_basic)`  
+`print("Precision:", precision_ann_basic)`  
+`print("Recall:", recall_ann_basic)`  
+`print("F1 Score:", f1_ann_basic)`  
+`print("AUC:", auc_ann_basic)`
+
+-   ##### **_Saving Model_**
+    
+
+Lastly, we saved this model as a .h5 object for later use.
+
+`# importing required library`  
+`from tensorflow.keras.models import save_model`
+
+`# exporting the model to a file named 'my_ann_basic.h5'`  
+`ann_basic.save('my_ann_basic.h5')`
+
+-   #### **Building Model – Hyperparameter Tuning Approach**
+    
+
+The problem that every deep learning model developer faces is the choice of [hyperparameters](https://www.analytixlabs.co.in/blog/what-are-hyperparameters/). At this point, we didn’t know what parameters would yield the best result for me. To solve this problem, we performed hyperparameter tuning. 
+
+-   ##### **_Designing NN Model Architecture_**
+    
+
+The first step in performing hyperparameter tuning is designing the model architecture, where you mention the tunable parameters and their ranges from which the best model is to be found.
+
+**#1 Setting Seed Value**
+
+We started by importing the required libraries and setting the seed value to obtain the same results every time we performed hyperparameter tuning.
+
+`# importing libraries required for hyperparameter tuning`  
+`import keras_tuner as kt`  
+`from tensorflow import keras`  
+`from tensorflow.keras import regularizers`
+
+`# setting random seed for reproducibility`  
+`np.random.seed(42)`  
+`tf.random.set_seed(42)`
+
+**#2 Designing Architecture with Tunable Parameters**
+
+We have now modified the basic model’s architecture and designed a new model architecture where we have set the following parameters for tuning.
+
+-   First hidden layer: Units can range from 1 to 40.
+-   Additional hidden layers: The number can range from 1 to 3, with units ranging from 1 to 40.
+-   Dropout layer: Each additional hidden layer can have a dropout layer whose rate can range from 0 to 0.7.
+-   Learning rate: Can be either 1e-2, 1e-3, or 1e-4.
+-   Optimizer: Options include ‘adam’ (Adaptive Moment Estimation), ‘rmsprop’ (Root Mean Squared Propagation), or ‘sgd’ (Stochastic Gradient Descent).
+
+`# defining the function to build a neural network model with tunable hyperparameters`
+
+`# which constructs a sequential model with configurable number of hidden layers,`
+
+`# units per hidden layer, dropout rates, and choice of optimizer and learning rate`  
+`def build_model(hp):`  
+`model = keras.Sequential()`
+
+`# adding the input layer and the first hidden layer`
+
+`# - number of units in the first hidden layer is a tunable hyperparameter that can range from 2 to 40`
+
+`# - 'relu' activation function is used`
+
+`# - l2 regularization is applied to kernel and bias weights`
+
+`# - The input shape is determined by the number of features in the training data`  
+`model.add(keras.layers.Dense(units=hp.Int("input_units", min_value=2, max_value=40, step=1),`  
+`activation='relu', kernel_regularizer=regularizers.l2(0.01),`  
+`bias_regularizer=regularizers.l2(0.01),`  
+`input_shape=(x_train.shape[1],)))`
+
+`# adding hidden layers with tunable units and dropout rates, tunable hyperparameter are:`
+
+`# - Number of hidden layers (can range from 1 to 3) and their units (can range from 1 to 40)`
+
+`# - 'relu' activation function is used for hidden layers`
+
+`# - dropout regularization is applied to prevent overfitting`
+
+`# - dropout rate is a tunable parameter (can range from 0 to 0.7)`
+
+`forWein range(hp.Int('num_layers', 1, 3)):`  
+`model.add(keras.layers.Dense(units=hp.Int("units_" + str(i), min_value=2, max_value=40, step=1),`  
+`kernel_regularizer=regularizers.l2(0.01),` `bias_regularizer=regularizers.l2(0.01),`  
+`activation='relu'))`  
+`model.add(keras.layers.Dropout(rate=hp.Float("dropout_" + str(i), min_value=0.0, max_value=0.7, step=0.1)))`
+
+`# adding the output layer with sigmoid activation (for binary classification)`  
+`model.add(keras.layers.Dense(units=1, activation='sigmoid'))`
+
+`# choosing an optimizer and learning rate (both are tunable parameters)`  
+`hp_optimizer = hp.Choice('optimizer', ['adam', 'rmsprop', 'sgd'])`  
+`hp_learning_rate = hp.Choice('learning_rate', [1e-2, 1e-3, 1e-4])`
+
+`# based on the chosen optimizer, instantiating the appropriate optimizer with the chosen learning rate`  
+`if hp_optimizer == 'adam':`  
+`optimizer = tf.keras.optimizers.Adam(learning_rate=hp_learning_rate)`  
+`elif hp_optimizer == 'rmsprop'`  
+`optimizer = tf.keras.optimizers.RMSprop(learning_rate=hp_learning_rate)`  
+`else:`  
+`optimizer = tf.keras.optimizers.SGD(learning_rate=hp_learning_rate)`
+
+`# compiling the model`
+
+`# using binary crossentropy loss for binary classification and tracking accuracy as a performance metric`  
+`model.compile(optimizer=optimizer,`  
+`loss='binary_crossentropy',`  
+`metrics=['accuracy'])`
+
+`# returning the model`  
+`return model`
+
+**#3 Optional: Tuning Activation Function**
+
+You would have noticed that we didn’t consider the activation function a tunable parameter. You can also tune the resources by modifying the build\_model() function if you have the resources. Here is a sample code that you can use to tune the activation function.
+
+`# defining a simple model architecture`  
+`def build_model(hp):`  
+`model = tf.keras.Sequential()`
+
+`# exploring different activation functions`  
+`activation_choice = hp.Choice('activation', ['relu', 'elu', 'selu', 'tanh'])`
+
+`# adding input layer and first hidden layer`  
+`model.add(layers.Dense(units = 8, activation = activation_choice, input_shape = (14,)))`
+
+`# adding hidden layers`  
+`forWein range(hp.Int('num_layers', 1, 3)):`  
+`model.add(layers.Dense(units=hp.Int("units_" + str(i), min_value=2, max_value = 40, step = 1),`  
+`activation=activation_choice))`  
+`model.add(layers.Dropout(rate=hp.Float("dropout_" + str(i), min_value = 0.0, max_value = 0.5, step = 0.1)))`
+
+-   ##### **_Performing Hyperparameter Tuning_**
+    
+
+Once the model architecture is designed, it is time to find those parameters that yield the highest accuracy. We used Keras’s optimization techniques: random search, Bayesian optimization, and Hyperband. Each one of them uses different techniques and have their pros and cons. We, however, used all of them to find the best model.
+
+**#1 Random Search**
+
+In Random Search (RS), hyperparameters are selected randomly from the predefined tuning range. Here, a model is trained on the train data for each selected parameter combination, and performance is calculated based on the validation data.
+
+![random search hyperparameter tuning](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-10.jpg)
+
+This method can find great hyperparameter combinations. While simple to implement and parallelize, it can be highly inefficient as it doesn’t exploit the information about the search space and spends time training and evaluating the model with less promising hyperparameter combinations.
+
+Below, we create a tuner using the RS optimization method. 
+
+`# creating a RandomSearch tuner to search for the best hyperparameters`  
+`tuner_rs = kt.RandomSearch(`  
+`build_model, # passing the model`  
+`objective='val_accuracy', # objective is to maximize validation accuracy`  
+`max_trials=100, # maximum number of trials is set to 100`  
+`seed=42, # setting a random seed for reproducibility`  
+`directory='random_search', # specifying the directory to save the results`  
+`project_name='ann_random_search') # specifying the project name to save the results`
+
+Next, we used the tuner, which uses various combinations of hyperparameters to train and validate the model. Exploring these combinations took around 2 hours, and we found the best-performing model with a validation score of 85.4%.
+
+`# performing the hyperparameter search using the training and validation data`  
+`tuner_rs.search(x_train, y_train, epochs=100, validation_data=(x_val, y_val))`
+
+We now extracted the parameters of the best-performing model, used it to build a new model, and saved this model for later use.
+
+`# retrieving the best hyperparameters found during the search`  
+`best_hps_rs = tuner_rs.get_best_hyperparameters(num_trials=1)[0]`
+
+`# initializing a model using the best hyperparameters`  
+`best_model_rs = tuner_rs.hypermodel.build(best_hps_rs)`
+
+`# fitting the model using the best hyperparameters on the training data`  
+`history_rs = best_model_rs.fit(x_train, y_train, epochs=100, validation_data=(x_val, y_val))`
+
+`# exporting the model for future use`  
+`best_model_rs.save('my_best_model_rs.h5')`
+
+**#2 Bayesian Optimization**
+
+The next optimization technique we used is Bayesian Optimization (BO). In this technique, the objective function is modeled using probabilistic models, and based on the previous evaluation, the next hyperparameter combination is defined.
+
+![bayesian optimization](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-11.jpg)
+
+This method is highly efficient as, unlike RS, it uses past evaluation to find the next hyperparameter configuration. However, Bayesian Optimization can be computationally costly due to its complex implementation.
+
+Like RF, we created a tuner for BO and found the best model within a similar time and with similar accuracy.
+
+`# creating a Bayesian Optimization tuner`  
+`tuner_bo = kt.BayesianOptimization(`  
+`build_model,`  
+`objective='val_accuracy',`  
+`max_trials=100,`  
+`seed=42,`  
+`directory='bayesian_optimization',`  
+`project_name='ann_bayesian_optimization')`
+
+`# performing hyperparameter search`  
+`tuner_bo.search(x_train, y_train, epochs=100, validation_data=(x_val, y_val))`
+
+We developed the model using the best hypermeter configuration found by BO and exported this model, too.
+
+`# retrieving best hyperparameters`  
+`best_hps_bo = tuner_bo.get_best_hyperparameters(num_trials=1)[0]`
+
+`# initializing model`  
+`best_model_bo = tuner_bo.hypermodel.build(best_hps_bo)`
+
+`# fitting model`  
+`history_bo = best_model_bo.fit(x_train, y_train, epochs=100, validation_data=(x_val, y_val))`
+
+`# exporting model`  
+`best_model_bo.save('my_best_model_bo.h5')`
+
+**#3 Hyperband**
+
+Lastly, we used Hyperband, a bandit-based optimization method where more epochs are allocated to hyperparameter combinations that offer more promise, eliminating poor combinations early on.
+
+![hyperband hyperparameter tuning](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-12.jpg)
+
+While the method is much more efficient than RS and BO and can converge faster, it suffers from being highly sensitive to the choice of parameters. It may require some experimentation to find the best-performing configuration.
+
+We also created a tuner for this method. As mentioned above, this method is highly efficient. It converged in just 34 minutes with a validation accuracy of 82%, which is not bad compared to other optimization techniques.
+
+`# creating a Hyperband tuner`  
+`tuner_hyperband = kt.Hyperband(`  
+`build_model,`  
+`objective='val_accuracy',`  
+`max_epochs=100,`  
+`factor=3, # reduction factor`  
+`seed=42,`  
+`directory='hyperband',`  
+`project_name='ann_hyperband')`
+
+`# performing hyperparameter search`  
+`tuner_hyperband.search(x_train, y_train, epochs=100, validation_data=(x_val, y_val))`
+
+We also retrieved the best parameters for this technique and used them to develop and export the model.
+
+`# retrieving best hyperparameters`  
+`best_hps_hyperband = tuner_hyperband.get_best_hyperparameters(num_trials=1)[0]`
+
+`# initializing model`  
+`best_model_hyperband = tuner_hyperband.hypermodel.build(best_hps_hyperband)`
+
+`# fitting model`  
+`history_hyperband = best_model_hyperband.fit(x_train, y_train, epochs=100, validation_data=(x_val, y_val))`
+
+`# exporting model`  
+`best_model_hyperband.save('my_best_model_hyperband.h5')`
+
+-   ### **Post-Modeling**
+    
+
+The last stage in the model-building process is post-modeling. Here, the developed models are compared in terms of their architecture and parameters. Most importantly, in this stage, the model’s performance is evaluated by using them to score the testing data and calculate various performance metrics. Once the best model is found, it predicts the new data.
+
+-   #### **Comparing Model Parameters**
+    
+
+We created a user-defined function to extract the parameters from the optimized models.
+
+`# creating function to print the best hyperparameters`  
+`def print_best_hyperparameters(best_hps):`
+
+`# extracting details of the first hidden layer`  
+`units_first_layer = best_hps.values['input_units']`
+
+`# extracting details of the remanining hidden layers`  
+`num_layers = best_hps.get('num_layers')`  
+`units_per_layer = [best_hps.get(f'units_{i}') forWein range(num_layers)]`
+
+`# extracting details of the dropout layers, optimizer and learning rate`  
+`dropout_rates = [best_hps.get(f'dropout_{i}') forWein range(num_layers)]`  
+`optimizer = best_hps.get('optimizer')`  
+`learning_rate = best_hps.get('learning_rate')`
+
+`# printing out the details of the best hyperparameters`  
+`print("Number of units in first hidden layer:", units_first_layer)`  
+`print("Number of additional hidden layers:", num_layers)`  
+`print("Number of units per hidden layer:", units_per_layer)`  
+`print("Dropout rates:", dropout_rates)`  
+`print("Optimizer:", optimizer)`  
+`print("Learning rate:", learning_rate)`  
+`print("------------------------------------------------------")`
+
+Similarly, we created a function to extract the parameters from the basic model.
+
+`# creating function to print the parameters of the basic model`  
+`from tensorflow.keras.layers import Dense, Dropout`  
+`def get_model_info(model):`
+
+`# extracting details of the first hidden layer`  
+`num_units_first_layer = model.layers[0].input_shape[1]`
+
+`# extracting details of the dropout layers, optimizer and learning rate`  
+`dropout_rates = [layer.rate for layer in model.layers if isinstance(layer, Dropout)]`  
+`optimizer = model.optimizer.__class__.__name__`  
+`learning_rate = model.optimizer.learning_rate.numpy().item()`
+
+`# returning out the details of the model hyperparameters`  
+`model_info_str = (`  
+`f"Number of units in first hidden layer: {num_units_first_layer}\n"`  
+`f"Dropout rate: {dropout_rates}\n"`  
+`f"Optimizer: {optimizer}\n"`  
+`f"Learning rate: {learning_rate}"`  
+`)`  
+`return model_info_str`
+
+We then used the above-created functions to find the parameters of the basic models and the best-performing models as per RS, BO, and Hyperband. The key finding is that the optimized models had additional hidden layers and used Adam as the optimizer.
+
+`# printing details of the basic model`  
+`print("Parameters of the Basic Model:")`  
+`model_info = get_model_info(ann_basic)`  
+`print(model_info)`  
+`print("------------------------------------------------------")`
+
+`# printing the best hyperparameters from different optimization methods`
+
+`# best hyperparameters as per Random Search`  
+`print("Best Hyperparameters for Random Search:")`  
+`print_best_hyperparameters(best_hps_rs)`
+
+`# best hyperparameters as per Bayesian Optimization`  
+`print("Best Hyperparameters for Bayesian Optimization:")`  
+`print_best_hyperparameters(best_hps_bo)`
+
+`# best hyperparameters as per Hyperband`  
+`print("Best Hyperparameters for Hyperband:")`  
+`print_best_hyperparameters(best_hps_hyperband)`
+
+-   #### **Comparing Training, Validation Loss and Accuracy**
+    
+
+To better understand how the models fit the data, we created a plot for training and validation loss and training and validation accuracy for the four models. The key thing to notice here is that while the loss/accuracy flatlined for the basic model after 40 epochs, the loss was reduced for the optimization models till the end.
+
+Therefore, it can be said that additional epochs could have helped to further increase the accuracy of the optimized models.
+
+`# defining a function to plot training and validation loss and accuracy`  
+`def plot_metrics(history, title):`
+
+`# plotting training and validation loss`  
+`loss_train = history.history['loss']`  
+`loss_val = history.history['val_loss']`  
+`epochs = range(1, len(loss_train) + 1)`  
+`plt.figure(figsize=(12, 6))`  
+`plt.subplot(1, 2, 1)`  
+`plt.plot(epochs, loss_train, 'g', label='Training Loss')`  
+`plt.plot(epochs, loss_val, 'b', label='Validation Loss')`  
+`plt.title(title + ' Training and Validation Loss')`  
+`plt.xlabel('Epochs')`  
+`plt.ylabel('Loss')`  
+`plt.legend()`
+
+`# plotting training and validation accuracy`  
+`acc_train = history.history['accuracy']`  
+`acc_val = history.history['val_accuracy']`  
+`plt.subplot(1, 2, 2)`  
+`plt.plot(epochs, acc_train, 'g', label='Training Accuracy')`  
+`plt.plot(epochs, acc_val, 'b', label='Validation Accuracy')`  
+`plt.title(title + ' Training and Validation Accuracy')`  
+`plt.xlabel('Epochs')`  
+`plt.ylabel('Accuracy')`  
+`plt.legend()`  
+`plt.tight_layout()`  
+`plt.show()`
+
+`# plotting training and validation metrics for Basic, Random Search, Bayesian Optimization, and Hyperband model`  
+`plot_metrics(ann_basic_history, 'Basic Model')`  
+`plot_metrics(history_rs, 'Random Search')`  
+`plot_metrics(history_bo, 'Bayesian Optimization')`  
+`plot_metrics(history_hyperband, 'Hyperband')`
+
+![basic model training and validation loss](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-13.jpg)
+
+![random search training and validation loss](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-14-e1716364720744.jpg)
+
+![bayesian optimization training and validation loss](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-15-e1716364743622.jpg)
+
+-   #### **Comparing  Model Architecture**
+    
+
+It’s crucial to compare the model architecture, too. While the parameters gave us a good idea of the models, we visualized the architecture of all four models for better clarity. While you can use <model\_object>.summary() for finding the model architecture, we used the library “graphviz” for better understanding.
+
+`# importing key libraries`  
+`from tensorflow.keras.utils import plot_model`  
+`import graphviz`
+
+`# listing out different models and their corresponding titles`  
+`models = [ann_basic, best_model_rs, best_model_bo, best_model_hyperband]`  
+`titles = ['Basic Model', 'Random Search Model', 'Bayesian Optimization Model', 'Hyperband Model']`
+
+`# creating subplots`  
+`fig, axes = plt.subplots(1, len(models), figsize=(20, 5 * len(models)))  # Adjust the figsize as needed`
+
+`# plotting the architecture of each model in a subplot`  
+`for model, title, ax in zip(models, titles, axes):`  
+`plot_model(model, show_shapes=True, to_file=f'{title.replace(" ", "_").lower()}.png')`  
+`ax.imshow(plt.imread(f'{title.replace(" ", "_").lower()}.png'))`  
+`ax.axis('off')`  
+`ax.set_title(title, fontsize=14, fontweight='bold')`
+
+`# adjusting layout`  
+`plt.tight_layout()`
+
+`# showing the plot`  
+`plt.show()`
+
+-   #### **Predicting Test Data**
+    
+
+Finally, we used the models to predict the training data. We calculated the predicted probability (y\_prob) that indicates the probability of a customer exiting the bank. We also calculated predicted classes (y\_pred) by assigning 1 (Customer Exit: True) where the predicted probability is above 50%; else, we assigned 0 (Customer Exit: False). 
+
+Note—This step was for the basic model only during the model training stage, as we needed to find the accuracy value.
+
+`# Random Search`  
+`y_prob_rs = best_model_rs.predict(x_test)`  
+`y_pred_rs = (y_prob_rs > 0.5)`
+
+`# Bayesian Optimization`  
+`y_prob_bo = best_model_bo.predict(x_test)`  
+`y_pred_bo = (y_prob_bo > 0.5)`
+
+`# Hyperband`  
+`y_prob_hyperband = best_model_hyperband.predict(x_test)`  
+`y_pred_hyperband = (y_prob_hyperband > 0.5)`
+
+-   #### **Confusion Matrix**
+    
+
+We created a confusion matrix for each model to assess which model performed best. From the initial analysis, the number of True Positives seemed good in RS and Hyperband, while True Negative was good in the basic model and BO.
+
+> Also read: [Confusion Matrix in Machine Learning](https://www.analytixlabs.co.in/blog/confusion-matrix/) 
+
+To have better clarity, we also calculated performance metrics.
+
+`# importing library for creating confusion matrix`  
+`from sklearn.metrics import confusion_matrix`
+
+`# calculating confusion matrix`
+
+`# for all four models (basic, random search, bayesian optimization, and hyperband)`  
+`conf_matrix_ann_basic = confusion_matrix(y_test, y_pred_ann_basic)`  
+`conf_matrix_rs = confusion_matrix(y_test, y_pred_rs)`  
+`conf_matrix_bo = confusion_matrix(y_test, y_pred_bo)`  
+`conf_matrix_hyperband = confusion_matrix(y_test, y_pred_hyperband)`
+
+`# defining models names and their confusion matrix and corresponding predictions`  
+`models = {`  
+`"Basic Model": (conf_matrix_ann_basic, y_pred_ann_basic),`  
+`"Random Search": (conf_matrix_rs, y_pred_rs),`  
+`"Bayesian Optimization": (conf_matrix_bo, y_pred_bo),`  
+`"Hyperband": (conf_matrix_hyperband, y_pred_hyperband)`  
+`}`
+
+`# setting labels for confusion matrix heatmap`  
+`labels = ['No', 'Yes']`  
+`metrics_labels = ["True Positive", "False Positive", "False Negative", "True Negative"]`
+
+`# setting subplots stucture and title`  
+`fig, ax = plt.subplots(1, len(models), figsize=(20, 5))`  
+`plt.suptitle('Confusion Matrix', fontsize=25, fontweight='bold')`
+
+`# creating a for loop to assign different heatmaps to different subplots`  
+`` for i, (model_name, (conf_matrix, y_pred)) in enumerate(models.items()):   `sns.heatmap(conf_matrix, annot=True, cmap="Blues", fmt='g', cbar=False, annot_kws={"size": 14}, ax=ax[i])`   `ax[i].set_title(model_name, fontsize=16, fontweight='bold')`   `ax[i].set_xticklabels(labels)`   `ax[i].set_yticklabels(labels)`   `ax[i].set_ylabel('Actual')`   `ax[i].set_xlabel('Predicted')` ``
+
+`# adding confusion metric values (absolute and percentages) to the labels`  
+`for j, label in enumerate(metrics_labels):`  
+`text = ax[i].texts[j]`  
+`value = text.get_text()`  
+`percentage = round(float(value) / conf_matrix.sum() * 100, 2)`  
+`text.set_text(f"{label}\n({value}, {percentage}%)")`
+
+`# showing plots`  
+`plt.tight_layout()`  
+`plt.show()`
+
+![confusion matrix](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-17.jpg)
+
+-   #### **Performance Metrics**
+    
+
+We calculated key performance (evaluation) metrics for the various optimized models and viewed them in a table along with the performance metrics of the basic model. Also, we primarily considered accuracy and AUC score as the basis for finding and evaluating the models.
+
+Introducing hyper-parameter optimization had a major impact on model performance compared to the basic model. The optimized model’s accuracy and AUC score increased by 4-5% and 6-7%, respectively. The best-performing model was obtained through RS with 85.05% accuracy and 85.94% AUC score.
+
+It’s important to note that Hyperband performed well, too, considering it took just ¼ times as long to optimize the hyperparameters compared to RS, while the performance was almost at par with it. Thus, Hyperband is of great value as a resource.
+
+`# defining the optimization strategies and their corresponding predictions`  
+`strategies = {`  
+`'Random Search': (y_pred_rs, y_prob_rs),`  
+`'Bayesian Optimization': (y_pred_bo, y_prob_bo),`  
+`'Hyperband': (y_pred_hyperband, y_prob_hyperband)`  
+`}`
+
+`# creating an empty dictionary to store the evaluation metrics`  
+`evaluation_metrics = {}`
+
+`# defining the metrics to calculate`  
+`metrics = {`  
+`'Accuracy': accuracy_score,`  
+`'Precision': precision_score,`  
+`'Recall': recall_score,`  
+`'F1 Score': f1_score,`  
+`'ROC AUC': roc_auc_score`  
+`}`
+
+`# calculating evaluation metrics for each optimization strategy using a for loop`  
+`for strategy_name, (y_pred, y_prob) in strategies.items():`
+
+`# initializing a list to store the metrics for the current strategy`  
+`strategy_metrics = []`
+
+`# calculating and storing each metric for the current strategy`  
+`for metric_name, metric_func in metrics.items():`
+
+`# handling ROC AUC calculation differently`
+
+`# as it requires predicted probabilities while others require classes`  
+`if metric_name == 'ROC AUC':`  
+`strategy_metrics.append(round(metric_func(y_test, y_prob), 4))`  
+`else:`  
+`strategy_metrics.append(round(metric_func(y_test, y_pred), 4))`
+
+`# storing the metrics list for the current strategy`  
+`evaluation_metrics[strategy_name] = strategy_metrics`
+
+`# converting the dictionary of evaluation metrics into a DataFrame`  
+`metrics_table = pd.DataFrame(evaluation_metrics, index=metrics.keys())`
+
+`# combining metrics of the basic model`  
+`metrics_basic_model = pd.Series([accuracy_ann_basic, precision_ann_basic, recall_ann_basic,`  
+`f1_ann_basic, auc_ann_basic],`  
+`name="Basic Model",`  
+`index=["Accuracy", "Precision", "Recall", "F1 Score", "ROC AUC"])`  
+`metrics_table = pd.concat([metrics_table,metrics_basic_model], axis=1)`
+
+`# swapping the last column with the first column`  
+`metrics_table = metrics_table[[metrics_table.columns[-1]] + list(metrics_table.columns[:-1])]`
+
+`# displaying the table`  
+`metrics_table`
+
+-   #### **Visualizing  Selected Model**
+    
+
+The model obtained for RS optimization is the final best model. Below, we visualize its neural network.
+
+`# visualizing the network of the best model`  
+`from ann_visualizer.visualize import ann_viz;`  
+`ann_viz(best_model_rs)`
+
+![visualizing selected model](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Design-16.jpg)
+
+-   #### **Predicting New Data**
+    
+
+All this work is done so the bank can use the model to predict whether a customer will leave it. Suppose you have data with the following customer information-
+
+We will use the best model to predict the exit of this customer.
+
+-   ##### **_Loading ANN Model_**
+    
+
+We start by loading the best model (the one obtained from RS optimization).
+
+`# importing required library`  
+`from tensorflow.keras.models import load_model`
+
+`# lading the Random Search model (that was saved earlier)`  
+`best_model = load_model('my_best_model_rs.h5')`
+
+-   ##### **_Passing Data to Model_**
+    
+
+We now normalize the input data and pass it to the ANN model for prediction and get the result. 
+
+`# using the model to predict on new data`  
+`prediction = best_model.predict(sc.transform([[0.09, 19214.21, 1.00, 2.00, 0.00, 2.00, 1.00,`   
+`205318.11, 1.00, 0.00, 1.00, 56.00, 3.00, 0.00]]))`  
+`if prediction > 0.5:`  
+`print("Will Exit (1)")`  
+`else:`  
+`print("Will Not Exit (0)")`
+
+With this, we conclude the model-building process. You can reference the code above to build your custom deep-learning models in Python. While the data, its preparation, and the model objective may change, the implementation, by and large, will remain the same.
+
+## **Conclusion**
+
+Custom deep learning models enable high flexibility and adaptability as they are designed from scratch. The level of customization offered by custom models helps in solving complex problems. Building deep learning models in Python can be quite easy, primarily due to the several libraries provided by Python that help you in your model-building journey.
+
+While custom mode building requires a deep understanding of numerous deep learning techniques, you can use various optimization techniques Keras offers to find the best model architecture for your task. Given the advancements in deep learning applications, custom deep learning models will surely play a major role in the future.
+
+## **FAQs**
+
+-   **What are the advantages of building custom deep learning models compared to pre-trained models?**
+
+Compared to pre-trained models, custom deep learning models provide superior performance for specific tasks, offer a flexible architecture, enable innovation and research, and are highly efficient if designed properly.
+
+-   **What are the essential libraries for building deep learning models in Python?**
+
+Key libraries are Tensorflow, Keras, Pandas, Scikit-learn, etc.
+
+-   **How important is data preparation for deep learning models?**
+
+Data preparation is key to developing deep learning models, ensuring enhanced model stability, performance, generalization, convergence, etc.
+
+-   **What are some common challenges when building custom deep learning models?**
+
+There are several challenges with building custom deep learning models, such as
+
+1.  It can be tough to find relevant labeled data in large amounts that are not biased and of high quality.
+2.  Designing model architecture requires developers with deep expertise and domain knowledge. 
+3.  The best parameter configuration can be found during hyperparameter tuning, which can be computationally expensive and time-consuming.
+4.  Higher-performing computational resources like GPUs and TPUs are required, which can be expensive.
+5.  Transferring custom models to solve other tasks can be difficult. 
+
+-   **What are some resources for building custom deep-learning models in Python?**
+
+Key resources that one can use for building custom deep learning models are-
+
+**Books**
+
+-   [Deep Learning Book by Ian Goodfellow](https://www.amazon.in/Deep-Learning-Ian-Goodfellow/dp/0262035618)
+-   [Deep Learning from Scratch: Building with Python from First Principles by Seth Weidman](https://www.amazon.in/Deep-Learning-Scratch-Building-Principles/dp/935213902X) 
+-   [Deep Learning: A Practitioner’s Approach, by Adam Gibson and Josh Patterson](https://www.amazon.in/Deep-Learning-Practitioners-Josh-Patterson/dp/9352136047) 
+
+**Blogs**
+
+-   [OpenAI](https://openai.com/)
+-   [Depends on Definition](https://www.depends-on-the-definition.com/)
+-   [AI at Google](https://blog.research.google/)
+
+We hope this article helped you understand how to create a custom deep-learning model. Contact us if you want to explore deep learning and get certified in it.
+
+Related Reading Resources
+
+-   [A Guide to Data Models: Learn Concepts, Techniques, Processes, & Tools](https://www.analytixlabs.co.in/blog/what-is-data-model/)
+-   [Machine Learning Vs. Deep Learning: Types, Working, and Differences](https://www.analytixlabs.co.in/blog/machine-learning-vs-deep-learning/)
+-   [Deep Learning Interview Guide: Top 50+ Deep Learning Interview Questions \[With Answers\]](https://www.analytixlabs.co.in/blog/deep-learning-interview-questions/)
+-   [Detecting Deepfakes: Exploring Advances in Deep Learning-Based Media Authentication](https://www.analytixlabs.co.in/blog/types-of-deepfakes/)
+-   [Top 50 Python Questions for Data Science Interviews 2024](https://www.analytixlabs.co.in/blog/python-interview-questions-for-data-science/)

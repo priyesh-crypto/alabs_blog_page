@@ -1,0 +1,34 @@
+---
+title: "Apache Flink: Hadoop’s New Cousin"
+slug: apache-flink-hadoops-new-cousin
+date: "2015-09-15T06:23:45+00:00"
+modified: ""
+description: "There’s a new kid on the block – Apache Flink. This new framework from the Apache Software Foundation does quite a few things differently: It puts continuo"
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2025/04/logo-image.webp"
+author: AnalytixLabs
+categories:
+  - Analytics
+  - Blog- AnalytixLabs
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/apache-flink-hadoops-new-cousin/"
+noindex: true
+---
+
+There’s a new kid on the block – Apache Flink. This new framework from the Apache Software Foundation does quite a few things differently: It puts continuous stream analytics, batch analytics, graph processing, and machine learning at the top of a streaming engine, natively.
+
+The conventional method has been to store some amount of a continuously-produced data (like an attendance recorder, user transactions, or sensor networks) at a specific location and then analyze as a batch. However, stream processing inverts the very thinking that supports conventional methods – instead of thinking data as a complete chunk of information on the basis of which a conclusion is formed, stream processing removes the barriers (the delays between data generation and actions on the findings) to analyze as data is generated. And therefore, true to its name (Flink means ‘quick’ or ‘nimble’ in German), it gives you access to real-time data analysis.
+
+In 2009, a team of researchers at the University of Berlin sat down to brainstorm in order to remove, or reduce, the failings of [Hadoop](https://www.analytixlabs.co.in/big-data-analytics-hadoop-spark-training-course-online) and similar systems. What was known as Stratosphere was christened Flink after being added to Apache’s incubator program.
+
+Flink works in both batch and stream processing. Its streaming analyzes data streams as true streams, which means that as soon as data elements arrive, they are channelled though a streaming program. This makes is possible for flexible window operations to be performed on streams. **Flink** is designed for iterative or cyclic processes by employing iterative transformations on sets. An optimization of operator chaining, join algorithms, and reusing of partitioning and sorting are used to achieve that. Flink also contains higher-level functionality like a relational API and a Machine Learning library.
+
+Take a look at some of its special features:
+
+1.  Flink 0.9.0 and onwards give exactly-once guarantees to state updates.
+2.  It uses checkpointing mechanism (which is based on Chandy-Lamport) to achieve low latency.
+3.  It contains a high-throughput engine that buffers events controllably before sending them over the network.
+
+However, Flink is not replacing Hadoop anytime soon. Hadoop Distributed Filesystem (HDF) and Yet Another Resource Negotiator (YARN) – the two components integral for building distributed query engines and distributed databases – remain the integral ingredient of BigData clusters. MapReduce, the batch processing framework of Hadoop, can co-exist with Flink, which specializes in iterative processing.
+
+Have you worked with the Flink yet? Do you think it’s as effective a framework as it purports to be? Share your views in the comments section.

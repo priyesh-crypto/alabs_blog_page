@@ -1,0 +1,297 @@
+---
+title: How To Minimize Dirty Data - A Comprehensive Guide with Examples
+slug: minimize-dirty-data
+date: "2023-02-28T15:11:45+00:00"
+modified: "2025-07-21T14:17:01+00:00"
+description: "Dirty data or bad data can lead to ineffective business decisions. Learn the types of dirty data, how to clean data, and stesp to avoid it"
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2023/03/1-1.jpg"
+author: AnalytixLabs
+categories:
+  - Big Data
+  - Uncategorized
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/minimize-dirty-data/"
+noindex: true
+---
+
+We’ve talked so much about data and its sheer volume. What follows data is **dirty data**. Dirty data is any incorrect data.
+
+Susan Walsh, Founder & MD, of The Classification Guru, explains:
+
+> The interpretation of “incorrect” may differ from business to business. For instance, one company may categorize DHL as a “courier” while another may categorize it as “logistics” or “warehousing”. Hence, it is important to understand dirty data for your organization and accordingly cleanse and check data. ~ [DigitalFirst](https://www.digitalfirstmagazine.com/do-you-have-dirty-data/)
+
+This article will explain dirty data with examples, analyze its impact on businesses, and explore ways to cleanse it.
+
+## What is Dirty Data?
+
+Any data that is inaccurate, incomplete, or inconsistent is dirty data. To write a dirty data definition- it is _data that is erroneous or cannot be easily used._ Reports reveal that companies believe at least [26% of their data is dirty data](https://www.experian.com/blogs/news/2015/01/29/data-quality-research-study), and it does incur enormous losses. Infact, it costs, on average, 15-16% of the revenue. Bad data costs US companies around three trillion dollars annually ([IBM](https://hbr.org/2016/09/bad-data-costs-the-u-s-3-trillion-per-year)). 
+
+Anybody dealing with dirty data will tell you how frustrating and annoying it is, especially when you encounter errors like typos daily. You do not understand the impact of these small “errors” until the numbers add up and you see dirty data’s huge impact on businesses and their annual revenues.
+
+### Where does Dirty Data come from?
+
+Dirty data has various forms and shapes. To understand it explicitly, you must understand what creates inaccurate data. Below are a few common reasons for inconsistent or inaccurate data –
+
+-   #### Human error
+    
+
+The most significant cause of dirty data is human error, which contributes over 60%. This should be of no surprise as humans make a mistake and deal with data, and combining both aspects leads to the concept of dirty data.
+
+-   #### Department miscommunication
+    
+
+Another significant cause of dirty data is inter-departmental communication or, rather, the lack of it. Poor communication between departments leads to 35% of dirty data.
+
+This happens when one department provides data to another in an inefficient manner. Different departments often work in data silos that have their way of storing, handling, and formatting data; the moment data is moved from one department to the other, the problem of dirty data tends to arise.
+
+-   #### Poor data strategy
+    
+
+Another reason for dirty data is the poor data strategy implemented by the organization in dealing with their data. If data is being input manually at any point, combining data has faults, or rudimentary tools are being used to access, store, or manage data; all these cause dirty data.
+
+-   #### Customer disinterest or doubt
+    
+
+A lot of data is generated when the customers provide their information. However, the method of obtaining information matters a lot.
+
+If the information is asked through a mail v/s is gained by asking someone when they are busy buying groceries, you can expect a difference in the data quality.
+
+Also, getting correct data has various other factors. If the customer or the person providing data feels that the information can be misused, this doubt can lead them to give partial or wrong information.
+
+-   #### Wrong form formats
+    
+
+An extension of the above-mentioned problem is when the survey forms are designed poorly. What I mean by poor design of the form is that you are asking a lot of detailed questions from the customer, or a lot of irrelevant information is being asked. This can make the customer give partial or wrong information.
+
+Take a look at [Grahan Lewis](https://www.youtube.com/@grahamlewis3659/about) analyzing a badly formatted questionnaire. Take a cue to what to NOT write in a survey.
+
+<iframe src="https://www.youtube.com/embed/8kPYXPHb9t8?feature=oembed" width="800" height="450" allowFullScreen />
+
+-   #### Lack of standardization
+    
+
+Lack of data standardization typically manifests itself when data moves from one department to another as they have their own formatting methodology. Not only this, but if the same departments store their data in different formats, then again, dirty data can appear when performing operations like appending or merging data.
+
+## Types of Bad Data
+
+Now that you know the sources, let’s look at the types of bad data \[_aka_ examples of dirty data\].
+
+![dirty data types](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/3.jpg)
+
+-   #### Incorrect data
+    
+
+The most basic dirty data example is incorrect data. It means that the value mentioned in the data is wrong, and the correct value is unavailable.
+
+For example, ‘Age’ is a column in a dataset. If a negative value like -20 is mentioned, it is incorrect. Therefore if the age is not between 0 and 130, then it’s incorrect data.
+
+-   #### Inaccurate data
+    
+
+A common issue when understanding the various dirty data examples is that they can sound similar but are very different. You can understand this idea by knowing the difference between incorrect and inaccurate data. The values in the data can be incorrect but not inaccurate, and vice-versa.
+
+For example, there is a column ‘Income’ in the data, and the value mentioned there is $21,000. Let’s say the **correct** value is $201,000. In this case, the information is “incorrect”. If the value entered was “male”, it would be “inaccurate”. This is because the ‘income’ column can have only numeric values. 
+
+-   #### Misleading data
+    
+
+Let’s continue with the _above example and discuss misleading data._ This kind of dirty data is inaccurate only where the inaccuracy stems from deliberate action.
+
+For example, you asked someone for their income, and they were either shy or doubtful in providing you with their correct income. According to them, their income was high, and they were comfortable providing you with a lower value. Hence, they mentioned their income as $21,000 when their income was $201,000.
+
+> This type of dirty data is often considered the hardest to rectify.
+
+-   #### Duplicate data
+    
+
+Duplicate data is among the most common ways dirty data manifests itself. It happens when data is repeated in a dataset. This duplication can be due to improper merging or appending of data, user error, or repeated submissions.
+
+For example, you are dealing with demographic data from a retail store’s registered customers.
+
+As each customer has a unique ID, there can be no two rows with the same ID in the data. Now a customer updates their address. And if done improperly, then instead of replacing the previous data, a new entry is added to the dataset with the updated details. This causes duplicate data and can create problems later.
+
+A duplicate data will look like this: 
+
+![duplicate data](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/Screenshot-2023-02-02-at-6.29.46-PM.png)
+
+-   #### Non-integrated data
+    
+
+Electronic Data Exchanges (EDI) allows data to be shared by computers with each other. Typically this exchange of data is done in a very standardized manner that helps in reducing inaccuracies. 
+
+For Example, if one uses Non-Integrated EDI (aka Stand Alone EDI), then there can be an isolated portal that is not connected to the other systems in an organization.
+
+This causes “islands of technology,” and when others use the data from this stand-alone portal, the problem of dirty data can occur as data (due to data being stored in different standards).
+
+-   #### Business rules violating data
+    
+
+A type of data that manifests itself when it violates business rules.
+
+For example, an insurance company provides a type of insurance known as ‘Child Care Insurance’ to those under 18. This insurance cannot be delivered to those aged 18 or above.
+
+Now some data has information on the claim approvals. If, in this data, the present age of a member is above 18 who has claimed insurance under ‘Child Care Insurance’, then this data either indicates a more significant problem of fraud or incompetence or is simply an error – dirty data.
+
+-   #### Inconsistent data
+    
+
+A dataset should, ideally, have a common format for all its rows. If some records are stored in one format, and others are stored in a different format, we have a formatting issue leading to dirty data.
+
+For example, you have a dataset where you have a column ‘Date of Birth’. This data column has a format of day-month-year.
+
+Let’s assume that this data was generated by joining two datasets where in one dataset, the format was day-month-year, and in another, it was month-day-year.
+
+Now, if you see the date ’12-11-1998′, you cannot be sure if 12 is the month or the day. Thus, without generalized formatting, dirty data can easily creep in.
+
+-   #### Spell error or punctuated data
+    
+
+Among the most common example of dirty data is when the data has spelling or punctuation mistakes. This issue can be minor or severe, depending on case to case.
+
+For example, the city’s name in the data is mentioned as ‘Klkata’ rather than ‘Kolkata’. This is an issue, but it may not be a major one. However, if the price is mentioned incorrectly as ‘$2349.4’ rather than the correct value of ‘$234.94’, then such a mistake can cause many issues.
+
+-   #### Outdated data
+    
+
+What data is considered dirty depends a lot on context and the problem for which the data is being used. Thus, a dataset that is fine for one department may be considered dirty data by another.
+
+For example, you are performing customer segmentation based on the demographic data of your customer base.
+
+It turns out that this data is outdated, and most of the information, such as member age, income, address, number of transactions, etc., has changed.
+
+This data is considered dirty data for you. On the other hand, another department is tracking how the customers have behaved over time; for them, this data is part of the puzzle and is crucial and in no way to be considered dirty data.
+
+-   #### Insecure or unethical data
+    
+
+Imagine a situation where you have correct, clean, precious data that can help you answer all your important questions but still is considered dirty data. Such a situation arises when you use data that breach data security or privacy laws. Also, any data gained from unsecured lines of communication is considered dirty data only.
+
+For example, you are trying to understand customer purchase behavior, and you use a vendor that provides you with sensitive data.
+
+The use of this data as per regulators like CCPA or GDPR is considered a violation and non-compliance with those laws laid out by such government regulators.
+
+Therefore, this data should be regarded as dirty data. To put the seriousness of such data in context, Luxembourg’s privacy regulator [fined Amazon $887 million](https://dataprivacymanager.net/luxembourg-dpa-issues-e746-million-gdpr-fine-to-amazon/) for not complying with the [EU’s General Data Protection Regulation](https://www.consilium.europa.eu/en/policies/data-protection/data-protection-regulation/). To avoid these risks, it’s critical to [choose CMP](https://www.enzuzo.com/blog/choose-google-certified-cmp) solutions that properly obtain and manage user consent, ensuring data collection and usage comply with legal requirements and ethical standards.
+
+-   #### Incomplete data
+    
+
+If your data has gaps, then such incomplete data is considered dirty data.
+
+For example, you are creating a forecasting model with historical monthly sales data from 2000 to 2020. When training the model, you realize that the data from the first five months of 2005 is unavailable. This incomplete data cannot be used for forecasting until you perform some data engineering.
+
+-   #### Too much data
+    
+
+Less talked about dirty data is having too much data that mainly happens due to data hoarding and mismanagement.
+
+For example, you are trying to predict the sales of a particular product. But the sales department has bad data hygiene and stores 10,000 pieces of information from the development to the sale and after-sale of the product into a single dataset.
+
+Now, while this data may have the information you are looking for, it is _still a type of dirty data_ only.
+
+ Each dirty data example has a specific solution. Before learning about the solutions, let’s understand the consequences of not cleaning data.  
+
+## Consequences of Dirty Data
+
+![consequence dirty data](https://www.analytixlabs.co.in/wp-content/uploads/2023/03/4.jpg)
+
+The bottom line of using dirty data is that it leads to the problem of ‘garbage in – garbage out’ (GIGO).
+
+> Any product, solution, or decision you create will be inaccurate whenever you use incorrect data.
+
+This idea is behind all the consequences of dirty data discussed ahead. 
+
+### Ineffective marketing campaigns
+
+Marketing campaigns rely heavily on customer intent. Customer data and browsing behavior tie up to form customer data which gives an idea of the customer intent and buying stage.
+
+> However, there are many instances when a customer gives out false or incorrect details. Even an incorrect reply to “current location” can impact the marketing campaign redirected to that customer. This is because marketers devise ads and marketing campaigns that can be location-specific, gender-specific, age-specific, and so on. So, any incorrect data means wrong customer targeting.
+
+As a result, you have a skewed understanding of your target audience. Any campaign you create will not have the expected impact, drastically reducing your campaign’s effectiveness.
+
+### Bad customer experience
+
+Incorrect data often leads to a bad customer experience. This is because you design a customer experience roadmap based on the data you have, and when that data is incorrect, your entire roadmap goes for a toss.
+
+> For instance, let’s say you create a chatbot based on the data you have. You train the chatbot to interact with your customers and answer questions. However, the data with which you train the chatbot has spelling errors or incorrect information. As a result, when the chatbot interacts with your customer, it ends up confusing and irritating the customers – leading to a bad experience.
+
+This is an example of how bad data can hamper the customer experience. Other reasons can include delivering incorrect information or products, cross-selling unnecessary products, etc., leading to customer complaints and irritation.
+
+### Negative brand reputation
+
+Bad data leads to ineffective marketing campaigns and bad customer experience. This is enough for your brand’s reputation to collapse in a snap. Negative feedback leads to denting of the company’s reputation, which is highly difficult to fix.
+
+### Incorrect decision-making
+
+One of the significant issues with using dirty data is that it can lead to bad decision-making by the executives.
+
+Models are trained to forecast, predict events, and provide information about business surroundings, competitors’ plans, customer segments and behavior, and future technological trends.
+
+C-level executives like CEOs consider all this information to make important decisions that can drastically change the business’s course.
+
+> If incorrect data is used, then it can lead to wrong decisions.
+
+### Reduced ROI
+
+Dirty data can reduce the return on investment of companies in numerous ways, such as –
+
+-   Use of private data can lead to fines
+-   Investment in products that were not in demand
+-   Targetting the wrong customer segment to sell a product
+-   Inefficiently solving customer problems causes customer churn
+-   Faulty recruiting process leading to ineffective human resource
+
+As I said, each problem has a solution. Similarly, there are ways to mitigate the risks of dealing with incorrect or bad data.
+
+## How to Clean Dirty Data?
+
+![clean dirty data](https://www.analytixlabs.co.in/wp-content/uploads/2023/03/5.jpg)
+
+Dirty data comes in various forms and shapes. While there are over a hundred ways to clean data, ranging from primitive to advanced methodologies, we will talk about the most common methods used widely.
+
+<table dir="ltr" border="1" cellspacing="0" cellpadding="10"><colgroup><col width="238"> </colgroup><colgroup><col width="354"></colgroup><tbody><tr><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Methodology&quot;}">Methodology</td><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;What it is&quot;}">What it is</td></tr><tr><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Merging or Removing Duplicates&quot;}">Merging or Removing Duplicates</td><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;To deal with the problem of duplicates in the data, you can perform merging using joins that make sure that duplicates are avoided. Other methods can include the explicit removal of duplicates based on complete row matching or based on one or more variables (these variables can be the unique ID variable such as Identification number, email, phone number, etc.).&quot;}">To deal with the problem of duplicates in the data, you can perform merging using joins that make sure that duplicates are avoided.<p></p><p>Other methods can include the explicit removal of duplicates based on complete row matching or based on one or more variables (these variables can be the unique ID variable such as Identification number, email, phone number, etc.).</p></td></tr><tr><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Fixing Structural Errors&quot;}">Fixing Structural Errors</td><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Specific structural errors can be avoided with proper standardization enforced throughout the company. This can involve, for example, the use of common data formats, the use of only 'N/A' to indicate missing values, etc.&quot;}">Specific structural errors can be avoided with proper standardization enforced throughout the company.<p></p><p>This can involve, for example, the use of common data formats, the use of only ‘N/A’ to indicate missing values, etc.</p></td></tr><tr><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Using NLP&quot;}">Using NLP</td><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;One can leverage natural language processing and force standardization to resolve spelling mistakes and other text-based issues. For example, you can replace values like \&quot;Delhi\&quot;, \&quot;DEL\&quot;, \&quot;capital\&quot;, etc., with \&quot;delhi\&quot;, bringing uniformity in the data. In other cases, NLP can perform language translation so that data from different sources can be easily integrated and used.&quot;}">One can leverage natural language processing and force standardization to resolve spelling mistakes and other text-based issues.<p></p><p>For example, you can replace values like “Delhi”, “DEL”, “capital”, etc., with “Delhi”, bringing uniformity in the data.</p><p>In other cases, NLP can easily translate the language to integrate and use data from different sources.</p></td></tr><tr><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Outlier Capping&quot;}">Outlier Capping</td><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Outliers can adversely affect model results. You should perform outlier capping using statistical methods like IQR or density estimations.&quot;}">Outliers can adversely affect model results. You should perform outlier capping using statistical methods like IQR or density estimations.</td></tr><tr><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Missing Value Imputation&quot;}">Missing Value Imputation</td><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Missing values again can hamper the performance of your model. Here droping of missing values or imputation methods like mean, median, and mode should be used. If the scope of the project allows, then advanced imputation methods involving statistical and machine learning models can be used. If possible, different ways of missing value treatment should be used based on the type of missing value. Common types include MNAR, MAR, and MCAR.&quot;}">Missing values again can hamper the performance of your model.<p></p><p>Here dropping missing values or imputation methods like mean, median, and mode should be used.</p><p>If the scope of the project allows, then advanced imputation methods involving statistical and machine learning models can be used.</p><p>If possible, different ways of missing value treatment should be used based on the type of missing value.</p><p>Common types include MNAR, MAR, and MCAR.</p></td></tr><tr><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Type Casting&quot;}">Type Casting</td><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Data stores in wrong data type can lead to data loss. For example, if a column has a decimal and rather than the data type being float, it is converted to an integer, then the values after the decimal can be lost. To ensure such problems don't occur, strict guidelines should be implemented regarding the datatype of a dataset's columns.&quot;}">Data stored in the wrong data type can lead to data loss.<p></p><p>For example, if a column has a decimal and rather than the data type being float, it is converted to an integer, then the values after the decimal can be lost.</p><p>To ensure such problems don’t occur, strict guidelines should be implemented regarding the datatype of a dataset’s columns.</p></td></tr><tr><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Removal of Irrelevant Data&quot;}">Removal of Irrelevant Data</td><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;A lot of data is a problem, as discussed before. Thus, information irrelevant to your project or department should be removed. Having small but effective data is much better than having unmanageable data with a lot of information.&quot;}">A lot of data is a problem, as discussed before. Thus, information irrelevant to your project or department should be removed.<p></p><p>Having small but effective data is much better than having unmanageable data with a lot of information.</p></td></tr><tr><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Using Outside Experts&quot;}">Using Outside Experts</td><td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;If legal and ethical, taking outside help is not a bad idea. For example, you can cross-check and verify the details of a customer by obtaining data from other sources and checking if the details seem to match or are drastically different. This can help you identify and correct dirty data.&quot;}">If legal and ethical, taking outside help is not a bad idea.<p></p><p>For example, you can cross-check and verify the details of a customer by obtaining data from other sources and checking if the details seem to match or are drastically different.</p><p>This can help you identify and correct dirty data.</p></td></tr></tbody></table>
+
+All the methods mentioned above can help you clean dirty data, but as the famous saying goes, ‘_prevention is better than cure_‘. You must know how to avoid creating bad data. 
+
+## Steps to Prevent Dirty Data
+
+Dirty Data can be avoided in many ways, including-
+
+-   **Data Quality Planning**: Set the guidelines on an ideal database and enforce the creation of KPIs in data to understand data health.
+-   **Standardizing Data**: Provide standard operating procedures regarding how different type of data is to be stored across the organization.
+-   **Data Validation**: Use libraries like Great Expectation to include data validation in your processes so that data quality can be determined and bad data is flagged based on business rules.
+-   **Mixing Data Sources**: Mix first and third-party data sources like intent data rather than relying on a single data source.
+-   **360 data**: Create a 360-degree view of data sources so that complete information regarding a subject is available and any inconsistency can surface.
+-   **Correct Database Configuration**: Configure your databases so that all necessary fields are available; a drop-down can be included when sourcing data to reduce errors.
+-   **Data Champions**: Appoint dedicated individuals that bring data consistency when dealing with databases.
+-   **Identify streams of Data Pollution**: Identify the ways the data is becoming dirty and place guidelines and restrictions regarding data movement, data editing, data usage, etc.
+-   **Automated Data Cleaning Processes**: Programs can be created for automating the straightforward data cleaning process like missing value imputation, outlier treatment, etc.
+
+This brings us to the end of understanding what dirty data is, its consequences, and methodologies to keep data clean. Below are some common FAQs on bad data to help you draw a complete understanding (and recapitulate some of the learnings) of dirty data.
+
+## FAQs
+
+-   **What are examples of dirty data?**
+
+Typical examples of dirty data include incorrect, inaccurate, incomplete, outdated, etc.
+
+-   **What is considered dirty data?**
+
+Any erroneous data that can lead to a loss in revenue or is extremely difficult to use due to mismanagement is considered dirty data.
+
+-   **What is dirty data in research?**
+
+In research, data is considered dirty when wrong observations are noted due to human error, malfunctioning devices, or the subject (typically humans) deliberately providing incorrect or partial information.
+
+-   **What causes dirty data?**
+
+Dirty data can be caused by human error, miscommunication among departments, non-standardization of data, bad data hygiene, etc.
+
+I hope this article gave you an in-depth understanding of what dirty data is, why we get it, its various types, how it affects businesses, and how you can clean and avoid it. If you need more information about it, do write back to us.
+
+Additional Resources on Data Management/Handling to Read
+
+-   [Understanding structured data in big data](https://www.analytixlabs.co.in/blog/structured-data-in-big-data/)
+-   [Guide to Data Veracity in Big Data](https://www.analytixlabs.co.in/blog/veracity-in-big-data/)
+-   [How data reduction can increase efficiency in data mining](https://www.analytixlabs.co.in/blog/data-reduction-in-data-mining/)
+-   [How data compression technique helps in data representation](https://www.analytixlabs.co.in/blog/data-compression-technique/)

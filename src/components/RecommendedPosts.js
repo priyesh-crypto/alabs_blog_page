@@ -19,7 +19,7 @@ export default function RecommendedPosts({ posts = [] }) {
         {posts.map((post) => (
           <Link
             key={post.id}
-            href={`/article/${post.slug}`}
+            href={`/blog/${post.slug}`}
             className="flex items-center gap-3 group py-3 first:pt-0 last:pb-0"
           >
             <div className="w-14 h-14 rounded-xl overflow-hidden bg-surface-container-high dark:bg-[#131b2e] shrink-0 relative">

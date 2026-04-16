@@ -1,0 +1,316 @@
+---
+title: "Factor Analysis Vs. PCA (Principal Component Analysis) - Which One to Use?"
+slug: pca-vs-factor-analysis
+date: "2021-05-05T08:22:20+00:00"
+modified: ""
+description: "PCA vs Factor Analysis: Master the concepts of the two most important dimension reduction techniques with learn their applications."
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2024/05/Cover-Image-1-1.jpg"
+author: AnalytixLabs
+categories:
+  - Business Analytics
+  - Data Science
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/pca-vs-factor-analysis/"
+noindex: true
+---
+
+Developing a predictive model, whether statistical or machine learning, requires mastering several aspects, from understanding business problems to feature engineering to the model’s final development, evaluation, and validation.
+
+In this article, you will learn about one of the most important aspects of feature engineering- feature reduction. While there are numerous ways to reduce features, two of the most common and often confusing techniques that, on the surface, look very similar are Principal Component Analysis (PCA) and Factor Analysis.
+
+This article will discuss factor analysis vs. PCA, their use cases, and how to apply these techniques. We shall also examine the difference between these two methods and decide which method to use: PCA or Factor Analysis.
+
+## Overview of Dimension Reduction Techniques
+
+In our world, where decisions rely on structured data, there’s a danger of having too much information and risking the loss of important details. 
+
+For example, a model built to predict revenue using simple [linear regression](https://www.analytixlabs.co.in/blog/linear-regression-machine-learning/) with advertising spend as the only variable will be unreliable. Adding more variables like marketing spend, procurement costs, and product categories improves the model and increases the data exponentially. This phenomenon, known as the ‘Curse of Dimensionality,’ makes the data sparse and difficult to manage, leading to potential overfitting and poor predictions for new data.
+
+Moreover, including too many variables can cause multicollinearity, where some variables do not significantly contribute to the model, further increasing the risk of overfitting. Dropping these variables might lead to the loss of important information.
+
+We use Dimensional Reduction techniques, such as Principal Component Analysis (PCA) and Factor Analysis, to address these issues. These methods reduce the number of features while preserving the essential information, helping to manage data sparsity and improve model accuracy without significant information loss.
+
+Before diving deep into understanding PCA and Factor Analysis, a short note –
+
+Course Alert 👨🏻‍💻
+
+Learning and understanding technical concepts like PCA and Factor Analysis are easier with our tailor-made courses. With us, you will master this skill. Whether you are a new graduate or a working professional, we have data science courses with syllabi relevant to you. 
+
+Explore our signature **data science courses in collaboration with _Electronics & ICT Academy, IIT Guwahati_**, and join us for experiential learning to transform your career.
+
+-   [Certification Course in Data Science](https://www.analytixlabs.co.in/data-science-specialization-course)
+-   [Data Science with Python](https://www.analytixlabs.co.in/data-science-using-python)
+-   [Data Science with R](https://www.analytixlabs.co.in/data-science-r-analytics-training)
+-   [PG in Data Science](https://www.analytixlabs.co.in/pg-in-data-science)
+-   [Python Machine Learning](https://www.analytixlabs.co.in/machine-learning-course-certification-training) 
+
+We have [elaborate courses](https://www.analytixlabs.co.in/courses) on AI, ML engineering, and business analytics. Choose a learning module that fits your needs—classroom, online, or blended eLearning.
+
+Check out [our upcoming batches](https://www.analytixlabs.co.in/upcoming-batches) or [book a free demo](https://www.analytixlabs.co.in/contact-us) with us. Also, check out our [exclusive enrollment offers](https://www.analytixlabs.co.in/offers)
+
+## What is Principal Component Analysis (PCA)?
+
+![principal component analysis](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/01.jpg)
+
+Principal Component Analysis (PCA) is a feature reduction technique in an unsupervised learning setup. It removes dependency or redundancy in data by dropping features that contain the same information as given by other attributes. The derived components are independent of each other.
+
+PCA reduces the unnecessary features in the data by creating or deriving new dimensions (also called components). These components are a linear combination of the original variables. This way, PCA converts more correlated variables (i.e., breaks down the data) into a smaller set of uncorrelated variables. A principal component of a data set is the direction with the largest variance. 
+
+Technically, PCA does this by rotating the axes of each variable. The axes are rotated to absorb all the information or the spread available in the variable. So, each ax is now a new dimension or principal component. The component is defined as the direction of the dataset explaining the highest variance, which is implied by the eigenvalue of that component. The rotation of the axis is graphically depicted.
+
+<iframe src="https://www.youtube.com/embed/FD4DeN81ODY?feature=oembed" width="800" height="450" allowFullScreen />
+
+Let’s understand PCA by expanding on its various aspects, such as
+
+### (a) PCA – A Feature Extraction Technique
+
+To be precise, feature reduction can be of two types—feature selection and feature extraction. While [feature selection](https://www.heavy.ai/technical-glossary/feature-selection) reduces features by explicitly selecting several features, [feature extraction](https://deepai.org/machine-learning-glossary-and-terms/feature-extraction), on the other hand, works on extracting information from the full feature set by creating fewer ‘artificial’ features. 
+
+In this view, PCA is a feature extraction technique as it makes these ‘artificial features’ known as principal components that hold much information about the original feature set but can be substantially fewer in number, helping reduce dimensionality.
+
+### (b) Importance of Variance
+
+PCA is a statistical process mainly focusing on multicollinearity by creating linearly uncorrelated features through orthogonal transformations. As mentioned above, these transformed features are the ‘artificial features’—principal components.
+
+These principal components have the same ‘information’ as the original feature set. Information, however, in statistics, refers to variance. Therefore, PCA extracts the variance from the higher dimensional feature set and projects it in a lower dimensional space. 
+
+For example, if there are 10 standardized features (with each feature having a variance of 1), then the total variance will be 10. PCA can create ten principal components whose total variance will be 10. However, the first principal component will hold the highest variance, and the share will decrease as we go towards the second, third, and further principal components. 
+
+### (c) Important Terms
+
+Before deep diving into how exactly principal components are calculated, let’s get familiarized with some of the essential terms-
+
+1.  **Feature set**: The original set of independent variables being considered for developing a predictive model. 
+2.  **Feature Dimensions**: The dataset’s number of independent (x) features.
+3.  **Multicollinearity**: It’s a phenomenon when an independent variable is correlated with one or more independent variables in the feature set. Also, many such variables can be correlated with each other. 
+4.  **Orthogonal**: It refers to 0 correlation between variables, i.e., no correlation between a pair of variables.
+5.  **Eigenvectors and Eigenvalues**: They are linear algebra concepts. They are calculated from the covariance matrix to create principal components. They also come in pairs, i.e., for every eigenvector, there is a corresponding eigenvalue. Also, their number is the same as the number of independent variables in question.
+6.  **Covariance Matrix**: It’s a matrix that has covariance between all the pairs of variables in the feature set. 
+7.  **Covariance**: It is used to calculate the correlation. Covariance refers to the shared variance between two variables, thereby providing the magnitude of the relationship between two variables. 
+
+### (d) 7 Steps to Calculate Principal Components
+
+Let’s now understand how these principal components are calculated. We will not get too deep into the maths, but you will understand the idea behind calculating principal components.
+
+_(i) Step 1 – Extract X Variables_
+
+PCA is an unsupervised feature reduction technique. Unlike other methods like RFE, it only needs the independent variables (feature set) to start the process.
+
+_(ii) Step 2- Creating a matrix_
+
+PCA requires a 2 x 2 matrix, which is data-oriented. The columns represent features, and the rows contain the corresponding data items. For example, if we have three independent variables, we should have three columns: x1, x2, and x3.
+
+_(iii) Step 3- Data Standardization_
+
+As discussed above, PCA works by focusing on variance. Now, the magnitude of variance can depend upon the scale of the variable. For a moment, understand variance in how much the values in a variable fluctuate from its mean. The fluctuation will be in decimals if the variable is human height in meters. 
+
+In contrast, if the variable is human weight in kilograms, the fluctuation can sometimes be 10s or 100s. This will skew the creation of the principal component as the human weight variable will be considered more important and contribute most towards the first principal component, even when its variance might not be much in reality. 
+
+Therefore, we standardize the feature set so that the contribution of each variable is equal and no single variable sabotages the whole process. We will call this standardized feature set a matrix, namely ‘Z,’ and the columns (continuing the previous example) will be z\_x1, z\_x2, and z\_x3.
+
+_(iv) Step 4: Covariance Matrix_
+
+PCA needs to know the correlation between the variables, as correlation is nothing but shared variance. This information is crucial because the idea of PCA is to analyze variance and extract maximum variance for each principal component. To gain this information, it creates a covariance matrix that will look something like this-
+
+![covariance matrix](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/02.jpg)
+
+_(v) Step 5: Calculate Eigenvalues and Eigenvectors_
+
+Using linear algebra, we calculate eigenvalues and eigenvectors. The eigenvalues are sorted in decreasing order; consequently, the corresponding eigenvectors are sorted. Therefore, if we have their eigenvectors v1, v2, and v3, with v2 having the larger eigenvalue, it forms the first principal component.
+
+_(vi) Step 6: Calculate the percentage variance in each principal component._
+
+The eigenvalue of each principal component is divided by the sum of the eigenvalue to calculate the variance explained under each component.
+
+_(vii) Step 7: Pick principal components_
+
+The total number of principal components equals the number of independent features in the feature set. Therefore, using all the principal components as the new features will not lead to any dimensionality reduction (though this will completely remove multicollinearity). 
+
+Thus, we must pick a number with most of the variance. This is done by calculating the cumulative variance and picking up that principal component where the cumulative variance has reached 75%. So, for example, if the cumulative variance is 78% by the second principal component, we can pick principal components 1 and 2 as our new features.
+
+### (e) Is PCA Machine Learning?
+
+PCA is a statistical technique that employs orthogonal transformation to develop the principal components that help in data exploration, dimensionality reduction, de-noising data, [data compression](https://www.analytixlabs.co.in/blog/data-compression-technique/), etc. 
+
+However, with all its uses, it is commonly used for data preparation when developing machine learning models. Therefore, it is not a machine learning algorithm as sometimes considered because there is no hyper-parameter tuning done through grid search or anything similar. So, given its popularity in machine learning, it is considered an important aspect.
+
+> Also read: [Why Should You Learn Machine Learning: Its Importance, Working, and Roles](https://www.analytixlabs.co.in/blog/importance-of-machine-learning/)
+
+Let’s focus on Factor Analysis, another feature reduction technique, sometimes considered similar to and confused with PCA. 
+
+## What is Factor Analysis (FA)?
+
+![factor analysis](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/01-100.jpg)
+
+[Factor Analysis](https://www.tibco.com/reference-center/what-is-factor-analysis), the other technique for reducing the data, works fundamentally differently from PCA. The primary aspect of factor analysis is to unearth the latent (or factors) that store a variable’s spread (or the information).
+
+It is a common unsupervised data reduction technique. It works like a clustering algorithm for the column, grouping similar features. The user then can pick relevant features from each of these ‘groups’ as per their requirement.
+
+We also perform factor analysis to reduce the larger number of attributes into smaller factors. Some features may have a common theme when analyzing data with many predictors. The features that have similar meanings underneath could influence the target variable by sharing this causation, and hence, such features are combined into a factor.  
+
+Thus, a factor (or latent variable) is a shared or fundamental component that correlates with multiple other variables. Also, these latent variables (or latent constructs) are not directly observable and, hence, are not measurable by themselves with a single variable.
+
+For instance, the socioeconomic category is one factor. The social and economic variables, including education, employment, and education, are all correlated, which, in totality, influence an individual’s health. Another factor category is the market risk that binds the returns of individual stock prices.
+
+Now, the way we understand PCA, we will explore different aspects of FA so that you can better learn what factor analysis is and discuss factor analysis vs. pca more.
+
+### (a) Latent Variables
+
+Factor Analysis focuses on [Latent variables](https://www.formpl.us/blog/latent-variables-definition-examples-measurement) (factors or unmeasured/unobserved variables). These are hidden variables that cannot be observed or measured directly. To better understand this, let’s consider an example. There is a dataset of survey responses, with respondents giving points to various aspects of their lives from 1 to 5. As 20 questions were asked from 100 participants, the dataset has 20 columns and 100 rows. 
+
+These four types of questions were designed to understand the following aspects of respondents’ lives: happiness level in professional, married, spiritual, and social life. Therefore, these four types of questions refer to latent variables/factors. 
+
+If you think about it, if a person is happy with their professional life, then all five variables belonging to this factor will be similar, i.e., they will correlate. Thus, if you knew about the information of the dataset being constructed from 4 factors, you can technically reduce the dimension of the dataset from 20 to 4 (one variable from each factor).
+
+### (b) Types of Factor Analysis
+
+Factor Analysis or Principal Factor Analysis can be categorized into two types: [Exploratory Factor Analysis (EFA)](https://www.publichealth.columbia.edu/research/population-health-methods/exploratory-factor-analysis) and [Confirmatory Factor Analysis (CFA)](https://www.indeed.com/career-advice/career-development/confirmatory-factor-analysis). In EFA, similar variables are grouped into a factor, and the analyst determines the number of factors. Determining the number of factors is done through methods like the [Kaiser Criterion](https://www.linkedin.com/advice/0/what-advantages-disadvantages-using-kaisers) or by simply considering the square root of the number of variables.
+
+On the other hand, we use CFA when the analyst knows exactly the number of factors and the columns corresponding to each factor. We can employ it when the analyst wants to confirm whether the hypothesis about the factors and their associated variables is statistically correct.
+
+### (c) Factor Loadings
+
+When the analyst mentions several factors, factor analysis focuses on performing an extraction. This is the process of creating factor loadings—a matrix that explains the correlation of each variable with a factor.
+
+This extraction is done through Principal Component Analysis (PCA), Maximum Likelihood, Image Factoring, etc. Factor rotation ensures that each factor is distinct from the other. Methods of factor rotation include VARIMAX, PROMAX, QUARTIAX, EQUAMAX, etc.
+
+Now, understanding what factor analysis is all about, we can comprehend the differences between principal component analysis and factor analysis.
+
+## Factor Analysis vs PCA – Learn Key Differences 
+
+Understanding factor analysis vs. PCA can be confusing, as PCA and FA are unsupervised feature reduction techniques. However, several aspects highlight the differences between factor analysis and PCA. 
+
+![factor analysis vs pca](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/02-100.jpg)
+
+-   ### PCA is Independent Technique
+    
+
+One difference between PCA and Factor Analysis is that PCA is an independent technique that extracts maximum variance from the feature set for each principal component. On the other hand, principal component analysis is used in factor analysis during the extraction process. 
+
+-   ### Assumptions 
+    
+
+Differences in assumptions exist between factor analysis and principal component analysis (PCA). In factor analysis and principal factor analysis, it is assumed that latent variables or factors underlie the feature set, focusing on grouping input variables according to these factors.
+
+Conversely, PCA aims to extract maximum variance from the original dataset and generates composite features from the original feature set. In the case of PCA, the assumptions are that there are no outliers in the data and linearity should be present in the input data.
+
+These inherent disparities between PCA and factor analysis become more pronounced and evident once we grasp how both techniques operate. Nevertheless, these differences may not immediately clarify which method to use under specific circumstances, a topic we will now delve into.
+
+-   ### Data Interpretation
+    
+
+The principal components derived from PCA are linear combinations of the original variables. These components are ordered by the amount of variance they explain, and their interpretation is often challenging as they might not have a clear meaning in the data context.
+
+FA seeks to uncover the underlying latent factors that explain the observed correlations between variables. These latent factors are often given meaningful interpretations in the data context, making FA more suitable for exploring the underlying structure of the data.
+
+Below, we have discussed a line of difference between PCA and Factor Analysis for better understanding – 
+
+![difference between pca and factor analysis](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/2-2.jpg)
+
+Thus, there is a fundamental difference between PCA and Factor Analysis, and once you understand the workings of both these techniques, the differences become more stark and obvious. However, these differences don’t clarify which method to use and when, which we will discuss now.
+
+## Use Cases of PCA
+
+We can use PCA in various scenarios. These include-
+
+-   ### Reduce Multicollinearity
+    
+
+In several algorithms, such as linear regression, the model can break if the input data have multicollinearity. The problems can range from overfitting to the algorithm’s inability to converge.
+
+In such scenarios, we employ PCA as each principal component does not correlate with the other while having all the information of the original data. This makes it an interesting choice if you want to eliminate multicollinearity without explicitly removing variables that can cause data loss if not done correctly.
+
+-   ### No Need For Interpretability
+    
+
+If you want to reduce dimensions, you can use PCA and pick the number of principal components with more than 75% of the input data information (variance). However, apply this approach only when the predictive model’s goal is not strategic. Solving strategic problems requires high interpretability, which you lose when using principal components as input variables to train your model.
+
+For example, when you run linear regression, the coefficients you will get will be for principal components. We cannot answer questions about how an X variable affects Y because a principal component combines the variance of all the variables. This is why we more commonly use principal components when preparing data for a machine-learning model to solve operational problems.
+
+> Also read: [How to Develop a Credit Scoring Model with Machine Learning](https://www.analytixlabs.co.in/blog/credit-scoring-model/)
+
+-   ### Visualize Data In High Dimensions
+    
+
+In many cases, to gain insights into the data, you need to visualize it using methods like scatterplot. For example, to understand the relationship between the x variables and the y variables having different classes, one cannot simply create an x–y axis plot. To do so, PCA can project the high-dimensional data space through two principal components.
+
+## Applications of PCA
+
+PCA, as explored above, has numerous uses. Let’s now understand a few of its practical applications of PCA to give you some context.
+
+### 1\. Image Compression/Processing
+
+Images consist of pixels ranging from 0 to 255. The image is converted into a matrix for computer vision, with columns representing each pixel and rows containing values between 0 and 255.
+
+PCA here helps reduce the data’s dimensionality, effectively performing image compression and other forms of image processing. Similarly, in facial recognition, PCA can reduce the complexity of the face, making the process fast and accurate.
+
+### 2\. Neuroscience
+
+PCA applications are also prevalent in neuroscience. A special use case of PCA, known as spike-triggered covariance analysis, analyzes a neuron’s properties and effect on the stimulus to identify neurons based on their action type.
+
+### 3\. Finance
+
+PCA can be used in finance, especially when analyzing multiple stocks and their relationships with each other. For example, suppose there are 100 variables. Rather than creating a 100 \* 100 correlation matrix, that can be a challenging task for analysis. In that case, the problem can be solved using, for example, ten principal components.
+
+### 4\. Data Mining
+
+When performing data mining, you must often find hidden patterns in voluminous data. Here, PCA can be useful in reducing dimensionality.
+
+> Also read: [What is Data Mining: Types, Tools, Functionalities, and More](https://www.analytixlabs.co.in/blog/data-mining-functionalities/)
+
+## Use Cases of Factor Analysis
+
+Factor analysis comes in three primary forms, each tailored to specific objectives. Understanding these forms can help you make an informed choice:
+
+### #1 Exploratory Factor Analysis (EFA)
+
+EFA is the go-to method in the initial stages of research. It aims to develop hypotheses about potential relationships between variables and is an important tool for uncovering hidden structures and patterns in data.
+
+By identifying underlying factors that explain the observed correlations among variables, EFA enables you to generate hypotheses about the relationships between these factors. This form of factor analysis is particularly beneficial when the nature of the data is poorly understood, or you need to explore and generate theories based on your data.
+
+### #2 Confirmatory Factor Analysis (CFA)
+
+CFA is suitable when you have specific hypotheses regarding the relationships between variables and want to test these hypotheses using data. A more hypothesis-driven approach allows you to validate or confirm a pre-established theoretical model.
+
+CFA assesses how well your data aligns with the assumed factor structure and is often used in disciplines where theories or prior knowledge suggest a particular factor structure, such as psychology or education.
+
+### #3 Construct Validity Analysis
+
+We use this aspect of factor analysis to evaluate how accurately your survey instrument measures the intended constructs or concepts. Assess the validity of a measurement tool to determine whether it effectively captures the underlying factors or constructs of interest.
+
+Construct Validity Analysis is a vital process that guarantees the reliability of your survey instrument while confirming its capacity to measure precisely what it intends to measure.
+
+## Applications of Factor Analysis 
+
+-   In marketing, factor analysis can be utilized to examine customer engagement. This involves assessing how much a product or brand interacts with its customers throughout its lifespan.
+-   Human resources managers can use factor analysis to enhance employee effectiveness by understanding the key factors influencing employee productivity.
+-   Factor analysis also applies to grouping or segmenting customers based on shared characteristics. For instance, in the insurance industry, we categorize customers by life stage (e.g., youth, married, young family, middle-aged with dependents, retired). Similarly, restaurants tailor their menus to target specific customer demographics. For example, a high-end restaurant in an affluent area will offer a different menu than a food stall near a college campus.
+-   Educational institutes like colleges, schools, and universities apply factor analysis to inform decisions, particularly in designing class curricula based on varying class levels. This, in turn, affects teacher salaries and staffing allocations.
+-   Additionally, factor analysis proves useful in exploring relationships between socioeconomic status and dietary patterns.
+-   Like Principal Component Analysis (PCA), factor analysis can also aid in comprehending psychological scales.
+
+## Conclusion
+
+PCA and Factor Analysis are sister techniques that reduce data from higher to lower dimensions without losing the information content of the data variance. Although they have similarities, they are certainly not synonyms.
+
+## FAQs
+
+-   **Should I use PCA or Factor Analysis?**
+
+The decision depends on the use case. If you wish to remove multicollinearity and don’t care about interpretability, you can opt for PCA. Also, if there is a requirement for dimensionality reduction of data currently in very high dimensions, then again, PCA is the best option. 
+
+On the other hand, factor analysis (FA) works best if data is in relatively fewer dimensions. Also, if interpretability is of prime focus, then FA should be used again. 
+
+-   **What are the advantages of Factor Analysis over PCA?**
+
+The most crucial advantage of factor analysis over PCA is that it is more interpretable. We use this to understand the relationship between variables and help cross-check hypotheses about the latent variables in data of marketing, psychology, etc.
+
+We hope this clarifies the difference between principal component analysis and factor analysis. You can apply these techniques using languages like SAS, SPSS, R, and Python to gain a practical understanding. If you still have any questions, do get in touch with us.
+
+Related Reading Resources
+
+-   [Supervised vs. Unsupervised Learning in Machine Learning](https://www.analytixlabs.co.in/blog/supervised-and-unsupervised-learning/)
+-   [Top Free Data Analysis Tools to Start Using in 2024](https://www.analytixlabs.co.in/blog/data-analytics-tools/)
+-   [‌Learning about Algorithm – Definition, Types, Characteristics, Applications, and more](https://www.analytixlabs.co.in/blog/what-is-an-algorithm/)
+-   [Comprehensive Guide on Hyperparameters: Optimization, Examples, and more](https://www.analytixlabs.co.in/blog/what-are-hyperparameters/)

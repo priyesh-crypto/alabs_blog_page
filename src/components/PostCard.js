@@ -39,7 +39,7 @@ export default function PostCard({ post, bookmarked = false, onToggleBookmark, o
           </span>
         </div>
         <h3 className="font-[family-name:var(--font-headline)] font-bold text-[15px] leading-snug text-on-surface dark:text-[#dae2fd] group-hover:text-primary dark:group-hover:text-[#adc6ff] transition-colors">
-          <Link href={`/article/${post.slug}`}>{post.title}</Link>
+          <Link href={`/blog/${post.slug}`}>{post.title}</Link>
         </h3>
         <p className="text-sm text-on-surface-variant dark:text-[#c2c6d6] leading-relaxed line-clamp-2 flex-1">
           {post.excerpt}

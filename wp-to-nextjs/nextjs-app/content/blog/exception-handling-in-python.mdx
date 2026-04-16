@@ -1,0 +1,1207 @@
+---
+title: "Exception Handling in Python: A Complete Guide for Beginners"
+slug: exception-handling-in-python
+date: "2026-01-08T10:42:29+00:00"
+modified: "2026-01-09T06:02:48+00:00"
+description: "Learn Exception Handling in Python with examples, types, try-except, and best practices. Master error handling to write robust Python code."
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2025/12/Exception-handling-in-Python-01.jpg"
+author: Pritha Bose
+categories:
+  - Python
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/exception-handling-in-python/"
+noindex: true
+---
+
+Exception is considered extremely critical and play a central role if one wishes to write reliable Python applications. Whether you are validating user input, working with files, or calling external APIs, exceptions not only help you detect but also help in responding to unexpected situations without breaking the program’s flow. In this article, the idea is to explore what is exception handling in Python, different Python exception types, core Python exception concepts like, try, except, else, and finally and understand how they work together to create predictable control flow. The focus will also be on how to create custom exception in Python, manage nested cases, and avoid common mistakes that often lead to silent failures or unclear debugging paths, with practical examples being provided throughout the article. Let’s start this journey by first understanding what exception handling in Python means and how it helps you to build more resilient, production-ready code.
+
+Master Exception Handling in Python
+
+Upskill with AnalytixLabs👨🏻‍💻. Master Python-based data science and AI through industry-relevant, hands-on certification programs at AnalytixLabs.
+
+**Python Courses at AnalytixLabs:**
+
+-   **[Data Science using Python](https://www.analytixlabs.co.in/data-science-using-python/?utm_medium=course&utm_source=blog&utm_campaign=exceptionhandlinginpython):** Core focus on data handling, statistics, and predictive modeling.
+-   **[Python Machine Learning](https://www.analytixlabs.co.in/machine-learning-course-certification-training/?utm_medium=course&utm_source=blog&utm_campaign=exceptionhandlinginpython):** Covers supervised and unsupervised learning with real-world projects.
+-   **[Deep Learning with Python](https://www.analytixlabs.co.in/deep-learning-with-python/?utm_medium=course&utm_source=blog&utm_campaign=exceptionhandlinginpython):** Advanced training in neural networks, NLP, and computer vision.
+-   **[Data Science Course](https://www.analytixlabs.co.in/data-science-specialization-course/?utm_medium=course&utm_source=blog&utm_campaign=exceptionhandlinginpython):** A comprehensive track integrating Python for end-to-end analytics.
+-   **[Full Stack Applied AI](https://www.analytixlabs.co.in/artificial-intelligence-certification-courses-online/?utm_medium=course&utm_source=blog&utm_campaign=exceptionhandlinginpython):** Intensive program focusing on Python-driven AI and MLOps.
+
+## What is Exception Handling in Python? 
+
+In Python, an exception can be referred to as an event that occurs while a program runs and disrupts the normal flow of instructions. Typically, when Python encounters a situation that it cannot cope with, it raises an exception object that helps in representing the error. Do not mistake the two as there is a difference between error and exception in Python (something that will be discussed later). Exception handling is critical for you as it gives your program a mechanism to catch these error objects, respond to them, and gives you the option to either recover or terminate the program gracefully. As you can imagine, such a behavior greatly improves reliability and user experience as it prevents abrupt crashes.
+
+### What is Try and Except in Python for handling errors?
+
+Now, to further understand exceptions, you need to understand a few key concepts, such as Python try and except. You place potentially failing code inside a try block. Python typically runs that block and, if an exception occurs, it transfers control to the first matching except: handler. Interestingly, if no exception occurs, Python skips the except blocks and (optionally) runs an else block. A finally block runs always and serves cleanup tasks. This whole mechanism is something that will be discussed in the upcoming sections in detail. What you need to understand right now is how matching works.
+
+Except clauses match by exception class, i.e., Python selects the first except whose type is compatible with the raised exception (subclass relationships also apply here). Also, it is possible to catch multiple exceptions as you can list multiple exception classes in one except or use separate except blocks to handle different errors distinctly. Another key concept to remember is that bare except also exists. This means that a bare except: catches everything but can hide the real problem(s) the program is facing, and therefore should be typically avoided and should only be used as a kind of last-resort safety net.
+
+### Difference between error and exception in Python
+
+As mentioned before, it is easy to conflate but there is a difference between error and exception in Python as they are two different concepts. Let’s understand the difference between errors and exceptions in Python.
+
+-   Error (compile-time / parse-time):  In Python, an error such as SyntaxError or IndentationError prevents the interpreter from starting execution and therefore requires the user to fix the code rather than perform runtime handling. For Example, returning outside a function raises a parse-time error.
+-   Exception (runtime): An exception arises while the code executes (for example, ZeroDivisionError, FileNotFoundError, ValueError). Unlike errors, a program can anticipate and catch exceptions to avoid crashing.
+
+### Why Exception Handling is Important?
+
+Now, let’s understand the key reasons why you should focus on exception handling when writing a Python program. 
+
+-   Reliability: Exception handling prevents sudden termination by offering controlled responses (fallbacks, user-friendly messages, retries), thereby making software more robust in production.
+-   Separation of concerns: Handlers isolate error-handling logic from main business logic, which improves readability and maintainability.
+-   Resource safety: finally: and context managers (with) ensure resources (files, sockets) close reliably even when errors occur.
+-   Debugging and observability. Lastly, through Tracebacks, one can see where exceptions propagate, and with Python 3.11, you get improved tracebacks as they point to the exact subexpression that caused the error. All this speeds up the debugging process.
+
+You now have a clear idea of **what is try and except in python**. However, **try and except in python** also has drawbacks. Exception handling adds performance overhead and shouldn’t replace simple condition checks. Overusing broad exceptions can mask real bugs, while deeply nested blocks increase complexity. Keep handlers simple and refactor where needed before learning how to raise exceptions.
+
+## Raising Exceptions in Python
+
+Exception handling is not just reacting to errors, but also involves writing code that signals that something is wrong with it. Python provides the raise keyword for exactly this purpose, as you can use the raise keyword to interrupt normal execution, report invalid conditions, or propagate an earlier exception with additional context. When an exception is raised, Python stops the current flow and looks for the nearest matching except block.
+
+### Why raise exceptions?
+
+Raising an exception is useful when continuing execution makes no sense. Let’s understand this with an example. Suppose there is an invalid user input or some missing configuration that should not be ignored silently. In such a situation, using raise ensures that these issues are visible and handled properly. Not only this, but it also gives you a way to enforce rules, validate data, and create predictable error messages.
+
+### Basic syntax
+
+The simplest way to raise an exception is to call raise with an exception class (or an instance of one):
+
+```
+raise ValueError("Invalid value provided")
+```
+
+If your program has such a statement, it stops the program unless an outer block catches it.
+
+### Raising Exception
+
+The best way to understand a concept is with an example, therefore lets look at exception handling in Python with examples. Suppose you create a function that considers the discount value as the input and validates its value.
+
+#### 1) Basic Exception Raising
+
+If you write the function like below, then the user can provide a negative number (which can silently corrupt the data), or if they provide a string, then the function gives a generic error message that gives little context or guidance.
+
+```
+def load_discount(value):
+    return float(value)
+```
+
+Negative input
+
+```
+load_discount(-5.1)
+```
+
+\-5.1
+
+String Input
+
+```
+load_discount("five")
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/2.png)
+
+To address the issue, you can introduce manual validation rules to enforce business constraints. In this updated function, you explicitly raise your own ValueError when the discount violates the rule of not allowing negative values. As this exception is triggered directly at the source, it allows you to provide clear, specific messages that guide the user toward fixing the input issue.
+
+```
+def load_discount(value):
+    
+    # Convert the input to float.
+    # If the input is non-numeric (e.g., "abc"), Python will raise a ValueError on its own.
+    # As we are not catching this error it keeps the code simple but the downside is that
+    # The downside however is that the user will see Python’s generic error message rather than a more friendly,
+    # And wont see a more friendly, domain-specific explanation
+    number = float(value)
+    
+    # We add a Business rule: the discount cannot be negative.
+    # As Python cannot enforce this rule, we raise our own ValueError 
+    # And provide a clear message explaining exactly why the input is invalid in this specific case.
+    if number < 0:
+        raise ValueError("Discount cannot be negative")
+    
+    # Return the validated discount value.
+    return number
+```
+
+Now, if the input is negative, then you get a custom business-rule-specific error message.
+
+```
+load_discount(-5.1)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/3.png)
+
+However, if you provide a non-numeric input, Python’s own validation takes over as the conversion fails during float(value), and Python raises its default ValueError.
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/4.png)
+
+#### 2) Raising exceptions inside try–except
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/Exception-handling-in-Python-02.jpg)
+
+In many cases, you catch an exception and then raise a clearer message, as this is helpful when you want to clearly explain what went wrong. For example, you can further modify the above function because the float(value) can fail, and rather than letting Python throw a vague message, you catch it and raise a clear one. So now the code first tries to convert the input into a float, assuming the input is a numeric discount value. If that conversion fails, Python raises a built-in ValueError; however, this time instead of letting that vague system error surface, you catch it and raise a clearer, more user-friendly message- “Discount must be a numeric value”. This approach keeps the original exception type but replaces the message so the reader or user immediately understands what went wrong and how to fix it.
+
+```
+def load_discount(value):
+    try:
+        # Attempt to convert the input to a float.
+        # If the input is non-numeric (e.g., "five"), Python will raise a ValueError.
+        # Unlike before, we now intercept that error so we can replace it with
+        # a clearer, more user-friendly message.
+        number = float(value)
+    except ValueError:
+        # This block runs only when the conversion fails.
+        # We raise our own ValueError to explain exactly what went wrong,
+        # rather than exposing Python’s generic system message.
+        # Raising a clearer error message 
+        # But suppressing the original internal traceback (error message) using 'from None'.
+        raise ValueError("Discount must be a numeric value") from None
+
+
+    # Just like the earlier function, we add a Business rule 
+    # i.e., even if the value is numeric, it cannot be negative.
+    # As this is a specific domain-specific check, we raise our own exception.
+    if number < 0:
+        raise ValueError("Discount cannot be negative")
+
+
+    # If both the technical and business validations pass, accept the input and return the value.
+    return number
+```
+
+As you can see, now, with the Python try except approach, rather than getting a generic error message, we get a business-specific, context-aware error message.
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/5.png)
+
+#### 3) Raising multiple exceptions inside try
+
+Lets further understand exception handling in Python with example. Realistically,when you are writing Python try except, you often have multiple exceptions inside a single try block, and different kinds of errors need to be caught in a specific order. In this version of the function, ValueError is caught first (for cases where the input exists but cannot be parsed into a number, such as “five”). The next handler catches TypeError, which occurs when the input’s type itself is invalid – for example, when the user passes None, a dictionary, or a list. These objects cannot even be interpreted as numeric. Keeping a TypeError handler here is useful because it clearly separates two different failure modes: one where the data is present but not numeric (ValueError), and another where the input object itself is the wrong kind of thing (TypeError).
+
+After the parsing step, additional business rules are applied. A ValueError is raised for negative discounts, and an OverflowError is raised when the discount exceeds the allowed limit (e.g., greater than 0.90). Each of these checks provides a specific, user-focused message so the user understands exactly what needs to be corrected.
+
+```
+def load_discount(value):
+    try:
+        # Try converting the input into a float.
+        number = float(value)
+
+    # ValueError -> input exists but isn’t numeric (e.g., "five")
+    # TypeError -> input type itself is invalid (e.g., None, list, dict)
+
+    except ValueError:
+        # Numeric conversion failed
+        raise ValueError("Discount must be numeric") from None
+
+    except TypeError:
+        # The input is not a scalar value (e.g., list, dict, None)
+        raise TypeError(
+            "Discount must be a scalar numeric value (int or float), "
+            "not a list, dict, or None."
+        ) from None
+
+    # Business rule: discount cannot be negative
+    if number < 0:
+        raise ValueError("Discount cannot be negative")
+
+    # Business rule: very large discounts are invalid
+    if number > 0.90:
+        raise OverflowError("Discount exceeds the maximum allowed limit. Cannot be more than 0.90")
+
+    return number
+```
+
+Triggering Type Error
+
+```
+load_discount([0.5])
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/6.png)
+
+Triggering Overflow Error
+
+```
+load_discount(0.99)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/7.png)
+
+Triggering Value Error (Technical)
+
+```
+load_discount("five")
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/8.png)
+
+Triggering Value Error (Business Specific)
+
+```
+load_discount(-0.5)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/9.png)
+
+If you carefully go through all of the code written above, you can understand that:
+
+-   **try**
+    -   defines the block of code where something might go wrong.
+    -   If everything runs successfully, execution continues normally.
+    -   If an exception occurs, Python immediately jumps to the first matching except.
+    -   Think of it as the “risky zone.”
+-   **except**
+    -   Catches exceptions that occur inside the try block, whether Python raises them automatically or you raise them manually using raise.
+    -   It allows you to handle failures gracefully instead of letting the program crash.
+    -   Therefore, this is the “safety net.”
+-   **raise**
+    -   Let’s you intentionally create an exception based on your business rules or context.
+    -   It stops normal execution and sends the error outward so the user can handle the issue.
+    -   Thus, it’s a way to signal the user that this input is invalid and they need to stop and fix it.”
+
+In addition to all this, you can also re-raise an existing exception and even chain exceptions to preserve context.
+
+#### 4) Re-raise an existing exception
+
+You can re-raise an exception when you want to log or partially handle it, but still want the caller to receive the original error. For example, below, inside an except block, you can log the problem using the print statement and then use raise without arguments to send the same exception back upward. This approach preserves the original stack trace and error message while still allowing you to add context to the problem locally. Re-raising is useful when you don’t want to replace the exception but simply want to annotate, inspect, or log it before letting it propagate normally.
+
+```
+def load_discount(value):
+    
+    try:
+        number = float(value)
+    except ValueError as e:
+        print("Logging: discount parsing failed")  
+        raise   # re-raising the same ValueError
+    
+    return number
+```
+
+```
+load_discount("five")
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/10.png)
+
+#### 5) Chaining Exceptions
+
+Exception chaining occurs when you intentionally link a new exception to the original one using the from keyword. Earlier, None was used to suppress the original traceback, meaning the chain exists internally, but the user only sees the new error message you provided.
+
+Example of suppressed chaining:
+
+```
+raise NewException("message") from None
+```
+
+(This hides the original technical traceback.)
+
+Visible chaining, on the other hand, explicitly attaches the original error so that Python shows both levels of failure:
+
+```
+raise NewException("message") from original_error
+```
+
+This means the final output contains two parts:
+
+-   Root cause -> e.g., ValueError: could not convert string to float: ‘five’
+-   Your clearer message -> e.g., ValueError: Discount must be numeric
+
+Chaining is helpful when you want to preserve low-level technical detail and provide a higher-level, business-friendly explanation.
+
+```
+def load_discount(value):
+    
+    try:
+        number = float(value)
+    except ValueError as e:
+
+        # Visible exception chaining to retain the original context
+        raise ValueError("Discount must be numeric") from e  
+    
+    return number
+```
+
+```
+load_discount("five")
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/8-1.png)
+
+### When should you raise exceptions?
+
+You create Python raise exceptions when:
+
+-   The program encounters an invalid state.
+-   Input validation fails, and continuing would cause errors later.
+-   You need to provide a clearer context for an existing exception.
+-   An operation violates expected constraints.
+
+These cases ensure that problems surface immediately rather than causing confusing bugs downstream
+
+### Advantages of Using Raise
+
+-   Forces invalid conditions to be handled explicitly.
+-   Allows custom messages that improve debugging.
+-   Supports both built-in and custom exceptions.
+-   Enables propagation of existing exceptions with additional context.
+
+As you can see, the raise keyword gives you full control over how and when your code reports problems. You can use it to:
+
+-   Raise built-in exceptions
+-   Attach clear, informative messages
+-   Enforce business-specific rules through custom validation
+-   Distinguish between parsing errors and business logic errors
+-   Handle multiple exception types with separate except blocks
+-   Prefer specific exceptions rather than generic ones
+-   Re-raise an existing exception
+-   Chain exceptions to preserve context (raise … from …)
+
+Thus, if you use them properly, raise can help you build programs that fail early, fail clearly, and avoid silent errors that are difficult to debug.As you saw in this section, several types of built-in exceptions (ValueError, TypeError, and OverflowError) were used across the different versions of the discount-validation function. Python, however, provides a much wider range of built-in exception types, each representing a specific kind of failure, and by understanding these exceptions, you can detect errors early, write clearer validation rules, and design clean recovery paths. In addition to this, you can also define and raise your own custom exception in Python.
+
+## Common Python Exception Types
+
+One can use built-in exceptions or can create user defined exceptions in Python. 
+
+### **Built-in Exceptions in Python**
+
+Some of the most common Python exception types are as follows-
+
+#### 1) ZeroDivisionError
+
+Python raises ZeroDivisionError when a divisor or right-hand operand is zero.
+
+```
+def safe_ratio(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError as e:
+        print(e)
+
+safe_ratio(10, 0)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/11.png)
+
+####  2) FileNotFoundError
+
+FileNotFoundError appears when Python cannot locate the requested file path.
+
+```
+try:
+    with open("missing_config.json") as f:
+        print(f.read())
+except FileNotFoundError as e:
+    print(e)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/12.png)
+
+#### 3) ValueError
+
+ValueError triggers when a function receives a valid type but an invalid value (e.g., converting “abc” to an integer).
+
+```
+def convert_age(text):
+    try:
+        return int(text)
+    except ValueError as e:
+        print(e)
+
+convert_age("twenty")
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/13.png)
+
+#### 4) TypeError
+
+Python raises TypeError when an operation is applied to an inappropriate type (e.g., adding a string to a number). 
+
+```
+def add_numbers(a, b):
+    try:
+        return a + b
+    except TypeError as e:
+        print(e)
+
+add_numbers("5", 10)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/14.png)
+
+#### 5) IndexError
+
+IndexError occurs when trying to retrieve an element beyond a sequence’s valid range.
+
+```
+names = ["Ann", "Ben"]
+try:
+    print(names[5])
+except IndexError as e:
+    print(e)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/15.png)
+
+#### 6) KeyError
+
+A KeyError arises when a dictionary lookup target does not exist.
+
+```
+prices = {"apple": 120, "banana": 40}
+try:
+    print(prices["orange"])
+except KeyError:
+    print("Key not found in dictionary.")
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/16.png)
+
+#### 7) AttributeError
+
+Python raises AttributeError when you attempt to access an attribute or method that does not exist.
+
+```
+class Product:
+    def __init__(self, name):
+        self.name = name
+
+p = Product("Laptop")
+try:
+    p.get_price()
+except AttributeError as e:
+    print(e)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/17.png)
+
+#### 8) ImportError
+
+ImportError appears when Python cannot import a module or when a symbol inside a module is missing. Python also uses ModuleNotFoundError for missing modules.
+
+```
+try:
+    from math import unknown_func
+except ImportError as e:
+    print(e)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/18.png)
+
+#### 9) RuntimeError
+
+RuntimeError occurs for issues that do not belong to a specific category. It often signals that an operation cannot proceed.
+
+```
+try:
+    raise RuntimeError("Unexpected runtime condition encountered.")
+except RuntimeError as e:
+    print(e)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/19.png)
+
+Other key built-in exceptions include NameError, ModuleNotFoundError, NotImplementedError etc.
+
+### **User-Defined Exceptions in Python**
+
+User defined exceptions in Python is something that is possible as Python allows developers to define them (custom exception types) by subclassing Exception. This is useful especially when the built-in exceptions do not fully express your business context and your application needs domain-specific error reporting.
+
+#### 1\. How to Create Custom Exceptions?
+
+In the discount examples above, built-in exceptions handle parsing errors, which occur when the input cannot even be interpreted in its expected form (for example, “five” cannot be converted to a float because the input field is technically broken). But once the input is successfully converted to a float, the remaining checks become business logic, such as ensuring the discount is not negative or excessively high.
+
+Since “discount failed validation” is a single business concept, a custom exception like InvalidDiscountError is more expressive than repeatedly raising a generic ValueError. This separation (technical parsing issues handled by built-in exceptions, business-rule violations handled by custom exceptions) makes your codebase more maintainable, helps higher-level systems react intelligently (e.g., treating business-rule errors differently from input-format problems), and produces clearer logs that immediately communicate that the discount itself is incorrect.
+
+```
+class InvalidDiscountError(Exception):
+    """Custom exception for business-rule violations in discount validation."""
+    pass
+
+def load_discount(value):
+    
+    # ---------------------------
+    # Parsing validations
+    # ---------------------------    
+    
+    try:
+        number = float(value) 
+    except (ValueError, TypeError):
+        # Parsing failed --> Technical problems found
+        raise ValueError("Discount must be a single (scalar) int or float, not a none, list, dict, tuple, or any container") from None
+
+    # ---------------------------
+    # Business-rule validations
+    # ---------------------------
+
+    # Using Custom Exception - "InvalidDiscountError"
+
+    # Rule 1: discount cannot be zero
+    if number == 0:
+        raise InvalidDiscountError("Discount cannot be zero")
+
+    # Rule 2: discount cannot be negative
+    if number < 0:
+        raise InvalidDiscountError("Discount cannot be negative")
+
+    # Rule 3:(discount must not be exactly 1.0 i.e., 100% discount is forbidden)
+    if number == 1.0:
+        raise InvalidDiscountError("100% discounts are not permitted")
+
+    # Rule 4: upper cap (max allowed discount is 90%)
+    if number > 0.90:
+        raise InvalidDiscountError("Discount exceeds the maximum allowed limit of 90%")
+    
+    # Rule 5: discount can be in multiples of 5%  
+    if number % 0.05 != 0:
+        raise InvalidDiscountError("Discount must be in multiples of 5% (0.05 increments).")
+
+    # Rule 6: discount cannot have more than 2 decimal places
+    if round(number, 2) != number:
+        raise InvalidDiscountError("Discount cannot have more than two decimal places")
+
+    return number
+```
+
+All the following instances of calling the functions will return errors-
+
+```
+load_discount("five")
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/20.png)
+
+```
+load_discount([0.5])
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/21.png)
+
+The following are the errors raised using the custom exception indicating that the discount value is business invalid.
+
+```
+load_discount(0.0555)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/22.png)
+
+```
+load_discount(0)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/23.png)
+
+```
+load_discount(-0.10)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/24.png)
+
+```
+load_discount(1.0)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/25.png)
+
+```
+load_discount(0.95)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/26.png)
+
+```
+load_discount(0.07)
+```
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/27.png)
+
+#### 2) Why create custom exceptions?
+
+-   They make error messages more meaningful.
+-   They help separate application-specific failures from generic Python exceptions.
+-   They improve debugging by expressing intent clearly.
+
+Let’s now expand on exception handling and explore all four blocks used while creating them.
+
+## Python Exception Handling Syntax and Flow 
+
+To completely explain exception handling in Python, you need to know that Python uses four blocks- try, except, else, and finally to control how errors are detected and how the program responds to them. So far, try and except have been explored; however, let’s now understand how they work together.
+
+### The try, except, else, and finally blocks explained
+
+#### 1) try
+
+As you would have understood by now that the try block contains the code that may raise an exception. Python executes this block first, checking whether any error occurs during the statements inside it. This behavior ensures that only the risky part of the code is monitored. If the try block finishes without any exception, Python skips the except section and proceeds to else if present.
+
+#### 2) except
+
+Also, as seen before, the except block handles exceptions raised inside the preceding try.  
+If an exception happens, Python stops executing the remaining statements in the try block and jumps directly to the first matching except clause.  
+A key thing to know is that try block can have multiple except blocks, allowing you to react differently to different exception types such as ZeroDivisionError, ValueError, or ImportError. (as done earlier). One key behavior to remember is that if none of the except clauses match the raised exception, Python passes the exception upward to any outer try blocks. If still unhandled, execution stops.
+
+#### 3) else
+
+The else block executes only when the try block finishes without raising any exception, and it’s considered extremely useful for code that should run only when the protected operation succeeds. These include validation, logging success, or follow-up actions that depend on the try completing normally.
+
+#### 4) finally
+
+The finally block always executes, regardless of whether an exception occurred, whether an exception was handled, or whether the function returns early. The sole purpose of it is to guarantee cleanup actions. These include closing files, releasing locks, freeing connections, or resetting state. Key thing to note is that it runs even when except re-raises the exception or the function hits a return statement.
+
+### Exception Handling in Python with Examples 
+
+Now, let’s understand all four concepts discussed above. Together, they ensure that your program continues running even when unexpected situations occur.  The typical syntax involving these 4 blocks looks something like-
+
+```
+try:
+       # Some Code.... 
+except:
+       # optional block
+       # Handling of exception (if required)
+else:
+       # execute if no exception
+finally:
+      # Some code .....(always executed)
+```
+
+Below you will explore exception handling in Python through multiple examples.
+
+#### Handling a single known exception
+
+In everyday applications, you often deal with calculations that rely on user input. If someone enters a zero as a divider, the operation fails, and by catching the specific error, you provide a controlled response rather than letting the program terminate. In the example below, you can see how a single except block handles a well-defined failure case cleanly.
+
+```
+def safe_divide(a, b):
+    try:
+        result = a / b
+        return f"Result: {result}"
+    except ZeroDivisionError:
+        return "Cannot divide by zero."
+
+# Usage
+print(safe_divide(12, 3)) 
+print(safe_divide(12, 0)) 
+```
+
+Output:
+
+Result: 4.0  
+Cannot divide by zero
+
+#### Handling multiple exceptions
+
+In reality, you face more than one type of error (as we did in the discount validation example). A value might fail to convert into a number, or a calculation might still break even after conversion. Thus, using multiple except blocks ensures that each issue is handled in a meaningful way. In the function below, an everyday data-processing scenario is recreated where bad input and faulty calculations are to be treated separately.
+
+```
+def compute_average(price_text, quantity_text):
+    try:
+        price = float(price_text)       # may raise ValueError
+        quantity = int(quantity_text)   # may raise ValueError
+        return price / quantity         # may raise ZeroDivisionError
+
+    except ValueError:
+        return "Invalid input: please enter numeric values."
+
+    except ZeroDivisionError:
+        return "Quantity must be greater than zero."
+
+# Usage
+print(compute_average("99.5", "2"))   
+print(compute_average("abc", "2")) 
+print(compute_average("99.5", "0")) 
+```
+
+Output:
+
+49.75  
+Invalud input: please enter numeric values.  
+Quantity must be greater than zero.
+
+#### Using else when no exception occurs
+
+Python lets you run certain logic only when the try block succeeds. This makes the else block perfect for post-processing steps that should not run if an exception interrupts the operation. Below the else block is used to make the flow clearer by separating normal behavior from exception handling.
+
+```
+def lookup_item(stock, index):
+    try:
+        item = stock[index]            # may raise IndexError
+    except IndexError:
+        return "The requested index is out of range."
+    else:
+        return f"Item found: {item}"
+
+# Usage
+items = ["pen", "notebook", "charger"]
+print(lookup_item(items, 1))   
+print(lookup_item(items, 5))
+```
+
+Output:
+
+Item found: notebook  
+The requested index is out of range.
+
+#### Using finally for cleanup (files, connections, resources)
+
+As mentioned earlier, the finally block always runs, no matter whether the operation succeeds or fails. This is essential when working with external resources such as files, network connections, or database sessions. For instance, in the function below, the file handle closes even if an exception occurs.
+
+A simple real-world example is opening a file and guaranteeing it closes properly:
+
+```
+def read_file(path):
+    file = None
+    try:
+        file = open(path, "r")         # may raise FileNotFoundError
+        content = file.read()
+        return content
+    except FileNotFoundError:
+        return "File not found."
+    finally:
+        if file:
+            file.close()               # always executed
+
+# Usage
+print(read_file("notes.txt"))
+```
+
+Output:
+
+File not found.
+
+#### Real-world workflow with nested logic
+
+Some operations involve multiple dependent steps, where each step can fail for a different reason. A common example is validating user input first, then performing a calculation that may introduce its own errors. In the example below, the outer try block handles input-parsing issues, while the inner try block handles operational errors.
+
+This pattern appears frequently in form validation, data ingestion pipelines, billing systems, and checkout flows, where different errors need to be handled independently. Here, while the else block ensures the calculation only runs after successful validation, the finally block eventually performs the cleanup actions regardless of success or failure.
+
+```
+import math
+
+def process_order(price_text, quantity_text):
+    try:
+        price = float(price_text)
+        quantity = int(quantity_text)
+    except ValueError:
+        return "Invalid order details."
+    else:
+        try:
+            total = price * quantity
+            if not math.isfinite(total):
+                raise RuntimeError("Total is not finite")
+            return f"Total: {total}"
+        except Exception:
+            return "Unexpected error while calculating total."
+    finally:
+        print("Order attempt completed.")
+
+# Usage
+print(process_order("20", "3"))
+print("\n")
+print(process_order("abc", "3"))
+print("\n")
+print(process_order("20", "0"))
+print("\n")
+print(process_order("1e309", "5"))
+```
+
+Output:
+
+Order attempt completed.  
+Total: 60.0  
+  
+Order attempted completed.  
+Invalid order details.  
+  
+Order attempt completed.  
+Total: 0.0  
+  
+Order attempt completed.  
+Unexpected error while calculating total.
+
+The addition of features such as else, finally, along with multiple except blocks, now gives you fine-grained control over how your program reacts to failures. Do remember that most reliable applications rely heavily on these patterns to manage unpredictable inputs and operational conditions, so they are a must to know and master.
+
+### Control Flow of Exception Handling
+
+Let’s now understand the execution flow of Python’s Try-Except-Else-Finally blocks. The execution order works like:
+
+1.  Python starts with the try block.
+2.  If an exception occurs, Python jumps to the matching except.
+3.  If no exception occurs, Python runs the else block (if present).
+4.  Regardless of success or failure, Python executes the finally block.
+
+Let’s understand this step by step in a bit more detail.
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2025/12/Exception-handling-in-Python-03.jpg)
+
+#### Step 1: try
+
+The try block contains the statements that Python executes first. This block protects the code that may raise exceptions and runs top to bottom. As seen in the image, the topmost box (labeled try) is the entry point, i.e., execution flows into this box first before any other block.
+
+#### Step 2:  exception occurs → except 
+
+If any statement inside try block raises an exception, Python immediately stops executing the remaining try statements and looks for an except handler that matches the exception type. Incase a matching except exists, Python runs that handler; otherwise, the exception propagates outward. If you see the image, the right arrow leading from try to except (with the red X) represents this error path. Therefore, when something fails inside the try box, execution jumps along that arrow into the except box.
+
+#### Step 3:  no exception → else
+
+If the try block completes without raising any exception, Python skips all except blocks and executes the else block (if it is present). The else is therefore for follow-up work that should only run on success. As shown in the image above, the left arrow with the green tick symbol that goes from try down to else illustrates this successful path. So when nothing goes wrong, Python follows that arrow and runs else.
+
+#### Step 4:  cleanup/always-run → finally
+
+After either the except or else block finishes, Python executes the finally block if one exists. As seen in the examples, finally runs regardless of success or failure and even runs when code in the try or except returns or re-raises an exception. Thus, it is the place for guaranteed cleanup.  As seen in the image, the dotted box labeled finally sits below both paths. Therefore, whether Python goes left to else or right to except, the flow moves on to finally afterward  ( the dotted box indicates that finally always runs).
+
+#### Step 5: re-raise and propagation
+
+If an except handler re-raises the exception (or if try raises an exception that no except handles), the exception propagates after finally executes (finally does not swallow a re-raised exception). You can see this concept in the diagram above, with the error path being shown through except and then down toward finally. What you really need to understand is that control finally reaches and then the exception continues up the call stack if the handler re-raises it.
+
+A summary of these steps would be
+
+-   Python executes the try block top to bottom.
+-   If try raises an exception: Python searches except clauses in order for a matching exception type
+-   It runs the first matching handler.
+-   After the matching except finishes, Python executes the finally block (if present).
+-   The else block is skipped.
+-   If try completes without exception
+-   Python skips all except blocks and runs the else block (if present).
+-   After else finishes, Python executes the finally block (if present).
+-   If an except handler re-raises the exception (explicit raise), the exception propagates outward after the finally block executes.
+
+Thus, else runs only on a successful try, finally runs always, and except runs only when an exception occurs, and you can have multiple except clauses to handle specific exception types.
+
+## Nested and Multiple Exception Handling
+
+In the function where a custom exception was created, multiple exceptions were grouped together to handle parsing validations efficiently. This was done because multiple exception handling allows you to catch different exception types in a single except block when they require the same response, keeping the code concise and eliminating duplication. Apart from this, you can go for nested exception handling too, which becomes helpful when a single operation can fail in several ways across different stages. Therefore, instead of writing long, repetitive error-handling blocks, you group exceptions that share the same recovery path and separate the ones that need special treatment, as this keeps the logic compact, structured, and easier to read. Let’s understand these concepts with an example.
+
+For example, imagine a product importer that fetches data from a remote API. Several things can go wrong: 
+
+-   The URL may be invalid
+-   The server may reject the format
+-   The request may simply time out. 
+
+Now, as you know, sometimes a single operation can fail in several different ways, and not all failures deserve the same response. Therefore, you use multiple exception handling for grouping several errors under one action and nested exception handling for handling different errors at different stages of the operation.
+
+### Multiple Exception Handling
+
+#### 1) Grouping exceptions  in  one except block (multiple exceptions)
+
+Just in case all three failures mean “don’t use this product,” they can be grouped into a single handler, i.e., different errors, same response. Note that this is exactly the same pattern that was used something that was used in the custom exception discount-validation example for parsing errors.
+
+```
+try:
+    importer.fetch(product_url)
+except (ValueError, ConnectionError, TimeoutError):
+    importer.mark_invalid(product_url)
+```
+
+#### 2) Separating exceptions that need different actions (using multiple exception blocks)
+
+If one failure type requires a different action (for example, timeouts should be retried instead of marked invalid), you separate/isolate it. Therefore, you group what behaves the same and isolate what needs special treatment.
+
+```
+try:
+    importer.fetch(product_url)
+except (ValueError, ConnectionError):
+    importer.mark_invalid(product_url)
+except TimeoutError:
+    importer.retry_later(product_url)
+```
+
+#### 3) Using inheritance to catch entire families of exceptions
+
+It’s possible that several exceptions share a base class. This allows one handler to cover all related cases. Below, for example, both FileNotFoundError and PermissionError derive from OSError, so by using just one handler, you can cover them all, thereby keeping the code clean (as here multiple low-level errors map to the same outcome).
+
+```
+try:
+    file = open(config_path)
+except OSError:
+    logger.error("Config file cannot be accessed")
+```
+
+#### 4) Inspecting the exception object for deeper detail
+
+When you need deeper insight, you can capture the exception object and inspect details such as error codes:
+
+```
+try:
+    open(config_path)
+except OSError as err:
+    logger.error(f"OS error: {err.errno}")
+```
+
+### **Nested Exception Handling**
+
+Nested exception handling occurs when one try block exists inside another, and it is considered useful when one part of the operation can fail in predictable ways, and a higher-level failure needs its own handling. For instance, in the example below, the inner try block handles all expected, known issues with API fetching, while the outer try block is responsible for catching anything unexpected (coding bugs, network failures not covered, corrupted dependencies, etc.). Therefore, this separates normal operational failures from unexpected system-level failures, giving a cleaner structure and more reliable error reporting.
+
+```
+try:
+    try:
+        importer.fetch(product_url)
+    except (ValueError, ConnectionError):
+        importer.mark_invalid(product_url)
+    except TimeoutError:
+        importer.retry_later(product_url)
+except Exception as err:
+    logger.error(f"Unexpected importer failure: {err}")
+```
+
+Therefore, you perform multiple exception handling to group or separate errors inside the same level and Nested exception handling to handle errors at different stages of a larger process, with both techniques helping you to improve clarity, remove repetition, and make error-handling logic more structured and maintainable.
+
+## **Real-World Examples of Python Exception Handling**
+
+Exception handling appears in almost every production system- from finance to e-commerce to data processing. Below are few practical scenarios showing how Python manages failures gracefully.
+
+### **1) Validating User Input in an Order Form**
+
+When calculating order totals, user-entered values may be missing, non-numeric, or zero. Exception handling prevents the application from crashing and lets you show helpful feedback.
+
+```
+def calculate_total(price_str, qty_str):
+
+    try:
+        price = float(price_str)
+        qty = int(qty_str)
+        return price * qty
+    except ValueError:
+        return "Invalid price or quantity"
+```
+
+### 2) Handling Missing or Corrupt Data Files
+
+Reporting systems often depend on external files. If a file is missing or unreadable, the program should continue safely or trigger a fallback.
+
+```
+try:
+    with open("sales.csv") as f:
+        data = f.read()
+except FileNotFoundError:
+    log.warning("Sales file not found-using cached report")
+```
+
+## Best Practices for Exception Handling in Python
+
+It is true that exception handling strengthens application stability by making failures explicit instead of letting them surface unpredictably, and also that a well-designed error handling keeps systems responsive, protects data integrity, and gives users meaningful feedback. However, to design such a program, you need to keep a few things in mind. Below are five practical techniques that can help you effectively perform exception handling in Python allowing you to write robust, production-quality code.
+
+### 1) Use Specific Exceptions
+
+Catching specific exceptions makes your intent clear and prevents unrelated errors from being swallowed accidentally. It also helps you craft accurate messages and handle different failure modes separately.
+
+As you can see below, the approach mirrors real business logic, where each failure (bad cost, wrong type, or missing value) requires a different response.
+
+```
+def calculate_margin(cost, price):
+    try:
+        margin = (price - cost) / cost
+        return margin
+    except ZeroDivisionError:
+        return "Cost cannot be zero."
+    except TypeError:
+        return "Inputs must be numbers."
+    except ValueError:
+        return "Invalid numeric value found."
+```
+
+### 2) Implement Error Logging
+
+Logging captures full error details such as timestamps, stack traces, and context. This is essential when diagnosing production issues, especially in systems processing thousands of transactions or product updates. Therefore, below, instead of printing errors, they are logged as logging keeps a permanent audit trail that simplifies debugging.
+
+```
+import logging
+logging.basicConfig(filename="errors.log", level=logging.ERROR)
+
+def update_inventory(item_id, quantity):
+    try:
+        if quantity < 0:
+            raise ValueError("Quantity cannot be negative.")
+        # database update logic...
+    except Exception as e:
+        logging.error("Inventory update failed for %s: %s", item_id, e)
+```
+
+### 3) Define Custom Exceptions
+
+Custom exceptions are useful, as seen in the discount validation example. When built-in ones don’t communicate the problem clearly enough, you should define custom exceptions, as they help in making domain rules explicit and improve readability. See below how the business-rule violations (invalid discounts) are separated from technical errors.
+
+```
+class InvalidDiscountError(Exception):
+    pass
+
+def apply_discount(price, discount):
+    try:
+        discount = float(discount)   # technical parsing errors handled here
+    except (ValueError, TypeError):
+        raise ValueError("Discount must be a numeric value") from None
+
+    # business-rule violations check
+    if discount < 0 or discount > 50:
+        raise InvalidDiscountError("Discount must be between 0–50%.")
+    
+    return price * (1 - discount/100)
+```
+
+### 4) Handle Exceptions Gracefully
+
+Graceful handling is a must as it prevents unnecessary crashes and keeps the program running even when users make mistakes. Therefore, instead of allowing an exception to stop execution, you can offer fallback behavior, request corrected input, or apply safe defaults. In the example below, the function expects a positive integer quantity (e.g., 1, 2, 3, etc.); however, if the user enters “abc”, Python raises a ValueError, and the except block prints a helpful message instead of crashing. Also, if the quantity entered is “0” or “-3”, your own ValueError is raised and handled the same way. In both cases, the function returns a safe default (1). This ensures that downstream workflows remain stable and user-friendly.
+
+```
+def parse_quantity(value):
+    try:
+        qty = int(value)
+        if qty <= 0:
+            raise ValueError("Quantity must be positive.")
+        return qty
+    except ValueError as e:
+        print("Invalid quantity:", e)
+        return 1   # fallback quantity
+```
+
+### 5) Use finally for Cleanup Tasks
+
+The finally block guarantees that cleanup runs regardless of success or failure. This is vital for closing files, releasing connections, and cleaning temporary resources. If you see below, even if an exception occurs, the application remains stable because resources are not left open or locked.
+
+```
+def load_prices(path):
+    f = None
+    try:
+        f = open(path)
+        return f.read()
+    except OSError:
+        return "Unable to load pricing file."
+    finally:
+        if f:
+            f.close()  # always executed
+```
+
+If you use these best practices together, you can create clear, predictable, and maintainable exception-handling flows, thereby strengthening your Python applications. However, to properly explain exception handling in Python and use it effectively in real applications, you must also understand the common pitfalls that developers often overlook.
+
+## Common Mistakes to Avoid
+
+Below are several pitfalls that you, as a developer, may frequently encounter and should avoid at all costs.
+
+### 1) Avoid Catch-All except: Blocks
+
+Using a bare except: catches every exception, including system-exiting exceptions (like SystemExit or KeyboardInterrupt) and hides the real cause of failure. Always target the exact errors you expect.
+
+```
+# Bad
+try:
+    update_prices()
+except:
+    print("Something went wrong")
+
+# Better
+try:
+    update_prices()
+except FileNotFoundError:
+    print("Price file missing")
+except ValueError:
+    print("Invalid data provided")
+```
+
+### 2) Keep Your try Blocks Narrow
+
+Large try blocks make debugging harder because it becomes unclear which line triggered the exception. Thus, you should always try to limit the block to only the code that may fail.
+
+```
+# Bad: too broad
+try:
+    data = open("sales.txt").read()
+    cleaned = clean(data)
+    save(cleaned)
+except Exception:
+    print("Processing failed")
+
+# Better
+try:
+    data = open("sales.txt").read()
+except FileNotFoundError:
+    print("Sales file missing")
+else:
+    cleaned = clean(data)
+    save(cleaned)
+```
+
+### 3) Don’t Capture More Exceptions Than Needed
+
+Catching overly broad exceptions like Exception masks issues you did not intend to handle and complicates debugging.
+
+```
+# Bad
+try:
+    calculate_total(order)
+except Exception as e:
+    print("Error:", e)
+
+# Better
+try:
+    calculate_total(order)
+except (TypeError, ValueError) as e:
+    print("Invalid order:", e)
+```
+
+### 4) Avoid Silencing Exceptions Completely
+
+Using pass inside an exception block hides important information and often delays the discovery of bugs.
+
+```
+# Bad
+try:
+    process_order(o)
+except ValueError:
+    pass
+
+# Better
+try:
+    process_order(o)
+except ValueError:
+    print("Order contains invalid values")
+```
+
+### 5) Re-raise Exceptions When You Cannot Resolve Them
+
+If you can’t fully address the error, re-raise it so higher-level logic can respond appropriately.
+
+```
+try:
+    update_report()
+except ValueError as e:
+    print("Bad report format")
+    raise
+```
+
+### 6) Log Exceptions Instead of Ignoring Them
+
+Proper logging helps diagnose production failures and provides context for debugging.
+
+```
+import logging
+logging.basicConfig(level=logging.ERROR)
+
+try:
+    sync_inventory()
+except ValueError as e:
+    logging.error("Inventory sync failed: %s", e)
+```
+
+## **Conclusion**
+
+Mastering exception handling is not just about catching errors. It is also about designing software/programs that behave predictably under uncertainty. By using specific exceptions, raising errors deliberately, structuring nested handling carefully, and applying cleanup with finally, you ensure your code remains maintainable and clear.
+
+Avoiding common pitfalls like bare except blocks, swallowing exceptions, or skipping logging further strengthens your application’s reliability. The various examples explained in this article can help you understand how these principles apply in everyday tasks, from data processing to API calls.
+
+As you adopt these techniques, your Python programs will become more robust, user-friendly, and easier to debug in production environments.
+
+## FAQs
+
+### 1) What is an exception in Python?
+
+A Python exception is a runtime event that interrupts normal program flow, such as ValueError, IndexError, or FileNotFoundError, and must be handled to prevent program termination.
+
+### 2) What does ‘raise’ mean in Python exception handling?
+
+raise is a critical aspect of exception handling in Python as it explicitly triggers an exception (built-in or custom) to signal an error condition or propagate an existing exception up the call stack.
+
+### 3) What is the difference between an error and an exception?
+
+The difference between errors and exceptions in Python is that errors usually indicate fundamental issues like syntax or indentation problems, while exceptions occur during execution and can be caught and handled with try and except.
+
+### 4) How can I catch specific exceptions in Python to prevent program crashes?
+
+Place the risky operation inside a try block and catch targeted exceptions (like ValueError or ZeroDivisionError)in separate except clauses to handle each case cleanly.

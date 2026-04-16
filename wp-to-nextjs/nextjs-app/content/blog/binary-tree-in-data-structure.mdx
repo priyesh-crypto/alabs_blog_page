@@ -1,0 +1,439 @@
+---
+title: "Understanding Binary Tree: Guide to Binary Tree Implementation in Python[with codes]"
+slug: binary-tree-in-data-structure
+date: "2024-10-04T13:57:31+00:00"
+modified: "2026-02-04T08:14:06+00:00"
+description: "Binary Tree in Data Structure: Explore the fundamentals, properties, and implementation with code snippets for easy understanding."
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2024/10/Binary-Tree-in-Data-Structure-01-01-770x515-1.jpg"
+author: Archish Rai Kapil
+categories:
+  - Data Science
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/binary-tree-in-data-structure/"
+noindex: true
+---
+
+Data structures are essential in fields like computer science and data science, efficiently organizing and retrieving data. Among them, binary trees are particularly notable for their structured approach to data management.
+
+Being a fundamental hierarchical structure, it has numerous applications, from search engines to databases. Understanding binary trees is crucial for professionals like data scientists and ML engineers because they offer powerful ways to handle data in a structured and scalable manner.
+
+In this article, we will explore binary trees and their various associated aspects, ranging from understanding their meaning, concepts, and applications to analyzing their time complexity and differences from important data structures. Thus, the article will aim to answer the question- what is binary tree in data structure and all other associated questions. 
+
+ Let’s define binary tree in data structure first and then move forward.
+
+## **What is a Binary Tree in Data Structure?**
+
+A binary tree in data structure is a hierarchical system where each node can have at most two children, the left and right. This structure is fundamental in computer science, providing efficient data storage, retrieval methods, and various operations like insertion and traversal. The term “binary” indicates that each node is limited to two children, thus organizing the data in a branching, tree-like form.
+
+Once you define binary tree in data structure, the next step is understanding the key terminologies and related concepts. This will help you further answer questions like what is binary tree in data structure? How to use them? etc.
+
+-   ### **Terminologies and Concepts of Binary Tree**
+    
+
+Understanding the terminologies associated with binary trees is crucial for comprehending how this data structure functions. Below are the key concepts:
+
+![concepts of binary tree](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/Binary-Tree-in-Data-Structure-02-1-scaled.jpg)
+
+1.  **Node**: A fundamental element of a binary tree that stores data. Nodes are the building blocks of the tree.
+2.  **Root Node**: It is the tree’s starting point and the topmost node. It has no parent, and all other nodes in the tree are its descendants.
+3.  **Parent Node**: As the name suggests, such a node has children nodes connected. For example, in a tree with nodes {A, B, C}, if B and C are connected to A, then A is the parent node.
+4.  **Child Node**: Nodes directly connected to a parent node. In the example above, B and C are child nodes of A.
+5.  **Leaf Node (External Node)**: Nodes with no children. They represent the endpoints of the tree branches. In a tree with nodes {A, B, C, D}, if D has no children, it is a leaf node.
+6.  **Internal Node**: Nodes that have at least one child. These nodes are not leaf nodes and include the root node if it has children.
+7.  **Sibling**: Nodes that share the same parent. For instance, B and C, being children of A, are siblings.
+8.  **Ancestor**: Any predecessor node from the root to a given node. If B is connected to A, and C is connected to B, then A is an ancestor of C.
+9.  **Descendant**: A node is considered a descendant of another if it lies in the subtree rooted at that node. For example, C is a descendant of both A and B.
+10.  **Level of a Node**: This indicates the distance from the root node, counted by the number of edges. The root node is at level 0, its children at level 1, and so on.
+11.  **Height**: It refers to the number of edges on the longest path from a particular node to a leaf. The height of the root node and the height of the tree are the same.
+12.  **Depth**: It is the number of edges from the root node to a specific node. It represents how deep a node is situated in the tree.
+13.  **Subtree**: A portion of a tree formed by a node and its descendants. Each node can be the root of its subtree.
+14.  **Edge**: The connection between two nodes in the tree, representing the relationship between parent and child.
+15.  **Path**: A sequence of nodes and edges leading from one node to another. The length of a path is the number of edges it contains.
+16.  **Degree**: It is the number of children a node has. The highest degree among all nodes defines the degree of the tree.
+
+These concepts collectively describe the structure and relationships within a binary tree, providing a framework for understanding and manipulating this essential data structure. The next critical thing to understand that can further help you comprehend binary trees is how it differs from other data structures, such as arrays and linked lists.
+
+Learn and Upskill Today with AnalytixLabs
+
+Explore our signature **data science courses in collaboration with _Electronics & ICT Academy, IIT Guwahati_**, and join us for experiential learning to transform your career.
+
+-   [Machine Learning Course](https://www.analytixlabs.co.in/machine-learning-course-certification-training/)
+-   [Data Science 360 Certification Course](https://www.analytixlabs.co.in/data-science-specialization-course/)
+-   [PG in Data Science](https://www.analytixlabs.co.in/pg-in-data-science/)
+
+Broaden your learning scope with our elaborate [Applied AI](https://www.analytixlabs.co.in/artificial-intelligence-certification-courses-online/) and [Deep Learning](https://www.analytixlabs.co.in/deep-learning-with-python/) courses. Explore our [ongoing courses here](https://www.analytixlabs.co.in/courses).  
+Learn the right skills to fully leverage AI’s power and unleash AI’s potential in your data findings and visualization. Have a question? [Connect with us here](https://www.analytixlabs.co.in/contact-us). Follow us on social media for regular data updates and course help.
+
+## **Binary Tree vs. Arrays and Linked Lists**
+
+We’ll start with exploring the basic definitions of arrays and arrays before diving into how they differ from binary trees in data structure. Let’s start with arrays.
+
+**Array:** An array is a linear data structure. It consists of a collection of elements of the same type stored in contiguous memory locations. Arrays are index-based, i.e., each element can be accessed directly using its index, which starts from 0. Arrays’ major benefits include fast access to elements; however, resizing is difficult as their size is fixed upon creation.
+
+**Linked List:** A linked list, unlike an array, is dynamic. This data structure consists of a sequence of data-containing nodes and a reference (or pointer) to the next node. Unlike arrays, the benefit of linked lists is that they do not require contiguous memory locations, and their size can easily change. The challenge, however, is that accessing elements in a linked list requires traversing from the head node to the desired node, making it less efficient for random access.
+
+**Binary Tree:** As you would know by now, a binary tree follows a hierarchical structure where each node has two children at maximum. This structure often organizes data and allows efficient search, insertion, and deletion operations. Binary trees are commonly implemented using linked nodes but can be represented using arrays.
+
+The definitions would have given you some idea of how these data structures differ. However, to understand the differences further, let’s compare them using different parameters.
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/Binary-Tree-in-Data-Structure-03-scaled.jpg)
+
+Another critical aspect you must know is the properties associated with the binary trees. Below, we will explore the most critical ones.
+
+## **Key Properties of Binary Tree in Data Structure**
+
+Understanding the properties of binary trees in data structure is crucial for properly utilizing and efficiently leveraging them in various algorithms and applications. Below are some of the key binary tree properties in data structure:
+
+**1) Maximum Number of Nodes at Level ‘l’:**  
+The maximum number of nodes at a given level ‘l’ in a binary tree is 2 raised to the power of ‘l’. This property can be proved through induction:
+
+-   At the root level (l = 0), only one node (2 raised to the power of 0 = 1) exists.
+-   Assuming that the maximum number of nodes at level ‘l’ is 2 raised to the power of ‘l’, the next level will have twice the number of nodes, i.e., 2 times 2 raised to the power of ‘l’.
+
+**2) Maximum Number of Nodes of Height ‘h’:**  
+To find the highest number of nodes in a binary tree whose height ‘h’, you need to 
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image8.png)
+
+This is derived from a tree having the maximum number of nodes when all levels are fully populated. The total number of nodes can be represented as a geometric series
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image7.png)
+
+In some conventions where the root height is 0, the formula adjusts to 2 raised to the power of (h+1) minus 1, i.e.,
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image6.png)
+
+**3) Minimum Height of a Binary Tree:**  
+The minimum number of levels, i.e., height in a binary tree with ‘N’ nodes, can be calculated by considering the logarithm (base 2) of (N+1), i.e.,
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image9.png)
+
+This formula is derived from the property that the height cannot exceed the number of nodes. The maximum number of possible nodes in a binary tree with height ‘h’ is
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image8.png)
+
+Therefore, N is less than or equal to 2 raised to the power of ‘h’ minus 1. Thus, the height ‘h’ is >= logarithm (base 2) of (N+1), i.e.,
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image12.png)
+
+**4) Minimum Number of Levels in a Binary Tree with ‘L’ Leaves:**  
+A binary tree with ‘L’ leaves has at least the logarithm (base 2) of ‘L’ plus 1 levels. This property assumes that the binary tree is filled at each level, maximizing the number of leaves. Hence, the number of levels can be derived as:
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image10.png)
+
+**5) Number of Leaf Nodes:**  
+In a full binary tree where every node has either no or two children, the number of leaf nodes (L) is always one more than the number of nodes with two children (T), i.e.,
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image11.png)
+
+This is because each internal node with two children contributes to the structure by leaving one extra leaf node when all connections are accounted for.
+
+**6) Total Number of Edges in a Binary Tree:**  
+In a non-empty binary tree with ‘n’ nodes, the total number of edges ‘e’ is n-1. Apart from the root note, every other node has only one parent, and each connection between a parent and a child represents one edge. Thus making the formula to be
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image13.png)
+
+**7) Leaf Nodes and Internal Nodes Relationship:**  
+In a binary tree, leaf nodes are always one more than the internal nodes (nodes with children). The reason is that every internal node in a binary tree contributes to creating exactly one additional leaf node.
+
+**8) Height of a Binary Tree:**  
+To find the height (of a binary tree), you need to calculate the number of edges from the root to the deepest leaf node. It is also referred to as the depth of the tree. For a binary tree with height ‘h’, the number of nodes is maximized when the tree is perfectly balanced.
+
+Knowing all the above binary tree properties in data structure helps you properly understand and utilize them. However, to effectively use them, you need to be aware of the various binary tree representations in data structure that form the various types of binary trees, and that’s what we will explore next.
+
+## **Types of Binary Trees in Data Structure**
+
+There are many types of binary trees in data structure. This is mainly because binary trees are versatile data structures used in various computational applications. Depending on the arrangement of nodes and the properties they exhibit, binary trees can be classified into several distinct types. Below are the main types of binary trees in data structure:
+
+![types of binary trees in data structure](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/Binary-Tree-in-Data-Structure-04-scaled.jpg)
+
+### **1) Full Binary Tree**
+
+A strict or proper binary tree (aka. full binary tree) is one in which every parent or internal node has exactly two or no children. In other words, all nodes except the leaf nodes have two children. This structure ensures that the tree is fully populated at each level, which makes it efficient for certain types of computations. The leaves in such a tree are always one more than the number of internal nodes.
+
+### **2) Perfect Binary Tree**
+
+It is a special kind of full binary tree representation in data structure where all the internal nodes have exactly two children and all the leaf nodes are at the same level. This perfectly balanced structure means that every node is equidistant from the root, resulting in a uniform depth across the tree.
+
+### **3) Complete Binary Tree**
+
+A complete binary tree in data structure is where all other levels are fully filled from left to right except for the last level. In this structure, every level, except the last, must have the maximum number of nodes, and the nodes at the last level should be as left as possible. Complete binary trees are commonly used in heap data structures and are particularly efficient for implementing priority queues.
+
+### **4) Degenerate (or Pathological) Binary Tree**
+
+Each parent node has only one child in a degenerate binary tree. This structure essentially forms a linear chain, resembling a linked list rather than a typical tree. Degenerate trees can either be left-skewed or right-skewed. In left-skewed, all the child nodes are left, whereas in right-skewed, all the child nodes are to the right. One thing to note is that such a tree form is generally less efficient because it does not take advantage of the binary tree’s typical balancing properties.
+
+### **5) Balanced Binary Tree**
+
+The height difference between any node’s left and right subtrees is at most 1 in a balanced binary tree. This balance ensures that the tree remains as short as possible, which optimizes operations such as search, insertion, and deletion, keeping them within O(log n) time complexity. Examples of balanced binary trees include AVL and Red-Black trees (more on them below).
+
+### **6) Binary Search Tree (BST)**
+
+Lets now answer what is binary search tree in data structure? Binary search tree algorithm in data structure is a node-based binary tree structure that maintains sorted order of its elements. In a binary search tree algorithm in data structure, the key of each node must be larger than every key in its left subtree and smaller than every key in its right subtree. This property makes BSTs particularly efficient for lookup operations, with an average time complexity of O(log n) for search, insert, and delete operations.
+
+### **7) AVL Tree**
+
+It is a self-balancing binary search tree algorithm in data structure. AVL tree has no more than one height difference between any node’s left and right subtrees. Named after its inventors, Adelson-Velsky and Landis, this tree structure ensures that the tree remains balanced after each insertion and deletion, keeping operations efficient.
+
+### **8) Red-Black Tree**
+
+A Red-Black tree is another self-balancing binary search tree type. In such a tree, each node has an additional color attribute, either red or black. The tree maintains balance through a set of rules that limit the ways nodes can be colored. While not perfectly balanced, Red-Black trees ensure that no path from root to leaf is more than twice as long as any other, maintaining efficient search times.
+
+### **9) B-Tree and B+ Tree**
+
+-   **B-Tree:** It is a generalized binary search tree. In B-tree, the nodes are allowed to have more than two children. The primary advantage of such a tree is that it enables users to perform tasks like search, insertions, deletions, etc., in logarithmic time and maintains sorted data. Such trees are commonly used in file systems and databases.
+-   **B+ Tree:** A B+ tree is an extension of the B-tree, where all data is stored at the leaf level, and internal nodes only store keys to guide the search. The leaf nodes in such a tree are linked together to form a linked list, making sequential access to data more efficient.
+
+### **10) Segment Tree**
+
+A segment tree is a binary tree for storing intervals or segments. It allows querying which of the stored segments contain a given point or querying some other aggregate function over all segments that contain the given point. This structure is typically static, meaning it cannot be modified once built, but it is highly efficient for answering range queries.
+
+These various types of binary trees serve different purposes, and you can choose from them per the requirements of applications ranging from simple data storage and retrieval to complex database and file system operations. With questions like what a binary search tree is in data structure and similar other ones out of the way, let’s now understand the key operations.
+
+## **Basic Operations of Binary Tree**
+
+You must be aware of several binary tree operations in data structure. Following are some of the most crucial operations-
+
+-   ### **Searching an Element**
+    
+
+Searching in binary search tree in data structure utilizes the tree’s ordered structure to locate an element efficiently. The search process begins at the root, where the target value is compared with the current node’s value. If the target value is less, the search moves to the left subtree; if greater, it moves to the right. This process recursively until the target value is found or the search reaches a null node, indicating the value is absent.
+
+-   ### **Tree Traversals**
+    
+
+Binary tree traversal in data structure is another fundamental operation in binary trees, allowing systematic visits to all nodes in a specific order. The three main traversal methods are in-order, pre-order, and post-order. In-order traversal visits the left, node, and right subtree, making it useful for retrieving nodes in ascending order in a BST.
+
+Pre-order traversal processes the node before its subtrees, which is useful for copying or serializing a tree. The last kind of binary tree traversal in data structure is post-order traversal, which visits the subtrees before the node and is often used for node deletion or expression evaluation.
+
+-   ### **Inserting Elements** 
+    
+
+When inserting an element into a binary tree, level order traversal ensures the new node is placed in the correct position. The process starts by checking if the root is null; if so, the new node becomes the root. Otherwise, nodes are traversed in level order using a queue, inserting the new node at the first available position.
+
+-   ### **Deleting Elements** 
+    
+
+The last key binary tree operations in data structure is deleting an element. It is more complex due to the lack of inherent order. The process involves identifying the node to be deleted, finding the deepest rightmost node to replace it, and then deleting the deepest node. This approach helps maintain the tree’s structure and ensures it remains efficient for future operations.
+
+Developers often use binary trees due to their efficiency. Now after discussing the basic operations, let’s consider their time complexity.
+
+## **Time Complexity Analysis**
+
+Time complexity refers to the time it takes for algorithms (in our case, an algorithm based on the binary tree) to run completely as a function of the input size.
+
+It is critical to analyze the time complexity of a data structure/algorithm as it helps you understand how quickly you can process data and complete a particular task.
+
+Below, we will analyze the time complexity of the binary trees and where they stand compared to other data structures.
+
+### **1) Best, Average, and Worst-case Scenarios**
+
+In binary trees, the time complexity of operations like insertion, search, and deletion depends on the tree’s structure:
+
+-   **Best Case:**
+    -   Operations can be as efficient as _O(1)_ when the element is at the root.
+-   **Average Case:**
+    -   Typically, operations take _O(sqrt(N))_ (square root of N), where N is the number of nodes, depending on the tree’s balance.
+-   **Worst Case:**
+    -   In the worst-case scenario, such as in a highly unbalanced tree resembling a linked list, the time complexity degrades to _O(N)_. For instance, searching for an element like 1 in a sequence like 3, 2, 1 requires traversing all elements, resulting in _O(N)_ complexity. The same worst-case complexity applies to insertion and deletion operations when elements must be placed at the deepest level or removed after traversing all nodes.
+-   **General Case:**
+    -   Generally, the most efficient binary tree is a balanced binary search tree. The time complexity for most operations is _O(h)_, where _h_ is the tree’s height. This means the operations are more efficient in a balanced tree, typically taking _O(log N)_ time.
+
+The following table compares the time complexity of various key operations.
+
+<table><tbody><tr><td><b>Operation</b></td><td><b>Worst Case</b></td><td><b>Average Case</b></td><td><b>Best Case</b></td></tr><tr><td><b>Insert</b></td><td><span style="font-weight: 400;">O(N)</span></td><td><span style="font-weight: 400;">O(N</span><span style="font-weight: 400;">0.5</span><span style="font-weight: 400;">)</span></td><td><span style="font-weight: 400;">O(logN)</span></td></tr><tr><td><b>Search</b></td><td><span style="font-weight: 400;">O(N)</span></td><td><span style="font-weight: 400;">O(N</span><span style="font-weight: 400;">0.5</span><span style="font-weight: 400;">)</span></td><td><span style="font-weight: 400;">O(1)</span></td></tr><tr><td><b>Delete</b></td><td><span style="font-weight: 400;">O(N)</span></td><td><span style="font-weight: 400;">O(N</span><span style="font-weight: 400;">0.5</span><span style="font-weight: 400;">)</span></td><td><span style="font-weight: 400;">O(logN)</span></td></tr></tbody></table>
+
+### **2) Comparison with other Data Structures**
+
+When comparing binary trees with arrays and linked lists, binary trees generally offer better performance for dynamic operations.
+
+-   **Arrays:**  
+    Arrays provide _O(1)_ time complexity for accessing elements due to index-based access. Still, operations like insertion and deletion can be costly, with an O(N) time complexity, as elements may need to be shifted.
+-   **Linked Lists:**  
+    Linked lists allow _O(1)_ insertion and deletion at the head but have _O(N)_ time complexity for searching, as traversal from the head is required.
+-   **Binary Trees:**  
+    Searching, insertion, and deletion typically take O(log N) time in a balanced binary tree, making binary trees more efficient for operations requiring frequent updates than arrays and linked lists.
+
+Given the many advantages of binary trees, it is no surprise that they have numerous. Next, we will explore the key application reasons for binary trees, ranging from search engines to their
+
+## **Applications of Binary Tree**
+
+[Binary trees](https://leetcode.com/explore/learn/card/data-structure-tree/) are powerful data structures that underpin many critical applications across different domains, from search engines to machine learning. Here’s a closer look at how binary trees function and the role they play in various fields:
+
+-   ### **Search Engines**
+    
+
+A binary search tree example in data structure is in search engines. Binary trees, especially binary search trees (BST), are used in search engines to index and retrieve web pages.
+
+The ordered structure of BST allows for efficient searching: upon receiving user keywords, the search engines quickly traverse the binary tree to return the closest match.
+
+Another binary search tree example in data structure is keyword matching, as they logarithmically narrow the search space.
+
+-   ### **Databases**
+    
+
+Databases often use binary trees, such as AVL or Red-Black trees, to index and query big data. Such data structures allow for efficient searching, inserting, and deleting large amounts of data in logarithmic time.
+
+Database systems use other binary trees, such as B-trees and B+ trees, for indexing, as their structure allows for efficient disk-based storage.
+
+-   ### **Machine Learning**
+    
+
+Another application of binary trees is in ML algorithms. Algorithms like decision trees are commonly used for solving regression and classification problems.
+
+Such algorithms are easy to understand and highly interpretable yet effective.
+
+> Also read: [Supervised vs. Unsupervised Learning in Machine Learning](https://www.analytixlabs.co.in/blog/supervised-and-unsupervised-learning/)
+
+-   ### **Other Applications**
+    
+
+Several other applications of decision trees include game development, expression evaluation, file systems, and compilers.
+
+-   For instance, game developers use binary rates to determine game character movement, where each node represents plausible actions and branches their consequences.
+-   Compilers and calculators use expression evaluations to assess arithmetic expressions. The tree represents the structure of the expression, including internal nodes, operators, leaf nodes, and operands.
+-   Decision trees also play a critical role in file system compilers by allowing quick access to and organizing the file directories.
+-   Binary trees are used for syntax analysis in compilers. They help parse and translate high-level programming code into machine code by representing the construct of the language through each node and their nested structure through their hierarchical nature.
+
+Before we conclude, it’s time to get a bit into the practical side. Below, we will implement a binary tree using Python to explain how this data structure functions in the real world.
+
+## **Binary Tree Implementation**
+
+To implement a binary tree in Python, you need to start by creating a node class, a binary tree class with several methods, and upon completion, you can finally use them. Let’s understand each of these aspects of the implementation.
+
+### **1) Node Class**
+
+To start the implementation, you need a class for the node. Below, we will create a node class representing each node in the binary tree. Each node has three attributes: data to store its value and left and right pointers that help refer to the node’s children.
+
+`**# defining the Node class representing each node in the binary tree**   class Node:   def __init__(self, data):   self.data = data  # storing the value of the node   self.left = None  # pointer to the left child node (initially set to None)   self.right = None  # pointer to the right child node (initially set to None)`
+
+### **2) Binary Tree Class**
+
+The next step involves creating the binary tree class. It provides the key methods that allow users to perform the critical operations related to the binary tree, such as searching, insertion, deletion, and traversal, along with a helper method. Let me explain each of the methods in summary-
+
+-   #### **Insertion Method**
+    
+
+This method allows the user to add nodes to the binary tree. It uses level-order traversal (breadth-first search) to find the first available position to insert the node, ensuring that the tree remains balanced.
+
+-   #### **Search Method**
+    
+
+The next method we implement is the search method, which is responsible for looking at nodes for a specific user-provided value. Here, we also use level-order traversal to find the node and return whether the node was found or not.
+
+-   #### **Delete Method**
+    
+
+The delete method is responsible for removing nodes for our binary tree. To perform the deletion operation, this method starts by finding the node to be deleted and then replacing its value with that of the deepest rightmost node. Finally, the deepest rightmost node is deleted to maintain the tree’s structure.
+
+-   #### **Helper Method**
+    
+
+We also implement a helper method (\_delete\_deepest) to remove the deepest rightmost node from the binary tree. This method plays a critical role in the delete process, as it replaces the node to be deleted during the deletion operation.
+
+-   #### **Transversal Methods**
+    
+
+We have created three methods- inorder, preorder, and postorder that fall into the transversal method category as they all perform different types of transversal operations (in-order, pre-order, and post-order traversals, respectively).
+
+`**# creating the BinaryTree class containing methods for insertion, deletion, search, and traversal**   class BinaryTree:   def __init__(self):   self.root = None  # initializing the root of the tree as None (empty tree)`
+
+`_**### METHOD #1: INSERT ###**_   **   # creating the method to insert a new node into the binary tree using level-order traversal**   def insert(self, data):   new_node = Node(data) # creating a new node with the given data   **# setting condition: if the tree is empty, the new node becomes the root**   if self.root is None:   self.root = new_node   return   **# using a queue to perform level-order traversal and find the appropriate place for insertion**   queue = [self.root]  # starting with the root node in the queue   while queue:   temp = queue.pop(0)  # dequeuing the front node   **# setting condition: if the left child is empty, insert the new node as the left child**   if not temp.left:   temp.left = new_node   return   else:   queue.append(temp.left)  # else statement: add the left child to the queue   **# setting condition: if the right child is empty, insert the new node as the right child**   if not temp.right:   temp.right = new_node   return   else:   queue.append(temp.right)  # else statement:  add the right child to the queue`
+
+`_**### METHOD #2: SEARCH ###**_   **# creating the method to search for a node in the binary tree**   **   def search(self, key):**   **   # setting condition: if the tree is empty, return that the key is not found**   if self.root is None:   return f"{key} is not found"`
+
+`**# using a queue for level-order traversal to search for the key**   **   queue = [self.root]**   while queue:   temp = queue.pop(0)  # dequeuing the front node   **# setting condition: if the current node's data matches the key, return that the key is found**   if temp.data == key:   return f"{key} is found"   **# setting else statement: If not found, continue searching in the left and right subtrees**   if temp.left:   queue.append(temp.left)   if temp.right:   queue.append(temp.right)   **# returning not found if the key is not found after traversing all nodes**   return f"{key} is not found"`
+
+`_**### METHOD #3: DELETE ###**_   **# creating method to delete a node from the binary tree**   **   def delete(self, key):**   **# setting condition: if the tree is empty, return that there is nothing to delete**   if self.root is None:   return "The tree is empty"`
+
+`**# using a queue to perform level-order traversal and find the node to delete**   queue = [self.root] key_node = None  # storing the reference to the node to be deleted   last_node = None  # storing the reference to the deepest and rightmost node   while queue:   last_node = queue.pop(0)  # dequeuing the front node   **# setting condition: if the current node matches the key, store its reference**   if last_node.data == key:   key_node = last_node   **# setting else statement: continue the level-order traversal by enqueuing left and right children**   if last_node.left:   queue.append(last_node.left)   if last_node.right:   queue.append(last_node.right)`
+
+`**# setting condition: if the node to delete is found, replace its data with the deepest rightmost node's data**   if key_node:   key_node.data = last_node.data   **# Delete the deepest rightmost node from the tree**   **   self._delete_deepest(last_node)**   return f"Node {key} deleted"   # returning not found text if the node to delete is not found   return f"Node {key} not found"`
+
+`_**### METHOD #4: HELPER ###**_   **# creating Helper method to delete the deepest rightmost node from the tree**   def _delete_deepest(self, del_node):   queue = [self.root]  # starting with the root node in the queue   while queue:   temp = queue.pop(0)  # dequeuing the front node   **# setting condition: if the current node is the node to delete, set it to None and return**   if temp is del_node:   del_node = None   return   **# setting condition:: if the left child is the node to delete, set it to None**   if temp.left:   if temp.left is del_node:   temp.left = None   return   else:   queue.append(temp.left)  # Otherwise, continue traversing the left subtree   **# setting condition: if the right child is the node to delete, set it to None**   if temp.right:   if temp.right is del_node:   temp.right = None   return   else:   queue.append(temp.right)  # Otherwise, continue traversing the right subtree`
+
+`_**### METHOD #5: TRANSVERSALS ###**_`
+
+`_**### METHOD #5.1: IN-ORDER ###**_   **# creating in-order traversal: Left -> Root -> Right**   **   def inorder(self, node, traversal=[]):**   **   # traverse the left subtree first, then the root, and then the right subtree**   if node:   self.inorder(node.left, traversal)   traversal.append(node.data)  # Visit the root node   self.inorder(node.right, traversal)   return traversal`
+
+`_**### METHOD #5.2: PRE-ORDER ###**_   **# creating pre-order traversal: Root -> Left -> Right**   **   def preorder(self, node, traversal=[]):**   **   # visiting the root node first, then traversing the left and right subtrees**   if node:   traversal.append(node.data)  # Visit the root node   self.preorder(node.left, traversal)   self.preorder(node.right, traversal)   return traversal`
+
+`**_### METHOD #5.3: POST-ORDER ###_**   **   # creating post-order traversal: Left -> Right -> Root**   **   def postorder(self, node, traversal=[]):**   **   # traversing the left and right subtrees first, then visit the root node**   if node:   self.postorder(node.left, traversal)   self.postorder(node.right, traversal)   traversal.append(node.data)  # visiting the root node   return traversal`
+
+### **3) Binary Tree Class**
+
+We now use the above classes to create a binary tree.  
+`**# creating a binary tree using a BinaryTree class**   bt = BinaryTree()`
+
+### **4) Inserting Elements**
+
+Next, we insert a few elements in the above-created binary tree.  
+`**# Inserting elements into the binary tree**   bt.insert(10)   bt.insert(20)   bt.insert(30)   bt.insert(40)   bt.insert(50)`
+
+### **5) Performing Transversal Operations**
+
+Now, we display the various elements of the binary tree using different transversal operations.  
+`# performing various traversal operations to display the tree's contents   print("In-order Traversal:", bt.inorder(bt.root))  # Left -> Root -> Right   print("Pre-order Traversal:", bt.preorder(bt.root))  # Root -> Left -> Right   print("Post-order Traversal:", bt.postorder(bt.root))  # Left -> Right -> Root`
+
+**OUTPUT:**
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image17.png)
+
+### **6) Searching Elements**
+
+We now look for different values in the binary tree. We searched for 30, which is in the binary tree and should return a found statement, and for 100, which is not there in the binary tree and, therefore, should return a not found statement.  
+`**# searching for nodes for different values in the binary tree**   print(bt.search(30))   print(bt.search(100))`
+
+**OUTPUT:**
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image18.png)
+
+### **7) Deleting Elements**
+
+Lastly, we delete an element (20 in this example) and, once we have done this, display the contents of the binary tree using the in-order transversal method.  
+`**# deleting a node from the binary tree and displaying the updated tree**   print(bt.delete(20))  # deleting node with value 20   print("In-order Traversal after deletion:", bt.inorder(bt.root))  # displaying tree after deletion`
+
+**OUTPUT:**
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image19.png)
+
+As you can see above, it is fairly simple to implement a binary tree in Python and perform its various associated operations. However, to perform complex tasks, you need to learn more about their implementation and the algorithm created based on them.
+
+## **Conclusion**
+
+Binary trees in data structure are fundamental as they efficiently manage and organize data across various domains. Understanding the basic operations of binary trees, such as insertion, deletion, and searching, as well as the time complexities dependent on them, will help you understand the importance of tree balance in optimizing performance.
+
+Also, Binary Trees have numerous significant applications. Like game development, where binary trees aid in AI decision-making, and expression evaluations in compilers, where they help parse and execute complex arithmetic operations. Binary trees are highly important in various computational tasks. You should dive deep into them as they enhance efficiency and scalability across multiple fields.
+
+## **FAQs**
+
+-   **What is a threaded binary tree in data structure?**
+
+In threaded binary tree in data structure the null pointers are replaced with pointers to in-order predecessors or successors, which helps increase traversal efficiency.
+
+-   **What is a complete binary tree in data structure?**
+
+Complete binary tree in data structure is where all levels are fully filled (except the last) from left to right.
+
+-   **What is binary tree traversal in data structure?**
+
+Binary tree traversal refers to visiting all the nodes in a binary tree in in-order, pre-order, or post-order or any such particular order.
+
+-   **What is a binary tree in data structure?**
+
+A binary tree is a type of hierarchical data structure. It is different from other hierarchical structures because each node has a maximum of two children. Generally, such nodes are the left and right children.
+
+-   **What is BST in data structure?**
+
+A Binary Search Tree (BST) is a type of binary tree. In such a tree, each node’s left child contains values less than the parent node, whereas the values in the right child are greater than the parent node.
+
+-   **What data type is a binary tree?**
+
+A binary tree is a data structure that programmers implement using hierarchical structures, classes, or nodes in various programming languages. It can store various data types.
+
+Related Reading Resources
+
+-   [Decision Tree Algorithm in Machine Learning: Advantages, Disadvantages, and Limitations](https://www.analytixlabs.co.in/blog/decision-tree-algorithm/)
+-   [Top 21 Data Structure & Algorithms Questions to Ace DSA Interview in 2024](https://www.analytixlabs.co.in/blog/data-structure-interview-questions/)
+-   [Understanding Data Structures: Types and Applications](https://www.analytixlabs.co.in/blog/types-of-data/)

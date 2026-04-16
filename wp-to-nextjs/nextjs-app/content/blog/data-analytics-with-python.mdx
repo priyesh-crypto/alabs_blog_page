@@ -1,0 +1,1144 @@
+---
+title: "How to Perform Data Analysis using Python - A Case Study With Sales Data [Codes Included]"
+slug: data-analytics-with-python
+date: "2024-09-18T13:24:05+00:00"
+modified: "2026-02-04T09:20:03+00:00"
+description: "Data Analytics with Python: Learn essential techniques & best practices to enhance your data-driven decision-making with our guide."
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2024/09/Cover-Image-1-2.jpg"
+author: Archish Rai Kapil
+categories:
+  - Data Analytics
+  - Python
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/data-analytics-with-python/"
+noindex: true
+---
+
+Data analysis refers to discovering insights from the data that help draw meaningful conclusions and aid decision-making. As organizations increasingly rely on data-backed decision-making, the need for data analysts is on the rise.
+
+In today’s data-driven world, Python has emerged as a versatile tool for conducting data analysis efficiently and precisely. This article will focus on understanding data analytics and how data analytics with Python can be performed through a case study.
+
+Let’s start by understanding the need for Python for Data Analytics.
+
+## **Why choose Python for Data Analytics?**
+
+As data analysis requires users to perform numerous operations on data, it becomes crucial to use a tool that is capable and sophisticated yet simple to use. This is where [Python](https://www.python.org/) comes into the picture. Python for data analytics is excellent due to a plethora of reasons that include- 
+
+-   **Easy to learn** and use, making data analysis accessible to novice as well as experienced programmers
+-   Several great **Python libraries** for data analytics exist, such as Pandas, NumPu, SciPu, StatsModels, Matplotlib, Seaborn, and Plotly.
+-   **Extensive community support** helping to resolve the issue
+-   **Great integration capabilities** help users analyze data from various DBMS, making Python for data science and analytics operations a great choice.
+-   **Good scalability** allows users to analyze big data efficiently
+
+As the reason why Python is crucial for data science and analytics is now clear, let’s focus on what data analysis is all about and how it will be approached.
+
+Learn and Upskill Today with AnalytixLabs
+
+Explore our signature **data science courses in collaboration with _Electronics & ICT Academy, IIT Guwahati_**, and join us for experiential learning to transform your career.
+
+-   [Data Science with Python](https://www.analytixlabs.co.in/data-science-using-python/) 
+-   [Python Machine Learning](https://www.analytixlabs.co.in/machine-learning-course-certification-training/) 
+-   [Deep Learning with Python](https://www.analytixlabs.co.in/deep-learning-with-python/)
+-   [Data Science Certification Course](https://www.analytixlabs.co.in/data-science-specialization-course/)
+-   [PG in Data Science](https://www.analytixlabs.co.in/pg-in-data-science/)
+
+Broaden your learning scope with our elaborate [Applied AI](https://www.analytixlabs.co.in/artificial-intelligence-certification-courses-online/)  and [Business Analytics](https://www.analytixlabs.co.in/business-analytics-data-science-course/), courses. Explore our [ongoing courses here](https://www.analytixlabs.co.in/courses).  
+Learn the right skills to fully leverage AI’s power and unleash AI’s potential in your data findings and visualization. Have a question? [Connect with us here](https://www.analytixlabs.co.in/contact-us). Follow us on social media for regular data updates and course help.
+
+## **How to Analyze Data – 7 Key Steps**
+
+To analyze data, you need to follow a process. All the steps in the process are highly crucial as they allow for the practical analysis of data. The key steps for performing data analysis are as follows-
+
+![how to analyze data](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/2-4.jpg)
+
+1.  **Setting up Objective:** The first step is to define what you intend to achieve with the analysis and what aspects of the business you want to cover.
+2.  **Collecting Data:** The next step is to collect and collate the relevant data for analysis.
+3.  **Exploratory Data Analysis:** This step involves examining the data cursorily to understand it. 
+4.  **Cleaning Data:** The most crucial step is data cleaning, where one needs to ensure that the data is complete, free of anomalies and inconsistencies, and fit for data analysis.
+5.  **Mining Data:** The next stage involves mining data, where a few key findings are provided.
+6.  **Visualizing Data:** Another crucial step in data analysis involves visualizing data where data is manipulated, including filtering and aggregating data and presenting the results through charts.
+7.  **Statistical Analysis:** Lastly, appropriate statistical tests and models will be used to understand the data and the relationship among its variables.
+
+After reviewing the fundamentals of data analytics, it is time to examine an actual data analysis case study performed using Python.
+
+## **How to perform Data Analysis using Python?**
+
+To perform data analysis using Python, you must follow the data analysis process discussed above using Python libraries. In this section, it is precisely what you will do.
+
+![how to analyze data using python](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/1-4.jpg)
+
+### **1) Objective Definition**
+
+You will use sales data in this case study. Thus, this analysis aimed to survey the sales patterns and identify how they can be improved.
+
+### **2) Data Collection and Exploratory Data Analysis (EDA)**
+
+Data collection and [EDA](https://www.analytixlabs.co.in/blog/exploratory-data-analysis-in-python/) can be easily performed with Python due to the libraries used for data analytics, such as Numpy and Pandas. Hence, you will start by importing these libraries along with other visualization and statistical libraries that helped you during the later steps.
+
+`# importing pandas for reading data and performing other dataframe-related operations`  
+`import pandas as pd`
+
+`# importing numpy for performing various numerical operations`  
+`import numpy as np`
+
+`# importing matplotlib, seaborn and plotly for visualization`  
+`import matplotlib.pyplot as plt`  
+`import seaborn as sns`  
+`import plotly.express as px`  
+`import plotly.subplots as sp`  
+`import plotly.graph_objects as go`  
+`from plotly.subplots`  
+`import make_subplots`
+
+`# importing statistical libraries`  
+`import math`  
+`import scipy.stats as stats`  
+`import statsmodels.api as sm`
+
+Once done, you imported the data as a Pandas DataFrame and created a copy for data cleaning and downstream analytical steps.
+
+`# importing the sales data as a pandas DataFrame`  
+`sales_data = pd.read_csv('sales_info.csv')`
+
+`# creating a copy of the data for analysis`  
+`df = sales_data.copy()`
+
+The first obvious step was to examine the data, so you performed exploratory data analysis using Python. You dealt with sales data containing information about a company’s various products across multiple categories and countries. In addition to the product and transaction details, you also provided customer demographic information.
+
+`# viewing the first few rows of the data`  
+`df.head()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-1-1.jpg)
+
+After reviewing the data, you created a table describing each column and how it could be used during data analysis.
+
+Next, you calculated the data dimensions and found that you dealt with around 3.5K transactions and 19 columns. 
+
+`# finding the number of rows and columns there in the data`  
+`print("The number of rows are {} and the number of columns are {}".format(df.shape[0],df.shape[1]))`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-2-2.jpg)
+
+As you had a basic understanding of the data, it was time to start with data cleaning. Data cleaning needs to focus on the following key aspects-
+
+-   Basic understanding of data
+-   Duplicates
+-   Incorrect Data Types
+-   Anomalies/Outliers
+-   Missing Values
+-   Structural Errors
+
+ As you have already understood the data, start by checking for duplicates. 
+
+### **3) Data Cleaning**
+
+Data cleaning is a crucial process in data analytics. It improves data quality, ensuring the insights gained from the analytical process are accurate, consistent, complete, reliable, and reproducible.
+
+Data can have errors, biases, and incomplete information, so numerous data-cleaning steps are performed before data analysis. This section will show you the various data-cleaning steps.  
+
+#### **a. Duplicate Removal**
+
+It found that there were eight duplicate rows in the data.
+
+`# checking if there are any duplicates   df.duplicated().sum()`
+
+You will use drop.duplicated() command to remove them and ensure that the duplicates had gone.
+
+`# removing duplicate rows   df = df.drop_duplicates()`
+
+`# re-checking if there are any duplicates   df.duplicated().sum()`
+
+#### **b. Type Casting**
+
+Next, you check the data types in the columns. Several columns, such as \`Date\` and \`Customer Estimated Income,\` seemed to have the wrong data types. 
+
+`# finding the data types and number of non-null values in the data   df.info()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-5-copy.jpg)
+
+To understand why that is the case, you view and explore the unique values of all the columns. While for \`Customer Estimated Income\`, the presence of the $ symbol caused wrong data types, several other issues were present, such as invalid values masking missing values and inconsistent data (e.g., \`Education\`). 
+
+`# need to find what all unwanted values are present in the different columns that are causing it to have incorrect datatypes`
+
+`# first creating a copy of the data that does not have missing values   df_without_na = df.dropna().copy()`
+
+`# finding the unique values for each column in the data to find such unwanted values   for i in df_without_na:   print('\n', i, df_without_na[i].unique())`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-6-1.jpg)
+
+To resolve the invalid values, note them down and replace them with missing ones so they can be dealt with through imputation.
+
+`# listing invalid values to be replaced with np.nan`  
+`invalid_values = ["%48224*#(", "(#23#(@!", "!!@#$%^&*", "??><<{}[]", "ABCDE", "NANANANA", "-", "???"]`
+
+`# replacing invalid values with np.nan`  
+`df = df.replace(invalid_values, np.nan)`
+
+You remove the $ symbol from Income and change its data type to float.
+
+`# removing the '$' sign from values in Estimated Income column and converting it to numeric.`  
+`df['Customer Estimated Income'] = df['Customer Estimated Income'].replace('[\$,]', '', regex=True).astype(float)`
+
+You also changed the data types of the remaining columns to their correct types, as the invalid values no longer caused any hindrance. Upon re-checking, all data types seemed to be correct.
+
+`# typecasting columns to their correct data types   df['Loyalty Balance'] = pd.to_numeric(df['Loyalty Balance'])   df['Date'] = pd.to_datetime(df['Date'])`
+
+`# rechecking column data types`  
+`df.dtypes`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-7-1.jpg)
+
+#### **c. Anomaly/Outlier Treatment**
+
+To detect outliers, you create a function that creates boxplots for specified columns.
+
+`# creating function for boxplots   def plot_boxplots(df, columns, num_cols=3):`
+
+`# calculating number of rows and columns for subplots   num_rows = math.ceil(len(columns) / num_cols)`
+
+`# creating subplots   fig, axes = plt.subplots(num_rows, num_cols, figsize=(15, num_rows * 6))`
+
+`# flattening the axes array for easy iteration   axes = axes.flatten()`
+
+`# ploting boxplots for each specified column   for i, col in enumerate(columns):   sns.boxplot(data=df, y=col, ax=axes[i])   axes[i].set_title(f'Boxplot of {col}')`
+
+`# removing empty subplots   for j in range(i + 1, len(axes)):   fig.delaxes(axes[j])`
+
+`# showing plot   plt.tight_layout()   plt.show()`
+
+You will then create boxplots for the numeric columns. Upon inspection, you found that while a few columns had extreme/abnormally large values (as expected in sales data), some columns had anomalous values (e.g., \`Customer Estimated Income\` and \`Customer Duration\` with negative values).
+
+`# selecting numerical columns   numerical_cols = df.drop('Year', axis=1).select_dtypes(include='number').columns`
+
+`# creating boxplots   plot_boxplots(df, numerical_cols)`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-8-1.jpg)
+
+To handle such anomalies, you create a function that caps outliers using the Inter-Quartile (IQR) method.
+
+`# creating function to perform outlier capping`  
+`def iqr_outlier_capping(df, columns):`
+
+`# creating a copy of the DataFrame to avoid modifying the original data   df_capped = df.copy()   for col in columns`
+
+`# calculating Q1 (25th percentile) and Q3 (75th percentile)   Q1 = df_capped[col].quantile(0.25)   Q3 = df_capped[col].quantile(0.75)`
+
+`# calculating IQR (Interquartile Range)   IQR = Q3 - Q1`
+
+`# calculating lower and upper bounds   lower_bound = Q1 - 1.5 * IQR   upper_bound = Q3 + 1.5 * IQR`
+
+`# capping the outliers   df_capped[col] = df_capped[col].clip(lower=lower_bound, upper=upper_bound)`
+
+`return df_capped`
+
+Next, you will use the above-created function on columns with anomalies and recreate the boxplots for them to ensure that the anomalies were indeed gone.
+
+`# performing outlier capping with anomalous values   columns_to_cap = ['Customer Duration', 'Loyalty Balance', 'Customer Estimated Income'] df = iqr_outlier_capping(df, columns_to_cap)`
+
+`# re-creating boxplots for the columns where outlier capping is performed   plot_boxplots(df, columns_to_cap)`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-9-1.jpg)
+
+#### **d. Missing Value Imputation**
+
+One of the most crucial aspects of data cleaning is dealing with missing values. As you have already dealt with invalid values that were masking missing values, you now have a much better idea of the status of missing values in the data. Upon detection, you found several columns with missing values.
+
+`# printing column names with missing value`  
+`print(df.isna().sum()[df.isna().sum()>0].index)`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-10-1.jpg)
+
+You create a function that performs group-level missing value imputations using mean and mode for imputing numerical and categorical columns, respectively.
+
+`# creating a function for imputing missing values in a target column using group-level mean/mode values   def impute_missing_values(df, target_column, group_by_column, column_type):`
+
+`# making a copy of the dataframe to avoid modifying the original dataframe   df_imputed = df.copy()`
+
+`# ensuring target_column and group_by_column exist in the dataframe   if target_column not in df_imputed.columns or group_by_column not in df_imputed.columns:   raise ValueError("Specified columns are not present in the dataframe.")`
+
+`# imputing based on column type   if column_type == 'numeric':`
+
+`# checking if the target column is numeric   if not pd.api.types.is_numeric_dtype(df_imputed[target_column]):   raise TypeError(f"Column '{target_column}' is not numeric. Please specify 'categorical' for non-numeric columns.")`
+
+`# computing the mean value for each group and fill missing values   group_means = df_imputed.groupby(group_by_column)[target_column].transform('mean')   df_imputed[target_column] = df_imputed[target_column].fillna(group_means)   elif column_type == 'categorical':`
+
+`# checking if the target column is categorical   if pd.api.types.is_numeric_dtype(df_imputed[target_column]):   raise TypeError(f"Column '{target_column}' is numeric. Please specify 'numeric' for numeric columns.")`
+
+`# computing the mode value for each group and fill missing values   mode_values = df_imputed.groupby(group_by_column)[target_column].transform(lambda x: x.mode()[0] if not x.mode().empty else np.nan)   df_imputed[target_column] = df_imputed[target_column].fillna(mode_values)   else:   raise ValueError("Invalid column type specified. Use 'numeric' or 'categorical'.")   return df_imputed`
+
+You then used the function to impute missing values and used appropriate group columns. Upon re-checking, it became evident that the data was free of missing values.
+
+`# using the function above to perform missing value imputation for numerical columns   df = impute_missing_values(df, target_column = 'Customer Estimated Income', group_by_column = 'State', column_type = 'numeric')   df = impute_missing_values(df, target_column = 'Loyalty Balance', group_by_column = 'Country', column_type = 'numeric')   df = impute_missing_values(df, target_column = 'Customer Duration', group_by_column = 'Customer Gender', column_type = 'numeric')`
+
+`# using the function above to perform missing value imputation for categorical columns   df = impute_missing_values(df, target_column = 'Customer Education Level', group_by_column = 'Customer Gender', column_type = 'categorical')   df = impute_missing_values(df, target_column = 'Customer Marital Status', group_by_column = 'Country', column_type = 'categorical')`
+
+`# rechecking if there are any missing values left   df.isna().sum()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/62.jpg)
+
+#### **e. Fixing Inconsistent Data**
+
+During typecasting, you found some structural issues in the data with the \`Customer Education Level\` column having inconsistent categories. Upon carefully looking at the categories and their counts, you found that some categories are mentioned differently (e.g., PhD being also mentioned as Research Degree and Doctorate).
+
+`# checking the different categories in the Education Level column   df['Customer Education Level'].value_counts().sort_index()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-11-2.jpg)
+
+To resolve this, you removed the inconsistent categories by standardizing them, eventually providing you with only four education levels.
+
+`# mapping for standardizing categorical values   education_mapping = {   'Bachelor':'Bachelor',   'Doctorate':'PhD',   'Graduate Degree':'Master',   'High School':'High School',   'Master':'Master',   'Masters Diploma':'Master',   'PhD':'PhD',   'Research Degree':'PhD',   'Senior Secondary Education':'High School',   'Undergrad':'Bachelor',   'Undergraduate Degree':'Bachelor'   }`
+
+`# standardizing the 'Customer Education Level' column   df['Customer Education Level'] = df['Customer Education Level'].map(education_mapping)`
+
+`# rechecking if the categories have been fixed   df['Customer Education Level'].unique()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-12-1.jpg)
+
+As the data is now clean, it’s time to analyze it. To perform data analysis using Python, you must have your data as a Pandas DataFrame, as it is much easier to deal with. As you already had the data in this form, you had multiple ways to analyze data.
+
+In Python, you have data manipulation libraries like Pandas and Numpy, visualization libraries like Matplotlib, Seaborn, and Plotly, and statistical libraries like Scipy and Statsmodels. All such libraries allow you to look at the data from various perspectives and uncover hidden patterns.
+
+The following sections will show all the libraries, functions, and techniques for slicing and diceing the data. Note that the focus will not be on the insights gained from the analysis, as discussed in the ‘How to communicate your insights’ section, which involves reporting. Therefore, the aim will be to understand how Python can be leveraged and the approach to be taken when performing data analysis.
+
+### **4) Data Mining**
+
+The simplest and easiest way to analyze data is to mine it. This involves extracting key valuable information about the columns. Data analytics with Python is easy because of libraries like Pandas. If you have your data as a Pandas DataFrame, you can easily use the describe function, which provides statistical information about the columns.
+
+`# finding the key statistical values of the numerical columns   df.describe().T`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-13-1.jpg)
+
+The same function can also be applied to finding key insights about the categorical columns.
+
+`# finding the key statistical values of the categorical columns   df.drop('Date', axis=1).describe(exclude=np.number).T`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-14-1.jpg)
+
+It was necessary to derive a few important variables to mine the data further. These included calculating the year-month combination of the transaction, profit, profit margin, etc.
+
+`# Creating a year-month variable for easily understanding the date related columns`
+
+`# dropping the year and month column as this information is already there in the Date column   df = df.drop(['Year','Month'],axis=1)`
+
+`# extracting year and creating a Year column   df['Year'] = df['Date'].dt.year`
+
+`# extracting year and month and creating a Year-Month column   df['Year_Month'] = df['Date'].dt.strftime('%Y-%m')`
+
+`# calculating profit   df['Profit'] = df['Revenue'] - df['Cost']`
+
+`# calculating unit profit   df['Unit Profit']=df['Unit Price']-df['Unit Cost']`
+
+`# calculating profit margin   df['Profit Margins'] = df['Profit'] / df['Revenue']`
+
+`# calculating unit profit margin   df['Unit Profit Margin']= df['Unit Profit']/df['Unit Price']`
+
+Once such key variables become available, key performance metrics (KPI) can be easily calculated using Python, as performing arithmetic operations between different columns is extremely easy with Pandas.
+
+`# Saes KPIs   ttl_revenue = df['Revenue'].sum()   ttl_profit = df['Profit'].sum()   ttl_revenue_previous = df[df['Year'] == 2015]['Revenue'].sum()   ttl_revenue_current = df[df['Year'] == 2016]['Revenue'].sum()   rga = (ttl_revenue_current-ttl_revenue_previous)/ttl_revenue_previous   pm = (ttl_profit/ttl_revenue)*100   aov = ttl_revenue/len(df)`
+
+`# Customer KPIs   avg_age = df['Customer Age'].mean()   median_income = df['Customer Estimated Income'].median()   mode_martl_status = df['Customer Marital Status'].mode()[0] mode_edu_level = df['Customer Education Level'].mode()[0] male_percentage = (df[df['Customer Gender'] == 'M'].shape[0] / df.shape[0]) * 100   female_percentage = (df[df['Customer Gender'] == 'F'].shape[0] / df.shape[0]) * 100`
+
+`# Product KPIs   top_selling_prod = df.groupby('Sub Category')['Revenue'].sum().sort_values(ascending=False).index[0] most_purchased_prod = df.groupby('Sub Category')['Quantity'].sum().sort_values(ascending=False).index[0] most_costly_prod = df.groupby('Sub Category')['Cost'].sum().sort_values(ascending=False).index[0] most_profitable_prod = df.groupby('Sub Category')['Profit'].sum().sort_values(ascending=False).index[0] most_margin_prod = df.groupby('Sub Category')['Profit Margins'].sum().sort_values(ascending=False).index[0]`
+
+`# Operational KPIs   ttl_cost = df['Cost'].sum()   avg_basket_size = df['Quantity'].mean()   avg_profit_margin = df['Profit Margins'].mean()   top_costly_country = df.groupby('Country')['Cost'].sum().sort_values(ascending=False).index[0]`
+
+`# Print statements for KPIs   print(f"Total Revenue: ${ttl_revenue:,.2f}")   print(f"Total Profit: ${ttl_profit:,.2f}")   print(f"Revenue Growth Rate (2015 to 2016): {rga:.2%}")   print(f"Profit Margin: {pm:.2f}%")   print(f"Average Order Value: ${aov:,.2f}")`
+
+`print("\nCustomer KPIs:")   print(f"Average Customer Age: {avg_age:.1f} years")   print(f"Median Customer Estimated Income: ${median_income:,.2f}")   print(f"Most Common Marital Status: {mode_martl_status}")   print(f"Most Common Education Level: {mode_edu_level}")   print(f"Percentage of Male Customers: {male_percentage:.2f}%")   print(f"Percentage of Female Customers: {female_percentage:.2f}%")`
+
+`print("\nProduct KPIs:")   print(f"Top Selling Product Sub-Category: {top_selling_prod}")   print(f"Most Purchased Product Sub-Category: {most_purchased_prod}")   print(f"Most Costly Product Sub-Category: {most_costly_prod}")   print(f"Most Profitable Product Sub-Category: {most_profitable_prod}")   print(f"Product Sub-Category with Highest Profit Margin: {most_margin_prod}")`
+
+`print("\nOperational KPIs:")   print(f"Total Cost: ${ttl_cost:,.2f}")   print(f"Average Basket Size: {avg_basket_size:.2f} items")   print(f"Average Profit Margin: {avg_profit_margin:.2f}%")   print(f"Country with Highest Total Cost: {top_costly_country}")`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-KPIs-1.jpg)
+
+You’ll now do some complex analysis and calculate crucial financial information for different products. You will do this by grouping the dataframe by product categories and sub-categories and aggregating it by calculating the sum of the key financial columns like revenue, cost, profit, and margin.
+
+`# grouping data by product category and sub-category and aggregating by revenue and cost by summing them   prod_analysis_df = df.groupby(['Product Category','Sub Category'])[['Revenue','Cost']].sum().reset_index()`
+
+`# calculating profit and profit margin   prod_analysis_df['Profits']= prod_analysis_df['Revenue'] - prod_analysis_df['Cost'] prod_analysis_df['Profit Margins']=  prod_analysis_df['Profits']/ prod_analysis_df['Revenue']`
+
+`# viewing data   prod_analysis_df`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-15-1.jpg)
+
+Similarly, you can also calculate this information and more for different countries.
+
+`# grouping data by country with specific aggregation functions for each column   aggregation_functions = {   'Revenue': 'sum',   'Cost': 'sum',   'Quantity': 'sum',   'Profit': 'sum',   'Profit Margins': 'mean'   }   country_analysis_df = df.groupby('Country').agg(aggregation_functions).reset_index()`
+
+`# calculating the total sums for the columns to get proportions   total_sums = country_analysis_df[['Revenue', 'Cost', 'Quantity', 'Profit', 'Profit Margins']].sum()`
+
+`# calculating proportions and adding them as new columns   country_analysis_df['Revenue Proportion'] = round(country_analysis_df['Revenue'] / total_sums['Revenue'],3)*100   country_analysis_df['Cost Proportion'] = round(country_analysis_df['Cost'] / total_sums['Cost'],3)*100   country_analysis_df['Quantity Proportion'] = round(country_analysis_df['Quantity'] / total_sums['Quantity'],3)*100   country_analysis_df['Profit Proportion'] = round(country_analysis_df['Profit'] / total_sums['Profit'],3)*100   country_analysis_df['Profit Margins Proportion'] = round(country_analysis_df['Profit Margins'] / total_sums['Profit Margins'],3)*100`
+
+`# rearranging columns to place similar columns next to each other   country_analysis_df = country_analysis_df[['Country',   'Revenue', 'Revenue Proportion',   'Cost', 'Cost Proportion',   'Quantity', 'Quantity Proportion',   'Profit', 'Profit Proportion',   'Profit Margins', 'Profit Margins Proportion']]`
+
+`# viewing the data   country_analysis_df`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-country-financial-perf-1.jpg)
+
+As you can see, data can be easily analyzed using Pandas, revealing many insights. However, when you try to perform more complex analyses, you may have a set of complex numbers to interpret, making visualization crucial.
+
+### **5) Data Visualization**
+
+Visualization can be an excellent tool for performing complex analyses. It allows us to aggregate data involving two or more variables and understand it using graphs.
+
+Of the many kinds of graphs, bar charts, and pie charts are the key ones as they allow you to understand data composition. Line charts and scatterplots help you comprehend the relationship of numerical variables with other numerical or time-based variables.
+
+In this section, we will highlight some key information about the data by manipulating and visualizing data in multiple ways. 
+
+#### **i) Creating User-Defined Functions**
+
+Data analytics with Python is feasible due to various aspects of this programming language, including the capability to create your functions. While some visualizations can be pretty straightforward, in other cases, they can be complex and involve creating the same graph for different subsets of data.
+
+In such cases, user-defined functions are advised to be created. Below, you will understand what each plotting function you made does.
+
+-   ##### **_Function 1: Bar Chart with Margin Indicator_**
+    
+
+This function plots a bar chart for a given metric (e.g., \`Revenue\`, \`Profit\`) over the years, with annotations highlighting the maximum value and an arrow indicating the range of the metric’s values. 
+
+`def plot_metric_by_year(df, metric, title, color):`
+
+`# grouping by year and calculate the sum of the metric   yearly_data = df.groupby('Year')[metric].sum()`
+
+`# creating a bar chart   plt.bar(yearly_data.index, yearly_data, color=color)`
+
+`# adding a horizontal line at the maximum value   max_value = yearly_data.max()   plt.axhline(y=max_value, color='red', lw=3, ls='--', alpha=0.6)`
+
+`# annotating the plot with arrows   plt.annotate(   text='',   xy=(yearly_data.index[0], yearly_data.min()),   xytext=(yearly_data.index[0], max_value),   arrowprops=dict(   arrowstyle='<|-|>',   facecolor='red',   edgecolor='red',   shrinkA=5,   shrinkB=5   )   )`
+
+`# adding labels and title   plt.xlabel('Year')   plt.ylabel(metric)   plt.title(title)`
+
+-   ##### **_Function 2: Dodged Bar Chart for Year-country_**
+    
+
+This function plots a dodged bar chart showing the yearly trends of a given metric (e.g., \`Revenue\`, \`Cost\`, etc.) for different countries, with each country represented by a different color in the bar chart.
+
+`def plot_metric_by_year_country(df, metric, title):`
+
+`# setting figure size   plt.figure(figsize=(16, 10), facecolor='lightgrey')`
+
+`# grouping by year and country and then calculating the sum of the metric   yearly_country_data = df.groupby(['Year', 'Country'])[metric].sum().unstack('Country')`
+
+`# ploting the data   yearly_country_data.plot(kind='bar', figsize=(14, 8), colormap='tab20', edgecolor='black')`
+
+`# setting labels, title, legend, etc   plt.xlabel('Year')   plt.ylabel(metric)   plt.title(title)   plt.legend(title='Country')   plt.xticks(rotation=45)   plt.tight_layout()`
+
+`# showing plot   plt.show()`
+
+-   ##### **_Function 3: Frequency Donut/Pie Chart_**
+    
+
+This function generates a frequency pie chart (donut plot) to visualize the proportion of different categories within a specified column of a DataFrame. The chart displays both the count and percentage for each category.
+
+`def plot_frequency_pie_chart(df, column_name):`
+
+`# calculating the frequency of each category in the specified column   value_counts = df[column_name].value_counts()`
+
+`# defining color palette   colors = plt.cm.Set1(range(len(value_counts)))`
+
+`# creating function to format the pie chart labels   def func(pct, allvalues):   absolute = int(round(pct / 100. * sum(allvalues)))   return f'{absolute:,}\n({pct:.1f}%)'`
+
+`# plotting the pie chart   plt.figure(figsize=(8, 8))   wedges, texts, autotexts = plt.pie(   value_counts,   labels=value_counts.index,   autopct=lambda pct: func(pct, value_counts),   startangle=140,   colors=colors,   wedgeprops=dict(width=0.3)   )`
+
+`# customizing the label text and colors   for text in texts:   text.set_color('black')   for autotext in autotexts:   autotext.set_color('black')`
+
+`# adding title   plt.title(f'Proportion of Each {column_name}', color='black')`
+
+`# showing the plot   plt.show()`
+
+-   ##### **_Function 4: Horizontal Bar Chart_**
+    
+
+This function generates a horizontal bar chart to visualize aggregated data. It groups data by a specified column, aggregates another column based on the chosen aggregation function, and creates a bar chart to display the results. Optionally, the chart can include text annotations for the bars.
+
+`def plot_bar_chart(df, group_by_col, aggregate_col, agg_func='sum', text_auto=None):`
+
+`# checking if the specified aggregation function is valid   valid_agg_funcs = ['sum', 'mean', 'median', 'count', 'min', 'max'] if agg_func not in valid_agg_funcs:   raise ValueError(f"Invalid aggregation function. Choose from: {valid_agg_funcs}")`
+
+`# grouping and aggregating the data   aggregated_df = df.groupby(group_by_col)[aggregate_col].agg(agg_func).reset_index()`
+
+`# creating the bar chart   if text_auto:   fig = px.bar(aggregated_df, y=group_by_col, x=aggregate_col, text_auto=text_auto,   title=f"{agg_func.capitalize()} of {aggregate_col} by {group_by_col}")   else:   fig = px.bar(aggregated_df, y=group_by_col, x=aggregate_col,   title=f"{agg_func.capitalize()} of {aggregate_col} by {group_by_col}")`
+
+`# updating the axis titles   fig.update_xaxes(title=f'{aggregate_col.capitalize()} ({agg_func.capitalize()})')   fig.update_yaxes(title=group_by_col.capitalize())`
+
+`# showing the plot   fig.show()`
+
+-   ##### **_Function 5: Multiple Bar Charts for Product Subcategories_**
+    
+
+This function generates a set of bar charts to visualize the financial performance of a specified product sub-category across different countries. It plots the following metrics for the given sub-category:
+
+-   Revenue by Country
+-   Cost by Country
+-   Profit by Country
+-   Profit Margin by Country
+
+`def plot_sub_category_performance(df, sub_category):`
+
+`# setting figsize and facecolor   plt.figure(figsize=(16, 5), facecolor='lightgrey')`
+
+`# Plot #1: Revenue by Country   plt.subplot(1, 4, 1, title=f"{sub_category} Revenue by Country")   df[df['Sub Category'] == sub_category].groupby('Country')['Revenue'].sum().plot.bar(color='blue')   plt.ylabel('Revenue')`
+
+`# Plot #2: Cost by Country   plt.subplot(1, 4, 2, title=f"{sub_category} Cost by Country")   df[df['Sub Category'] == sub_category].groupby('Country')['Cost'].sum().plot.bar(color='green')   plt.ylabel('Cost')`
+
+`# Plot #3: Profit by Country   plt.subplot(1, 4, 3, title=f"{sub_category} Profit by Country")   df[df['Sub Category'] == sub_category].groupby('Country')['Profit'].sum().plot.bar(color='red')   plt.ylabel('Margin')`
+
+`# Plot #4: Profit Margin by Country   plt.subplot(1, 4, 4, title=f"{sub_category} Profit Margin by Country")   revenue = df[df['Sub Category'] == sub_category].groupby('Country')['Revenue'].sum()   margin = df[df['Sub Category'] == sub_category].groupby('Country')['Profit'].sum()   (margin / revenue * 100).plot.bar(color='orange')   plt.ylabel('Margin %')`
+
+`# showing plot   plt.tight_layout()   plt.show()`
+
+-   ##### **_Function 6: Scatterplot for Product Subcategories_**
+    
+
+This function creates scatter plots to visualize the relationship between unit cost and unit price for different sub-categories across various countries. It generates a grid of subplots, one for each specified sub-category, and includes color-coded data points to distinguish between countries.
+
+`def plot_unit_cost_vs_price(df, sub_categories):`
+
+`# determining the number of rows and columns for the grid   n_sub_categories = len(sub_categories)   n_cols = 2  # setting the number of columns in the subplot grid   n_rows = (n_sub_categories + n_cols - 1) // n_cols  # computing the number of rows needed   plt.figure(figsize=(15, 5 * n_rows))   plt.suptitle('Unit Cost and Unit Price by Bike Sub-Category and Country', fontsize=16)`
+
+`# looping through each sub-category and creating a subplot   for i, sub_category in enumerate(sub_categories):   plt.subplot(n_rows, n_cols, i + 1)   plt.xlim(0, 3500)   plt.ylim(0, 3500)   plt.title(f'{sub_category} by Country')   sns.scatterplot(data=df[df['Sub Category'] == sub_category],   x='Unit Cost',   y='Unit Price',   hue='Country',   palette='tab10')  # Adjust palette if needed   plt.xlabel('Unit Cost')   plt.ylabel('Unit Price')   plt.legend(title='Country')`
+
+`# hiding any unused subplots   if n_sub_categories % n_cols != 0:   for j in range(n_sub_categories, n_rows * n_cols):   plt.subplot(n_rows, n_cols, j + 1).axis('off')   plt.tight_layout(rect=[0, 0, 1, 0.96])  # Adjust to make room for the suptitle   plt.show()`
+
+-   ##### **_Function 7: Pie Chart for Product Categories_**
+    
+
+This function generates pie charts to visualize the proportion of different financial columns (e.g., \`Revenue\`, \`Cost\`, \`Profit\`) for each category within a specified categorical column (e.g., \`Country\`). It creates a grid of subplots, each showing the distribution of one monetary column across the categories.
+
+`# creating a function to plot a pie chart for different categories and financial performance columns   def plot_pie_charts_1(df, category_col, financial_cols_metrics):`
+
+`# getting unique categories and counting them   unique_categories = df[category_col].unique()   num_categories = len(unique_categories)`
+
+`# determining the layout for subplots based on the number of financial columns   num_financial_cols = len(financial_cols_metrics)   rows = int(np.ceil(num_financial_cols / 2))  # number of rows needed   cols = 2 if num_financial_cols > 1 else 1  # number of columns needed`
+
+`# creating the subplots   fig, axs = plt.subplots(rows, cols, figsize=(10, rows * 5))`
+
+`# flattening the axes array if there are multiple subplots   axs = axs.flatten() if num_financial_cols > 1 else [axs] for i, (financial_col, metric) in enumerate(financial_cols_metrics.items()):`
+
+`# calculating the specified metric for the financial column grouped by the categorical column   if metric == 'sum':   proportions = df.groupby(category_col)[financial_col].sum()   elif metric == 'mean':   proportions = df.groupby(category_col)[financial_col].mean()   elif metric == 'median':   proportions = df.groupby(category_col)[financial_col].median()   elif metric == 'count':   proportions = df.groupby(category_col)[financial_col].count()   elif metric == 'min':   proportions = df.groupby(category_col)[financial_col].min()   elif metric == 'max':   proportions = df.groupby(category_col)[financial_col].max()   else:   raise ValueError(f"Invalid metric '{metric}' for column '{financial_col}'")   labels = proportions.index  # getting the category labels   sizes = proportions.values  # getting the corresponding values   ax = axs[i]  # selecting the current axis for plotting`
+
+`# defining the custom autopct function to display percentage and absolute values   def autopct(pct):   absolute = int(pct / 100. * np.sum(sizes))  # calculating the absolute value   return f'{pct:.1f}%\n({absolute})'  # formatting the string`
+
+`# creating the pie chart   wedges, texts, autotexts = ax.pie(sizes, labels=labels, autopct=autopct, startangle=90)`
+
+`# adjusting the color of the text based on wedge color   for autotext, wedge in zip(autotexts, wedges):`
+
+`# calculating brightness of the wedge color   r, g, b, _ = wedge.get_facecolor()   brightness = (r * 299 + g * 587 + b * 114) / 1000`
+
+`# setting text color to white if the wedge is dark, otherwise black   autotext.set_color('white' if brightness < 0.5 else 'black')`
+
+`# ensuring the pie is drawn as a circle   ax.axis('equal')`
+
+`# setting title for the subplot   ax.set_title(f'Proportion of {financial_col} by {category_col} ({metric})')`
+
+`# hiding any unused subplots   for j in range(i + 1, len(axs)):   axs[j].axis('off')`
+
+`# adjusting layout to prevent overlap   plt.tight_layout()`
+
+`# displaying the plot   plt.show()`
+
+`# setting key column metrics   financial_cols_metrics = {   'Revenue': 'sum',   'Quantity': 'sum',   'Cost': 'sum',   'Profit': 'sum',   'Profit Margins': 'mean'   }`
+
+-   ##### **_Function 8: Pie Chart for Country & Product Categories_**
+    
+
+This function generates pie charts to visualize the proportion of profit contributed by different product categories for each country. It creates a grid of subplots, with each subplot representing the distribution of profit among product categories for a specific country.
+
+`def plot_pie_charts_2(df):`
+
+`# grouping by Country and Product Category, then sum the Profit   profit_by_category_country = df.groupby(['Country', 'Product Category'])['Profit'].sum().reset_index()`
+
+`# ensuring there are no negative or zero profits (filtering them out)   profit_by_category_country = profit_by_category_country[profit_by_category_country['Profit'] > 0]`
+
+`# getting the unique countries   countries = profit_by_category_country['Country'].unique()`
+
+`# defining the number of plots (one for each country)   n_countries = len(countries)`
+
+`# creating a figure with subplots   n_cols = 3   n_rows = (n_countries + n_cols - 1) // n_cols  # Compute the number of rows needed   fig, axes = plt.subplots(n_rows, n_cols, figsize=(18, 4 * n_rows))`
+
+`# flattening the axes array for easy iteration   axes = axes.flatten()   for i, country in enumerate(countries):   ax = axes[i]`
+
+`# filtering data for the current country   country_data = profit_by_category_country[profit_by_category_country['Country'] == country]`
+
+`# ploting pie chart   wedges, texts, autotexts = ax.pie(   country_data['Profit'],   labels=country_data['Product Category'],   autopct='%1.1f%%',   startangle=140,   colors=plt.cm.tab20.colors  # Use a color map for diverse colors   )   ax.set_title(f'{country}')`
+
+`# hiding any unused subplots   for j in range(i + 1, len(axes)):   axes[j].axis('off')`
+
+`# adjusting layout to prevent overlap   plt.tight_layout()`
+
+`# showing the plot   plt.show()`
+
+-   ##### **_Function 9: Pie Chart for Product Sub-categories_**
+    
+
+This function generates pie charts to visualize the percentage distribution of the top 5 sub-categories within a specified product category for multiple countries. It creates a grid of subplots, with each subplot representing the distribution for a specific country.
+
+`def percentage_calc(country, product_category):`
+
+`# filtering the dataframe for the specified country and product category   sub_counts = df[(df["Country"] == country) & (df["Product Category"] == product_category)]["Sub Category"].value_counts()`
+
+`# sorting and selecting top 5 sub-categories based on count   top_sub_counts = sub_counts.nlargest(5)`
+
+`# calculating the percentage for each top sub-category   total_count = sum(top_sub_counts)   return {index: np.round(count / total_count * 100) for index, count in top_sub_counts.items()}`
+
+`# creating a function to plot pie chart showing the percentage distribution of top 5 sub-categories for each specified country and product category   def plot_pie_charts_3(countries, product_category):`
+
+`# getting unique product categories and determine number of unique categories   unique_categories = df["Product Category"].unique()   num_categories = len(unique_categories)`
+
+`# generating a color palette based on the number of unique product categories   colors = plt.cm.get_cmap('Pastel1', num_categories)`
+
+`# creating a figure with a grid of subplots (2 rows, 2 columns)   plt.figure(figsize=(12, 8))`
+
+`# iterating over the list of countries and create a subplot for each   for i, country in enumerate(countries):   plt.subplot(2, 2, i + 1)`
+
+`# getting the percentage distribution for the current country and product category   data = percentage_calc(country, product_category)`
+
+`# creating a pie chart with the calculated percentages and using the color palette   wedges, texts, autotexts = plt.pie(data.values(), labels=data.keys(), autopct='%1.1f%%', colors=colors(range(num_categories)))`
+
+`# setting the title of the subplot to the country name   plt.title(country)`
+
+`# adding the main title for the figure   plt.suptitle(f"Top 5 {product_category} Sub Category Percentage for Each Country", fontsize=16)`
+
+`# displaying the pie charts   plt.show()`
+
+-   ##### **_Function 10: Bar Chart for Finding Top-performing Product Subcategories_**
+    
+
+This function generates bar charts to indicate the top-performing sub-categories for different product categories based on various performance metrics (e.g., \`Quantity\`, \`Profit Margins\`, \`Profit\`, \`Cost\`) across different countries.
+
+`def plot_top_products_by_metric(df, group_by_cols, aggregate_col, agg_func='sum', title=""):`
+
+`# grouping by the specified columns and aggregating the specified column   if agg_func == 'sum':   df_grouped = df.groupby(group_by_cols)[aggregate_col].sum().reset_index()   elif agg_func == 'mean':   df_grouped = df.groupby(group_by_cols)[aggregate_col].mean().reset_index()   else:   raise ValueError("Invalid aggregation function. Use 'sum' or 'mean'.")`
+
+`# finding the top sub-category product for each country based on the aggregated column   top_products = df_grouped.groupby(group_by_cols[0]).apply(lambda x: x.loc[x[aggregate_col].idxmax()]).reset_index(drop=True)`
+
+`# creating the bar chart   fig = px.bar(top_products, x=group_by_cols[0], y=aggregate_col, color=group_by_cols[1], title=title)`
+
+`# showing the plot   fig.show()`
+
+Once the key functions have been created, you can start analyzing the data.
+
+#### **ii. Overview Analysis**
+
+You started by analyzing the overall sales situation. You counted the number of observations where revenue was less than cost (indicating loss) and created a pie chart to understand the proportion of loss-making transactions.
+
+`# creating a loss dataframe that only has those observations where cost is greater than revenue   df_loss = df[df['Revenue'] < df['Cost']]`
+
+`# saving number of observations where loss is there   loss_count = len(df_loss)`
+
+`# saving number of observations with no loss   non_loss_count = len(df)-loss_count`
+
+`# creating labels and size values for pie chart   labels = ['Loss', 'Non-Loss'] sizes = [loss_count, non_loss_count]`
+
+`# creating the pie chart   fig, ax = plt.subplots()   ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=['red', '#90EE90'])   ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.   # adding title   plt.title('Proportion of Loss vs. Non-Loss Observations')`
+
+`# showing plot   plt.show()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-16-1.jpg)
+
+#### **iii. Time-Based Analysis**
+
+Next, you will analyze the financial performance between 2015 and 2016.
+
+-   ##### **_Analysis: Financial Performance by Time_**
+    
+
+To see how financial performance has evolved, you aggregated the financial performance columns (\`Revenue\`, \`Cost\`, \`Profit\`, \`Profit Margins\`) by month and then created a line chart to visualize the trends.
+
+The x-axis represents the Year-Month, and the y-axis shows the amount in dollars, allowing you to observe how the financial performance metrics have evolved over the given period.
+
+`# saving all the financial performance columns   financial_columns = ['Revenue', 'Cost', 'Profit', 'Profit Margins']`
+
+`# aggregaring data by Year   financial_by_year_df = df.groupby(["Year_Month"])[financial_columns].sum().reset_index()`
+
+`# creating a line chart   fig = px.line(financial_by_year_df, x = 'Year_Month', y = financial_columns, title='Financial Performance by Time')`
+
+`# adding axes   fig.update_xaxes(title='Year-Month')   fig.update_yaxes(title='Amount in $')`
+
+`# creating plot   fig.show()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-17-1.jpg)
+
+-   ##### **_Analysis: Financial Performance between Years_**
+    
+
+You created a barplot with multiple subplots to compare financial columns between years. Using different, you plotted \`Revenue\`, \`Cost\`, \`Profit\`, and Profit Margin % by year and added an arrow highlighting the maximum difference.
+
+The x-axis represents the year, and the y-axis shows the respective values or percentages, helping you compare and interpret the trends in these financial metrics across different years.
+
+`# creating a figure and subplots   plt.figure(figsize=(20, 12), facecolor='lightgrey')`
+
+`# plotting Revenue   plt.subplot(2, 2, 1)   plot_metric_by_year(df, 'Revenue', 'Revenue by Year', 'skyblue')`
+
+`# plotting Cost   plt.subplot(2, 2, 2)   plot_metric_by_year(df, 'Cost', 'Cost by Year', 'lightcoral')`
+
+`# plotting Profit   plt.subplot(2, 2, 3)   plot_metric_by_year(df, 'Profit', 'Profit by Year', 'lightgreen')`
+
+`# plotting Profit Margin   plt.subplot(2, 2, 4)   profit_margin_percentage = (df.groupby('Year')['Profit'].sum() / df.groupby('Year')['Revenue'].sum() * 100)   plt.bar(profit_margin_percentage.index, profit_margin_percentage, color='orchid')`
+
+`# adding arrow to indicate the difference   plt.axhline(y=profit_margin_percentage.max(), color='red', lw=3, ls='--', alpha=0.6)   plt.annotate(   text='',   xy=(profit_margin_percentage.index[0], profit_margin_percentage.min()),   xytext=(profit_margin_percentage.index[0], profit_margin_percentage.max()),   arrowprops=dict(   arrowstyle='<|-|>',   facecolor='red',   edgecolor='red',   shrinkA=5,   shrinkB=5   )   )`
+
+`# adding labels and title   plt.xlabel('Year')   plt.ylabel('Profit Margin %')   plt.title('Profit Margin % by Year')`
+
+`# adjusting layout and showing plot   plt.tight_layout()   plt.show()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-18-1.jpg)
+
+-   ##### **_Analysis: Financial Performance between Years for Different Countries_**
+    
+
+To examine financial performance across different countries, you plotted \`Revenue\`, \`Cost\`, \`Profit\`, and \`Profit Margin\` by year for each country using separate charts. Each plot showed how these metrics vary over time, enabling you to compare financial performance and identify trends country-by-country.
+
+`# plotting Revenue by Year for different countries   plot_metric_by_year_country(df, 'Revenue', 'Revenue by Year and Country')`
+
+`# plotting Cost by Year for different countries   plot_metric_by_year_country(df, 'Cost', 'Cost by Year and Country')`
+
+`# plotting Profit by Year for different countries   plot_metric_by_year_country(df, 'Profit', 'Profit by Year and Country')`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-19-2.jpg)
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-20-2.jpg)
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-21-1.jpg)
+
+#### **iv. Customer Demography Analysis**
+
+Next, you analyzed the customer demographics to understand better the individuals involved in the transactions.
+
+-   ##### **_Analysis: Customer Age_**
+    
+
+You created a histogram with 30 bins to understand the distribution of customer ages. The plot displays the frequency of customers within different age ranges, with the x-axis representing age and the y-axis showing the count of customers in each age range. This visualization helps you analyze the age distribution of the customer base.
+
+`# creating a histogram   plt.hist(df['Customer Age'], bins=30, edgecolor='black')`
+
+`# adding titles and labels   plt.title('Histogram of Age')   plt.xlabel('Age')   plt.ylabel('Count')`
+
+`# showing the plot   plt.show()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-22-1.jpg)
+
+-   ##### **_Analysis: Products Purchased by Different Age Groups_**
+    
+
+You first categorized customer ages into bins to analyze how the quantity of products purchased varies across different age groups and product categories. You then aggregated the total quantity purchased by \`Product Category\` and \`Age Bin\`.
+
+Using a stacked bar plot, you visualized the total quantity purchased for each product category, with different colors representing age bins. This plot helped us understand which age groups are most active in purchasing different product categories.
+
+`# defining age bins and labels   bins = range(20, 71, 10)  # bins ranging from 20 to 60 with a step of 10   labels = [f'{i}-{i+9}' for i in bins[:-1]]`
+
+`# creating a new column for age bins   df['Age Bin'] = pd.cut(df['Customer Age'], bins=bins, labels=labels, right=False)`
+
+`# aggregating data by Product Category and Age Bin   agg_df = df.groupby(['Product Category', 'Age Bin'])['Quantity'].sum().unstack().fillna(0)`
+
+`# creating stacked bar plot   agg_df.plot(kind='bar', stacked=True, figsize=(12, 8), edgecolor='black')`
+
+`# adding titles and labels   plt.title('Quantity Purchased by Product Category and Age Bin')   plt.xlabel('Product Category')   plt.ylabel('Total Quantity')   plt.legend(title='Age Bin', bbox_to_anchor=(1.05, 1), loc='upper left')   plt.xticks(rotation=45)`
+
+`# adjusting layout to make room for the legend   plt.tight_layout()`
+
+`# showing the plot   plt.show()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-23-1.jpg)
+
+-   ##### **_Analysis: Age Distribution of Different Product Sub-categories_**
+    
+
+You created a grid of histograms with density plots to explore the distribution of customer ages across different subcategories. Each subplot represents a specific subcategory and displays the age distribution of customers within that subcategory.
+
+This visualization helped you compare age distributions across subcategories and understand how customer age profiles vary with product types.
+
+`# getting unique sub-categories   sub_categories = df['Sub Category'].unique()   n_sub_categories = len(sub_categories)`
+
+`# determining the number of rows and columns for the grid   n_cols = 3   n_rows = (n_sub_categories + n_cols - 1) // n_cols  # Compute the number of rows needed`
+
+`# creating subplots   fig, axes = plt.subplots(n_rows, n_cols, figsize=(18, 4 * n_rows), sharex=True, sharey=False)   fig.suptitle('Distribution of Customer Age by Sub Category', fontsize=16)`
+
+`# flattening the axes array for easier iteration   axes = axes.flatten()`
+
+`# plotting histograms with density plots for each sub-category   for i, sub_category in enumerate(sub_categories):   ax = axes[i] sub_df = df[df['Sub Category'] == sub_category]`
+
+`# plotting histogram with density plot to understand distribution shape   sns.histplot(sub_df['Customer Age'], bins=10, kde=True, color='skyblue', edgecolor='black', ax=ax)   ax.set_title(sub_category)   ax.set_ylabel('Count')   ax.set_xlabel('Customer Age')  # ensuring x-axis label is set for each subplot`
+
+`# adding x-axis ticks to show actual age values   ax.tick_params(axis='x', labelrotation=45)  # rotating x-axis labels`
+
+`# hiding any unused subplots   for j in range(i + 1, len(axes)):   axes[j].axis('off')`
+
+`# adjusting layout   plt.tight_layout(rect=[0, 0, 1, 0.96])  # adjusting layout to make room for the suptitle`
+
+`# showing the plot   plt.show()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-24-1.jpg)
+
+#### **v. Product Analysis**
+
+The most crucial analysis would be of products as they directly impact operational and strategic decisions.
+
+-   ##### **_Analysis: Frequency of Different Products_**
+    
+
+You started by creating a frequency pie (donut) chart to visualize the distribution of different product categories.
+
+`# creating a frequency donut plot   plot_frequency_pie_chart(df, 'Product Category')`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-25-1.jpg)
+
+-   ##### **_Analysis: Financial Contribution of Different Products_**
+    
+
+You created pie charts for each financial performance column to visualize the financial performance across different product categories. This allowed you to see how each product category contributed to different financial metrics, providing insights into financial performance distribution across categories.
+
+`# plotting pie charts for different product categories are financial performance columns   plot_pie_charts_1(df, 'Product Category', financial_cols_metrics)`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-27-1.jpg)
+
+-   ##### **_Analysis: Financial Contribution of Different Product Subcategories_**
+    
+
+To understand product sub-category performance, you created a dodged bar plot based on the product analysis dataframe created at the data mining stage. This chart displayed the financial metrics across different sub-categories, allowing for easy visual comparison.
+
+`# creating dodged bar plot   prod_analysis_df.plot( x = 'Sub Category',   kind = 'bar',   stacked = False,   title = 'Analysis of Products',   figsize=(20, 10))`
+
+`# showing plot   plt.show()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-26-1.jpg)
+
+-   ##### **_Analysis: Financial Performance by Product Sub-categories_**
+    
+
+To analyze financial performance and sales volume across different product sub-categories, you created bar plots for the following metrics:
+
+-   Quantity: Aggregated the total quantity sold by each product sub-category.
+-   Revenue: Aggregated the total revenue by each product sub-category.
+-   Profit: Aggregated the total profit by each product sub-category.
+-   Profit Margins: Calculate the average profit margins by each product sub-category.
+
+These plots helped you understand the distribution and performance of products within each sub-category, providing a clear view of their contributions to overall financial performance and sales.
+
+`# creating bar plots for product subcategories and financial performance columns   plot_bar_chart(df, group_by_col = 'Sub Category', aggregate_col = 'Quantity', agg_func = 'sum', text_auto='.2s')   plot_bar_chart(df, group_by_col = 'Sub Category', aggregate_col = 'Revenue', agg_func = 'sum', text_auto='.2s')   plot_bar_chart(df, group_by_col = 'Sub Category', aggregate_col = 'Profit', agg_func = 'sum', text_auto='.2s')   plot_bar_chart(df, group_by_col = 'Sub Category', aggregate_col = 'Profit Margins', agg_func = 'mean')`
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-31-1.jpg)
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-28-1.jpg) ![](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-29-1.jpg) ![](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-30-1.jpg)
+
+-   ##### **_Analysis: Revenue_**
+    
+
+To analyze revenue data across different product categories and countries, you created a 2×2 grid of bar plots with various configurations:
+
+-   Mean Revenue by Product Category and Country: Shows average revenue per product category, differentiated by country.
+-   Mean Revenue by Country and Product Category: Displays average revenue per country, differentiated by product category.
+-   Sum Revenue by Product Category and Country: Illustrates total revenue per product category, segmented by country.
+-   Sum Revenue by Country and Product Category: Represents total revenue per country, broken down by product category.
+
+These plots helped you compare revenue distribution and performance across different categories and countries, providing insights into revenue patterns and trends.
+
+`# defining the configurations for the plots   plot_configs = [   {"x": "Product Category", "y": "Revenue", "hue": "Country", "estimator": "mean", "title": "Mean Revenue"},   {"x": "Country", "y": "Revenue", "hue": "Product Category", "estimator": "mean", "title": "Mean Revenue"},   {"x": "Product Category", "y": "Revenue", "hue": "Country", "estimator": "sum", "title": "Sum Revenue"},   {"x": "Country", "y": "Revenue", "hue": "Product Category", "estimator": "sum", "title": "Sum Revenue"}   ]`
+
+`# creating a figure and a 2x2 grid of subplots   fig, axs = plt.subplots(2, 2, figsize=(21, 15))`
+
+`# looping through the configurations and plot   for i, config in enumerate(plot_configs):   ax = axs[i // 2, i % 2]  # Determine the subplot position   sns.barplot(   data=df,   x=config["x"],   y=config["y"],   hue=config["hue"],   estimator=config["estimator"],   errorbar=None,   palette='pastel',  # Use the larger color palette   ax=ax   )`
+
+`# adjusting the opacity of bars   for patch in ax.patches:   patch.set_alpha(1.0)   ax.set_title(config["title"])`
+
+`# adjusting layout for better spacing   plt.tight_layout()`
+
+`# displaying the plots   plt.show()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-32-1.jpg)
+
+-   ##### **_Analysis: Financial Contribution of Different Products & their Subcategories_**
+    
+
+Lastly, you created a grid of pie charts to analyze and compare the distribution of various metrics across different product categories. Each row represented a different product category, and each column within that row corresponded to a specific metric:
+
+-   Frequency: Displays the distribution of sub-categories within each product category.
+-   Sum of Revenue: Shows the total revenue for each sub-category.
+-   Sum of Profit: Illustrates the total profit for each sub-category.
+-   Sum of Cost: Represents the total cost for each sub-category.
+-   Average Profit Margins: Visualizes the average profit margins for each sub-category.
+
+This layout helped you compare how different metrics are distributed across sub-categories within each product category.
+
+`# getting unique product categories   product_categories = df['Product Category'].unique()`
+
+`# creating subplots   fig = sp.make_subplots(   rows=len(product_categories), cols=5,   subplot_titles=[f'{pc} - {metric}' for pc in product_categories for metric in ['Frequency', 'Sum of Revenue', 'Sum of Profit', 'Sum of Cost', 'Avg Profit Margins']],   specs=[[{'type': 'pie'}]*5 for _ in range(len(product_categories))],   vertical_spacing=0.15,   horizontal_spacing=0.1   )`
+
+`# adding pie charts for each product category and metric   for i, category in enumerate(product_categories):   category_df = df[df['Product Category'] == category]`
+
+`# Pie Chart #1: Frequency Pie Chart   freq_data = category_df['Sub Category'].value_counts()   fig.add_trace(   go.Pie(labels=freq_data.index, values=freq_data.values,   textinfo='label+percent+value',   name=f'{category} - Frequency'),   row=i + 1, col=1   )`
+
+`# Pie Chart #2: Sum of Revenue Pie Chart   sum_revenue = category_df.groupby('Sub Category')['Revenue'].sum()   fig.add_trace(   go.Pie(labels=sum_revenue.index, values=sum_revenue.values,   textinfo='label+percent+value',   name=f'{category} - Sum of Revenue'),   row=i + 1, col=2   )`
+
+`# Pie Chart #3: Sum of Profit Pie Chart   sum_profit = category_df.groupby('Sub Category')['Profit'].sum()   fig.add_trace(   go.Pie(labels=sum_profit.index, values=sum_profit.values,   textinfo='label+percent+value',   name=f'{category} - Sum of Profit'),   row=i + 1, col=3   )`
+
+`# Pie Chart #4: Sum of Cost Pie Chart   sum_cost = category_df.groupby('Sub Category')['Cost'].sum()   fig.add_trace(   go.Pie(labels=sum_cost.index, values=sum_cost.values,   textinfo='label+percent+value',   name=f'{category} - Sum of Cost'),   row=i + 1, col=4   )`
+
+`# Pie Chart #5: Average Profit Margins Pie Chart   avg_profit_margin = category_df.groupby('Sub Category')['Profit Margins'].mean()   fig.add_trace(   go.Pie(labels=avg_profit_margin.index, values=avg_profit_margin.values,   textinfo='label+percent+value',   name=f'{category} - Avg Profit Margins'),   row=i + 1, col=5   )`
+
+`# updating layout for better presentation   fig.update_layout(   title_text='Distribution by Sub Categories within Each Product Category',   showlegend=True,   height=1500,   width=2000,   title_x=0.5   )`
+
+`# showing the plot   fig.show()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/2-3.jpg)
+
+-   ##### **_Analysis: Product Category – Bike_**
+    
+
+While the insights are reserved for the next section, during the data analytics steps, you understood that Bikes as a product category needed special attention as it was the most revenue-generating segment and thereby had a lot of potential. You started the analysis by understanding the financial performance of the ‘Bikes’ product category across different countries, for which you created a series of bar plots:
+
+-   Revenue by Country for Bikes: Displays total revenue generated from bikes in each country.
+-   Cost by Country for Bikes: Shows the total cost of bikes in each country.
+-   Profit by Country for Bikes: Illustrates each country’s total profit earned from bikes.
+-   Profit Margin by Country for Bikes: This represents each country’s profit margin percentage for bikes.
+
+These plots comprehensively show how bike revenue, cost, profit, and profit margins vary across countries.
+
+`# initializing the figure and subplots   plt.figure(figsize=(20, 6), facecolor='lightgrey')`
+
+`# Plot #1:  Revenue by Country for Bikes   plt.subplot(1, 4, 1, title="Bikes Revenue by Country")   df[df['Product Category'] == 'Bikes'].groupby('Country')['Revenue'].sum().plot.bar(color='blue')`
+
+`# Plot #2: Cost by Country for Bikes   plt.subplot(1, 4, 2, title="Bikes Cost by Country")   df[df['Product Category'] == 'Bikes'].groupby('Country')['Cost'].sum().plot.bar(color='green')`
+
+`# Plot #3: Profit by Country for Bikes   plt.subplot(1, 4, 3, title="Bikes Profit by Country")   df[df['Product Category'] == 'Bikes'].groupby('Country')['Profit'].sum().plot.bar(color='red')`
+
+`# Plot #4: Profit Margin by Country for Bikes   plt.subplot(1, 4, 4, title="Bikes Profit Margin by Country")   margin_percentage = (df[df['Product Category'] == 'Bikes'].groupby('Country')['Profit'].sum() /   df[df['Product Category'] == 'Bikes'].groupby('Country')['Revenue'].sum() * 100)   margin_percentage.plot.bar(color='purple')`
+
+`# adjusting layout   plt.tight_layout()`
+
+`# showing the plot   plt.show()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-33-1.jpg)
+
+-   ##### **_Analysis: Subcategories of Product – Bike_**
+    
+
+You continued exploring the Bike segment and evaluated the performance of different bike sub-categories (Mountain Bikes, Touring Bikes, and Road Bikes) across various countries. Each plot displayed the performance metrics (such as quantity sold, revenue, etc.) for these specific sub-categories in different countries. This helped you understand how each bike sub-category performed internationally.
+
+`# plotting bar charts for different subcategories of Bike for different countries   plot_sub_category_performance(df, 'Mountain Bikes')   plot_sub_category_performance(df, 'Touring Bikes')   plot_sub_category_performance(df, 'Road Bikes')`
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-34-1.jpg)
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/Untitled-1.jpg)![](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-36-1.jpg)
+
+-   ##### **_Analysis: Unit Cost & Unit Price of Different Bikes by Country_**
+    
+
+Lastly, you concluded by analyzing the bike segment and exploring the relationship between unit cost and price for different bike sub-categories. You created scatterplots to illustrate how unit costs compared to unit prices for each bike sub-category, helping you analyze pricing strategies and cost structures.
+
+`# plotting scatterplots   plot_unit_cost_vs_price(df, ['Mountain Bikes', 'Road Bikes', 'Touring Bikes'])`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-37-1.jpg)
+
+#### **vi. Country Analysis**
+
+While \`Country\` was involved in the earlier section, it was time to analyze this column more closely.
+
+-   ##### **_Analysis: Proportion of Each Category_**
+    
+
+You started by visualizing the distribution of observations (transactions) across different countries. You created a frequency donut plot for the \`Country\` column to do so. This plot helped you understand the relative proportion of each country within the dataset and highlighted how sales are distributed geographically.
+
+`# plotting frequency donut plot for 'Country' column   plot_frequency_pie_chart(df, 'Country')`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-38-1.jpg)
+
+-   ##### **_Analysis: Profit of Different Countries_**
+    
+
+To analyze the contribution of profit by country, you calculated the total profit for each country and then created a pie chart. This chart visualizes the proportion of total profit contributed by each country, helping you understand which countries are driving the profit.
+
+`# calculating the profit contribution by country   country_sales = df.groupby('Country')['Profit'].sum().reset_index()`
+
+`# plotting a pie chart   fig = px.pie(df, values='Profit', names='Country', color_discrete_sequence=px.colors.sequential.Sunsetdark_r,   title="Profit by Country")`
+
+`# showing plot   fig.show()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/image9-copy.jpg)
+
+-   ##### **_Analysis: Financial Contribution of Countries_**
+    
+
+You created pie charts for each financial performance column by country to explore the financial performance across different countries. This visualization helped you understand how each country contributes to these financial metrics, revealing each country’s distribution and relative importance in the overall financial performance.
+
+`# plotting pie charts for countries and financial performance related columns   plot_pie_charts_1(df, 'Country', financial_cols_metrics)`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-40-1.jpg)
+
+-   #####  **_Analysis: Most Profitable Product Category by Country_**
+    
+
+To identify the top-performing product category in terms of profit for each country, you grouped the data by \`Country\` and \`Product Category\`, calculated the total profit for each combination, and then sorted the results.
+
+You selected the top product category for each country based on profit and created a bar plot to visualize these top categories and their respective profits. Each bar is annotated with the product category and profit value, providing a clear view of which product category generates the highest profit in each country.
+
+`# grouping by 'Country' and 'Product Category', and summing 'Profit'   category_profit = df.groupby(['Country', 'Product Category'])['Profit'].sum().reset_index()`
+
+`# sorting by 'Profit' in descending order and taking the top product category for each country   category_profit = category_profit.sort_values('Profit', ascending=False).groupby('Country').head(1).reset_index(drop=True)`
+
+`# creating a bar plot of 'Profit' by 'Country' and 'Product Category'   g = sns.barplot(data=category_profit, x='Country', y='Profit')`
+
+`# annotating each bar with the 'Product Category' and 'Profit' value   for v in category_profit.itertuples():   g.text(x=v.Index, y=v.Profit + 1e4, s=f"{v._2}--{round(v.Profit, 2)}", size=10, rotation=45, ha="center")`
+
+`# rotating the x-axis labels for better readability   plt.xticks(rotation=0)`
+
+`# displaying the plot   plt.show()`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-41-1.jpg)
+
+-   ##### **_Analysis: Contribution of Different Product Categories to Different Countries_**
+    
+
+To analyze the distribution of sub-categories within each country, you created pie charts that visualize the proportion of each sub-category for different countries. This allows you to see how various sub-categories contribute to each country’s overall profit, providing insights into regional preferences and market dynamics.
+
+`# plotting pie charts for countries and sub-categories   plot_pie_charts_2(df)`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-42-1.jpg)
+
+-   #####  **_Analysis: Product Subcategory Composition by Countries_**
+    
+
+You created pie charts for each product category (Bikes, Clothing, and Accessories) to examine the distribution of product sub-categories across different countries. Each chart visualizes how the product sub-categories are distributed within the various countries, helping you understand regional variations and preferences.
+
+`# setting country names   countries = df['Country'].unique().tolist()`
+
+`# plotting pie charts for the specified countries and product category   plot_pie_charts_3(countries, product_category =  "Bikes")   plot_pie_charts_3(countries, product_category =  "Clothing")   plot_pie_charts_3(countries, product_category =  "Accessories")`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-43-2.jpg) ![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-44-1.jpg)
+
+-   #####  **_Analysis: Top Product Sub-categories for Different Countries_**
+    
+
+To analyze the top products by various metrics across different countries, you created bar charts for:
+
+-   Quantity:  Displays the top products by the total quantity sold in each country.
+-   Profit Margins: Shows the top products by average profit margins in each country.
+-   Profit: Illustrates the top products by average profit in each country.
+-   Cost: Represents the top products by average cost in each country.
+
+These charts helped you identify which products perform best in terms of quantity, profit margins, profit, and cost across different countries.
+
+`# creating bar chart for analyzing countries by quantity, cost, profit and profit margin   plot_top_products_by_metric(df, ["Country", "Sub Category"], "Quantity", agg_func='sum', title="Top Product by Country and Quantity")   plot_top_products_by_metric(df, ["Country", "Sub Category"], "Cost", agg_func='mean', title="Top Product by Country and Cost")   plot_top_products_by_metric(df, ["Country", "Sub Category"], "Profit", agg_func='mean', title="Top Product by Country and Profit")   plot_top_products_by_metric(df, ["Country", "Sub Category"], "Profit Margins", agg_func='mean', title="Top Product by Country and Profit Margin")`
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-45-1.jpg)
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-48-1.jpg)
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-47-1.jpg)
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-46-1.jpg)
+
+### **6) Statistical Analysis**
+
+While visualization can be great, statistical analysis is necessary to understand the relationships between variables precisely. Stats is a powerful statistical Python module that reaffirms why data analytics with Python is the right thing to do.
+
+Next, you used different statistical tests and techniques to analyze the data.
+
+-   #### **Analysis: Comparison of Revenue between Gender**
+    
+
+To determine if there is a significant difference in revenue between male and female customers, you performed an independent t-test. You separated the revenue data by gender and then conducted the test.
+
+The resulting t-statistic and p-value help you assess whether the observed difference in revenue is statistically significant. Based on the p-value compared to a significance level (alpha), you interpreted whether to reject or fail to reject the null hypothesis, indicating whether gender significantly impacts revenue.
+
+`# separating the revenue data by gender   male_revenue = df[df['Customer Gender'] == 'M']['Revenue'] female_revenue = df[df['Customer Gender'] == 'F']['Revenue']`
+
+`# performing independent t-test   t_stat, p_value = stats.ttest_ind(male_revenue, female_revenue, equal_var=False)`
+
+`# printing results   print(f"T-statistic: {t_stat:.4f}")   print(f"P-value: {p_value:.4f}")`
+
+`# interpreting results   alpha = 0.05  # significance level   if p_value < alpha:   print("Reject the null hypothesis: There is a significant difference in revenue between males and females.")   else:   print("Fail to reject the null hypothesis: There is no significant difference in revenue between males and females.")`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-49-1.jpg)
+
+-   #### **Analysis: Correlation between Revenue and Profit**
+    
+
+You calculated the Pearson correlation coefficient to assess the relationship between revenue and profit. This statistic measures the strength and direction of the linear relationship between these two variables. You also computed the p-value to determine if the observed correlation is statistically significant.
+
+`# calculating the Pearson correlation coefficient   corr_coefficient, p_value = stats.pearsonr(df['Revenue'], df['Profit'])`
+
+`# printing results   print(f"Correlation coefficient: {corr_coefficient:.4f}")   print(f"P-value: {p_value:.4f}")`
+
+`# interpreting results   alpha = 0.05   if p_value < alpha:   print("Reject the null hypothesis: There is a significant correlation between revenue and profit.")   else:   print("Fail to reject the null hypothesis: There is no significant correlation between revenue and profit.")`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-50-1.jpg)
+
+-   #### **Analysis: Comparing the Average Revenue across Different Product Categories**
+    
+
+To investigate if there is a significant difference in average revenue among different product categories, you performed a One-Way ANOVA. You compared the revenue across three product categories: Accessories, Bikes, and Clothing. The F-statistic and p-value provided insights into whether the observed differences in average revenue are statistically significant.
+
+`# performing the One-Way ANOVA   f_stat, p_value = stats.f_oneway(   df[df['Product Category'] == 'Accessories']['Revenue'],   df[df['Product Category'] == 'Bikes']['Revenue'],   df[df['Product Category'] == 'Clothing']['Revenue'] )`
+
+`# printing results   print(f"F-statistic: {f_stat:.4f}")   print(f"P-value: {p_value:.4f}")`
+
+`# interpreting results   alpha = 0.05   if p_value < alpha:   print("Reject the null hypothesis: There is a significant difference in average revenue across product categories.")   else:   print("Fail to reject the null hypothesis: There is no significant difference in average revenue across product categories.")`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-51-1.jpg)
+
+-   #### **Analysis: Checking the Association between Product Category and Customer Marital Status**
+    
+
+You created a contingency table and performed a Chi-Square test to examine the association between product category and customer marital status. The Chi-Square statistic and p-value helped you assess whether there is a significant relationship between these two categorical variables.
+
+`# creating contingency table   contingency_table = pd.crosstab(df['Product Category'], df['Customer Marital Status])`
+
+`# performing the Chi-Square test   chi2_stat, p_value, dof, expected = stats.chi2_contingency(contingency_table)`
+
+`# printing results   print(f"Chi-Square Statistic: {chi2_stat:.4f}")   print(f"P-value: {p_value:.4f}")`
+
+`# interpreting results   alpha = 0.05   if p_value < alpha:   print("Reject the null hypothesis: There is a significant association between Product Category and Customer Marital Status.")   else:   print("Fail to reject the null hypothesis: There is no significant association between Product Category and Customer Marital Status.")`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-52-1.jpg)
+
+-   #### **Analysis: Finding Predictors for Income Column**
+    
+
+You performed a multiple linear regression to analyze the relationship between several independent variables and profit. You defined the independent variables, added a constant term, and then specified the dependent variable as profit.
+
+After fitting the regression model, you reviewed the summary, which includes coefficients, standard errors, p-values, and other statistics. This summary helped you understand how each independent variable influences profit and assessed the model’s overall fit.
+
+`# defining the independent variables and add a constant   X = df[['Customer Age', 'Customer Estimated Income', 'Loyalty Balance', 'Customer Duration', 'Quantity', 'Unit Price', 'Profit Margins', 'Unit Profit Margin']] X = sm.add_constant(X)`
+
+`# defining the dependent variable   y = df['Profit']  # Replace with your actual profit data`
+
+`# creating and fit the regression model   model = sm.OLS(y, X).fit()`
+
+`# printing summary   print(model.summary())`
+
+![output](https://www.analytixlabs.co.in/wp-content/uploads/2024/09/output-53-1.jpg)
+
+As the data analysis has been done using Python, the next thing to learn is how to report the findings.
+
+## **How to Communicate your Insights and Resolve Anomalies?**
+
+Once you complete your analysis, the next crucial step is communicating your findings. This step is highly vital as if not done correctly, it can ruin the work that you have done so far. To effectively report your insights, you can follow these guidelines-
+
+-   **Define Audience:** Understand your target audience, i.e., whether they are business stakeholders, technical experts, etc., and tailor your report accordingly.
+-   **Storytelling:** It’s crucial as you need a clear and coherent narrative to present your insights. This ensures that your findings look compelling and logical. Highlighting key findings can be essential.
+-   **Visualization:** Visualization is critical as it allows the audience to follow your findings easily.
+-   **Set Context:** The narrative is crucial throughout the communication setting and provides recommendations and action items.
+-   **Address of Anomalies:** If, during analysis, unusual patterns have been found, they must be highlighted, and their potential meaning and impact must be discussed. You must find their root cause and communicate about them to resolve them.
+
+## **FAQs:**
+
+-   **What are the quick tips to start with Python for data analytics?**
+
+To learn Python for data science and analytics, you must become proficient with critical libraries like Pandas, NumPy, SciPy, and Matplotlib. You should also regularly work on small to medium datasets to apply your analytical skills.
+
+-   **Can Python replace spreadsheets?**
+
+Yes, Python can replace spreadsheets. It has superior data manipulation, visualization, and statistical analysis capabilities and works better with big data. However, spreadsheets are still handy for smaller data and more straightforward use cases, as they are highly accessible and easy to use.
+
+-   **How do you learn Python for data analytics?**
+
+You can self-learn or enroll in online courses to learn Python for data analytics. You can also consider enrolling in specialized programs like AnalytixLabs offers for structured learning.
+
+Related Reading Resources
+
+-   [How To Visualize Data Using Python](https://www.analytixlabs.co.in/blog/python-visualization/)
+-   [Why Use Python For Data Analysis?](https://www.analytixlabs.co.in/blog/big-data-python/)
+-   [How to Build Custom Deep Learning Models in Python?](https://www.analytixlabs.co.in/blog/deep-learning-models-in-python/)

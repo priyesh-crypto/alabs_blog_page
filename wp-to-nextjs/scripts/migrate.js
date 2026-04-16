@@ -21,7 +21,7 @@ const CONFIG = {
   delayMs: 600,
   concurrentImages: 5,
   timeout: 30_000,
-  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Migration/1.0',
+  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
 };
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
@@ -136,10 +136,17 @@ function extractMeta($, url) {
 
 function extractContent($) {
   const selectors = [
+    '.content-div',
+    '.elementor-widget-theme-post-content',
+    '.elementor-post-content',
     '.entry-content',
     '.post-content',
     'article .content',
     'main article .post-body',
+    '.post-inner',
+    'article',
+    '.site-main',
+    'main',
   ];
 
   let $content = null;
@@ -153,17 +160,27 @@ function extractContent($) {
 
   if (!$content) return '';
 
-  // Remove WordPress noise
+  // Remove WordPress + AnalytixLabs noise elements
   const removeSelectors = [
     '.sharedaddy',
     '.jp-relatedposts',
     '.post-navigation',
     '.comments-area',
+    '.comment-respond',
+    '.comment-div',
     '.widget',
+    '.author-card',
+    '.author-bio',
+    '.related-post-blog',
+    '.addtoany_shortcode',
+    '.a2a_kit',
+    '.blog_listing_box',
+    '#ez-toc-container',
     '[class*="subscribe"]',
     '[class*="newsletter"]',
     '[class*="social-share"]',
     '[class*="related-post"]',
+    '[class*="contact-card"]',
     'script',
     'style',
     'noscript',

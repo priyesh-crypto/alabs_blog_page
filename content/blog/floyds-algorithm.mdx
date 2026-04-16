@@ -1,0 +1,358 @@
+---
+title: "Floyd's Algorithm: Guide to Learning Path, Steps, and Use Cases in ML"
+slug: floyds-algorithm
+date: "2024-08-06T13:53:40+00:00"
+modified: "2026-02-04T06:34:33+00:00"
+description: "Floyd's Algorithm: Comprehensive guide detailing its steps, applications in machine learning, and practical implementations."
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2024/08/cover-image-updated-image.webp"
+author: AnalytixLabs
+categories:
+  - Machine Learning
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/floyds-algorithm/"
+noindex: true
+---
+
+Have you ever wondered how algorithms determine the shortest paths in complex networks? The answer is “Floyd’s Algorithm.” Understanding Floyd’s Algorithm is crucial for anyone in data science and machine learning (ML). It plays a vital role in ML projects like routing internet traffic, analyzing social networks, and recommending products.
+
+Many ML applications, such as optimizing routing protocols, analyzing social network connectivity, and solving logistics and transportation problems, leverage the all-pairs shortest path algorithm. Floyd’s Algorithm offers a practical solution by efficiently determining the shortest path between every pair of nodes in a weighted graph.
+
+It efficiently determines the shortest distances by iteratively updating path lengths. This guide will help you understand Floyd’s Algorithm by clearly explaining its essential principles. We will compare the difference between Dijkstra’s and Floyd Warshall’s algorithms and explore Floyd’s algorithm examples in the real world.
+
+## What is the Floyd’s Algorithm?
+
+Floyd’s Algorithm, also known as the Floyd-Warshall Algorithm, is used for Graph Analysis. It finds the shortest path between node pairs in a weighted graph by iteratively updating the path lengths. The algorithm systematically narrows down the shortest possible distances. It is a comprehensive and reliable approach to tackling the all-pairs shortest path problem.
+
+ _The key difference between Dijkstra and Floyd Warshall Algorithms is that the former finds the shortest path from a node to all other nodes, whereas Floyd’s algorithm calculates the shortest paths for all pairs._ _This algorithm is ideal for dense graphs or when multiple shortest paths are needed._  
+
+Representations in Floyd’s Algorithm:
+
+-   **Graph**: Represented as G, it consists of a set of nodes V and edges E. Each edge has a weight associated with it, defined by the function weight (u and v are nodes in the graph.
+-   **Distance Matrix**: Denoted as dist\[\]\[\], this [matrix](https://www.analytixlabs.co.in/blog/confusion-matrix) calculates the shortest distances between all the pairs of nodes. Initially, it is filled with the direct edge weights between nodes or infinity (∞) if no edge exists.
+-   **Intermediate Node**: Represented as k, which updates the path length iteratively. The values of k range from 1 to n (the number of nodes).
+
+![pseudo code of floyd algorithm](https://www.analytixlabs.co.in/wp-content/uploads/2024/08/1.jpg)
+
+Here is an example graph to illustrate Floyd’s Algorithm example:
+
+![floyd algorithm](https://www.analytixlabs.co.in/wp-content/uploads/2024/08/2.jpg)
+
+The Floyd’s Algorithm example can be outlined in the following steps:
+
+### **Initialization**
+
+` ```text   for each node i in V:   for each node j in V:   if i == j:   dist[I][j] = 0   else if (i, j) is an edge in E:   dist[i][j] = weight(i, j)   else:   dist[i][j] = ∞   ``` `
+
+![floyd's algorithm example](https://www.analytixlabs.co.in/wp-content/uploads/2024/08/3.jpg)
+
+Course Alert 👨🏻‍💻
+
+Machine Learning is the skill for the future! Hence, begin your learning today with AnalytixLabs; we offer you the best industry-ready [machine-learning course](https://www.analytixlabs.co.in/machine-learning-course-certification-training) to help you master these concepts.
+
+Explore our signature **data science courses in collaboration with _Electronics & ICT Academy, IIT Guwahati_**, and join us for experiential learning to transform your career.
+
+-   [Certification Course in Data Science](https://www.analytixlabs.co.in/data-science-specialization-course)
+-   [PG in Data Science](https://www.analytixlabs.co.in/pg-in-data-science)
+
+We have [elaborate courses](https://www.analytixlabs.co.in/courses) on [Artificial Intelligence](https://www.analytixlabs.co.in/artificial-intelligence-certification-courses-online) and [Business Analytics](https://www.analytixlabs.co.in/business-analytics-data-science-course). Choose a learning module that fits your needs—classroom, online, or blended eLearning.
+
+Check out [our upcoming batches](https://www.analytixlabs.co.in/upcoming-batches) or [book a free demo](https://www.analytixlabs.co.in/contact-us) with us. Also, check out our [exclusive enrollment offers](https://www.analytixlabs.co.in/offers)
+
+## Floyd’s Algorithm: Step-by-Step Implementation and Optimization Techniques
+
+Floyd’s Algorithm relies on dynamic programming, breaking down the problem into simpler subproblems and solving them step-by-step. It uses a 2D array to keep track of the shortest paths and iteratively updates this array by considering each node as an intermediate point.
+
+` ```text   for each intermediate node k in V:   for each node i in V:   for each node j in V:   if dist[I][j] > dist[i][k] + dist[k][j]:   dist[i][j] = dist[i][k] + dist[k][j] ``` `
+
+### 1) Step-by-Step Breakdown
+
+Let’s look at the step-wise working to understand what is Floyd Warshall Algorithm.
+
+We will take each node as an intermediate node in the Floyd Warshall Algorithm example.
+
+The formula for Distance\[\]\[\] for every {i,j} node pair is as follows:
+
+ = Distance\[i\]\[j\] = minimum (Distance\[i\]\[j\], (Distance from i to A) + (Distance from A to j )) 
+
+ = Distance\[i\]\[j\] = minimum (Distance\[i\]\[j\], Distance\[i\]\[A\] + Distance\[A\]\[j\]) 
+
+![floyd's algorithm example](https://www.analytixlabs.co.in/wp-content/uploads/2024/08/4.jpg)
+
+Use node A as an intermediate node to calculate the Distance\[\]\[\] using the formula:
+
+ = Distance\[i\]\[j\] = minimum (Distance\[i\]\[j\], (Distance from i to A) + (Distance from A to j )) 
+
+ = Distance\[i\]\[j\] = minimum (Distance\[i\]\[j\], Distance\[i\]\[A\] + Distance\[A\]\[j\]) 
+
+![floyd's algorithm example](https://www.analytixlabs.co.in/wp-content/uploads/2024/08/5.jpg)
+
+Use node B as an intermediate node to calculate the Distance\[\]\[\] using the formula:
+
+ = Distance\[i\]\[j\] = minimum (Distance\[i\]\[j\], (Distance from i to B) + (Distance from B to j )) 
+
+ = Distance\[i\]\[j\] = minimum (Distance\[i\]\[j\], Distance\[i\]\[B\] + Distance\[B\]\[j\]) 
+
+![floyd's algorithm example](https://www.analytixlabs.co.in/wp-content/uploads/2024/08/6.jpg)
+
+Use node C as an intermediate node to calculate the Distance\[\]\[\] using the formula:
+
+ = Distance\[i\]\[j\] = minimum (Distance\[i\]\[j\], (Distance from i to C) + (Distance from C to j )) 
+
+ = Distance\[i\]\[j\] = minimum (Distance\[i\]\[j\], Distance\[i\]\[C\] + Distance\[C\]\[j\]) 
+
+![floyd's algorithm example](https://www.analytixlabs.co.in/wp-content/uploads/2024/08/7.jpg)
+
+Use node D as an intermediate node to calculate the Distance\[\]\[\] using the formula:
+
+ = Distance\[i\]\[j\] = minimum (Distance\[i\]\[j\], (Distance from i to D) + (Distance from D to j )) 
+
+ = Distance\[i\]\[j\] = minimum (Distance\[i\]\[j\], Distance\[i\]\[D\] + Distance\[D\]\[j\]) 
+
+![floyd's algorithm example](https://www.analytixlabs.co.in/wp-content/uploads/2024/08/8.jpg)
+
+Use node E as an intermediate node to calculate the Distance\[\]\[\] using the formula:
+
+ = Distance\[i\]\[j\] = minimum (Distance\[i\]\[j\], (Distance from i to E) + (Distance from E to j )) 
+
+ = Distance\[i\]\[j\] = minimum (Distance\[i\]\[j\], Distance\[i\]\[E\] + Distance\[E\]\[j\]) 
+
+-   #### **Result Extraction**
+    
+
+ After completing the iterations, \`dist\[I\]\[j\]\` will contain the shortest distance from node \`i\` to node \`j\` for all pairs \`(i, j)\`.
+
+This systematic use of pseudo-variables captures the essence of Floyd’s Algorithm and demonstrates its structured approach to solving the all-pairs shortest path problem effectively.
+
+![floyd's algorithm example](https://www.analytixlabs.co.in/wp-content/uploads/2024/08/9.jpg)
+
+### **2) Time and Space Complexity Analysis**
+
+Floyd’s Algorithm example we discussed has n number of nodes. It has:
+
+-   Time complexity of O(n^3)
+-   Space complexity of O(n^2)
+
+Floyd Warshall Algorithm time complexity can be improved by using a more efficient data structure like heap. The Floyd Warshall algorithm time complexity in this case is O(n^2 log n). While this makes it less efficient than Dijkstra’s algorithm for sparse graphs, it is highly effective for dense graphs or scenarios requiring multiple shortest-path calculations.
+
+### **3) Optimizations for Floyd’s Algorithm**
+
+Floyd’s Algorithm to improve its efficiency and reduce time/space complexity include:
+
+-   #### **Path Reconstruction**
+    
+
+One significant optimization for the Floyd-Warshall algorithm is the incorporation of path reconstruction, which allows us to not only determine the shortest distances but also to reconstruct the actual paths. This is achieved through an auxiliary predecessor matrix \`path\[\]\[\]\`, which stores the intermediate nodes on the shortest paths.
+
+To implement path reconstruction, initialize the \`path\[I\]\[j\]\` matrix such that:
+
+-   \`path\[i\]\[j\] = i\` if there is a direct edge from \`i\` to \`j\`.
+-   \`path\[i\]\[j\] = -1\` if there is no direct edge between \`i\` and \`j\`.
+
+Update the \`path\[i\]\[j\]\` wherever the distance matrix \`dist\[i\]\[j\]\` gets updated:
+
+` ```text   for each intermediate node k in V:   for each node i in V:   for each node j in V:   if dist[i][j] > dist[i][k] + dist[k][j]:   dist[i][j] = dist[i][k] + dist[k][j] path[i][j] = path[k][j] ``` `
+
+After running the algorithm, the shortest path from node \`i\` to \`j\` can be reconstructed using the \`path\` matrix.
+
+-   #### **Space Optimizations**
+    
+
+Another optimization involves reducing the space complexity. Since the algorithm uses a 2D matrix to store distances, this can be memory-intensive for large graphs. We can slightly reduce the memory overhead by using an in-place update method and reusing the input matrix for storing distances.
+
+` ```text   for each intermediate node k in V:   for each node i in V:   for each node j in V:   dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])   ``` `
+
+-   #### **Parallelization**
+    
+
+Floyd-Warshall’s triple-nested loop structure makes it a good candidate for parallel processing. Using multi-threading or GPU computing, we can parallelize the inner loops to leverage modern multi-core processors and reduce execution time significantly.
+
+` ```text   for each intermediate node k in V:   # Parallelize the following nested loops   for each node i in V in parallel:   for each node j in V in parallel:   if dist[I][j] > dist[i][k] + dist[k][j]:   dist[i][j] = dist[i][k] + dist[k][j] ``` `
+
+These optimizations can greatly enhance the performance and utility of the Floyd-Warshall algorithm, making it more applicable for large-scale and real-world datasets.
+
+### **4) Alternative Algorithms for Specific Graph Types**
+
+For sparse graphs, algorithms other than Floyd-Warshall might be more efficient. The key difference between Dijkstra and Floyd-Warshall is that Dijkstra finds the shortest path from a single source, while Floyd-Warshall finds paths between all pairs of nodes.
+
+-   Dijkstra’s algorithm has a time complexity of O((V + E) log V) with a binary heap, making it faster for graphs where the number of edges (E) is much less than the square of the number of nodes (V).
+-   Bellman-Ford is another alternative for finding the shortest paths from a single source and can handle negative weights. However, its time complexity is O(VE), making it less efficient than Dijkstra’s for large graphs.
+
+The choice between these algorithms depends on their efficiency and specificity. Floyd-Warshall is suitable for dense graphs and multiple shortest-path calculations, while Dijkstra’s and Bellman-Ford are better for sparse graphs and single-source shortest-path problems. Selecting the appropriate algorithm is crucial for balancing performance and resource utilization in real-world applications.
+
+## **Essential Skills for Effective Use**
+
+Clarity of graph theory concepts helps you understand what is Floyd Warshall Algorithm and use it effectively.
+
+Key concepts include:
+
+**Paths:** A sequence of vertices connected by edges is a path. You must understand
+
+-   Simple paths that do not repeat vertices.
+-   Shortest paths that minimize the sum of edge lengths.
+-   Directed paths that follow the arrows of directed graphs.
+-   Undirected paths where edges can be traversed in both directions.
+
+**Connectedness:** A graph is connected if and only if a path exists between any two nodes in the graph.
+
+**Cycles:** Recognizing cycles, which are paths that start and end at the same vertex, helps prevent infinite loops in certain algorithms. Identifying and handling cycles, especially negative-weight cycles, are essential in shortest-path calculations.
+
+**Weighted Edges:** Weighted edges assign a value or cost to traversing between vertices. Mastery of how these weights affect pathfinding and overall graph traversal is vital.
+
+Dynamic Programming (DP) forms the backbone of graph algorithms like Floyd Warshall Algorithm. Essential DP principles include:
+
+-   **Optimal Substructure:** The property that an optimal solution to a problem contains optimal solutions to its subproblems.
+-   **Overlapping Subproblems:** Recomputing solutions to subproblems multiple times can be avoided by storing and reusing intermediate results.
+-   **Memoization and Tabulation:** Techniques for storing solutions to subproblems either through recursion with memoization or iterative tabulation to improve time complexity.
+
+DP primarily relies on the following key techniques to solve problems efficiently:
+
+**1) Memoization:** This is a top-down approach in which the algorithm breaks down the problem into smaller subproblems. The results of these subproblems are then stored in a table or dictionary to avoid redundant calculations. When the same subproblem is encountered again, the algorithm retrieves the stored result instead of recomputing it.
+
+-   **Key Characteristics:**
+
+**Recursion:** Memoization leverages recursion to solve subproblems.
+
+**Space Complexity:** It requires additional memory to store the results of subproblems.
+
+**Efficiency:** It improves time complexity by preventing recomputation of already solved subproblems.
+
+-   **Example:** The classic example of memoization is the computation of Fibonacci numbers. By storing previously calculated Fibonacci numbers, the algorithm avoids redundant calculations, significantly reducing the time complexity from exponential to linear.
+
+**2) Tabulation:** A bottom-up approach where the algorithm iteratively solves all subproblems and stores their results in a table. It starts with the smallest subproblems and works its way up to solving the original problem.
+
+-   **Key Characteristics:**
+
+**Iteration:** Tabulation uses looping constructs rather than recursion.
+
+**Space Complexity:** Like memorization, it also requires memory to store solutions of subproblems.
+
+**Efficiency:** Iteratively solving subproblems can sometimes be more space-efficient than the recursive stack used in memorization.
+
+-   **Example:** Tabulation is also used to compute Fibonacci numbers. This time, it starts with the smallest Fibonacci numbers and builds up to the desired value, storing each intermediate result in a table.
+
+## **How to Master a Programming Language for Implementation?**
+
+Achieving proficiency in a specific programming language is paramount for effectively implementing the Floyd Warshall Algorithm or any complex graph theory solution. 
+
+The key aspects you must consider are:
+
+1.  **Syntax and Semantics:** The first step is to understand the fundamentals of the chosen language’s syntax and semantics. This includes writing clean and correct code for basic constructs like variables, loops, conditionals, functions, and classes.
+2.  **Data Structures:** Mastery of core data structures such as arrays, lists, dictionaries, and sets is essential. These structures will help efficiently represent graphs, store intermediate values, and facilitate quick look-ups and updates.
+3.  **Libraries and Frameworks:** Familiarity with language-specific libraries or frameworks that simplify graph manipulation and algorithm implementation can significantly enhance productivity. For example, Python offers libraries like NetworkX, while C++ includes the Boost Graph Library.
+4.  **Performance Optimization:** Proficiency also involves understanding performance implications regarding time and space complexity. Knowing how to optimize loops, use efficient data structures, and employ built-in functions can improve the overall performance of your implementation.
+5.  **Memory Management:** In languages like C or C++, managing memory allocation and deallocation is crucial to avoid memory leaks and ensure optimal resource use. Garbage-collected languages like Java or Python relieve some of this burden, but understanding underlying memory usage is still beneficial.
+6.  **Debugging and Testing:** Developing skills in debugging tools and techniques ensures that algorithms work correctly and efficiently. Writing unit tests, integration tests, and employing debugging tools like IDE debuggers or logging frameworks are part of ensuring the reliability of the implementation.
+7.  **Algorithmic Thinking:** Beyond language-specific skills, developing a mindset geared toward algorithmic problem-solving is key. Breaking down problems, understanding computational complexity, and applying appropriate algorithms demonstrate true proficiency.
+8.  **Documentation and Code Readability:** Writing clear, well-documented, and maintainable code is a hallmark of proficiency. This includes using meaningful variable names, writing comments, and adhering to coding standards and conventions.
+
+Achieving proficiency involves continuous practice and learning. Engaging with community resources such as forums, coding challenges, and open-source projects can provide practical experience and exposure to varied problem-solving techniques.
+
+## **Learning Path and Resources**
+
+Understanding Floyd’s Algorithm requires a structured learning path and the right resources to grasp its concept and applications effectively. Here is a learning roadmap to help you learn the skills to implement Floyd’s Algorithm proficiently.
+
+-   ### **Prerequisites**
+    
+
+**1) Foundation-** A solid foundation in graph theory is essential to effectively learning and implementing Floyd’s algorithm. This includes understanding vertices, edges, and the differences between directed and undirected graphs and familiarity with weighted, unweighted, cyclic, and acyclic graphs. Knowing how to represent graphs using adjacency matrices or lists is crucial, as Floyd’s Algorithm typically uses adjacency matrices.
+
+**2) Algorithms and Data Structures –** A strong grasp of basic algorithms and data structures is also important. Key concepts include recursion, iteration, and dynamic programming, as Floyd’s Algorithm is a dynamic programming approach. Knowledge of arrays and matrices for storing graph representations and understanding time and space complexity will aid in assessing performance.
+
+**3) Programming –** Proficiency in a programming language is necessary for implementation. For example, using [Python](https://www.analytixlabs.co.in/blog/mastering-python-for-data-science/), you should be comfortable with its syntax, including loops, conditionals, functions, and classes. Familiarity with libraries like NumPy for matrix operations or NetworkX for graph manipulation can simplify the process. Debugging and testing skills are important to ensure your algorithm handles edge cases effectively.
+
+By building upon these prerequisites, you will be well-prepared to dive into more advanced topics and resources specific to Floyd’s Algorithm, ultimately leading to a successful and efficient implementation.
+
+-   ### **Books & Online Tutorials**
+    
+
+Learn the basics of graph theory, types of graphs, representation of graphs (adjacency matrix and list), and graph traversal algorithms (BFS, DFS) using the following books:
+
+-   Introduction to Graph Theory by Douglas West
+-   Graph Theory by Reinhard Diestel
+
+Next, learn the fundamentals of shortest path algorithms, Dijkstra’s algorithm, Floyd Warshall algorithm, and Bellman-Ford algorithm using the following books:
+
+-   Algorithms by Robert Sedgewick and Kevin Wayne
+-   The Shortest-Path Problem – Analysis and Comparison of Methods by  Hector Ortega-Arranz, Diego R. Llanos, and Arturo Gonzalez-Escribano
+
+Learn the Floyd-Warshall algorithm, dynamic programming, algorithm derivation, and implementation in various programming languages using the following book:
+
+-   [Introduction to Algorithms](https://dl.ebooksworld.ir/books/Introduction.to.Algorithms.4th.Leiserson.Stein.Rivest.Cormen.MIT.Press.9780262046305.EBooksWorld.ir.pdf) by Cormen, Leiserson, Rivest, and Stein (Chapter on Shortest Paths)
+
+**Online Tutorials:**
+
+-   Floyd-Warshall Algorithm on [YouTube](https://www.youtube.com/watch?v=oNI0rf2P9gE)
+
+You must also practice the concepts by implementing the algorithm in real-world scenarios using the following resources:
+
+**Online Coding Platforms:**
+
+-   [LeetCode](https://leetcode.com/)
+-   [HackerRank](https://www.hackerrank.com/)
+
+**Interactive Tools:**
+
+-   [VisuAlgo](https://visualgo.net/en)
+-   [Graph Online](https://graphonline.ru/en/)
+
+By following this structured path and utilizing these resources, you can deeply understand Floyd’s algorithm and its applications.
+
+## **Use Cases of Floyd’s Algorithm in Machine Learning**
+
+Floyd’s Algorithm has practical applications in various ML tasks. Here are specific examples in different domains:
+
+![implementation use cases in machine learning ](https://www.analytixlabs.co.in/wp-content/uploads/2024/08/10.jpg)
+
+### **1\. Network Analysis**
+
+In networks such as the Internet or other large-scale communication networks, nodes represent routers, edges represent communication links, and weights indicate metrics like latency or bandwidth cost.
+
+Example – 
+
+-   **Network Optimization:** Floyd’s algorithm computes the shortest paths between all pairs of routers in a network. This information is then used to optimize routing tables, ensuring that data packets are routed through the most efficient paths, minimizing latency and maximizing throughput.
+-   **Traffic Management:** By continuously running the algorithm, network administrators can dynamically adjust routes in response to changing network conditions (e.g., congestion, outages).
+
+### **2\. Recommendation Systems**
+
+In a recommendation system, both users and items (products, movies, etc.) can be represented as nodes in a graph. Edges represent interactions, such as purchases or ratings, with weights indicating the strength of these interactions.
+
+Example – 
+
+-   **User-User Similarity:** Create a graph where nodes represent users and edges represent the similarity between users based on their interactions with items. Use Floyd’s algorithm to find the shortest paths between all pairs of users, indicating how closely related they are.
+-   **Item Recommendation:** Recommend items to a user by identifying items that are popular among users who are closely related to the target user.
+
+### **3\. Social Network Analysis**
+
+In social networks like Facebook or Twitter, nodes represent users, and edges represent friendships or interactions. The weights on the edges indicate the strength or frequency of interactions.
+
+Example – 
+
+-   **Influence and Reach**: Use Floyd’s algorithm to find the paths between all pairs of users, then calculate centrality measures (e.g., closeness centrality) to identify influential users with the shortest average distance to all other users.
+-   **Information Spread**: Analyzing the shortest paths can help determine the most efficient paths for information dissemination and design strategies for viral marketing or information campaigns.
+
+### **4\. Bioinformatics**
+
+In bioinformatics, protein-protein interaction (PPI) networks are represented as graphs, with nodes representing proteins, edges representing interactions, and weights indicating the interaction strength or biological relevance.
+
+Example –
+
+-   **Pathway Discovery:** Floyd’s algorithm finds the shortest paths between all pairs of proteins, identifying the most efficient communication pathways within the cell. This can help understand signal transduction pathways or metabolic routes.
+-   **Disease Mechanisms:** Analyze PPI networks to discover how diseases affect cellular processes by finding altered shortest paths or disrupted pathways in diseased vs. healthy cells.
+
+## Conclusion
+
+Floyd’s Algorithm is a dynamic programming technique that calculates the shortest paths between all pairs of vertices in a weighted graph, handling both positive and negative edge weights. It is versatile for transportation logistics, social media analytics, and circuit design applications.
+
+With a time complexity of O(n^3), Floyd’s Algorithm is powerful for network routing and resource allocation problems. However, it is less suitable for very large or sparse graphs, where Dijkstra’s or Bellman-Ford’s algorithms might be more efficient.
+
+Researchers are exploring hybrid approaches to enhance its efficiency for different graph structures. Future advancements in machine learning will focus on developing more robust and scalable algorithms for large and complex graphs.
+
+Floyd’s Algorithm is a crucial tool in machine learning, broadening your problem-solving capabilities for complex graph-related tasks. Learning its implementation enhances your ability to choose the right algorithm for specific problems.
+
+Related Reading Resources
+
+-   [Supervised vs. Unsupervised Learning in Machine Learning](https://www.analytixlabs.co.in/blog/supervised-and-unsupervised-learning)
+-   [Machine Learning Vs. Deep Learning](https://www.analytixlabs.co.in/blog/machine-learning-vs-deep-learning)
+-   [Why Should You Learn Machine Learning](https://www.analytixlabs.co.in/blog/importance-of-machine-learning)
+-   [‌Learning about Algorithm – Definition, Types, Characteristics, Applications, and more](https://www.analytixlabs.co.in/blog/what-is-an-algorithm)

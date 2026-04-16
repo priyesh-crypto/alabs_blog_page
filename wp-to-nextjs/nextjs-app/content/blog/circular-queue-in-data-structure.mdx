@@ -1,0 +1,613 @@
+---
+title: "Circular Queue in Data Structure: Operation and Implementation in Python"
+slug: circular-queue-in-data-structure
+date: "2024-10-08T11:36:43+00:00"
+modified: "2026-02-04T08:15:54+00:00"
+description: "Learn what us circular queues in data structure and how to implement them in Python, with test codes included for practice."
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2024/10/cover-image.jpg"
+author: Archish Rai Kapil
+categories:
+  - Big Data
+  - Data Analytics
+  - Data Science
+  - Python
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/circular-queue-in-data-structure/"
+noindex: true
+---
+
+Data Structures are critical in computer science as they directly impact memory utilization, data management, scalability, algorithmic performance, and more. One of the major data structures is queues, which follow the FIFO (first in—first out) principle and have a wide range of application areas.
+
+Queues have multiple types: simple, circular, priority, double-ended, etc. The circular queue is particularly interesting among all these types due to its efficient memory usage and fixed-side management.
+
+This article will explain the queue subcategory and explore its key operations, functioning, implementation, etc.
+
+_Let’s start by understanding what is circular queue in data structure. H__owever, to do that, you need to know why they came into being, the issues they address, how they differ from their peers, etc_.
+
+> Also read: [Understanding Data Structures: Types and Applications](https://www.analytixlabs.co.in/blog/types-of-data/)
+
+## Circular Queues: Background
+
+In the world of data structures, efficient resource management is crucial. Queues have been especially useful for handling large volumes of data.
+
+Like linear queues, traditional queue implementations have long been used to store data sequentially. However, a few issues have led to the discovery of circular queues.
+
+To understand this amazing data structure, let’s understand these challenges and the issues resolved by the circular queue.
+
+-   **Challenges with Linear Queues:** 
+
+Linear queues have major drawbacks, primarily due to their poor memory utilization. The allocated space is not reused when elements are removed from a linear queue. This causes inefficient memory consumption and leads to problems like queue overflow, even if ample space is available at the front of the queue.
+
+-   **Need for Dynamic Structure:** 
+
+The abovementioned challenge becomes more acute, and the difference between a linear queue and a circular queue in a data structure becomes extremely evident in systems where memory is constrained or fixed.
+
+Such issues can arise in embedded systems or network data buffering. The inability to efficiently manage space within a linear queue led to the need for a more dynamic data structure that could optimize memory usage and improve system performance.
+
+**Learn With AnalytixLabs**
+
+Explore our signature **data science courses in collaboration with _Electronics & ICT Academy, IIT Guwahati_**, and join us for experiential learning to transform your career.
+
+-   [Data Science 360 Certification Course](https://www.analytixlabs.co.in/data-science-specialization-course/)
+-   [PG in Data Science](https://www.analytixlabs.co.in/pg-in-data-science/)
+
+Broaden your learning scope with our elaborate [Applied AI](https://www.analytixlabs.co.in/artificial-intelligence-certification-courses-online/), [Machine Learning](https://www.analytixlabs.co.in/machine-learning-course-certification-training/), and [Deep Learning](https://www.analytixlabs.co.in/deep-learning-with-python/) courses. Explore our [ongoing courses here](https://www.analytixlabs.co.in/courses).
+
+Learn the right skills to fully leverage AI’s power and unleash AI’s potential in your data findings and visualization.
+
+Have a question? [Connect with us here](https://www.analytixlabs.co.in/contact-us). Follow us on social media for regular data updates and course help.
+
+## Introduction of Circular Queues in Data Structure
+
+The answer for such a dynamic data structure was found in a [circular queue](https://leetcode.com/problems/design-circular-queue/). Unlike linear queues, circular queues allow continuous reuse of available spaces by treating the queue as a circular structure, where the last position connects back to the first.
+
+This innovative approach eliminates the need for data shifting and prevents memory wastage, making it highly suitable for scenarios where maximizing space and minimizing system downtime are essential.
+
+-   **Importance of Circular Queues in Modern Data Structure**
+
+Circular queues have revolutionized data processing, particularly in applications requiring constant data flow (e.g., CPU scheduling, memory management, buffering of data streams, etc.). They address most of the inefficiencies of linear queues and provide a more scalable, efficient, and robust solution to the memory management problem.
+
+> Also read: [What is an Algorithm in a Data Structure?](https://www.analytixlabs.co.in/blog/algorithm-in-data-structure/)
+
+Now that you know the larger context in which circular queues exist and have also gained a fair bit of insight into the difference between linear queues and circular queues in data structures, it’s time to answer the key question—**_what is a circular queue in data structures_****_?_**
+
+### Circular Queue: Definition
+
+A circular queue is an advanced form of the regular queue. It is designed to overcome the limitations of linear queue implementations.
+
+In a standard queue, the allocated memory is not reused efficiently as elements are inserted and removed. Once the queue’s rear pointer reaches the end, it cannot wrap around, even if vacant positions are at the front.
+
+This leads to wasted space and potential queue overflow despite available capacity. The circular queue addresses this issue. While it, too, operates on the FIFO principle, it has a better design as it connects the last position back to the first, forming a continuous loop.
+
+This technique helps ensure that all available spaces are utilized without shifting elements, making circular queues a time-efficient and memory-optimized solution for data management.
+
+### Basic Operations
+
+Below are the key operations of a circular queue in data structure.
+
+![basic operations of the circular queue ](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/1.jpg)
+
+-   #### Primary Queue Operations
+    
+
+<table style="height: 254px" width="855"><tbody><tr><td>enQueue</td><td>The first primary operation when operating in circular queues is enQueue. It refers to inserting a new element at the end of the queue, which is determined by the current position of the rear. The rear pointer then moves to the next position circularly, looping back to the start if it reaches the end of the queue.</td></tr><tr><td>deQueue</td><td>The next critical operation is deQueue. It removes and returns an element from the front of the queue. After the operation, the front pointer moves to the next position circularly. This mechanism ensures that the queue can reuse vacant spaces created by removing elements.</td></tr></tbody></table>
+
+-   #### Auxilliary Queue Operations
+    
+
+Apart from the above two, several other operations help you handle circular questions. The following are the key ones.
+
+<table><tbody><tr><td>FRONT</td><td>The FRONT operation is used to access the first element in the queue without removing it. It points to the element that will be dequeued next.</td></tr><tr><td>REAR</td><td>The REAR operation is the opposite of the FRONT as it provides access to the last element in the queue. It points to the most recently added element and indicates where the next element will be enqueued.</td></tr><tr><td>isEmpty</td><td>The operation, also known as Underflow, checks if the queue is empty.</td></tr><tr><td>isFull</td><td>Also known as Overflow, this operation checks whether the circular queues are full. If they are, no further elements can be enqueued (added) until some are dequeued (removed).</td></tr><tr><td>isSize</td><td>Lastly, the size operation assesses the number of elements in the queue and returns its size.</td></tr></tbody></table>
+
+_Let us now explore how circular queues in data structure work._ 
+
+## How Does Circular Queue Work?
+
+Circular queues link the last position of the queue back to the first, which helps avoid space wastage and allows continuous addition and removal of elements.
+
+_However, this is a bit too simplistic of an explanation._
+
+Below is a detailed breakdown of how circular queue in data structure function.
+
+### Initial Structure of Circular Queue
+
+A circular queue is a basic structure comprising pointers and some initial values.
+
+-   **Two Pointers**: The circular queue is managed by two pointers, viz. FRONT and REAR. These pointers are responsible for tracking the first and last elements of the queue, respectively.
+-   **Initial Values**: Both FRONT and REAR are initially set to -1 or None; this indicates that the queue is empty. These pointers are adjusted based on the user’s operations.
+
+### Enqueue Operation
+
+As discussed above, the enqueue operation adds elements to the queue. Below, I have outlined the steps for its functioning.
+
+-   **Step 1: Check if Queue is Full**
+
+The queue checks if it is full before inserting any element. The condition for a full queue is _(REAR + 1) % MAXSIZE == FRONT_. This indicates that all spaces are filled, and there is no scope for further insertion. If the queue is found to be full, an overflow error is returned.
+
+-   **Step 2: Inserting the First Element**
+
+When inserting the first element (i.e., FRONT and REAR are both -1), both pointers are initialized to 0. This marks the start of the queue.
+
+-   **Step 3: Update Pointers**:
+
+If the queue is not full and REAR hasn’t reached the maximum size _(MAXSIZE – 1)_, the pointer is incremented by 1, i.e., _REAR = (REAR + 1) % MAXSIZE_.
+
+If REAR reaches the end of the queue (i.e., _MAXSIZE – 1_) but still has room at the front (i.e., _FRONT != 0_), the REAR resets to 0. This is where the circular nature of the data structure comes into play.
+
+-   **Step 4: Insert Element**
+
+The new element is then added to the position indexed by REAR.
+
+### Dequeue Operation
+
+Here is an outline of how the dequeue operation removes elements from the front of the queue.
+
+-   **Step 1: Check if Queue is Empty**
+
+Check if the queue is empty. If _FRONT == -1_, this indicates that there are no elements to dequeue, and an “underflow” error is returned.
+
+-   **Step 2: Remove Element**–
+
+If FRONT and REAR are equal, meaning the queue has only one element, both pointers are reset to -1 after the element is removed, indicating that the queue is empty.
+
+If FRONT is at the end of the queue (i.e., _MAXSIZE – 1_), it wraps around and is set to 0 to maintain the circular nature of the queue. Otherwise, FRONT is incremented by 1: _FRONT = (FRONT + 1) % MAXSIZE_.
+
+### Circular Increment
+
+Undoubtedly, the most critical feature of the circular queue is circular increment. This feature ensures that once REAR reaches the queue’s maximum size, it wraps around to 0 instead of causing overflow.
+
+This wrapping process allows the queue to efficiently manage memory by reusing spaces freed up by previous queue operations.
+
+Understanding with an Example
+
+It’s always better to understand anything, including circular queues in the data structure, as it lets you know how something works.
+
+Below are examples of the functioning and visual exploration of the circular queue in data structure.
+
+-   _**Overview**_
+
+Suppose you have a queue with a maximum size of 5. Another element must be inserted when the REAR reaches position 4 (the last spot in the array).
+
+Instead of causing an overflow, the queue’s design and functioning mechanism ensure that the REAR wraps around to 0, providing us with the following formula.
+
+FORMULA:  REAR = (REAR + 1) % 5 = 0 
+
+_Thus, such a mechanism ensures that the circular queue can continuously operate without wasting space. To comprehend this example further, let’s explore it visually._
+
+-   _**Understanding it visually**_
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/3.jpg)
+
+Continuing with the example of the circular queue with a capacity of 5, I perform numerous operations in such a queue.
+
+Refer to the **image below** to understand how each step changes the elements and how the FRONT and REAR pointers behave.
+
+Below are the actions performed in each step, the queue’s composition, and the pointers’ status.
+
+**Step 1: enQueue(14)**
+
+-   **Action**: The first element, ’14’ is added to the queue.
+-   **Queue**: \[14, -, -, -, -\]
+-   **Pointers**: Both FRONT and REAR are initialized to 0 since the queue was empty.
+
+**Step 2: enQueue(22)**
+
+-   **Action**: The second element, ’22’ is added to the queue at the rear.
+-   **Queue**: \[14, 22, -, -, -\]
+-   **Pointers**: The REAR pointer moves to index 1, while the FRONT remains at index 0.
+
+**Step 3: enQueue(13)**
+
+-   **Action**: The element ’13’ is added to the queue.
+-   **Queue**: \[14, 22, 13, -, -\]
+-   **Pointers**: The REAR pointer increments to index 2, while the FRONT remains at 0.
+
+**Step 4: enQueue(-6)**
+
+-   **Action**: The element’-6′ is added to the queue.
+-   **Queue**: \[14, 22, 13, -6, -\]
+-   **Pointers**: The REAR pointer increments to index 3, while the FRONT remains at 0.
+
+**Step 5: deQueue()**
+
+-   **Action**: The first element, ’14’ is dequeued (removed from the queue).
+-   **Queue**: \[-, 22, 13, -6, -\]
+-   **Pointers**: The FRONT pointer moves to index 1, as the element at index 0 is removed. The REAR remains at index 3.
+
+**Step 6: deQueue()**
+
+-   **Action**: The element ’22’ is dequeued.
+-   **Queue**: \[-, -, 13, -6, -\]
+-   **Pointers**: The FRONT pointer moves to index 2, while the REAR remains at 3.
+
+**Step 7: enQueue(9)**
+
+-   **Action**: The element ‘9’ is added to the queue after dequeuing.
+-   **Queue**: \[-, -, 13, -6, 9\]
+-   **Pointers**: The REAR pointer increments to index 4, wrapping around as space has been made available by the dequeuing. The FRONT remains at index 2.
+
+**Step 8: enQueue(20)**
+
+-   **Action**: The element ’20’ is added to the queue, filling the remaining space.
+-   **Queue**: \[20, -, 13, -6, 9\]
+-   **Pointers**: The REAR pointer returns to index 0, showing the queue’s circular nature. The FRONT remains at index 2.
+
+**Step 9: enQueue(5)**
+
+-   **Action**: The element ‘5’ is added to the queue.
+-   **Queue**: \[20, 5, 13, -6, 9\]
+-   **Pointers**: The REAR pointer moves to index 1. As you can see, both pointers are now cycling through the queue.
+
+_**Key points to note:**_ 
+
+-   **Circular Incrementation**: Notice how, when the REAR reaches the end of the queue (index 4), it wraps around to the beginning (index 0). This is how the circular queue optimizes memory use.
+-   **Efficient Memory Management**: A circular queue avoids shifting elements as in a regular queue by reusing the available space at the start of the queue after dequeuing elements.
+
+The sequence of operations discussed above demonstrates how a circular queue handles continuous insertion and deletion of elements while managing the available space efficiently, helping us to summarize the operations-
+
+-   **Enqueue**: Adds elements to the rear of the queue, wrapping around if necessary.
+-   **Dequeue**: Gets rid of elements from the front of the queue, adjusting pointers circularly.
+-   **Front and Rear**: These two pointers track the positions of the next element to be removed and the most recently added element, respectively.
+
+ All the operations mentioned above of a circular queue in a data structure take some time and space. Knowing about them is important to properly leverage this data structure, which we will explore next. 
+
+## Complexity Analysis of Circular Queue Operations
+
+Below, we have performed a time and space complexity analysis of a circular queue in a data structure. First, we provide an overview, and then we dive deep and explain the reasoning behind the values you are getting.
+
+<table><tbody><tr><td><strong>Overview:</strong> Following is the time and space complexity of the different circular queue operations.</td><td>Enqueue</td><td><ul><li>Time Complexity: O(1)</li><li>Space Complexity: O(1)</li></ul></td></tr><tr><td></td><td>Dequeue:</td><td><ul><li>Time Complexity: O(1)</li><li>Space Complexity: O(1)</li></ul></td></tr><tr><td></td><td>Others</td><td><ul><li>Auxiliary Space for N Elements: O(N)</li></ul></td></tr></tbody></table>
+
+### Analysis:
+
+Let’s now understand the reasons for the abovementioned time and space complexity values.
+
+#### Time Complexity
+
+The enqueue and dequeue operations in a circular queue are designed to execute in constant time, i.e., O(1). Enqueue is O(1) because in a circular queue, adding an element requires only a few pointer adjustments (i.e., moving the REAR pointer and inserting the value).
+
+As no loops or additional processing is needed, the operation is completed in constant time. The reason for Dequeue being O(1) is similar to removing an element from the queue, which requires adjusting the front pointer and extracting the value.
+
+As no complex calculations or iterations are involved, the operations are performed in constant time. Both the enqueue and dequeue operations only update the position of the FRONT and REAR pointers, and doing so is independent of the queue size.
+
+This is why the time complexity is O(1); these operations run constantly, irrespective of the queue’s size.
+
+#### Space Complexity
+
+The Auxiliary Space complexity is O(N) because there is a direct correlation between the space required to store the elements in the queue and the queue size (N).
+
+If the queue has a capacity of N elements, the space complexity is proportional to its size, making the auxiliary space complexity O(N).
+
+The space complexity for each enqueue and dequeue operation is O(1) because they do not require additional memory (apart from storing the elements and managing the two pointers).
+
+_You need to be aware of the key advantages and disadvantages of circular queues in data structures to effectively use them._
+
+## Advantages and Disadvantages of Circular Queue
+
+Circular queues have several advantages over the traditional queues. However, there are certain limitations. 
+
+### Advantages:
+
+![advantages of circular queue in data structure](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/4-1.jpg)
+
+-   **Efficient Memory Utilization**
+
+Circular queues optimize memory use by reusing previously occupied positions. As demonstrated previously, the REAR pointer in a circular queue wraps around to the beginning when it reaches the end of the queue. This allows the queue to continue functioning without wasting memory, resulting in better memory efficiency than linear queues because the space can remain unused even when the queue is not full.
+
+-   **Constant Time Operations** 
+
+One key benefit of the circular queue algorithm in a data structure is that it takes constant time to function. Both enQueue and deQueue operations in a circular queue operate in constant time O(1). The reasons for this are discussed in the section concerned.
+
+-   **Simplified Implementation**
+
+Circular queues are simple to implement and don’t require dynamic memory allocation. Their array-based implementation makes it easy to manage, and their circular nature reduces the need for additional conditional checks common in linear queues.
+
+-   **Prevents Memory Wastage**
+
+Unlike linear queues, where memory can be wasted if elements are removed from the front, circular queues make the best use of available space. By connecting the rear to the front, they ensure no memory is left unused.
+
+-   **Better Performance** 
+
+Circular queues perform better than linear ones, especially when elements are frequently added and removed. This makes them ideal for applications like circular buffering in streaming systems, where continuous data insertion and removal occur.
+
+-   **FIFO and LIFO Structures**
+
+Circular queues can be used in FIFO (First In, First Out) and LIFO (Last In, First Out) scenarios, making them flexible for various use cases.
+
+-   **Reduced Overhead**
+
+Circular queues require a fixed amount of memory and avoid dynamic memory allocation. They also reduce the overhead typically associated with memory management tasks, making them useful when predictable and constant memory usage is required, such as in embedded systems.
+
+_Despite the many advantages of a circular queue in a data structure, writing a circular queue program in a data structure presents several challenges._
+
+### Challenges:
+
+![disadvantages of circular queue in data structure](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/5.jpg)
+
+-   **Fixed Size Limitation**
+
+One of the main drawbacks of circular queues is their fixed size. In an array-based circular queue, the queue size is set when the queue is initialized. If the queue becomes full and additional elements need to be added, the queue will overflow unless space is freed by removing elements.
+
+-   **Implementation Complexity**
+
+While circular queues offer numerous benefits, their implementation is slightly more complex than that of linear queues. Handling circular pointer increments for the FRONT and REAR pointers requires careful management to ensure the queue operates correctly. Errors in managing the wrap-around can lead to incorrect behavior.
+
+-   **Overflow and Underflow**
+
+Circular queues are vulnerable to overflow and underflow conditions. If the queue is full and no space is freed, new elements cannot be added, leading to overflow. Similarly, an underflow condition occurs if the queue is empty and an attempt is made to remove an element.
+
+-   **Limited Capacity**
+
+The capacity of a circular queue is limited to the size of the array on which it’s based. Once that capacity is reached, the only way to add new elements is to remove existing ones. This makes it unsuitable for applications where the amount of data is unpredictable or constantly growing.
+
+-   **Pointer Management Complexity**
+
+A key challenge in writing a circular queue program in a data structure is managing both the pointers correctly. It is critical but difficult to manage the FRONT and REAR pointers circularly.
+
+If the pointers are not correctly updated, the queue may show incorrect results, such as indicating it is full when space is available or reporting the wrong size. This adds additional logic to the implementation, making debugging more difficult.
+
+-   **Not Suitable for All Use Cases**
+
+Circular queues are not ideal for all queue-based algorithms, such as priority queues. Their fixed-size limitation and the complexity of implementing priority-based operations make them less flexible than other queue types, such as dynamically allocated linked list-based queues.
+
+-   **More Complex to Debug**
+
+Due to their circular nature and the need for careful pointer management, circular queues can be harder to debug. Tracking the movement of the FRONT and REAR pointers across the circular structure can complicate identifying the source of errors.
+
+_Due to the circular queues’ high efficiency for managing cyclic processes, it found multiple application areas, ranging from CPU scheduling to traffic systems, ensuring optimal memory usage and fair allocation of resources._
+
+## Applications of Circular Queues
+
+Circular queues are utilized in various fields due to their efficient memory usage and ability to handle cyclic tasks.
+
+Below are the key application examples of circular queues in data structure.
+
+![application examples of circular queues in data structure](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/2.jpg)
+
+-   **CPU Scheduling (Round-Robin Scheduling Algorithm)**
+
+Circular queues are commonly used in CPU scheduling, especially in the Round-Robin scheduling algorithm. The processes that are ready for execution are stored in a circular queue. Each process is allocated CPU time cyclically, ensuring fair resource distribution. Once a process uses its allocated time, it moves to the back of the queue, and the next process is executed.
+
+-   **Memory Management (Ring Buffers)**
+
+Circular queues are employed in memory management, specifically in ring buffers. Ring buffers are used in computer systems to manage communication between different processes or programs. They operate circularly, allowing new data to overwrite old data once the buffer is full, optimizing memory usage without requiring manual handling.
+
+-   **Traffic Control Systems**
+
+Circular queues play a critical role in computer-controlled traffic systems. The lights turn on and off in a fixed sequence (e.g., red, yellow, green) at regular intervals. After the green light completes its interval, the queue cycles back to the red light, repeating the sequence. This cyclic behavior is well suited for the use of circular queues.
+
+-   **Page Replacement Algorithms**
+
+Circular queues are also used in certain page replacement algorithms within operating systems. When a page needs to be replaced, the front page of the queue is removed, and the new page is added at the rear.
+
+This cyclic replacement process ensures efficient page management and helps in reducing memory wastage.
+
+-   **Inter-Process Communication**
+
+Circular queues are valuable in inter-process communication, where two processes exchange data. The queue’s circular nature allows for continuous reading and writing between processes without the need for dynamic memory reallocation, enhancing the efficiency of data transfer between different processes.
+
+-   **Resource Allocation**
+
+Another example of a circular queue in a data structure is resource allocation within operating systems. These systems manage resources such as CPU time, printers, and memory blocks.
+
+The resources are cyclically allocated to processes, ensuring all processes have equal access to the available resources. This approach guarantees fairness and avoids resource monopolization by any one process.
+
+-   **Circular Manufacturing Systems**
+
+In industrial applications like bottle capping systems, circular queues manage the processing of items cyclically. Each item (e.g., a bottle) goes through the queue sequentially, allowing efficient and uninterrupted processing. Circular queues ensure the continuous and orderly flow of items without manual intervention.
+
+-   **Repetitive Calendar Events**
+
+Circular queues can manage repetitive events like days of the week (Sun, Mon, Tues) or months of the year (Jan, Feb, Mar). The queue’s circular nature ensures that these events are repeated periodically without requiring additional logic to reset at the end of each cycle.
+
+_**Let us now implement this in Python to give you an idea of how to use them.**_
+
+## Implementing Circular Queue in Python
+
+To implement circular queues, users typically use arrays or linked lists. Both methods have pros and cons. 
+
+We will explore both methods.
+
+### Implementing Using Arrays
+
+Implementing circular queues using arrays is relatively simple as it offers direct indexing that helps users access elements quickly.
+
+Suppose the queue’s maximum size is already known. In that case, arrays can be an efficient implementation method, as there is no need for dynamic memory allocation.
+
+Such an implementation is also time efficient as enqueue and dequeue operations are performed constantly at O(1).
+
+_**Let us implement circular queues using arrays in Python.**_
+
+`# implementing circular queue using array   class CircularQueue:   def __init__(self, size):   """   initializing the Circular Queue with a fixed size   as this is an array-based implementation, the size is predefined and fixed   """   self.size = size # maximum size of the circular queue   self.queue = [None] * size # initializing the array (fixed size) to store the queue elements   self.front = -1 # initializing front pointer, starting at -1 (indicating queue is empty)   self.rear = -1 # initializing rear pointer, starting at -1 (indicating queue is empty)`
+
+`# creating the enQueue method for adding elements   def enqueue(self, data):   """   designing enQueue operation: adds an element to the rear of the queue   note: this differs from a linked list implementation where nodes are be dynamically created   """   # checking if the queue is full using the isFull() method   if self.isFull():   # setting condition: if the queue is full, no more elements can be added   print("Queue is full. Cannot enqueue.")   return   `  
+`# initialzing front and rear both to 0 if the queue is empty   if self.isEmpty():   # setting condition: if the queue is empty, both front and rear are initialized to 0   self.front = 0   self.rear = 0   else:   # if the queue has space, the rear pointer is incremented in a circular manner using (self.rear + 1) % self.size,   # allowing the rear to wrap around when reaching the end of the array   # else statement: incrementing the rear pointer in a circular manner (so that it wraps around if rear reaches the end)   self.rear = (self.rear + 1) % self.size`
+
+`# placing the new data at the rear of the queue   self.queue[self.rear] = data   print(f"Enqueued {data}")`
+
+`# creating the deQueue method for removing elements   def dequeue(self):   """   designing deQueue operation: removes an element from the front of the queue   this operation is O(1) since it only involves pointer manipulation, similar to linked lists,   but without pointer traversal through nodes   """`
+
+`# checking if the queue is empty using isEmpty()   if self.isEmpty():   # setting condition: If the queue is empty, there's nothing to dequeue   print("Queue is empty. Cannot dequeue.")   return None`
+
+`# retrieving the front element to return it after removal   data = self.queue[self.front] # optionally clear the spot (helpful for debugging or visualization purposes)   self.queue[self.front] = None`
+
+`# if the queue has only one element, both pointers are reset to -1, making the queue empty again   if self.front == self.rear:   # setting condition: if the front and rear are the same, it means the queue has only one element   # reseting front and rear to -1, making the queue empty after dequeuing   self.front = -1   self.rear = -1   else:   # incrementing the front pointer in a circular manner   self.front = (self.front + 1) % self.size`
+
+`print(f"Dequeued {data}")   return data`
+
+`# creating isFull method to check if the next position of rear (using modulo for circular behavior) equals front   def isFull(self):   """   auxiliary operation: checks if the queue is full   note: in an array implementation, the queue is full when the next position of rear (circular increment) is equal to the front pointer   """   return (self.rear + 1) % self.size == self.front`
+
+`# creating isEmpty method to check if both front and rear are -1   def isEmpty(self):   """   auxiliary operation: checks if the queue is empty   the queue is considered empty when both front and rear are set to -1   """   return self.front == -1`
+
+`# creating FRONT method that returns the front elements without modifying the queue and returns None if the queue is empty   def peekFront(self):   """   auxiliary operation: returns the element at the front of the queue without dequeuing it   this operation is O(1) since it simply accesses the front index.   """   if self.isEmpty():   print("Queue is empty. No front element.")   return None   return self.queue[self.front]`
+
+`# creating REAR method that returns the last elements without modifying the queue and returns None if the queue is empty   def peekRear(self):   """   auxiliary operation: returns the element at the rear of the queue without dequeuing it   this operation is also O(1) since it simply accesses the rear index   """   if self.isEmpty():   print("Queue is empty. No rear element.")   return None   return self.queue[self.rear]`
+
+`# creating Display method that handles both cases   # Case 1: the straightforward case where rear is greater than or equal to front (no wrap-around)   # Case 2: rear has wrapped around to the front   def display(self):   """   auxiliary operation: displays the elements in the circular queue   note: since this is a circular structure, we need to handle cases where rear has wrapped around to the front   """   if self.isEmpty():   print("Queue is empty")   return`
+
+`print("Queue elements:", end=" ")`
+
+`if self.rear >= self.front:   # case 1: simple case where rear is after front in the array (no wrap-around needed)   for i in range(self.front, self.rear + 1):   print(self.queue[i], end=" ")   else:   # case 2: wrap-around case where rear has looped to the start of the array   # first, print from front to the end of the array   for i in range(self.front, self.size):   print(self.queue[i], end=" ")   # then, print from the start of the array to the rear   for i in range(0, self.rear + 1):   print(self.queue[i], end=" ")   print()   `  
+`# creating Size method that calculates the number of elements in the queue, considering both wrap-around and non-wrap-around cases   def sizeOfQueue(self):   """   auxiliary operation: calculates and return the current number of elements in the queue   this calculation takes into account the circular nature of the queue   """   if self.isEmpty():`  
+`# if the queue is empty, size is 0   return 0   elif self.rear >= self.front:`  
+`# case 1: no wrap-around; size is simply rear - front + 1   return self.rear - self.front + 1   else:`  
+`# case 2: wrap-around; size is (size - front) + (rear + 1)   return self.size - self.front + self.rear + 1`
+
+ Let’s now use the above-created circular queue. 
+
+`example Usage #1   if __name__ == "__main__":   # creating a circular queue of size 5   cq = CircularQueue(5)`
+
+`# enqueueing elements to the queue   cq.enqueue(10) # adding first element (both front and rear are set to 0)   cq.enqueue(20) # adding element at rear (rear is now 1)   cq.enqueue(30) # adding element at rear (rear is now 2)   cq.enqueue(40) # adding element at rear (rear is now 3)`
+
+`# displaying the current state of the queue   cq.display() # output to be expected: 10 20 30 40`
+
+`# dequeueing an element (removes the front element)   cq.dequeue() # output to be expected: Dequeued 10   cq.display() # output to be expected: 20 30 40`
+
+`# peeking at the front and rear elements   print(f"Front element: {cq.peekFront()}") # output to be expected: 20   print(f"Rear element: {cq.peekRear()}") # output to be expected: 40`
+
+`# adding more elements and observe the wrap-around behavior   cq.enqueue(50) # rear moves to 4   cq.enqueue(60) # rear wraps around to 0 (indicating circular behavior)   cq.display() # output to be expected: 20 30 40 50 60`
+
+`# checking the size of the queue   print(f"Current size of the queue: {cq.sizeOfQueue()}") # output to be expected: 5`
+
+_**OUTPUT:**_
+
+![output circular queue](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image6-1.png)
+
+_**Let us now connect theory and practicals further. We will perform all the enqueueing and dequeuing steps discussed in the “understanding with an example” section.**_
+
+`# example Usage #2 (referencing the steps in "Understanding with an example" section)   if __name__ == "__main__":`
+
+`# step 0: Create a circular queue of size 5   print("Step 0: creating circular queue of size 5")   cq = CircularQueue(5)   print("-------------------------------------------")`
+
+`# step 1: Enqueue 14 (First element, both front and rear set to 0)   print("Step 1:")   cq.enqueue(14) # Front = 0, Rear = 0   cq.display() # output to be expected: 14   print("-------------------------------------------")`
+
+`# step 2: Enqueue 22 (Rear is now 1)   print("Step 2:")   cq.enqueue(22) # Rear = 1   cq.display() # output to be expected: 14 22   print("-------------------------------------------")`
+
+`# step 3: Enqueue 13 (Rear is now 2)   print("Step 3:")   cq.enqueue(13) # Rear = 2   cq.display() # output to be expected: 14 22 13   print("-------------------------------------------")`
+
+`# step 4: Enqueue -6 (Rear is now 3)   print("Step 4:")   cq.enqueue(-6) # Rear = 3   cq.display() # output to be expected: 14 22 13 -6   print("-------------------------------------------")`
+
+`# step 5: Dequeue 14 (Removes the first element, Front becomes 1)   print("Step 5:")   cq.dequeue() # output to be expected: Dequeued 14, Front = 1   cq.display() # output to be expected: 22 13 -6   print("-------------------------------------------")`
+
+`# step 6: Dequeue 22 (Removes the second element, Front becomes 2)   print("Step 6:")   cq.dequeue() # output to be expected: Dequeued 22, Front = 2   cq.display() # output to be expected: 13 -6   print("-------------------------------------------")`
+
+`# step 7: Enqueue 9 (Rear becomes 4)   print("Step 7:")   cq.enqueue(9) # Rear = 4   cq.display() # output to be expected: 13 -6 9   print("-------------------------------------------")`
+
+`# step 8: Enqueue 20 (Rear wraps around to 0, circular behavior)   print("Step 8:")   cq.enqueue(20) # Rear = 0   cq.display() # output to be expected: 20 13 -6 9   print("-------------------------------------------")`
+
+`# step 9: Enqueue 5 (Rear moves to 1)   print("Step 9:")   cq.enqueue(5) # Rear = 1   cq.display() # output to be expected: 20 5 13 -6 9   print("-------------------------------------------")`
+
+`# checking the current front and rear values   print(f"Front element: {cq.peekFront()}") # output to be expected: 13   print(f"Rear element: {cq.peekRear()}") # output to be expected: 5`
+
+`print("-------------------------------------------")   # checking the size of the queue   print(f"Current size of the queue: {cq.sizeOfQueue()}") # output to be expected: 5`
+
+_**OUTPUT:**_
+
+![output circular queue](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image9-1.png)
+
+### Implementing Using Linked Lists
+
+Another way of implementing circular queues is through linked lists. Compared to arrays, linked lists-based circular queues are better primarily because they can dynamically increase and decrease in size.
+
+Such an implementation is best when the maximum size of circular queues is unknown beforehand. In addition, linked lists are also more memory efficient in situations where frequent addition and removal of elements is to be performed.
+
+This efficiency is achieved because linked lists do not need to be fixed in size. While these advantages are great, the issue with using linked lists is that they are more complex to implement.
+
+Another con is that, as opposed to array-based circular queues, which have a time complexity of O(1) for accessing elements (as elements can be directly accessed using their index), linked lists-based circular queues have a time complexity of O(n).
+
+This is because it requires traversal from the front to the desired element, which makes them inefficient when dealing with large queues.
+
+_**Now, let us implement** **circular queues using a linked list in Python.**_
+
+`# implementing circular queue using linked list   class Node:   def __init__(self, data):   """   creating a Node class to create a node for the linked list   each node stores the data and the reference to the next node   as this is a linked list implementation, we need to dynamically allocate memory for each node   note: this differs from the array-based implementation, where memory is pre-allocated.   """   self.data = data # storing the data of the node   self.next = None # pointer to the next node (initialized as None)`
+
+`class CircularQueueLinkedList:   def __init__(self):   """   initializing the Circular Queue using a linked list.   the queue is empty when both front and rear are None.   note: unlike the array-based implementation, this does not have a fixed size.   """   self.front = None # points to the front of the queue   self.rear = None # points to the rear of the queue`
+
+`# creating the enQueue method for adding elements   def enqueue(self, data):   """   adding an element to the rear of the queue   note: in a linked list, nodes are dynamically created, unlike array-based implementation where elements are placed in pre-allocated array slots   """   new_node = Node(data) # creating a new node with the data`
+
+`if self.front is None:   # setting condition: if the queue is empty, both front and rear point to the new node   self.front = self.rear = new_node   self.rear.next = self.front # making the queue circular by connecting rear to front   else:   # adding the new node at the end of the queue and adjust the rear pointer   self.rear.next = new_node # setting the next of current rear to new node   self.rear = new_node # moving the rear to the new node   self.rear.next = self.front # rear's next points to the front (circular behavior)`
+
+`print(f"Enqueued {data}")`
+
+`# creating the deQueue method for removing elements   def dequeue(self):   """   removing an element from the front of the queue   note: in the linked list implementation, nodes are removed dynamically, unlike array-based implementation where elements are overwritten in the array   """   if self.front is None:   # queue is empty   print("Queue is empty. Cannot dequeue.")   return None   `  
+`if self.front == self.rear:   # there is only one element in the queue   data = self.front.data # getting the data from the front node   self.front = None   self.rear = None # after removal, queue becomes empty   else:   # removing the front element and adjust the front pointer   data = self.front.data # getting the data from the front node   self.front = self.front.next # moving front to the next node   self.rear.next = self.front # maintaining circular nature, rear should point to new front`
+
+`print(f"Dequeued {data}")   return data`
+
+`# creating isEmpty method   def isEmpty(self):   """   checking if the queue is empty.   note: in a linked list implementation, the queue is empty if both front and rear are None, unlike the array-based implementation where front and rear are compared to -1   """   return self.front is None`
+
+`# creating FRONT method   def peekFront(self):   """   auxiliary operation: returns the front element of the queue without removing it   note: this is similar to the array-based implementation as this operation too is O(1)   """   if self.isEmpty():   print("Queue is empty. No front element.")   return None   return self.front.data`
+
+`# creating REAR method   def peekRear(self):   """   auxiliary operation: returns the rear element of the queue without removing it   note: this is similar to the array-based implementation as this operation too is O(1)   """   if self.isEmpty():   print("Queue is empty. No rear element.")   return None   return self.rear.data`
+
+`# creating display method   def display(self):   """   auxiliary operation: displays the elements in the circular queue   note: unlike the array-based implementation, there is no need to handle array indices or wrap-around explicitly   # instead, we traverse the linked list nodes in a circular manner   """   if self.isEmpty():   print("Queue is empty")   return`
+
+`print("Queue elements:", end=" ")   current = self.front   while True:   print(current.data, end=" ")   current = current.next   if current == self.front: # stopping once we loop back to the front   break   print()`
+
+`# creating size method   def sizeOfQueue(self):   """   auxiliary operation: returns the size of the queue by counting nodes in the circular linked list   note: unlike the array-based implementation where we calculate size with indices, here we traverse nodes and count them   """   if self.isEmpty():   return 0`
+
+`size = 0   current = self.front   while True:   size += 1   current = current.next   if current == self.front:   break   return size`
+
+ Let’s now use the above-created circular queue. 
+
+`# example Usage   if __name__ == "__main__":`
+
+`# step 1: creating a circular queue   cq = CircularQueueLinkedList()`
+
+`# step 2: enqueuing elements into the queue   cq.enqueue(10) # adding element 10 (first element)   cq.enqueue(20) # adding element 20   cq.enqueue(30) # adding element 30   cq.enqueue(40) # adding element 40`
+
+`# step 3: displaying the current state of the queue   cq.display() # output to be expected: 10 20 30 40`
+
+`# step 4: dequeueing an element (removes the front element)   cq.dequeue() # output to be expected: Dequeued 10   cq.display() # output to be expected: 20 30 40`
+
+`# step 5: peeking at the front and rear elements   print(f"Front element: {cq.peekFront()}") # output to be expected: 20   print(f"Rear element: {cq.peekRear()}") # output to be expected: 40`
+
+`# step 6: adding more elements and observing the circular behavior   cq.enqueue(50) # enqueueing (adding) 50   cq.enqueue(60) # enqueueing (adding) 60 (wrapping around occurs)   cq.display() # output to be expected: 20 30 40 50 60`
+
+`# step 7: checking the size of the queue   print(f"Current size of the queue: {cq.sizeOfQueue()}") # output to be expected: 5`
+
+_**OUTPUT:**_
+
+![output circular queue](https://www.analytixlabs.co.in/wp-content/uploads/2024/10/image10-1.png)
+
+## Conclusion
+
+Circular queues are a major advancement over traditional ones like linear ones. Due to their advantages of efficient memory utilization and simplified implementation, they have been used to manage cyclic processes in various application areas and systems.
+
+The circular queues in the data structure can be implemented using arrays or linked lists. If you want a simplified approach, you can opt for an array-based implementation.
+
+In contrast, if you want a more flexible option and are fine with a complicated approach, you should go for a linked list-based implementation.
+
+## FAQs
+
+-   ### **What is a circular queue in data structure?**
+    
+
+It is a data structure where the last position is connected to the first, forming a loop for effectively using space and memory.
+
+-   ### **What is a circular stack in data structure?**
+    
+
+It is a data structure where the top of the stack wraps around to the bottom once the maximum capacity is reached.
+
+-   ### **What are the underflow and overflow conditions in circular queues?**
+    
+
+Underflow is an error that occurs when dequeuing is attempted from an empty queue. Conversely, overflow is an error when en queueing is attempted in a full queue.
+
+-   ### **What is the need for a circular queue?**
+    
+
+It is required for optimized memory usage, as it avoids shifting elements by allowing space to be reused when the queue reaches its maximum size.
+
+-   ### **How is the circular queue different from an ordinary queue?**
+    
+
+In an ordinary queue (e.g., linear), elements cannot be used unless shifted, whereas the rear warps around the first in circular queues when it reaches the end.
+
+Reading Resources
+
+-   [Top 21 Data Structure and Algorithm QnA for DSA Interview](https://www.analytixlabs.co.in/blog/data-structure-interview-questions/)
+-   [What is Structured Data in Big Data?](https://www.analytixlabs.co.in/blog/structured-data-in-big-data/)
+-   [How to Perform Data Analysis using Python?](https://www.analytixlabs.co.in/blog/data-analytics-with-python/)
+-   [Mastering Python for Data Science: Guide for Beginners](https://www.analytixlabs.co.in/blog/mastering-python-for-data-science/)

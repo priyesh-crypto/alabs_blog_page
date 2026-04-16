@@ -2,6 +2,25 @@
    Tiptap Editor — Article prose styles
 ───────────────────────────────────── */
 
+/* ── WordPress-migrated content containment ── */
+.tiptap-prose img,
+.tiptap-prose iframe,
+.tiptap-prose video,
+.tiptap-prose embed,
+.tiptap-prose object {
+  max-width: 100% !important;
+  height: auto;
+}
+.tiptap-prose table {
+  max-width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+.tiptap-prose pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 /* Outer wrapper */
 .tiptap-outer {
   position: relative;

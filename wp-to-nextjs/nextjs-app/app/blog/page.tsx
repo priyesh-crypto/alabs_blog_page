@@ -55,12 +55,13 @@ function getPageNumbers(current: number, total: number): (number | "...")[] {
   return pages;
 }
 
-export default function BlogPage({
+export default async function BlogPage({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }) {
-  const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1);
+  const resolvedSearchParams = await searchParams;
+  const page = Math.max(1, parseInt(resolvedSearchParams.page ?? "1", 10) || 1);
   const { posts, total, totalPages, currentPage } = getPaginatedPosts(page);
   const categories = getAllCategories().slice(0, 24);
   const pageNums = getPageNumbers(currentPage, totalPages);

@@ -1,0 +1,540 @@
+---
+title: "Parametric vs. Non-Parametric Test: Which One to Use for Hypothesis Testing?"
+slug: parametric-and-non-parametric-test
+date: "2026-03-18T12:08:18+00:00"
+modified: "2026-03-24T10:15:33+00:00"
+description: "Learn the key differences between parametric and non-parametric tests, assumptions, examples, and how to choose the right test for your data."
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2022/11/Parametric-vs-non-parametric-tests-01.jpg"
+author: Pritha Bose
+categories:
+  - Data Science
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/parametric-and-non-parametric-test/"
+noindex: true
+---
+
+Statistical tests form the backbone of data-driven decision-making. They allow analysts to move beyond intuition and evaluate claims in a measurable way. In research and analytics, these tests help determine whether observed patterns reflect real effects or mere random variation. They support comparisons between groups, assessment of relationships, validation of models, and much more. Selecting the correct statistical test is therefore extremely critical. However, several factors can affect this choice, ranging from data type and distribution to sample size and research objective.
+
+Understanding when to apply parametric or non-parametric methods is a key aspect of this decision-making process. A solid grasp of the **parametric and non-parametric test** framework in research methodology ensures that hypothesis testing is conducted appropriately and that conclusions are statistically sound.
+
+In this article, the focus is on exploring what these tests are, their differences, and when and how to choose between them, along with examples of parametric and non-parametric tests. However, before diving into the discussion on **parametric vs non-parametric test**, let’s first cover a few key concepts.
+
+## Key Concepts
+
+Certain concepts relate directly to parametric and non-parametric tests. Familiarizing yourself with them will help you understand the tests more effectively. The key concepts are as follows:
+
+![parametric and non-parametric test key concept](https://www.analytixlabs.co.in/wp-content/uploads/2022/11/Parametric-vs-non-parametric-tests-02.jpg)
+
+### Population vs. Sample
+
+A population includes every unit or subject relevant to a study. For example, if you are conducting a census of India, then all Indian citizens are part of the population.
+
+![population vs sample in statistics](https://www.analytixlabs.co.in/wp-content/uploads/2022/11/Parametric-vs-non-parametric-tests-03.jpg)
+
+A sample is a smaller subset drawn from that population, such as 2,000 randomly selected citizens surveyed instead of the entire country. Researchers and analysts often rely on samples when populations are large, dispersed, or impractical to measure fully.
+
+### Parameter vs. Statistic
+
+A parameter is a numerical value that describes a full population, such as the true average income of all Indian citizens. A statistic, on the other hand, is computed from a sample and serves as an estimate of the population parameter. For example, if a survey sample yields an average income of ₹25,000, that figure is a statistic used to infer the unknown population average. Inferential methods convert such statistics into point and interval estimates for parameters.
+
+### Central Limit Theorem (CLT)
+
+The [Central Limit Theorem](https://www.analytixlabs.co.in/blog/central-limit-theorem-with-example/) states that when the sample size is sufficiently large (usually n > 30), the sampling distribution of the mean approaches normality regardless of the population’s original shape.
+
+![central limit theorem](https://www.analytixlabs.co.in/wp-content/uploads/2022/11/Parametric-vs-non-parametric-tests-04.jpg)
+
+This property is extremely important because it allows parametric tests to function reliably — sample means become normally distributed and predictable.
+
+For instance, as the sample size increases from 5 to 100, the standard error shrinks from 1.788 to 0.400, thereby improving precision.
+
+### Distribution and Normality
+
+A normal distribution is one of the most common distributions in statistics. It is symmetric and bell-shaped, with the mean, median, and mode all being equal. Approximately 68.2%, 95.4%, and 99.7% of observations fall within one, two, and three standard deviations, respectively. Non-normal distributions, on the other hand, can be skewed, bimodal, or heavy-tailed. A common example is the income distribution, which often has a long right tail.
+
+![distribution and normality in statistics](https://www.analytixlabs.co.in/wp-content/uploads/2022/11/Parametric-vs-non-parametric-tests-05.jpg)
+
+For a broader understanding of how these distributions fit within statistical analysis, explore our guide on [descriptive and inferential statistics](https://www.analytixlabs.co.in/blog/descriptive-and-inferential-statistics/).
+
+If you’re looking for a more comprehensive primer, our guide on [basic statistics concepts for data science](https://www.analytixlabs.co.in/blog/basic-statistics-concepts-for-data-science/) covers these foundations in greater detail.
+
+With these key concepts covered, let’s begin the discussion to answer **what is parametric and non-parametric test**.
+
+## What Are Parametric Tests?
+
+A **parametric test** is a statistical hypothesis test that assumes the sample data follow a known population distribution, typically a normal one. These tests estimate and make inferences about population parameters — most commonly the mean and variance. Parametric tests focus primarily on differences between group means rather than medians.
+
+To fully understand parametric tests, you need to examine their assumptions, advantages, and limitations.
+
+### Key Assumptions of Parametric Tests
+
+Parametric tests rely on specific distributional and sampling assumptions. These assumptions are crucial because valid results depend on checking these conditions beforehand. The most critical assumptions are as follows:
+
+![Key Assumptions of Parametric Tests](https://www.analytixlabs.co.in/wp-content/uploads/2022/11/Parametric-vs-non-parametric-tests-06.jpg)
+
+#### Normal Distribution
+
+Each group should be sampled from a normally distributed population. With sufficiently large sample sizes, the Central Limit Theorem supports this assumption by making the sampling distribution of the mean approximately normal. If needed, normality can be assessed using the Shapiro-Wilk, Kolmogorov-Smirnov, Anderson-Darling, or D’Agostino-Pearson tests. Visual tools like Q-Q plots also help verify whether data align with a straight diagonal pattern.
+
+#### Equal Variance (Homoscedasticity)
+
+The second key assumption is that groups should have approximately equal variances. A practical rule suggests that if the largest variance divided by the smallest variance is less than 4, homogeneity can be assumed. [Levene’s test](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html) is commonly recommended for formally testing variance equality.
+
+#### Independent and Random Sampling
+
+A critical assumption for any parametric test is that observations must be randomly and independently sampled. Probability sampling methods such as simple random or stratified sampling help support this assumption.
+
+#### Interval or Ratio Scale Data
+
+Parametric tests require continuous numerical data measured on interval or ratio scales. Nominal data are not suitable for classical parametric tests.
+
+#### No Extreme Outliers
+
+Extreme outliers can distort means and violate normality. Therefore, the data should be free of extreme outliers, whose presence can be detected using tests like Grubbs’ test.
+
+### Advantages and Disadvantages of Parametric Tests
+
+#### Advantages
+
+-   **Higher accuracy**: Parametric tests generally provide greater statistical power and are more likely to detect true effects.
+-   **Reliability with larger samples**: They can still produce reliable results with non-normal data when sample sizes exceed certain thresholds, such as >20 for a one-sample t-test or >15 per group for a two-sample t-test.
+-   **Greater precision**: They offer precise parameter estimates and confidence intervals.
+
+#### Disadvantages
+
+-   **Assumption sensitivity**: They are sensitive to assumption violations, especially when the sample size is small.
+-   **Vulnerability to outliers**: Outliers and skewed data can significantly distort results.
+-   **Need for alternatives**: If assumptions fail, alternative approaches such as data transformation or non-parametric tests may be required.
+
+Let’s now look at the most commonly used parametric tests.
+
+## Common Types of Parametric Tests & When to Use Them
+
+As discussed, parametric tests are designed for data that follow specific distributional assumptions — usually normality — and are measured on interval or ratio scales. These tests are preferred when assumptions hold because they provide stronger and more precise inferences about population parameters.
+
+### t-Test
+
+The t-test evaluates whether the means of two groups differ significantly. Its main assumptions include normal distribution, equal variances, and independent random samples. There are several sub-types of t-tests:
+
+#### One-Sample t-Test
+
+This test is used when comparing a sample mean to a known population mean. For example, you might use it when testing whether the average productivity of a team differs from a company benchmark.
+
+#### Independent Two-Sample t-Test
+
+This variant is used when comparing the means of two unrelated groups. For instance, you could use it to compare average exam scores between students from two different schools.
+
+#### Paired t-Test
+
+This test helps compare related measurements, typically before-and-after samples. A common example would be measuring patient blood pressure before and after treatment.
+
+Typically, you should opt for a t-test when the sample size is small (less than 30) and the population variance is unknown.
+
+### z-Test
+
+The z-test is similar to the t-test in that it also compares means. However, it should be used when the population variance is known and the sample size exceeds 30. It assumes normal distribution and independent sampling. Common types include:
+
+-   The **one-sample z-test**, which is used to compare a large sample mean with a population mean.
+-   The **two-sample z-test**, which is best suited for comparing the means of two independent large samples.
+
+To put this test in context, imagine you are comparing the average daily output of two factories when historical population variance is available. In such a case, the z-test is ideal. Note also that the z-test can be used to compare sample proportions with population proportions.
+
+### ANOVA (Analysis of Variance)
+
+ANOVA acts as an extension of the t-test, allowing you to compare means across more than two groups. It assumes normality, independence, and homogeneity of variances.
+
+A key point to remember is that ANOVA belongs to the F family of tests because it uses the F-statistic. This statistic is calculated as the variance between group means divided by the variance within groups. Like the t-test, ANOVA has several variants, including one-way ANOVA, two-way ANOVA, and repeated-measures ANOVA.
+
+For example, if you are comparing average pain levels among patients receiving three different medications, you can use a one-way ANOVA.
+
+### Pearson’s Correlation
+
+Pearson’s correlation measures both the strength and direction of a linear relationship between two continuous variables. For example, you might use it to assess the relationship between the number of hours studied and the score obtained. Its key assumptions include normality and interval-level measurement.
+
+### Regression Analysis
+
+Regression tests evaluate cause-and-effect relationships between variables. The most common type is [linear regression](https://www.analytixlabs.co.in/blog/linear-regression-machine-learning/), which estimates how one or more predictors influence a continuous outcome. For instance, if you want to estimate how income and daily exercise affect health longevity, a linear regression analysis would be helpful. Regression has several assumptions, with the primary ones being that residuals are normally distributed and that observations are independent.
+
+For classification problems where the outcome is categorical rather than continuous, [logistic regression](https://www.analytixlabs.co.in/blog/logistic-regression/) is the appropriate alternative.
+
+When assumptions are satisfied, these parametric tests offer higher statistical power and more precise parameter estimation compared to non-parametric alternatives. But what if the assumptions are not met? This is where non-parametric tests come into the picture.
+
+## What Are Non-Parametric Tests?
+
+A non-parametric test is also a statistical hypothesis test; however, it does not assume a specific probability distribution for the population. These tests are often called distribution-free tests because they do not require parameters such as the mean or variance to follow a predefined structure. They are used when data do not follow a normal distribution or when distributional assumptions cannot be validated. Also, unlike parametric tests that focus on means, non-parametric tests often evaluate medians, ranks, or frequencies.
+
+Two important points to note: first, many non-parametric procedures are well-suited for ordinal and categorical variables, not just continuous data. Second, “non-parametric” does not mean “no parameters.” It means that the parameters are not fixed in advance or tied to a specific distribution family.
+
+Just like their parametric counterparts, non-parametric tests also have several advantages and disadvantages that can deepen your understanding of these methods.
+
+### Advantages and Disadvantages of Non-Parametric Tests
+
+![Advantages and Disadvantages of Non-Parametric Tests](https://www.analytixlabs.co.in/wp-content/uploads/2022/11/Parametric-vs-non-parametric-tests-08.jpg)
+
+Following are the key **advantages and disadvantages of non-parametric tests**.
+
+#### Advantages
+
+-   Non-parametric tests work effectively with skewed or non-normal data.
+-   They are suitable for small sample sizes where validating normality is difficult.
+-   They can analyze ordinal, ranked, and nominal data, unlike classical parametric tests.
+-   They are less sensitive to extreme outliers, which can heavily distort mean-based tests.
+
+To illustrate these advantages with an example: in skewed salary distributions, a few high-income individuals can inflate the mean, while the median remains stable. In such cases, a non-parametric test provides a more meaningful and accurate conclusion.
+
+#### Disadvantages
+
+-   They are generally less powerful than parametric tests, especially when parametric assumptions are satisfied.
+-   They may provide less precise parameter estimates and use less information from the data.
+-   When the data meet normality and variance assumptions, parametric tests are considerably more powerful.
+
+Beyond these **advantages and disadvantages of non-parametric tests**, let’s also clarify when you should ideally use them.
+
+### When to Use Non-Parametric Tests
+
+You should opt for non-parametric tests in the following cases:
+
+-   When the data are skewed or do not follow a normal distribution
+-   When the sample size is too small to reliably verify normality assumptions
+-   When the data are ordinal or nominal, such as ranks or Likert-scale responses
+-   When outliers distort the mean, since these tests rely on medians or ranks instead of means
+
+By now, you should be able to answer **what is parametric and non-parametric test** with confidence. Let’s have a look at the most commonly used non-parametric tests.
+
+## Common Non-Parametric Tests
+
+Given that non-parametric tests are distribution-free methods suitable for data that do not satisfy normality or other parametric assumptions, they are often more accessible. Fortunately, each major **parametric test** has a non-parametric counterpart. The following are the key non-parametric tests you should know about.
+
+![Common Non-Parametric Tests](https://www.analytixlabs.co.in/wp-content/uploads/2022/11/Parametric-vs-non-parametric-tests-09.jpg)
+
+### Mann-Whitney U Test
+
+The [Mann-Whitney U test](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.mannwhitneyu.html) is the non-parametric alternative to the independent samples t-test. The key difference is that it compares two independent groups using ranked data instead of raw values. You should use it when:
+
+-   Two independent groups are being compared
+-   Data are ordinal or skewed
+-   Normality cannot be assumed
+
+The null hypothesis for this test states that the two populations are equal in distribution or median. For example, if you want to compare customer satisfaction rankings between two service branches, this test would be appropriate.
+
+### Wilcoxon Signed-Rank Test
+
+The Wilcoxon Signed-Rank test is the non-parametric version of the paired samples t-test. It compares two dependent or matched samples using the ranks of differences, with its null hypothesis being that the median difference equals zero.
+
+You should use this test when the same subjects are measured twice, when the data are ordinal or not normally distributed, or when the sample size is small. Unlike the paired t-test, it does not require normality assumptions. For instance, if you are measuring pain levels before and after therapy in the same patients, this test is a suitable choice.
+
+### Kruskal-Wallis Test
+
+The Kruskal-Wallis test is the non-parametric alternative to one-way ANOVA. It compares medians across more than two independent groups and uses ranked data to calculate the H statistic. You should use it when:
+
+-   Comparing three or more independent groups
+-   Data are ordinal or skewed
+-   Variance assumptions are violated
+
+For example, if you want to compare median income levels across three cities, the Kruskal-Wallis test would be appropriate.
+
+### Spearman’s Rank Correlation
+
+Spearman’s rank correlation, like Pearson’s correlation, measures the strength and direction of association between two variables — but using ranked data. Unlike Pearson’s correlation, it does not assume linearity or normality and therefore works well with ordinal data. You should use it when:
+
+-   The relationship between two variables is monotonic
+-   Data are ranked or not normally distributed
+
+For instance, you would use Spearman’s correlation if you are examining the relationship between class rank and performance rating.
+
+### Chi-Square Test
+
+Among the most widely used non-parametric tests is the Chi-Square test. It examines the association between two categorical variables by evaluating whether observed frequencies differ from expected frequencies. The null hypothesis states that the variables are independent. You should use it when the data are nominal or categorical and you want to test independence in contingency tables. For example, if you are testing whether gender and location are associated in a survey dataset, the Chi-Square test is the appropriate choice.
+
+Chi-Square analysis is also commonly applied in [univariate analysis](https://www.analytixlabs.co.in/blog/univariate-analysis/) when examining frequency distributions of a single categorical variable
+
+Together, all these tests provide a flexible framework for analyzing ordinal, categorical, or non-normal data without relying on strict distributional assumptions. However, the key is to understand the **difference between parametric and non-parametric test** — that is, to learn which type of test to use and when. The next section offers a comparative overview.
+
+## Parametric vs Non-Parametric Tests — Key Differences & How to Choose
+
+With the exploration complete, it’s time to summarize the **difference between parametric and non-parametric test**. The following table can help you understand when and where to use parametric tests or their non-parametric counterparts, along with their respective strengths and limitations.
+
+The best way to understand how the various parametric and non-parametric tests are applied in the real world is by examining a few practical scenarios.
+
+## Application Examples in Data Science / Analytics
+
+Let’s look at three distinct scenarios that serve as **examples of parametric and non-parametric tests** and will help you understand how different tests can be applied.
+
+### Example 1: Comparing Click-Through Rates of Two Ads
+
+Suppose a marketing team wants to compare the average click-through rates (CTR) of two online ads. If CTR values are approximately normal with similar variances, a two-sample t-test is appropriate. The t-test is robust to minor deviations from normality and mainly requires independence and homoscedasticity, making it well-suited for this scenario as it directly tests the equality of means.
+
+However, if CTR data are skewed or ordinal in nature, the Mann-Whitney U test is more suitable because it compares rank distributions instead of raw means. This approach protects the Type I error rate when normality is questionable.
+
+### Example 2: Comparing Model Accuracy Across Three Datasets
+
+Suppose you are a data scientist who wants to evaluate model accuracy across three datasets. If accuracy scores are normally distributed with equal variances, ANOVA can be used to test whether group means differ. ANOVA assumes normality and homogeneity of variance, and when these assumptions are met, its results are powerful and reliable.
+
+However, if accuracy scores are skewed or contain outliers, the Kruskal-Wallis test is preferable. It compares mean ranks rather than means and evaluates whether distributions differ across groups without assuming normality.
+
+### Example 3: Study Hours and Exam Rank
+
+In this scenario, you want to examine whether hours studied relate to exam performance using correlation analysis. If both variables are continuous and normally distributed with a linear relationship, you can apply Pearson’s correlation, which measures the linear association on a scale from −1 to +1.
+
+If the exam outcome is rank-based or the data are non-normal, you should use Spearman’s rank correlation instead. Spearman evaluates monotonic relationships using ranks and does not assume normality, making it appropriate in such situations.
+
+As you can see, the **difference between parametric test and non-parametric test** directly influences your choice of hypothesis test. This selection depends on several factors, including data distribution, measurement scale, and research objective. In the next section, let’s go one step further and implement all these tests practically using Python and R — the two most widely used languages in data science and analytics.
+
+## Practical Implementation
+
+The following implementations use [Python for data science](https://www.analytixlabs.co.in/blog/mastering-python-for-data-science/) and R — the two most widely used languages in data analytics. Below, each of the above-discussed scenarios is explored, and the relevant tests are implemented in Python and R.
+
+### Example 1: Compare Click-Through Rates (t-test vs Mann-Whitney)
+
+Here, you assume that two ads are shown to 30 users each, with CTR measured as percentage clicks per user session. Ad A shows a roughly normal distribution, while Ad B shows a slight skew, prompting you to use a **parametric test** for the former and a non-parametric test for the latter.
+
+#### Python Implementation
+
+```python
+# Importing key packages
+import numpy as np
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+from scipy.stats import gaussian_kde
+from scipy.stats import linregress
+
+# Setting seed for reproducibility
+np.random.seed(42)
+
+# Creating normally distributed data
+ad_A = np.random.normal(loc=4.5, scale=0.8, size=30)
+
+# Creating slightly skewed data
+ad_B = np.random.gamma(shape=4, scale=1.0, size=30) / 2
+
+# Visualizing Ad A data (Normal Distribution)
+plt.figure(figsize=(7, 5))
+plt.hist(ad_A, bins=10, density=True,
+         color="#4C72B0", edgecolor="black", alpha=0.7)
+density_A = gaussian_kde(ad_A)
+x_vals_A = np.linspace(min(ad_A), max(ad_A), 200)
+plt.plot(x_vals_A, density_A(x_vals_A), linewidth=2)
+plt.xlabel("Click-Through Rate (%)")
+plt.ylabel("Density")
+plt.title("Distribution of CTR - Ad A (Approximately Normal)")
+plt.grid(alpha=0.2)
+plt.show()
+ 
+# Visualizing Ad B data (Skewed Distribution)
+plt.figure(figsize=(7, 5))
+plt.hist(ad_B, bins=10, density=True,
+         color="#DD8452", edgecolor="black", alpha=0.7)
+density_B = gaussian_kde(ad_B)
+x_vals_B = np.linspace(min(ad_B), max(ad_B), 200)
+plt.plot(x_vals_B, density_B(x_vals_B), linewidth=2)
+plt.xlabel("Click-Through Rate (%)")
+plt.ylabel("Density")
+plt.title("Distribution of CTR - Ad B (Right-Skewed)")
+plt.grid(alpha=0.2)
+plt.show()
+
+# Performing statistical tests
+# Independent t-test
+t_stat, t_p = stats.ttest_ind(ad_A, ad_B, equal_var=True)
+
+# Mann-Whitney U test
+u_stat, u_p = stats.mannwhitneyu(ad_A, ad_B, alternative='two-sided')
+
+print("T-test:", t_stat, t_p)
+print("Mann-Whitney U:", u_stat, u_p)
+```
+
+#### R Implementation
+
+```r
+set.seed(42)
+ad_A <- rnorm(30, mean = 4.5, sd = 0.8)
+ad_B <- rgamma(30, shape = 4, scale = 1.0) / 2
+
+# Independent t-test
+t.test(ad_A, ad_B, var.equal = TRUE)
+
+# Mann-Whitney U (Wilcoxon Rank-Sum)
+wilcox.test(ad_A, ad_B)
+```
+
+### Example 2: Compare Model Accuracy Across 3 Datasets (ANOVA vs Kruskal-Wallis)
+
+In this case, a machine learning model was trained on three datasets, and accuracy was measured as a percentage across 25 runs each. To check whether the accuracies are statistically significantly different from each other, you run both ANOVA and Kruskal-Wallis, since one group is skewed.
+
+#### Python Implementation
+
+```python
+# Creating datasets
+np.random.seed(101)
+dataset1 = np.random.normal(82, 3, 25)
+dataset2 = np.random.normal(85, 2.5, 25)
+dataset3 = np.random.gamma(8, 1.5, 25) + 70  # slightly skewed
+
+# Visualizing data
+fig, ax = plt.subplots(figsize=(8, 5))
+box = ax.boxplot([dataset1, dataset2, dataset3],
+                 labels=["Dataset 1", "Dataset 2", "Dataset 3"],
+                 patch_artist=True)
+colors = ["#4C72B0", "#55A868", "#DD8452"]
+for patch, color in zip(box['boxes'], colors):
+    patch.set_facecolor(color)
+plt.ylabel("Model Accuracy (%)")
+plt.title("Model Accuracy Across Three Datasets")
+plt.grid(alpha=0.2)
+plt.show()
+# Running tests
+# ANOVA
+anova_stat, anova_p = stats.f_oneway(dataset1, dataset2, dataset3)
+
+# Kruskal-Wallis
+kw_stat, kw_p = stats.kruskal(dataset1, dataset2, dataset3)
+
+print("ANOVA:", anova_stat, anova_p)
+print("Kruskal-Wallis:", kw_stat, kw_p)
+```
+
+#### R Implementation
+
+```r
+# Creating data
+set.seed(101)
+dataset1 <- rnorm(25, 82, 3)
+dataset2 <- rnorm(25, 85, 2.5)
+dataset3 <- rgamma(25, 8, 1.5) + 70
+
+# Running tests
+accuracy <- c(dataset1, dataset2, dataset3)
+group <- factor(rep(c("D1", "D2", "D3"), each = 25))
+
+# ANOVA
+summary(aov(accuracy ~ group))
+
+# Kruskal-Wallis
+kruskal.test(accuracy ~ group)
+```
+
+### Example 3: Study Hours vs Exam Rank (Pearson vs Spearman)
+
+Fifty students reported hours studied and their final exam rank. Since rank is ordinal and the relationship is monotonic but not perfectly linear, Spearman’s correlation is the primary choice. However, Pearson’s correlation is also computed for comparison.
+
+#### Python Implementation
+
+```python
+# Creating datasets
+np.random.seed(202)
+hours = np.random.normal(5, 1.5, 50)
+rank = 100 - (hours * 8 + np.random.normal(0, 5, 50))
+
+# Visualizing data — Scatter Plot
+plt.figure(figsize=(7, 5))
+plt.scatter(hours, rank)
+
+# Linear regression line (for Pearson)
+slope, intercept, _, _, _ = linregress(hours, rank)
+x_vals = np.linspace(min(hours), max(hours), 100)
+plt.plot(x_vals, intercept + slope * x_vals, linewidth=2)
+plt.xlabel("Hours Studied")
+plt.ylabel("Exam Rank")
+plt.title("Hours Studied vs Exam Rank")
+plt.gca().invert_yaxis()  # Lower rank = better performance
+plt.grid(alpha=0.2)
+plt.show()
+
+# Running tests
+# Pearson correlation
+pearson_corr, pearson_p = stats.pearsonr(hours, rank)
+
+# Spearman correlation
+spearman_corr, spearman_p = stats.spearmanr(hours, rank)
+
+print("Pearson:", pearson_corr, pearson_p)
+print("Spearman:", spearman_corr, spearman_p)
+```
+
+#### R Implementation
+
+```r
+# Creating data
+set.seed(202)
+hours <- rnorm(50, 5, 1.5)
+rank <- 100 - (hours * 8 + rnorm(50, 0, 5))
+
+# Pearson
+cor.test(hours, rank, method = "pearson")
+
+# Spearman
+cor.test(hours, rank, method = "spearman")
+```
+
+Before concluding this discussion, let’s examine the common mistakes individuals make when selecting a test.
+
+## Common Mistakes
+
+Common mistakes that you, as an analyst, scientist, or researcher, should avoid when selecting tests are as follows:
+
+![Parametric vs non-parametric test-common-mistakes](https://www.analytixlabs.co.in/wp-content/uploads/2022/11/Parametric-vs-non-parametric-tests-14.jpg)
+
+### Ignoring Data Distribution
+
+A frequent mistake is applying t-tests or ANOVA without checking normality. Heavily skewed or ranked data can invalidate mean-based conclusions, so always verify the distribution before proceeding.
+
+### Ignoring Sample Size
+
+Small samples make it difficult to verify normality assumptions. Using parametric tests in such cases increases the risk of misleading or incorrect results. Consider the **parametric vs non-parametric test** trade-off carefully when working with limited data.
+
+### Overlooking Variance Differences
+
+It is critical not to overlook differences in variance. Note that some non-parametric tests still assume comparable spread across groups, and unequal variances can distort inference and inflate error rates.
+
+### Ignoring Data Type
+
+A common error involves applying the wrong test for the data type. Always remember that parametric tests require interval or ratio data. Applying them to Likert-scale or ordinal responses, for example, can seriously misrepresent central tendency.
+
+By and large, poor assumption checking is the main culprit behind incorrect conclusions. A sound statistical practice is to always test the distribution, scale, independence, and variance before selecting a hypothesis test.
+
+## Conclusion & Next Steps
+
+Parametric and non-parametric tests serve different analytical purposes. Parametric tests provide higher power when assumptions such as normality and equal variance hold. Non-parametric tests, on the other hand, offer considerably more flexibility for skewed, ordinal, or small-sample data. Choosing the correct method depends on sample size, variance, distribution, and measurement scale.
+
+In practice, you should first explore the data visually and statistically — checking normality, outliers, and homogeneity — before selecting a test. When assumptions fail, apply the appropriate non-parametric alternative.
+
+Once you’ve mastered statistical testing, the next step is understanding how these tests inform model selection in [classification and regression](https://www.analytixlabs.co.in/blog/difference-between-classification-and-regression/) problems
+
+A clear understanding of **parametric and non-parametric test** approaches in research methodology helps researchers choose the correct statistical method based on data distribution and measurement scale. Once the correct test is selected, you can strengthen your analysis by incorporating visualization, effect size reporting, and assumption diagnostics into your workflow.
+
+Understanding the **difference between parametric test and non-parametric test** is not just an academic exercise — it is a practical skill that directly impacts the reliability of your findings. By combining the right **examples of parametric and non-parametric tests** with rigorous assumption checking, you can ensure that your analytical conclusions are both robust and defensible.
+
+## FAQs
+
+### What is a parametric and non-parametric test?
+
+A **parametric and non-parametric test** represent two categories of hypothesis tests. A parametric test assumes the population follows a specific distribution, usually normal, and focuses on parameters like the mean and variance. A non-parametric test does not assume a specific distribution and is often based on ranks or medians.
+
+### Which is the most important and widely used non-parametric test?
+
+The Mann-Whitney U test and the Chi-Square test are two of the most widely used non-parametric tests.
+
+### What is the difference between parametric and non-parametric tests?
+
+The core **difference between parametric and non-parametric test** lies in their assumptions. Parametric tests compare means under distributional assumptions, whereas non-parametric tests compare ranks or medians without strict assumptions of normality.
+
+### Is ANOVA a parametric test?
+
+Yes, ANOVA is a **parametric test** because it assumes normal distribution and equal variances across groups.
+
+### What are examples of non-parametric tests?
+
+Common examples include the Mann-Whitney U test, the Wilcoxon Signed-Rank test, the Kruskal-Wallis test, and the Chi-Square test.
+
+### Can I use a t-test for non-normal data?
+
+Yes, because the t-test is robust to mild deviations from normality, especially when the sample size is adequate. However, if the data are heavily skewed, it is better to use its non-parametric counterpart — the Mann-Whitney test.
+
+### Which is better — parametric or non-parametric tests?
+
+Neither is universally better. Parametric tests are more powerful when assumptions hold, while non-parametric tests are more flexible when assumptions are violated — which can happen quite often.
+
+### Is the Chi-Square test parametric or non-parametric?
+
+The Chi-Square test is non-parametric since it evaluates associations between categorical variables without assuming normality.

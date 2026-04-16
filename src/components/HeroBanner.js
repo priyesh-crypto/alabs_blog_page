@@ -63,7 +63,7 @@ export default function HeroBanner({ post, bookmarked = false, onToggleBookmark 
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <Link
-              href={`/article/${post.slug}`}
+              href={`/blog/${post.slug}`}
               className="glass-btn px-6 py-3 rounded-full font-bold text-sm"
             >
               Read More

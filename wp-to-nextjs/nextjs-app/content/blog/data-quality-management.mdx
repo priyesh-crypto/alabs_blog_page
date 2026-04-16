@@ -1,0 +1,427 @@
+---
+title: "What Is Data Quality Management (DQM): Importance, Framework, Challenges and more"
+slug: data-quality-management
+date: "2024-05-14T10:02:54+00:00"
+modified: "2025-10-16T11:29:32+00:00"
+description: "Data Quality Management, the force driving business success and informed decision-making. Explore tools, challenges, & best practices here."
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2024/05/dqm.webp"
+author: AnalytixLabs
+categories:
+  - Data Analytics
+  - Data Science
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/data-quality-management/"
+noindex: true
+---
+
+Today’s organizations generate data in quantities never seen before- 2.5 quintillion bytes per day, to be precise. This data is obtained from multiple sources in all shapes and forms for data analytics and model building.
+
+The insights from these operations are invaluable, leading to data being called the oil of the 21st century. But, like oil, data requires refining. Organizations must ensure correct and complete information to use data effectively, which is where data quality management comes in. This article will explore data quality management, including its benefits, challenges, tools, techniques, etc.
+
+Let’s start by understanding more about data quality management and why it is important for companies.
+
+## **What is Data Quality Management?**
+
+Data quality management (DQM) refers to a range of methodologies, practices, and strategies that allow organizations to maintain the health of the data to be deemed fit for decision-making tasks.
+
+Through data quality management systems, companies make sure that the data is consistent, accurate, complete, and correct, ensuring that the actionable insights gained from operations like [data analytics](https://www.analytixlabs.co.in/blog/data-analytics-application/), [predictive modeling](https://www.analytixlabs.co.in/blog/predictive-analytics/), segmentation, etc., are not misleading.
+
+### Common DQM Misconceptions
+
+To better understand Data Quality Management (DQM), it’s essential to eliminate some common misconceptions. These include:
+
+-   Data correction is only a part of DQM and not DQM.
+-   DQM is not a one-time process; like data integration, it is ongoing.
+-   DQM is the responsibility of all departments dealing with data.
+-   DQM is not a standardized approach and needs to be modified to meet business objectives.
+
+Another way of understanding DQM is to know how and why it is important for organizations. Some of the key aspects to keep in mind are-
+
+-   Data Quality is to be treated like human health. If the data is not fit, the results obtained from it would be of sub-optimal quality.
+-   The absence of DQM can lead to inferior data quality and misleading customer analytics, causing customer dissatisfaction.
+-   Incorrect data can lead to bad decisions and serious problems; hence, implementing DQM is important. 
+
+While understanding the importance of DQM, let’s explore three key benefits of implementing DQM in your organization, but before that, a short note – 
+
+Course Alert 👨🏻‍💻
+
+Managing data effectively for the company is the basis of making a good decision. With us, you will master this skill. Whether you are a new graduate or a working professional, we have data science courses with syllabi relevant to you. 
+
+Explore our signature **data science courses in collaboration with _Electronics & ICT Academy, IIT Guwahati_**, and join us for experiential learning to transform your career.
+
+-   [Certification Course in Data Science](https://www.analytixlabs.co.in/data-science-specialization-course)
+-   [Data Science with Python](https://www.analytixlabs.co.in/data-science-using-python)
+-   [Data Science with R](https://www.analytixlabs.co.in/data-science-r-analytics-training)
+-   [PG in Data Science](https://www.analytixlabs.co.in/pg-in-data-science)
+
+We have [elaborate courses](https://www.analytixlabs.co.in/courses) on AI, ML engineering, and business analytics. Choose a learning module that fits your needs—classroom, online, or blended eLearning.
+
+Check out [our upcoming batches](https://www.analytixlabs.co.in/upcoming-batches) or [book a free demo](https://www.analytixlabs.co.in/contact-us) with us. Also, check out our [exclusive enrollment offers](https://www.analytixlabs.co.in/offers)
+
+## **Benefits of Data Quality Management**
+
+An organization can enjoy several benefits from implementing DQM. These include-
+
+![benefits of data quality management ](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/1.jpg)
+
+-   ### **Efficient Resource Utilization**
+    
+
+Implementing DQM can save time and money. High-quality data will provide correct insights, and the strategies formed on it will also be more accurate. The organization’s impact becomes larger as finances are used more efficiently and resource wastage and other intangible costs are reduced.
+
+-   ### **Competitive Advantage**
+    
+
+Data Quality Management systems improve data health, helping all areas of an organization. Data is often used by and impacts multiple departments. Hence, DQM improves the performance of all organization sections, from marketing and sales to finance and HR. The consequence of this is that the organization becomes more competitive.
+
+-   ### **Organization Growth**
+    
+
+By implementing DQM, the organization can stay afloat and grow, as good business leads can be found due to better data. For instance, a marketing campaign with more accurate data can help ensure it is not targeted to customers who find the product or service irrelevant. Also, accurate data can give better insights to the leadership about customer behavior and market trends, helping them take the right calls and grow as a company.
+
+To implement DQM, you need a properly defined framework, which brings us to our next topic – Data Quality Framework.
+
+## **What is a Data Quality Framework?**
+
+A data quality framework is a system that allows the organization to set its data quality standards, define data quality objectives, and identify the course of action to achieve them. The framework defines numerous processes, principles, tools, and techniques that help companies monitor, assure, and enhance data quality.
+
+-   ### **Why do you need a Data Quality Framework?**
+    
+
+To achieve any objective, you need a roadmap, and data quality frameworks act as a roadmap in achieving the desired data quality. Pairing a data quality framework with a [roadmap builder](https://airfocus.com/product/roadmaps/) further makes it easier to plan, visualize, and track initiatives effectively. When an organization faces data quality issues, a robust data quality framework is crucial for establishing an efficient data pipeline that maintains data quality throughout each process stage.
+
+Such frameworks are often created for data lakes to ensure that data stays secure and consistent while it moves from the source (data lake) to its destination.
+
+-   ### **Components of a Data Quality Framework**
+    
+
+A data quality framework comprises multiple components. The key ones are-
+
+![components of data quality framework](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/2-1.jpg)
+
+#### **#1. Data Workflow**
+
+This component defines the various stages where data quality checks take place. Key stages include data collection, preparation, transformation, storage, analytics, etc. The complexity and frequency of the checks are also defined. 
+
+#### **#2. Data Quality Rules**
+
+Here are the criteria for monitoring and testing data quality. These criteria or rules are tailored to the company’s data quality needs.
+
+#### **#3. Data Issue Management**
+
+It’s the most critical component of the data quality framework. Here, the issues identified per the quality rules are resolved.
+
+#### **#4. Data Issue Analysis**
+
+The next key component is data issue analysis, where the identified issues are analyzed so that their reasons can be found and counteractive action can be taken to prevent the issues in the future.
+
+#### **#5. Data Quality Process Automation**
+
+Automation can significantly heighten the quality of the DQM, as a human inspection can overlook minor issues ranging from undiscovered typos to values being filled in the wrong field. Thus, automating DQM is a major component of the data quality framework, where rules are designed, and the frameworks use them to flag and resolve quality issues.
+
+#### **#6. Process Improvement**
+
+The last component of the data quality framework is continuous DQM process improvement, which ensures that the long-term expectations from the data are fulfilled.
+
+One aspect of the components that needs more discussion is data quality rules, which have a few more aspects. 
+
+## **How To Measure Data Quality?**
+
+The above-discussed data quality framework assesses the data’s capacity and purpose to serve a business objective. A typical data quality framework comprises a set of data quality dimensions and metrics as part of the data quality rules.
+
+-   ### **Data Quality Dimensions**
+    
+
+There are multiple dimensions to understanding data quality. These are as follows-
+
+![data quality dimensions](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/6-1-e1715581084634.jpg)
+
+#### **1\. Accuracy**
+
+It’s a measure of how closely the data corresponds to reality. Data is considered accurate when it reflects real-world facts and conditions, such as a customer’s date of birth. Accuracy ensures that the data is reliable for decision-making.
+
+#### **2\. Completeness**
+
+The proportion of data free of missing values is defined as completeness. It is crucial as incomplete data can lead to skewed analysis, poor decision-making, communication gaps, service delivery, etc.
+
+#### **3\. Timeliness**
+
+Timeliness is another dimension that helps ensure data is fit for use and supports accurate decision-making. It assesses how old or up-to-date the data is at any given point. This aspect is crucial when data is used to make decisions in real-time.
+
+#### **4\. Validity**
+
+Validity is that dimension that deals with the data formats, rules, constraints, and processes. It is used to ensure that the data follows the standards set by the business or required by the system.
+
+Examples include the date of birth being in a specific date, month, or year format, salary being represented in float data type, etc. Invalid data can cause misleading insights and, thereby, is crucial.
+
+#### **5\. Integrity**
+
+Integrity means the trustworthiness and reliability of data in terms of staying intact when it goes through different lifecycles, systems, departments, etc. An example could be a customer changing their contact number while the latest data still shows the old one.
+
+#### **6\. Uniqueness**
+
+Quality data should be distinct, i.e., without duplicates. This dimension plays a crucial role when dealing with customer profiles and can, if not checked properly, cause issues like inflated figures, distortions in analysis, etc.
+
+#### **7\. Consistency**
+
+This dimension ensures that the same information in the same format is found about a subject in different datasets within the same or different systems. Thus, regardless of how the data was accessed, it should have the same information indicating consistency. A lack of it can lead to difficulties during analysis.
+
+#### **8\. Reliability**
+
+Another aspect of consistency is that information should remain the same even if the data undergoes manipulation and transformation. A lack of reliability can lead to differing analytical findings about the same thing.
+
+#### **9\. Relevance**
+
+This aspect considers whether the data is meaningful and appropriate for the task. Relevance is important as data might be complete, accurate, and up-to-date, but it might be irrelevant when solving the problem.
+
+#### **10\. Availability**
+
+Availability assesses the time it takes to access data within a reasonable timeframe. For example, if the data is not stored properly and is difficult to store, it can hamper its utility, adversely affecting its quality. 
+
+-   ### **Data Quality Metrics**
+    
+
+Numerous metrics are calculated to check the data quality based on the abovementioned dimensions. Some of the most key ones are- 
+
+#### **1\. Ratio of data to errors**
+
+Calculates the number of issues found per dataset, data warehouse, and data lake. Application errors and security alters are considered to be part of the issues.
+
+#### **2\. Number of empty values**
+
+Count of the times there was an empty required field in the data.
+
+#### **3\. Data transformation error rate**
+
+Tracks the number of times data transformation failed.
+
+#### **4\. Data storage costs**
+
+If data storage and archival costs decrease as data generation and collection grow, it may indicate high data quality.
+
+#### **5\. Data time-to-value**
+
+This metric indicates the time it takes to get meaningful insights from data that can be used for decision-making and problem-solving. A higher time can mean low-quality data.
+
+After understanding the key dimensions and metrics of DQM, let’s explore how to implement them in the real world.
+
+## **How to Implement Data Quality?**
+
+Once your Data Quality Framework is ready, you can consider implementing DQM. To enforce data quality in your organization, you can follow the data quality management process lifecycles, which involve following key steps.
+
+-   ### **Step 1: Extraction**
+    
+
+The first step is to gather the necessary data from internal and external sources to perform the required task.
+
+-   ### **Step 2: Evaluation**
+    
+
+The next step is to understand the data and evaluate if the collected data meets your requirements and can help accomplish the task at hand. 
+
+-   ### **Step 3: Quality Assessment**
+    
+
+The third step involves using the DQM rules to assess the data quality and identify issues. Different metrics are used here.
+
+-   ### **Step 4: Cleaning and Enrichment**
+    
+
+Once the issues are identified, data cleaning and enrichment can take place. This includes performing type casting, outlier caping, missing value treatment, and correcting other inaccuracies.
+
+-   ### **Step 5: Reporting**
+    
+
+The findings of quality assessment and steps taken under data cleaning and enrichment are documented, and the data quality metric values are reported.
+
+-   ### **Step 6: Remediation**
+    
+
+The root cause of the issues causing a drop in data quality is found, and strategies are formed and executed to prevent the issue from arising again.
+
+-   ### **Step 7: Review and Monitor**
+    
+
+To improve the DQM process, it is reviewed, best practices are identified, and gaps and the scope of improvement are discussed.
+
+Now, let’s delve into the best practices you should keep in mind for the effective implementation of DQM.
+
+## **Best Practices to Implement Data Quality Management**
+
+Following best practices can help properly implement DQM and maximize the quality of your data.
+
+![data quality management best practices](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/3-2.jpg)
+
+1.  **Ensure Data Governance:** Implement a governance system to define roles and responsibilities for data quality management and hold employees accountable for data handling.
+2.  **Involve all departments:** Engage the entire organization in data quality processes, including specialized roles such as data quality managers and analysts.
+3.  **Ensure transparency**: Maintain open organizational communication about data management rules and processes to avoid mistakes and support integration.
+4.  **Define a data glossary:** Create a glossary of relevant terms to establish a common understanding of data definitions across the organization.
+5.  **Find the root causes for quality issues:** Analyze poor quality data to identify and address underlying issues, providing insights for process improvements and future prevention.
+6.  **Invest in automation:** Use automation tools for data entry to reduce human error and maintain data accuracy throughout the organization.
+7.  **Implement security processes:** Establish strong security measures for data cleansing, recovery, and access to prevent data breaches and misuse.
+8.  **Define KPIs:** Set quality KPIs aligned with business goals to evaluate the success and performance of DQM efforts.
+9.  **Integrate DQM and BI:** Combine DQM with business intelligence (BI) software to automate and make better strategic decisions.
+10.  **Data Documentation:** Thoroughly document data sources, transformations, and quality rules to establish data lineage and trace the data’s journey.
+11.  **Train Data Users:** Provide regular training on data quality management to enable employees to follow best practices and communicate effectively across departments.
+12.  **Iterative Improvement:** Recognize DQM as an ongoing journey and continuously improve efforts based on business requirements and emerging technologies.
+
+Even if you follow the best practices, implementing a data quality management process can present some challenges. In the next section, we will discuss the most crucial ones.
+
+## **Challenges in Data Quality Management**
+
+Unlike other processes, DQM is an ongoing process that poses regular challenges in its application. The key challenges to keep in mind are as follows-
+
+![challenges in data quality management](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/4-1.jpg)
+
+1.  **Changing Business Requirements:** As organizations evolve, data formats and usage patterns change, impacting data quality management.
+2.  **Technological Advancements:** Integrating new tools and technologies requires adapting data quality strategies and fostering continuous learning.
+3.  **Legacy System Upgrades:** Migrating data from legacy systems to the cloud involves transforming, validating, and monitoring data to maintain quality.
+4.  **Data Volume:** The increase in data volume due to big data and IoT necessitates consistent data quality management to support decision-making.
+5.  **Data Quality in Data Lakes:** Storing various data types in data lakes presents challenges in maintaining accuracy, timeliness, and accessibility.
+6.  **Dark Data:** Managing data that isn’t actively used or analyzed (dark data) poses difficulties in uncovering insights and ensuring data quality.
+7.  **Edge Computing:** Processing data at the source (edge computing) requires extra attention to data consistency, latency, and reliability.
+8.  **Data Quality Ethics**: Ethical considerations in data quality, such as bias and fairness, are increasingly important in AI and ML applications.
+9.  **Data Quality as a Service (DQaaS):** Evaluating third-party DQaaS solutions and integrating them into data ecosystems can present opportunities and challenges.
+10.  **Data Quality in Multi-Cloud Environments:** Managing data quality across multiple cloud platforms involves addressing data format inconsistencies and integration issues.
+11.  **Data Quality Culture:** Building a culture of data quality across the organization requires education and promotion of data stewardship.
+
+By tackling these data quality challenges, organizations can maintain reliable data, support data-driven decisions, and leverage data as a strategic asset. However, it would help if you had the right tools to implement data quality management. Let’s look at the most prominent DQM tools and techniques available today.
+
+## **Top Data Quality Tools and Techniques**
+
+Here is an overview of the tools available for Data Quality Management.
+
+-   ### **Top 5 Features of DQM Tools**
+    
+
+When choosing a tool for data quality management, you must ensure it has the following features.
+
+1.  **Connectivity:** DQM software should connect data from multiple sources, such as internal, external, cloud, and on-premise, to effectively apply quality rules.
+2.  **Profiling:** The software should offer efficient data profiling features to identify and understand quality issues.
+3.  **Data Monitoring and Visualization:** Interactive dashboards and monitoring capabilities help assess real-time data quality.
+4.  **Metadata Management:** Proper metadata management ensures data documentation and understanding across the organization.
+5.  **User-friendliness and Collaboration:** DQM tools should be user-friendly and facilitate collaboration across key players in the organization.
+
+-   ### **Types of Data Quality Tools**
+    
+
+Numerous DQM tools can be categorized as the following-
+
+1.  **Data Profiling Tools:** Analyze data structure and relationships to identify patterns and issues.
+2.  **Data Cleansing Tools:** Correct or remove errors and inconsistencies in data.
+3.  **Data Matching and Deduplication Tools:** Identify and eliminate duplicate records to maintain data integrity.
+4.  **Data Validation Tools:** Check data against rules and criteria to ensure compliance with standards.
+5.  **Data Enrichment Tools:** Enhance data with additional information from external sources.
+6.  **Data Governance and DQM Tools:** Establish governance policies, rules, and practices for managing data quality.
+7.  **Data Monitoring and Profiling Tools:** Continuously track and analyze data quality, triggering alerts when issues arise.
+8.  **Master Data Management Tools:** Maintain consistency in critical data elements across the organization.
+9.  **Data Quality Reporting and Dashboards:** Provide visualization and reporting capabilities to monitor data quality.
+10.  **Data Quality Assessment and Profiling Tools:** Evaluate data quality and prioritize improvement efforts.
+
+-   ### **Top 8 Data Quality Tools**
+    
+
+A few of the most prominent tools used for implementing DQM are-
+
+![data quality tools](https://www.analytixlabs.co.in/wp-content/uploads/2024/05/5-1-e1715581136254.jpg)
+
+1.  **Great Expectations:** An open-source data validation tool that integrates with ETL code and helps define data quality management expectations.
+2.  **Deequ:** An open-source tool for setting up metadata validation and checking data quality in large datasets, using Apache Spark.
+3.  **Monte Carlo**: A data observability framework that uses ML to detect and analyze data concerns and convey warnings.
+4.  **Anomaly:** An ML-powered tool that monitors data tables and identifies issues without needing rules or thresholds.
+5.  **Lightup:** Implements deep data quality checks quickly and efficiently using time-bound queries and AI-driven anomaly detection.
+6.  **Bigeye:** Continuously monitors data pipeline health and quality using anomaly detection technology.
+7.  **Acceldata:** Offers monitoring of data pipelines, providing a cross-sectional view of complex data systems.
+8.  **Datafold:** A data observability tool for monitoring data quality using diffs, anomaly detection, and data profiling while enabling automatic metrics monitoring.
+
+Data governance is a key aspect of DQM that has yet to be discussed. It’s important to explore this aspect. 
+
+## **Data Governance and Data Quality**
+
+Data Quality Management and [Data Governance](https://www.ibm.com/topics/data-governance) are closely related yet serve distinct purposes within data management.
+
+Data Governance involves creating policies, standards, and processes to control data across an organization to achieve strategic goals. It focuses on managing data effectively and efficiently, though accurate and reliable data is essential.
+
+On the other hand, data quality management explicitly concentrates on improving and maintaining data quality through activities such as data profiling and cleansing. While data governance may define the necessity for accurate data in certain fields, data quality management implements this using quality tools and processes.
+
+Both data governance and quality management are critical components of an effective data management framework. Well-defined data governance policies need data quality management for implementation, while data quality efforts can be undermined by poor governance. Together, they ensure data remains secure, reliable, and useful for decision-making.
+
+Data quality management is becoming a priority for companies, and its importance will likely grow. Hence, looking for job roles in this domain is a good idea.
+
+## **How to Become a Data Quality Management Specialist?**
+
+Data quality management specialists play a crucial role in organizations, as they are responsible for maintaining data quality. The following is an overview of this interesting job role. 
+
+### **Background**
+
+DQM specialists can be of various backgrounds. However, the typical expectations are-
+
+1.  **Educational Background:** They generally hold a degree in STEM, particularly CS, statistics, or other related fields. Individuals with degrees in business analytics can also become DQM specialists. An advanced degree involving data and computer systems can be considered more valuable. 
+2.  **Certifications:** Relevant certifications in related fields can help
+3.  **Work Experience:** Individuals with familiarity in data analysis, governance, and management are preferred.
+
+### **Skills and Tools**
+
+DQM specialists must have various technical, analytical, communication, and programming skills.
+
+1.  **Technical Skills:** Proficiency in data acquisition, profiling, cleaning, processing, transformation, and validations. Knowledge of tools like Talend, Informatica, and IBM InfoSphere can help. A knack for attention to detail is also highly appreciated.
+2.  **Communication Skills:** Communication skills are considered key to helping create and communicate data quality reports.
+3.  **Programming Skills:** Knowledge of [Python](https://www.analytixlabs.co.in/blog/python-visualization/), [R](https://www.analytixlabs.co.in/blog/r-benefits-in-data-science/), and [SQL](https://www.analytixlabs.co.in/blog/sql-in-data-science/) is vital for data manipulation, analytics, model building, etc.
+
+### **Additional Roles to Explore**
+
+There are several additional job roles related to the DQM specialist. These include-
+
+1.  **DQM Program Manager:** This is a high-level leadership position that oversees BI activities and manages the data management scope, program implementation, project budget, etc.
+2.  **Data Governance Specialist:** Develops and implements data governance framework, policies, best practices, etc.
+3.  **Business/Data Analysts:** Defines data quality needs, communicates data management theory to the development team, utilizes DQM skills to support data-driven decision-making, etc.
+
+> Also read: [Top 15+ Essential Business Analytics and Associated Tools](https://www.analytixlabs.co.in/blog/business-analytics-tools/)
+
+### **Learning References**
+
+To learn DQM, you have numerous platforms, such as
+
+1.  **Formal Education:** A data science, information systems, or computer science degree can expose you to DQM.
+2.  **Professional training:** Workshops, seminars, on-the-job training, etc., can also teach you about DQM.
+3.  **Conferences:** There are online and offline conferences that you can attend to learn DQM.
+4.  **Certifications:** Several certification programs are designed for DQM that train you on the skills required to perform it. SAS, Talend, IBM, Udemy, and AnalytixLabs offer certifications.
+
+## **Conclusion**
+
+As data volume, complexity, and applications continue to grow, so will the challenges associated with data quality. However, by thoughtfully designing and implementing a robust data quality framework, organizations can safeguard themselves against the negative consequences of using poor-quality data.
+
+Looking ahead, advancements in machine learning (ML) and artificial intelligence (AI) hold significant promise for DQM, as they can identify anomalies and patterns, proactively address potential issues, and enhance the efficiency and effectiveness of DQM. Additionally, real-time DQM is poised to play a pivotal role, particularly in big data and the [Internet of Things (IoT)](https://www.analytixlabs.co.in/blog/iot-and-big-data/), where timely access to high-quality data is essential.
+
+## **FAQs**
+
+-   **What is Data Quality Management?**
+
+Data Quality Management (DQM) assesses data quality and ensures that it is accurate, consistent, reliable, unique, etc., throughout its lifecycle. It includes performing data profiling, cleaning, monitoring, remediation, and reporting. 
+
+-   **What is Data Quality Assurance?**
+
+Data quality assurance is a systematic practice that involves identifying inconsistencies and anomalies in data by monitoring metrics and adhering to data quality standards. This ensures that data complies with established quality standards and policies.
+
+-   **How do you implement data quality standards?**
+
+To implement data quality standards, you must define the quality dimensions, assess the quality level, implement data quality rules and policies, assign ownership, monitor data, remediate issues, and perform continuous improvement.
+
+-   **What are the 6 C’s of data quality?**
+
+The six C’s refer to the six basic data quality dimensions-
+
+-   Completeness: No necessary data fields and values are missing.
+-   Consistency: Data is consistent across different sources and systems.
+-   Conformity: Data follows established standards, formats, and rules.
+-   Currency: Data is up-to-date and reflects current conditions.
+-   Correctness: Data is accurate and free from errors.
+-   Clarity: Data is easily understandable and unambiguous.
+
+Related Reading Resources
+
+-   [Datalake vs. Data Warehouse](https://www.analytixlabs.co.in/blog/data-lake-vs-data-warehouse/)
+-   [What is a Data Pipeline? Types, Benefits, Best Practices and More](https://www.analytixlabs.co.in/blog/data-pipeline/)
+-   [Supervised vs. Unsupervised Learning in Machine Learning](https://www.analytixlabs.co.in/blog/supervised-and-unsupervised-learning/)
+-   [What is The Eligibility for Artificial Intelligence Course in India?](https://www.analytixlabs.co.in/blog/eligibility-for-artificial-intelligence-course/)

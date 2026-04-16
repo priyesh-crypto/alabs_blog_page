@@ -14,12 +14,13 @@ export function generateStaticParams() {
 
 /* ---------- metadata ---------- */
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { category: string };
-}): Metadata {
-  const name = params.category.replace(/-/g, " ");
+  params: Promise<{ category: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const name = resolvedParams.category.replace(/-/g, " ");
   return {
     title: `${name.charAt(0).toUpperCase() + name.slice(1)} Articles`,
     robots: { index: false, follow: false },
@@ -28,12 +29,13 @@ export function generateMetadata({
 
 /* ---------- page ---------- */
 
-export default function CategoryPage({
+export default async function CategoryPage({
   params,
 }: {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }) {
-  const categoryName = params.category.replace(/-/g, " ");
+  const resolvedParams = await params;
+  const categoryName = resolvedParams.category.replace(/-/g, " ");
   const posts = getPostsByCategory(categoryName);
 
   if (posts.length === 0) notFound();

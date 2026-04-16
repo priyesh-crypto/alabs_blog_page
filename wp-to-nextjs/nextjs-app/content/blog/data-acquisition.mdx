@@ -1,0 +1,235 @@
+---
+title: "What Is Data Acquisition in Machine Learning?"
+slug: data-acquisition
+date: "2021-08-26T15:39:01+00:00"
+modified: ""
+description: "What is Data Acquisition in machine learning? Data acquisition focuses on generated data and captures data into the system for processing. Read More!"
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2021/08/Blog-Banner-5-1-1.jpg"
+author: AnalytixLabs
+categories:
+  - Machine Learning
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/data-acquisition/"
+noindex: true
+---
+
+## Introduction
+
+Let’s start by asking a straightforward question: would you need a messenger or a chat box if there wasn’t any need to communicate with another person? No, right? In the same manner, how would you conduct any form of analysis and make the models if there wasn’t any data available? 
+
+Data is the most obvious and the first thing required for us to understand, make sense, perform any analysis, and interpret it. It’s a no-brainer that without the data, there’s no Data Science. Yet, are we aware of how the data is acquired?  In this article, we shall cover what is data acquisition, what is data acquisition in machine learning, the process of data acquisition, the tools and techniques available for data acquisition.
+
+AnalytixLabs, India’s top-ranked AI & Data Science Institute, is led by a team of IIM, IIT, ISB, and McKinsey alumni. The institute provides a wide range of data analytics courses, including detailed project work that helps an individual fit for the professional roles in AI, Data Science, and Data Engineering. With its decade of experience in providing meticulous, practical, and tailored learning, AnalytixLabs has proficiency in making aspirants “industry-ready” professionals.
+
+## What Is Data Acquisition in Machine Learning?
+
+First, let’s understand what data acquisition is?
+
+“Data acquisition is the process of sampling signals that measure real-world physical conditions and converting the resulting samples into digital numeric values that a computer can manipulate.”
+
+Data acquisition systems (DAS or DAQ) convert physical conditions of analog waveforms into digital values for further storage, analysis, and processing.
+
+In simple words, Data Acquisition is composed of two words: Data and Acquisition, where data is the raw facts and figures, which could be structured and unstructured and acquisition means acquiring data for the given task at hand. 
+
+Data acquisition meaning is to collect data from relevant sources before it can be stored, cleaned, preprocessed, and used for further mechanisms. It is the process of retrieving relevant business information, transforming the data into the required business form, and loading it into the designated system. 
+
+A data scientist spends 80 percent of the time searching, cleaning, and processing data. With Machine Learning becoming more widely used, some applications do not have enough labeled data. Even the best Machine Learning algorithms cannot function properly without good data and cleaning of the data. Also, Deep learning techniques require vast amounts of data, as, unlike Machine Learning, these techniques automatically generate features. Otherwise, we would have garbage in and garbage out. Hence, data acquisition or collection is a very critical aspect.
+
+The life-cycle of a Machine Learning project follows:
+
+1.  **Defining the project objective:** Identifying the business problem, converting it into a statistical problem, and then to the optimization problem 
+2.  **Data Acquisition or Collection**:  Acquiring and merging the data from all the appropriate sources
+3.  **Data Exploration and Pre-processing:** Cleaning and [**_preprocessing the data_**](https://www.analytixlabs.co.in/blog/data-preprocessing-in-machine-learning/) to create homogeneity, performing exploratory data analysis and statistical analysis to understand the relationships between the variables.
+4.  **Feature Engineering:** Create new features based on empirical relationships and select significant variables using dimension reductional techniques.
+5.  **Model Building:** Training the dataset and building the model by selecting the appropriate ML algorithms to identify the patterns.
+6.  **Execution & Model Validation:** Implementation of the model and validating the model such as validating and fine-tuning the parameters.
+7.  **Deployment:** is the representation of business-usable results of the ML process — models are deployed to enterprise apps, systems, data stores.
+8.  **Interpretation, Data Visualization,  and Documentation:** Interpreting, visualizing, and communicating the model insights. Documenting the modeling process for reproducibility and creating the model monitoring and maintenance plan.
+
+**The below image graphically depicts the workflow of Machine Learning:**
+
+![Workflow of Machine Learning](https://www.analytixlabs.co.in/wp-content/uploads/2021/08/Blog-Images-1.jpg)
+
+Source: [soschace.com](https://soshace.com/wp-content/uploads/2019/09/Machine-Learning-Architecture-Example-by-Gartner-1024x600.jpg)
+
+The data acquisition in machine learning involves:
+
+-   **Collection and Integration of the data:** The data is extracted from various sources and also the data is usually available at different places so the multiple data needs to be combined to be used. The data acquired is typically in raw format and not suitable for immediate consumption and analysis. This calls for future processes such as:
+    -   **Formatting:** Prepare or organize the datasets as per the analysis requirements.
+    -   **Labeling:** After gathering data, it is required to label the data. One such instance is in an application factory, one would want to label the images of the components if the components are defective or not. In another case, if constructing a knowledge base by extracting information from the web then would need to label that it is implicitly assumed to be true. At times, it is needed to manually label the data.
+
+Learn from AnalytixLabs
+
+You can explore our [course in Machine Learning](https://www.analytixlabs.co.in/machine-learning-course-certification-training) and also our [certificate course in data science](https://www.analytixlabs.co.in/data-science-specialization-course), or you can book a demo with us.
+
+This acquired data is what is ingested for the data preprocessing steps. Let’s move to the data acquisition process …
+
+## The Data Acquisition Process
+
+The process of data acquisition involves searching for the datasets that can be used to train the Machine Learning models. Having said that, it is not simple. There are various approaches to acquiring data, here have bucketed into three main segments such as:
+
+1.  Data Discovery
+2.  Data Augmentation
+3.  Data Generation
+
+Each of these has further sub-processes depending upon their functionality. The figure below lays out an overview of the research landscape of data collection for machine learning. We’ll dive deep into each of these.
+
+![Data Acquisition Process](https://www.analytixlabs.co.in/wp-content/uploads/2021/08/Blog-Images-2.jpg)
+
+1.  **Data Discovery:** 
+
+The first approach to acquiring data is Data discovery. It is a key step when indexing, sharing, and searching for new datasets available on the web and incorporating data lakes. It can be broken into two steps: Searching and Sharing. Firstly, the data must be labeled or indexed and published for sharing using many available collaborative systems for this purpose.
+
+2.  **Data Augmentation:** 
+
+The next approach for data acquisition is Data augmentation. Augment means to make something greater by adding to it, so here in the context of data acquisition, we are essentially enriching the existing data by adding more external data.  In Deep and Machine learning, using pre-trained models and embeddings is common to increase the features to train on. 
+
+3.  **Data Generation:** 
+
+As the name suggests, the data is generated. If we do not have enough and any external data is not available, the option is to generate the datasets manually or automatically. Crowdsourcing is the standard technique for manual construction of the data where people are assigned tasks to collect the required data to form the generated dataset. There are automatic techniques available as well to generate synthetic datasets. Also, the data generation method can be seen as data augmentation when there is data available however it has missing values that need to be imputed. 
+
+**Some of the important questions that need to be addressed at the stage of data acquisition are:**
+
+-   Where is the data?
+-   Is the data available externally? 
+-   Do we have enough data? How much data do we need?
+-   What kind of data should we collect?
+-   Do we have any data generation method?
+-   Can we improve the existing data or models? Can we add labels to the data?
+-   Is the existing data and labels biased and contains noise?
+
+**The below flowchart can help to answer and take the needed decision.**
+
+![Data Discovery decision flowchart ](https://www.analytixlabs.co.in/wp-content/uploads/2021/08/Blog-Images-3.jpg)
+
+## The Need for Metadata Tools
+
+Metadata is data or information about the data that is collected. It summarizes and describes the information about data. It can be manually created for precise information or can be obtained automatically and contain basic information. “Metadata gives the What, When, Where, Who, How, Which, and Why information about the data it models or represents.”
+
+There are numerous methods to store the metadata. The ideal way is to store the metadata with the data itself; in this way, the data is not separated from the context. Another way is to store the metadata in a central location and in a database which would also be easy to search. The digital ways to store metadata are:
+
+-   Data structures having XML or JSON files
+-   Simple text files or in “README” style
+-   A spreadsheet or .csv (comma-separated) files
+-   Another structured metadata file .odML
+-   Can create customized structures to store metadata using a relational database such as SQL
+-   Can also use open-sources software such as CEDAR Workbench, Yogo, Helmholtz, and Object Viewing Analysis Tool For Integrated Object Networks (Ovation).
+
+Metadata is very useful for a business in the following ways:
+
+1.  **Identification, Classification, and Tracking of Content Usage:**
+
+Metadata helps identify content and separate it from other content by assigning it a special character such as tags. Some of the metadata identification elements are:
+
+-   The title, author, and date of a publication
+-   Subject keywords
+-   Unique Resource Identifier or URI
+-   File Reference Number or File Name
+
+For instance, the blogs, images, and videos on the web have metadata in the form of descriptions with keywords that help identify for easy search and be used appropriately. It is also used to organize and track content according to the attributes, such as the date, title, or author of the document.
+
+2.  **Fast Retraction of Information:** 
+
+One of the common uses of metadata is to search and retrieve content that empowers users to run a query on the selected attributes such as date, unique identification number, subject, title, and author.
+
+3.  **Information Security**:
+
+Metadata is highly useful for digital security and digital identification. It can be used to flag a security setting, validate access and edit rights, and control the distribution.
+
+4.  **Organizing and Managing Electronic Resources:** 
+
+Metadata is an effective way of collecting and organizing digital resources that are used and linked regularly. It is also helpful in managing a wide variety of content. It helps identify who has access permissions for the documents and which applications must be employed for that. It automatically processes some of the tasks such as archiving dates, link resources, file format, rights management setting, security permissions and classification, and version numbers.
+
+5.  **Facilitate Machine Learning:**
+
+It is a time-consuming and ineffective way to interpret and understand the relevance of data. Useful and productive metadata facilitates the AI process as data can be discovered by users and Artificial Intelligence or Machine Learning applications.  
+
+6.  **Customer Experience**:
+
+Metadata also helps in suggesting the appropriateness of the data as it can also be used to capture the user’s rating of the content.
+
+7.  **Reduction of cost by sharing the data :**
+
+Metadata also aids in resuing and sharing the data. Particularly across departments and organizations, only the metadata itself needs to be shared. It is not needed to share the data itself; however, it can share what information is held and its location. This also helps in reducing the security and cost related to the migration of data from various departments.
+
+8.  **Extends Data Longevity:**
+
+It is typical for a dataset to have missing values that make the data irrelevant and short lifespan. This is taken care of by developing and maintaining metadata.
+
+## Data Acquisition Techniques and Tools
+
+**The major tools and techniques for data acquisition are:**
+
+1.  Data Warehouses and ETL
+2.  Data Lakes and ELT
+3.  Cloud Data Warehouse providers 
+
+### Data Warehouses and ETL
+
+The first option to acquire data is via a data warehouse. Data warehousing is the process of constructing and using a data warehouse to offer meaningful business insights.
+
+A data warehouse is a centralized repository, which is constructed by combining data from various heterogeneous sources. It is primarily created and used for data reporting and analysis rather than transaction processing. Also, supporting structured and ad-hoc queries in the decision-making process. The focus of the data warehouse is on the business processes.
+
+A data warehouse is typically constructed to store structured records having tabular formats. Employees’ data, sales records, payrolls, student records, and CRM all come under this bucket. In a data warehouse, usually, we transform the data before loading, and hence, it falls under the approach of ETL (Extract, Transform and Load).
+
+As we saw above, what is data acquisition? It is defined as the extraction of data, the transformation of data, and the loading of the data. The data acquisition is performed by two kinds of ETL (Extract, Transform and Load), these are:
+
+1.  Code-based ETL: These ETL applications are developed using programming languages such as SQL, and PL/SQL (which is a combination of SQL and procedural features of programming languages). Examples: BASE SAS, SAS ACCESS.
+2.  Graphical User Interface (GUI)-based ETL: This type of ETL application are developed using the graphical user interface, and point and click techniques. Examples are data stage, data manager, AB Initio, Informatica, ODI (Oracle Data Integration), data services, and SSIS (SQL Server Integration Services).
+
+### **Data Lakes and ELT**
+
+A data lake is a storage repository having the capacity to store large amounts of data, including structured, semi-structured, and unstructured data. It can store images, videos, audio, sound records, and PDF files. It helps for faster ingestion of new data. 
+
+Unlike data warehouses, data lakes store everything, are more flexible, and follow the Extract, Load, and Transform (ELT) approach. The data is first loaded and not transformed until required to transform. Therefore the data is processed later as per the requirements. 
+
+Data lakes provide an “unrefined view of data” to data scientists. Open-source tools such as Hadoop and Map Reduce are available under data lakes.
+
+### Cloud Data Warehouse providers 
+
+A cloud data warehouse is another service that collects, organizes, and stores data. Unlike the traditional data warehouse, cloud data warehouses are quicker and cheaper to set up as no physical hardware needs to be procured. 
+
+Additionally, these architectures use massively parallel processing (MPP), i.e., employ a large number of computer processors (up to 200 or more processors) to perform a set of coordinated computations in parallel simultaneously and, therefore, perform complex analytical queries much faster.
+
+**Some of the prominent cloud data warehouse services are:**
+
+-   Amazon Redshift
+-   Snowflake
+-   Google BigQuery
+-   IBM Db2 Warehouse
+-   Microsoft Azure Synapse
+-   Oracle Autonomous Data Warehouse
+-   SAP Data Warehouse Cloud
+-   Yellowbrick Data
+-   Teradata Integrated Data Warehouse
+
+> **You may also like to read: _[16 Best Big Data Tools And Their Key Features](https://www.analytixlabs.co.in/blog/big-data-analytics-tools/)_**
+
+## FAQs – Frequently Asked Questions
+
+**Q1. What are the types of data acquisition?**
+
+Ans. There are broadly 3 types of data acquisition: data discovery, data augmentation, and data generation.
+
+1.  **Data Discovery:** It is sharing and finding new datasets. It is the solution to the problem of indexing and searching datasets that exist within the corporate data lakes or on the Web.
+
+2.  **Data Augmentation:** It enhances the existing data by adding more external data. In Deep and Machine learning, the use of pre-trained models and embeddings is a common way to increase the features to train the model.
+
+3.  **Data Generation:** It is used when there is no external dataset available. The data is generated either manually by crowdsourcing or automatically by creating synthetic datasets. 
+
+**Q2. What is a data acquisition example?**
+
+Ans. One example of data acquisition is audio signals. It represents a sound that can be either binary (digital) signals or analog (continuous) signals. The signals have frequencies, which tell how fast or slow a signal is changing over time. These signals are converted into numerical values to be fed into the machine for further processing and prediction.
+
+> **You may also like to read: _[Difference Between Data And Information? Data Vs Information](https://www.analytixlabs.co.in/blog/difference-between-data-and-information/)_**
+
+**Q3. What is the goal of data acquisition?**
+
+Ans. The goal of data acquisition and data acquisition meaning is to search for and obtain the data that can be used to analyze the business trends, draw actionable insights, draw machine learning models and make accurate predictions. 
+
+> **You may also like to read:**
+> 
+> _**1\.**_ **_[Machine Learning Vs. Data Mining Vs. Pattern Recognition](https://www.analytixlabs.co.in/blog/difference-between-machine-learning-pattern-recognition-and-data-mining/)_**
+> 
+> _**2\.**_ **_[What is Data Wrangling in Machine Learning?](https://www.analytixlabs.co.in/blog/data-wrangling/)_**

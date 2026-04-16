@@ -1,0 +1,591 @@
+---
+title: "Guide to Data Processing – Learn Types, Methods, Stages and its Role in ML"
+slug: data-processing-in-machine-learning
+date: "2024-06-04T12:22:03+00:00"
+modified: "2024-09-06T11:57:21+00:00"
+description: "Data Processing in Machine Learning: Understand types, tools, examples and more. Read this article for in-depth details."
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2024/06/data-processing.webp"
+author: AnalytixLabs
+categories:
+  - Machine Learning
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/data-processing-in-machine-learning/"
+noindex: true
+---
+
+Data science is a complex field, as several related tasks are often performed under it. This includes data collection, mining, analytics, modeling, and reporting. Among these important tasks, one such task of making data usable is – Data Processing.
+
+Data Processing is particularly crucial because to effectively work on data using the tools and techniques available today, you need the data in a clean, often structured format, fulfilling the prerequisites demanded by several data science libraries.
+
+While other data science tasks are time and resource-consuming, they are not as demanding as data processing. Typically, data scientists spend 80% of their time on data processing and the rest on tasks like model building. The quality of a data science project’s output is directly related to the data processing performed, making it a crucial field to learn about.
+
+In this article, you will learn about data processing and the numerous aspects related to it, such as its needs, stages, types, and methods. In addition, how data processing in machine learning is performed will also be explored using the programming language Python.
+
+## **What is Data Processing?**
+
+Let’s understand data processing by creating an analogy between data and oil; after all, data is the oil of the 21st century. While several countries produce oil, it cannot be consumed in its raw form (crude oil) until refined. Similarly, organizations cannot use the collected raw data to find insights and develop anything based on it.
+
+Data scientists, data engineers, and other relevant professionals within an organization actively transform raw data into valuable information. They put the data through several steps: cleaning, transformation, manipulation, type casting, encoding, and visualization.
+
+This process is known as data processing.  Data science professionals design systems in which raw data is the input, and the output is data that can produce actionable insights. 
+
+However, a valid question can be regarding the need for data processing and the consequences of not performing it. We will explore that in the next section, but before that, a short note:
+
+Course Alert 👨🏻‍💻
+
+The more efficiently processed data, the more will be the accuracy of the machine learning model. Hence, AnalytixLabs offers you the best industry-ready machine-learning courses to help you master these concepts.
+
+-   [Python Machine Learning Course](https://www.analytixlabs.co.in/machine-learning-course-certification-training) 
+-   [Deep Learning with Python](https://www.analytixlabs.co.in/deep-learning-with-python)
+
+Explore our signature **data science courses in collaboration with _Electronics & ICT Academy, IIT Guwahati_**, and join us for experiential learning to transform your career.
+
+-   [Certification Course in Data Science](https://www.analytixlabs.co.in/data-science-specialization-course)
+-   [Data Science with R](https://www.analytixlabs.co.in/data-science-r-analytics-training)
+-   [PG in Data Science](https://www.analytixlabs.co.in/pg-in-data-science)
+
+We have [elaborate courses](https://www.analytixlabs.co.in/courses) on AI and business analytics. Choose a learning module that fits your needs—classroom, online, or blended eLearning.
+
+Check out [our upcoming batches](https://www.analytixlabs.co.in/upcoming-batches) or [book a free demo](https://www.analytixlabs.co.in/contact-us) with us. Also, check out our [exclusive enrollment offers](https://www.analytixlabs.co.in/offers)
+
+## **Why Data Preprocessing?**
+
+You might be wondering why data processing is necessary. Although it can be time-consuming and sometimes requires data scientists to do it by hand or use special software, but the truth is, for any business that deals with data, processing it is essential. Here’s why:
+
+![need for data preprocessing](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/1.jpg)
+
+-   ### **Pattern Detection**
+    
+
+Data processing allows hidden patterns in the data to be surfaced. If data processing is not performed, crucial insights can be hidden due to excessive noise in the data. Data processing, therefore, “separates the wheat from the chaff.”
+
+-   ### **Competition**
+    
+
+Suppose two companies get their hands on the same data. Still, one company that is good at data processing can read into it much better and create a product and strategies far superior to the other company.
+
+This is because, apart from the other factors, data processing allows organizations to track consumer trends better, create customer segments, measure customer behavior, etc. All of this makes them more competitive and gives them an edge.
+
+-   ### **Cost**
+    
+
+Data processing makes data more palatable for the organization’s downstream consumption. This lowers costs as fewer resources are required to deal with the data. Early identification of hazards is made possible as the data is now cleaner and shows insights better. Data processing enables automation as its structure is more in tune with existing frameworks.
+
+-   ### **Big Data**
+    
+
+Data processing becomes crucial as the volume of data grows. Extremely large volumes of data, known as big data, are already difficult to deal with because of their sheer size.
+
+If, on top of it, their structure is all over the place and is full of noise and anomalies, then this renders them practically useless. Unlike smaller datasets, where you can still make some sense even if limited data processing is performed, with big data, data processing becomes paramount.
+
+> Also read: [How Companies Are Using Big Data To Sustain and Evolve?](https://www.analytixlabs.co.in/blog/big-data-in-companies/)
+
+-   ### **Data Quality**
+    
+
+GIGO (garbage in, garbage out) is an important concept in data science. This means that if inferior-quality data enters a system, the system’s output will also be of inferior quality. Data processing helps improve data quality by making data more consistent, removing anomalies, reducing redundant information, etc. 
+
+-   ### **Data Structure**
+    
+
+Today, data is created and consumed in all shapes and forms. Tradition data often produced by the BFSI domain used to be neat and well structured, i.e., followed a tabular or fixed structure. Data in the modern age is produced by all domains, from social media to video streaming services.
+
+Consequently, the data is often unstructured in audio, video, images, and text. Such data types are incompatible with most existing [data science tools](https://www.analytixlabs.co.in/blog/data-science-tools/) and techniques. Data processing is essential here as it gives data a proper structure that allows it to be used for performing different data science tasks, such as developing machine learning models.
+
+Given data processing’s many uses, it’s no wonder that most companies require all kinds of data science professionals to have at least a working knowledge of it. Therefore, let’s learn more about data processing and start with the typical stages of performing it.
+
+Below, we illustrate the various steps in data processing, typically called the six stages.
+
+## Important Stages of Data Processing
+
+The concept of data processing can be understood by understanding its stages. Whenever you are involved in data processing, be it data mining or data processing in machine learning, you will broadly be going through six stages. These stages are as follows-
+
+![stages of data processing](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/2.jpg)
+
+### **#1 Collection**
+
+The first stage of data processing is data collection. Without the data, no form of data processing can be started. Data collection typically involves pulling data from numerous sources such as data warehouses, data lakes, etc.
+
+In many cases, it can also require you to perform unorthodox means of collecting data, such as web scraping when the required data is not readily available. It’s crucial to note that the data sources must be trustworthy and well-built, and the means of collecting data should be legal and ethical. This generally ensures that the data quality and integrity are maintained.
+
+> Also read: [Datalake vs. Data Warehouse: Understanding the Concepts](https://www.analytixlabs.co.in/blog/data-lake-vs-data-warehouse/)
+
+### **#2 Preparation**
+
+The second stage in data processing is preparation. This stage is also often called data preprocessing mainly because, at this stage, the data is cleaned to make it ready for the more crucial and mainstream data processing activities.
+
+Data is checked for errors, anomalies, redundancy, factual inaccuracies, gaps, etc. Issues found here are either resolved at this stage or noted and dealt with in the processing stage.
+
+### **#3 Input**
+
+Once the data is preprocessed, i.e., cleaned and organized, it is transported to its destination, which can vary from organization to organization and project to project.
+
+For example, it can be a data warehouse (e.g., Redshift), a CRM (e.g., the salesforce department), or a pipeline for an ML process. This is the first stage where the otherwise raw data starts to take the form of useful information.
+
+> Also read: [A Guide to Data Warehouse](https://www.analytixlabs.co.in/blog/data-warehouse/)
+
+### **#4 Processing**
+
+Perhaps the most crucial stage is processing. At this stage, the input data is processed using numerous techniques and machine learning algorithms. The processing often depends on various factors, such as the data source, where data obtained from a data lake might be processed differently than data obtained from connected devices or social media.
+
+The intended use of data also dictates how it is processed. For example, data might be processed differently if it is intended for medical diagnosis than if it is intended for determining customer needs.
+
+### **#5 Interpretation**
+
+The output data from the above stage needs to be interpreted. The data is ready for non-data scientists and machine learning engineers to consume. It can also be transformed to be readable, typically in text, graphs, images, and even videos. At this stage, the organization can self-serve the data for their respective data analytics projects.
+
+### **#6 Storage**
+
+Data processing culminates in data storage, where the information is preserved for future use. The implementation strategy for this stage depends on the data’s anticipated consumption patterns. While some data finds immediate application, others require careful storage to fulfill their purpose later.
+
+Furthermore, data storage becomes a critical step as it necessitates considerations for accessibility, security, and adherence to data protection regulations. Once stored, the data becomes readily available for enterprise-wide consumption.
+
+While these data processing stages are typically similar, no matter what data science task you are involved in, the data processing methods can differ significantly. Next, we discuss the various types and methods of data processing.
+
+## **Different Types of Data Processing**
+
+Multiple types of data processing exist based on the data source and the steps taken by the data processing unit. It’s great that such multiple types of data processing exist, as one-size-fits-all methods have their problems. The following are the most common data processing types:
+
+![common data processing types](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/3.jpg)
+
+-   ### **Batch Processing**
+    
+
+Batch processing tackles large volumes of data by grouping them into manageable batches. This method allows users to process these groups simultaneously, maximizing efficiency. Data is stored and processed in predefined batches at scheduled times.
+
+This approach suits tasks with flexible deadlines, such as monthly financial reports or payroll processing. Processing data in group chunks efficiently handles large volumes, making it a valuable technique for routine tasks.
+
+-   ### **Real-Time Processing**
+    
+
+Batch processing fails when instant results are needed, as processing information in real-time is important here. In real-time data processing, the output is provided as the system processes the input data. In such a type of processing, the machine processes data relatively fast, skips entries for anomalies and errors, and continues processing the next data set. 
+
+By processing data in such a way, you can achieve results quickly. However, it may cause occasional errors to appear in the output data. Typical applications where real-time processing is done are ATM money withdrawal, credit card fraud detection, stock trading, emergency response systems, etc.
+
+-   ### **Transaction**
+    
+
+Transaction processing is a competitor to real-time processing. This method stops the processing until the encountered error is fixed. Users can identify and include the software and hardware components when designing the data processing system. These components assist in delivering solutions and resume processing if the system encounters errors.
+
+-   ### **Online Processing**
+    
+
+Data is processed online when the user interacts with the system. It is fed into the CPU immediately after it becomes available. This type of processing is used when a continuous data flow is required and for applications where immediate feedback is needed. Common areas where online processing is used are shopping, bank transactions, barcode scanning, etc.
+
+-   ### **Offline Processing**
+    
+
+Offline processing can be performed when users are not interacting with systems. It is typically used in batch mode for data restoration, backup, etc.
+
+-   ### **Distributed**
+    
+
+Processing large amounts of data can be challenging. Such data is often available on different servers and machines. This happens often because data, due to its volume, cannot be stored in a single machine, or the data sources are available across multiple devices.
+
+In such cases, distributed data processing is used, as it allows users to process data from multiple places. This method also enables fault tolerance, so if one of the servers fails, the other servers continue to function and process data.
+
+-   ### **Multiprocessing**
+    
+
+Unlike distributed processing, where multiple processors expedite data processing, each processor functions within the same physical unit in multiprocessing. This approach has limited fault tolerance because data processing might slow down if even one processor malfunctions.
+
+However, its advantage is security, as it’s a trustworthy method for sensitive information. This is because it’s easier to protect data when available on a single server.
+
+Other types of data processing include stream processing, time-sharing, etc. While you can choose the type depending on your need, you must also decide on the data processing method. In the section below, the two main data processing methods are explored.
+
+## **Data Processing Methods – Manual & Automated**
+
+You can perform data processing using two methods – manual and automated. Let’s discuss them both.
+
+-   ### **Manual**
+    
+
+The manual data processing method relies solely on human effort to perform data collection, sorting, filtering, duplicate removal, transformation, and various logical operations. This approach eliminates the need for automation software, making it potentially cost-effective for simpler tasks and with minimal reliance on sophisticated tools.
+
+However, this method comes with significant drawbacks. It is extremely time-consuming, leading to increased error rates in the processed data. The high labor intensity also translates to high labor costs for larger datasets.
+
+-   ### **Automated**
+    
+
+Modern data processing software programs revolutionize data processing by automating the entire workflow. These programs take pre-defined instructions on handling the data, eliminating the need for manual intervention.
+
+While less labor intensive, this method requires specialized knowledge of designing such automated systems.
+
+If the data processing concept is clear, let’s discuss data processing tools further.
+
+## **Top Data Processing Tools**
+
+By now, you would have understood the significance of data processing for any business and organization. It is the primary technique to ensure the data remains consistent and accurate. Therefore, the correct data processing tool must be selected for your project. There are several data processing tools, each with advantages and disadvantages.
+
+While some tools specialize in data collection, others are more in tune with performing data cleaning and transformation. Therefore, often, you have to deal with multiple data processing tools. The data processing tools can be divided into data collection, cleaning, transformation, and analysis. Common tools involved in data processing are the following:
+
+-   [Google BigQuery](https://cloud.google.com/bigquery)
+-   [Amazon Web Services](https://aws.amazon.com/)
+-   Hortonworks
+-   Cloudera
+-   Qlick
+-   [SAS](https://www.sas.com/en_in/home.html)
+-   [R](https://www.r-project.org/)
+-   [Python](https://www.python.org/)
+-   [Tableau](https://www.tableau.com/)
+-   [KNIME](https://www.tableau.com/)
+-   RapidMiner
+-   [Excel](https://www.microsoft.com/en-in/microsoft-365/excel)
+
+Since data processing is so useful and widely popular, there are multiple domains and application areas where it plays a crucial role. The most common data processing examples are discussed in the next section.
+
+## **Use Cases of Data Processing in Various Industries**
+
+There are hundreds of application areas of data processing. Data processing gets involved wherever any organization deals with data, builds any product using it, or decides based on it. The following are the most pertinent data processing examples:
+
+![data processing examples](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/4.jpg)
+
+-   ### **Operations Research**
+    
+
+Organizations have to solve problems related to optimizing and coordinating their operations continuously. Data processing allows for computerized arrangements where data can be regularly analyzed for various business activities. This analysis then allows business management to improve their decision-making, the effectiveness of their operations, etc. 
+
+-   ### **Healthcare**
+    
+
+A great example of data processing is in the healthcare industry, where it plays a vital role. Smart data processing revolutionizes diagnosis and treatment planning by harnessing patient data. This data encompasses everything from reported symptoms to medical history and lab test results.
+
+By collating and intelligently processing this information, healthcare professionals comprehensively understand the patient’s condition. This enriched data is a powerful foundation for downstream activities like model building, advanced analytics, and insightful reporting.
+
+-   ### **Artificial Intelligence**
+    
+
+Another major data processing example is in the AI domain. Real-time data capture drives innovations like self-driving cars and smart assistants. Sensors, from LiDAR to cameras, continuously gather data from the environment. This data is then processed and intelligently fused to understand the surroundings comprehensively. In self-driving cars, for instance, this translates to a holistic view of nearby pedestrians, vehicles, and the overall environment.
+
+-   ###  **E-commerce** 
+    
+
+Another example of data processing is in E-commerce businesses, which process massive amounts of client data for various uses. They examine client behavior, purchasing history, and preferences to personalize recommendations, improve pricing tactics, and enhance customer experience. Data cleaning, transformation, and analysis processes aid in extracting insightful information from the data.
+
+-   ###  **Financial Services** 
+    
+
+Banks and other financial organizations process enormous amounts of transactional data to identify fraudulent activity, determine creditworthiness, and conduct risk analysis. Data preprocessing techniques help uncover financial data patterns, anomalies, and trends to make timely and well-informed decisions.
+
+-   ###  **Manufacturing** 
+    
+
+Manufacturing firms use data processing to enhance quality assurance, optimize production processes, and foresee equipment breakdowns. Analyzing sensor data from machines and manufacturing lines allows for performance monitoring, bottleneck identification, and implementation of predictive maintenance techniques.
+
+Real-time data processing allows quick reactions to potential problems, reducing downtime and increasing production effectiveness.
+
+-   ###  **Social Media Analysis**
+    
+
+Social media networks process a huge volume of user-generated content, analyze the data, and extract insights using data processing techniques, including sentiment analysis, trend detection, and user profiling. Businesses can utilize this data to target marketing efforts better, understand client preferences, and increase user engagement.
+
+-   ###  **Transportation and Logistics**
+    
+
+Data processing is essential for route optimization, demand forecasting, and supply chain management in transportation and logistics. Processing GPS, sensors, and previous transportation data enables delivery route optimization, fuel savings, and increased operational effectiveness.
+
+Data processing plays the most important role in developing data models, especially machine learning models. In the section below, we will discuss the importance of data processing in machine learning model building and the data processing we perform before fitting the model using Python.
+
+## **Data Processing in Machine Learning**
+
+Data processing in machine learning is crucial and involves multiple tools and techniques to perform it successfully. In this section, we explore the role data processing plays in machine learning, understand its advantages and disadvantages, and go through the typical steps you must perform to prepare the data for feeding it into the machine learning model using Python.
+
+-   ### **Role of Data Processing in Machine Learning**
+    
+
+In any ML process, the accuracy and stability of machine learning models are directly dependent on the quality of data used to train them, which is why data processing is crucial.
+
+Data processing actively cleans, prepares, and ensures the data is in a format suitable for modeling. This process removes unnecessary information that could otherwise slow down model fitting times.
+
+The data processing steps in machine learning are data collection, EDA, visualization, processing, feature engineering, and exporting this data for later use. These steps encompass the six stages of data processing discussed earlier: collection, preparation, input, processing, interpretation, and storage.
+
+All these steps will be performed later performed using Python. But, before that, let’s understand the major advantages and disadvantages of involving data processing in machine learning.
+
+-   ### **Advantages of Data Processing in ML**  
+    
+
+The major advantages of performing data processing when building an ML model are the following
+
+#### **Model Performance**
+
+Data processing helps in increasing the accuracy of ML models. This is because by cleaning and transforming the data, it becomes more suitable to the requirements of the machine learning algorithm that the ML model is employing, resulting in better performance.
+
+#### **Representation of Data**
+
+Processing data can bring the underlying relationship and pattern to the surface and properly represent it. This eases the effort that the ML model has to make to learn from the data.
+
+#### **Model Reliability** 
+
+Lastly, data processing helps ML models generalize and remain consistent and stable. It eliminates noise, errors, and other anomalies that confuse the model.
+
+-   ### **Disadvantages of Data Processing in ML**  
+    
+
+However, you must be aware of a few disadvantages when processing data in machine learning. These include
+
+#### **Time Consumption**
+
+Data processing is time-consuming, especially when the data is large and complex. Therefore, a cost-benefit analysis must be done as overdoing data processing can be time- and resource-intensive but will yield diminishing results as you proceed.
+
+#### **Error Susceptibility**
+
+Data is manipulated, transformed, and cleaned during data processing. If not done properly, data processing might introduce errors instead of eliminating them. This can result in information loss, causing data processing to do more harm than good.
+
+#### **Data Understanding**
+
+Lastly, as data is heavily transformed through feature extraction, encoding, scaling, etc. methods, it may become less understood and intuitive to the users. This can lead to a loss of interpretability, which makes reporting and further analysis difficult.  
+
+Now, if you know the role of data processing in machine learning and its pros and cons, let’s implement it in Python.
+
+-   ### **Primary Steps Using Python**
+    
+
+![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/5.jpg)
+
+There are six steps of data processing in machine learning. These are as follows-
+
+1.  Data Collection
+2.  EDA
+3.  Visualization
+4.  Processing
+5.  Feature Engineering
+6.  Data Exporting/Storage
+
+Below, we illustrate the various steps in data processing using Python.
+
+#### **1\. Data Collection**
+
+The first data processing step in machine learning is collecting data. During data collection, the correct labels are identified (in the case of supervised learning ML models), ingested (using approaches such as streaming and bath), and, if required, aggregated, reshaped, and finally imported. Below, we use the Python library Pandas to import data that is available to us as a CSV file.
+
+> Also read: [How to Read CSV Files in Python?](https://www.analytixlabs.co.in/blog/csv-file-in-python/)
+
+![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image4-1-e1717499113339.jpg)
+
+#### **2\. Exploratory Data Analysis**
+
+The next step is exploratory data analysis (EDA), which achieves a preliminary understanding of the data. Below, we view the first few rows of the data and find the number of rows and columns there.
+
+![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image4-e1717499053988.jpg)
+
+> Also read: [Understanding Exploratory Data Analysis in Python](https://www.analytixlabs.co.in/blog/exploratory-data-analysis-in-python/)
+
+#### **3\. Visualization**
+
+Performing Exploratory Data Analysis (EDA) allows you to visualize the data’s various columns. Python libraries like Matplotlib and Seaborn empower you to create these visualizations, providing a deeper understanding of the data if needed.
+
+If your primary aim is to prepare the data for the ML model, you can start processing the data directly.
+
+> Also read: [How To Visualize Data Using Python](https://www.analytixlabs.co.in/blog/python-visualization/)
+
+#### **4\. Processing**
+
+Processing is the most crucial step as it deals with incorrect data types, erroneous data, duplicates, outliers,  missing values, and many other issues. Below, we perform most of the crucial processing steps in Python.
+
+-   ##### **_Conversion of the Data Types_**
+    
+
+In this data processing stage, post-checking the datatypes of the columns, we convert the data types of the following features:
+
+![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image6.jpg)
+
+-   ##### **_Data Correction_**
+    
+
+Making the data consistent across the values, which can mean:
+
+-   The attributes may have incorrect data types and are inconsistent with the dictionary. Correction of the data types is necessary before proceeding with data cleaning.
+-   Replace the special characters; for example, replace $ and comma signs in the Sales/Income/Profit column, making $10,000 $10000.
+-   Making the date column format consistent with the format of the tool used for data analysis.
+
+ In our case, no such issues were found in the data. 
+
+-   ##### **_Handling Missing Data_**
+    
+
+Datasets often contain missing values, which can cause issues during model training. To address this, data preparation techniques are necessary. These techniques range from simple methods like mean, median, or regression-based imputations to more complex ones like multiple imputations.
+
+The null values in the dataset are imputed using mean/median or mode based on the type of data that is missing:
+
+-   **Numerical Data:** If a numerical value is missing, replace that NaN value with the mean or median. It is preferred to impute using the median value as the average, as the mean values are influenced by the outliers and skewness present in the data and pulled in their respective directions.
+-   **Categorical Data:** When categorical data is missing, replace that with the value that is most occurring, i.e., by mode. 
+
+Now, if a column has, let’s say, 50% of its values missing, then will you replace all of those missing values with the respective median or mode value? You will delete that particular column in that case.
+
+Fortunately, our data did not show such missing values.
+
+![steps of data processing in machine learning ](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image7.png)
+
+-   ##### **_Working with Outliers_**
+    
+
+Outliers are extreme or incorrect data points that may negatively impact the model’s performance. Data preprocessing requires actively recognizing and handling outliers.
+
+We can actively address definitively identified errors through elimination and transformation using truncation or Winsorization techniques or by treating them as a separate class during model building.
+
+To check for the presence of outliers, we can plot BoxPlot. To treat the outliers, we can either cap the data or transform the data:
+
+**Capping the Data**
+
+Again, we can place cap limits on the data using many approaches. These include the z-score, IQR, and percentile approaches. Oh yes! There are many ways to deal with data in machine learning.
+
+Below, we will use the z-score approach. In this approach, all the values above and below three standard deviations are outliers and can be removed.
+
+**Transforming the Data**
+
+There are numerous techniques available to transform the data. Some of the most commonly used are: 
+
+-   Logarithmic Transformation
+-   Exponential Transformation
+-   Square Root Transformation
+-   Reciprocal Transformation
+-   Box-cox Transformation
+
+We now cap outliers using the Z-score approach.
+
+![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image11-1.png)
+
+![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image9.jpg)
+
+If required, you can also use an IQR approach.
+
+![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image10.jpg)
+
+![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image12.jpg)
+
+Checking the data’s dimensions offers a rudimentary way to assess whether outliers have been removed. While both outputs show a reduction in data dimensions, this doesn’t definitively confirm outlier removal.
+
+-   ##### **_Scaling and Normalisation_**
+    
+
+Features with different sizes or distributions can impact the performance of certain machine learning algorithms. Scaling and normalization are two data preprocessing techniques that equalize the scale or distribution of the features.
+
+Standardization (mean = 0, variance = 1) and min-max scaling (scaling values to a given range) are common scaling strategies. Below, we use the standardization and min-max scaler to scale the data.
+
+Standardization or Z-Score approach: 
+
+![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image13.jpg)
+
+Normalizing or Min-Max Scaler:
+
+![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image14-e1717506319596.jpg)
+
+#### **5\. Feature Engineering**
+
+The next major step is feature engineering. Here, the focus is on making the data according to the ML models’ requirements. We preprocess the data by selecting only the important features, encoding or deriving new features as needed, balancing the data, and splitting it for evaluation and validation.
+
+-   ##### **_Feature Selection and Dimensionality Reduction_**
+    
+
+Datasets frequently have many features, some of which may be superfluous or redundant. Techniques for feature selection assist in selecting the model’s most instructive features. T-distributed stochastic neighbor embedding (t-SNE) and Principal component analysis (PCA) are two methods for reducing the number of dimensions while retaining the most crucial data.
+
+This step gives us the most important part of the data while reducing the size of the dataset. [Data reduction](https://www.analytixlabs.co.in/blog/data-reduction-in-data-mining/) involves techniques such as dimensionality reduction, sampling, and clustering.
+
+> Also read: [What is Clustering in Machine Learning: Types and Methods](https://www.analytixlabs.co.in/blog/types-of-clustering-algorithms/)
+
+-   ##### **_Handling Unbalanced Data_**
+    
+
+Unbalanced datasets, in which one class has a disproportionate number of instances, might result in biased models that favor the dominant class.
+
+Data preprocessing techniques, including undersampling the majority class, oversampling the minority class, or utilizing advanced methods like SMOTE (Synthetic Minority Over-sampling Technique), enhance the model’s performance. This is particularly effective when the dataset is balanced.
+
+-   ##### **_Encoding_**
+    
+
+The categorical data can not be directly fed into the model. We have seen machines are black and white, either 1 or 0. So, to use the categorical data for our model-building process, we need to create dummy variables. 
+
+Dummy variables are binary; they can take either 1 or 0. If we have n types of sub-categories within a categorical column, we must employ n-1 dummy variables. There are two ways to create dummy variables:
+
+-   Pandas’ function: pd.get\_dummies, and
+-   Sklearn’s in-built function of OneHotEncoder 
+
+There is one more way of dealing with categorical data, which is to use label encoding. The label encoder does not create dummy variables. However, it labels the categorical variable by numbers like below:
+
+-         Delhi   –>  1
+-         Mumbai   –>  2
+-         Hyderabad  –>  3
+
+Labeling encoding is limited: It converts nominal and categorical data without any order into ordinal data with order. In the above example, the three cities did not have order.
+
+However, the post-applying label encoder has values 1 and 2, respectively. The machine will treat this data by giving precedence and treating the numbers as weights like 3 > 2 > 1, making Hyderabad > Mumbai > Delhi. Hence, due to this limitation of label encoding,  the categorical data is handled by creating dummy variables.
+
+Below, we encode features using both the dummy variables and the label encoding approach.
+
+-   **Dummy Variable Approach:**
+
+![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image15.jpg)
+
+-   **Label Encoding Approach:**
+
+![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image16.jpg)
+
+-   ##### **_Creation of New Variables_**
+    
+
+Often, for an ML model to fit the data properly and effectively learn from it, features must be derived to bring the hidden relations in the data to the surface. Below, for example, we use the loan\_start and loan\_end features to calculate the loan tenure.
+
+![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image17.jpg)
+
+-   ##### **_Splitting data into Train-Test sets_**
+    
+
+After the data preparation, we can build the model by dividing this data into three parts: one for training the model, the other for validating the data, and the last for testing data. **The machine learning algorithms use training data** to build the model. The model learns and identifies the hidden patterns in this dataset.
+
+-   **Validation data** is used to validate the built models. Using this data helps assess the model’s performance by checking the training and validation accuracy, which provides insights into the presence of overfitting or underfitting. It is then utilized to improve the model and fine-tune the parameters.
+-   The **training data** is different from the above two sets. It is the unseen data on which the model is used to predict the values or classes, as the case may be.
+
+Below, we use sklearn to split data into train and test.![steps of data processing in machine learning](https://www.analytixlabs.co.in/wp-content/uploads/2024/06/image18.jpg)**6\. Data Storage**
+
+Lastly, when you completely process the data, you can feed it directly into the ML model or export it in various formats. To do so, you can use Pandas and its functions like to\_csv() or to\_excel to save data for later use.
+
+Let’s conclude this discussion on data processing by explaining its future. 
+
+## **Future of Data Processing**
+
+A common theme across all industries is the increased volume of data organizations must deal with and the sheer cost of processing it. This has led to cloud computing becoming a popular technique for data processing.
+
+The six fundamental stages of data processing will always be necessary, but the methods are constantly changing with new technologies. There are several advantages to using a cloud platform for data processing. These include-
+
+-   Organizations can process their data cost-effectively, quickly, and sophisticatedly. 
+-   Cloud platforms like AWS, GCP, and Azure allow companies to build numerous platforms in one centralized system, allowing them to work easily and efficiently. 
+-   Integrating new upgrades and updates to legacy systems is done easily and quickly. 
+-   Cloud platforms provide immense scalability options for organizations.
+-   Small and large companies can afford cloud platforms, so they are a great equalizer.
+-   Cloud platforms enable organizations to handle big data effectively.
+
+## **Conclusion**
+
+Data processing is essential for any organization’s data-driven decision-making or application development. It encompasses various types, and it can be accomplished using numerous methods and tools.
+
+Although the stages of data processing are similar across different data science tasks, the specific details vary depending on whether we are using data to develop a machine learning model or for data mining.
+
+As data processing becomes increasingly crucial and complex, cloud platforms are developing functionalities to automate and assist users. Therefore, in the future, you must also explore the various cloud platforms and how they can help you in your data processing activities.
+
+## **FAQs**
+
+-   **What is the final output of data processing?**
+
+The final output of data processing is clean, transformed data in a structure suitable for other data science-related activities such as model development, data mining, data analytics, reporting, etc.
+
+-   **What is data processing?**
+
+Data processing refers to a series of steps where we collect, clean, transform, filter, sort, scale, typecast, reduce in dimension, and store so that others in the organization can access it for their respective purposes. 
+
+-   **Why is data processing important in machine learning?**
+
+Data processing is crucial in machine learning because machine learning models follow the GIGO (garbage in, garbage out) principle. By ensuring data quality and consistency, data processing prepares the data in a format suitable for input into the machine learning model, making it necessary before model fitting.
+
+-   **What are data processing algorithms?**
+
+Data processing algorithms involve various techniques for processing data to enhance its suitability for downstream consumption. For example, Google uses many in-house data processing algorithms to enable users to upload and stream their often large video files efficiently. Also, Google and various other companies manufacturing smartphones perform data processing of images to make the images lightweight and better-looking.
+
+We hope this article helped you answer what data processing is and expanded your understanding of it and its role in machine learning. If you want to learn more about it, write back to us.
+
+Related Reading Resources
+
+-   [A Guide to Data Models: Learn Concepts, Techniques, Processes, & Tools](https://www.analytixlabs.co.in/blog/what-is-data-model/)
+-   [How do you build custom deep-learning models in Python?](https://www.analytixlabs.co.in/blog/deep-learning-models-in-python/)
+-   [Deep Learning Interview Guide: Top 50+ Deep Learning Interview Questions \[With Answers\]](https://www.analytixlabs.co.in/blog/deep-learning-interview-questions/)
+-   [Detecting Deepfakes: Exploring Advances in Deep Learning-Based Media Authentication](https://www.analytixlabs.co.in/blog/types-of-deepfakes/)
+-   [Top 50 Python Questions for Data Science Interviews 2024](https://www.analytixlabs.co.in/blog/python-interview-questions-for-data-science/)

@@ -91,7 +91,7 @@ export default async function AuthorPage({ params }) {
               <Link
                 key={post.id}
                 className="group flex flex-col bg-surface-container-lowest dark:bg-[#131b2e] rounded-3xl overflow-hidden hover:shadow-xl dark:hover:shadow-[#060e20]/50 transition-all border border-transparent hover:border-outline-variant/20 dark:border-[#424754]/20"
-                href={`/article/${post.slug}`}
+                href={`/blog/${post.slug}`}
               >
                 <div className="aspect-[16/10] relative overflow-hidden bg-slate-100 dark:bg-slate-800">
                   <Image

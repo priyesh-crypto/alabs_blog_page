@@ -1,0 +1,343 @@
+---
+title: "How Is Machine Learning Used for Stock Market Prediction?"
+slug: stock-market-prediction-using-machine-learning
+date: "2021-09-29T06:54:35+00:00"
+modified: ""
+description: Know how to develop a stock price prediction using machine learning. Accurate prediction of the stock market is a challenging task. Read this article to know the role of machine learning in it.
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2021/09/Blog-4-Title-Banner-1.jpg"
+author: AnalytixLabs
+categories:
+  - Machine Learning
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/stock-market-prediction-using-machine-learning/"
+noindex: true
+---
+
+# **Preface**
+
+Stock Market prediction refers to understanding various aspects of the stock market that can influence the price of a stock and, based on these potential factors, build a model to predict the stock’s price. This can help individuals and institutions speculate on the stock price trend and help them decide whether to buy or short the stock price to maximize their profit.
+
+The readers of this article can expect to have a decent level of understanding of all the underlying phenomenons and processes of stock market predictions and the associated technologies. The article will cover broader topics such as how a predictive model can be created, popular research methods used in the stock market world, and common and advanced techniques used to predict stock prices using Machine learning. We will also discuss the common challenges model developers face when creating such advanced and sophisticated predictive models. 
+
+## A Brief about Stock Market Prediction Using Machine Learning
+
+![Brief about Stock Market Prediction Using Machine Learning](https://www.analytixlabs.co.in/wp-content/uploads/2021/09/Blog-01-3.jpg)
+
+### The Fascination 
+
+Since the advent of Data Science and its becoming mainstream in many industries, the stock market community has been fascinated over the idea of a model that can predict the next move of the market. The fascination over the existence of such a technology is as much as of the time machine, if not more. After all, both technologies deal with time and are extremely hard to master.
+
+### The Target 
+
+Before going forward, let’s quickly clarify what we are trying to predict here. The stock market (or also called an exchange) is simply like any other market, but here stocks, i.e., shares of a company, are bought and sold. In its simplest form, people buy a stock at a lower price, and as the company grows and its share value, aka stock price, increases, and the stockholder sells it at the market for a profit. What the model needs to do is predict what will be the price of the stock next minute or an hour or day or month.
+
+### The Problem
+
+With an understanding of what stock and the stock market is, let’s understand why people fascinate by a Machine Learning model that can predict the stock price. A Machine Learning model predicts the value of an observation based on several inputs that are predictors. The stock market is working similarly, i.e., based on several inputs, the stock price fluctuates. However, the bone of contention is that, unlike other problems that generally are predicted, the predictions of stock prices are rather complicated as it is often prey to the butterfly effect. Anything, any event in the outside world, can influence the price of the stock. These include political events, economic news, competitors or related stock movements, and other challenging to capture concepts such as rumor, anxiety, and other psychological factors. Capturing all these inputs makes stock market prediction challenging and Machine Learning a potential candidate for it. It can take a large number of inputs and assess the patterns and their relation to a dependent variable (the stock price). 
+
+Thus with the premise set and the potential gold mine that investors think such stock predicting models can be, we can now start our journey into the world of stock price prediction, its techniques, methods, challenges solutions, etc.
+
+## About AnalytixLabs
+
+AnalytixLabs is the premier Data Analytics Institute specializing in training individuals and corporates to gain industry-relevant knowledge of Data Science and its related aspects. It is led by a faculty of McKinsey, IIT, IIM, and FMS alumni who have tremendous practical expertise. Being in the education sector for a long enough time and having a broad client base, AnalytixLabs helps young aspirants greatly to have a career in Data Science. 
+
+## How to Develop a Stock Price Prediction Using Machine Learning
+
+![How to Develop a Stock Price Prediction Using Machine Learning](https://www.analytixlabs.co.in/wp-content/uploads/2021/09/Blog-02-2.jpg)
+
+### Basics of Machine Learning
+
+Before getting into all the technicalities of machine learning approaches that predict stock prices, let us first understand how stock market prediction using machine learning can happen in the first place. As mentioned in the introduction, Machine Learning at its fundamental level requires the user to provide a target variable whose values or labels need to be predicted and provide the independent variables (X variables) that can predict the target variable’s values. Machine learning differs from other traditional predictive models. It uses optimization algorithms, cross-validation techniques, advanced mathematical algorithms and generally requires enormous computational power to come up to the result, with the result being highly accurate (but low in interpretability).
+
+Learn from AnalytixLabs
+
+You can explore our [Machine Learning course](https://www.analytixlabs.co.in/machine-learning-course-certification-training) and also our [certificate course in data science](https://www.analytixlabs.co.in/data-science-specialization-course), or you can book a demo with us.
+
+### Potential of ML model to predict stock market
+
+Once we have understood if and how a basic form of stock price prediction model using machine learning can be created, the next question could be, does a model exist already? Is it a successful model? And most importantly, how can it be developed? The answers to these questions are that yes, there are several such models, they are highly successful, and we will be discussing one of them in the article, and no, the developers are not going to tell you how to develop them. Such models are created in-house by institutions, and if successful, these models are no less than any gold mine. Thus, successful approaches to building it are not publically available so easily. What makes this discussion interesting as we know the basics of how it can be done, some understand how it can be successfully done, but others like us need to find our way to develop such a model. Yes, Machine Learning is the key to open such a gold mine. However, one must keep in mind that it is not as straightforward, and traditional stock market research methods must be known to the model developer to develop it – something we will discuss later. 
+
+### Type of useful ML models
+
+Another fundamental understanding of how stock market prediction using machine learning can be made is by understanding the types of Machine Learning models and which of these models can be useful. Stock price prediction requires labeled data, and in that sense, Machine Learning algorithms that work under a supervised learning setup work best. Stock market prediction can use specific unsupervised algorithms, for example, to group similar performing stocks together. Still, typically, a supervised learning setup is the one that is used to predict the stock prices. As the stock prices are affected by time factors such as time of the day, previous day performance, etc., time series algorithms are also used. Also, along with this, regression-based algorithms are used in combination or separately to predict the price of stocks. 
+
+### Type of useful data
+
+We now know the fundamental type of Machine Learning models that can be used; let us also understand the kind of data we are looking for as this is the key and the difficult part of building the model. When going for a time series-based algorithm, the model expects time series data, i.e. The data should be indexed by continuous stretches of time so that trend, seasonality, cyclicity, and similar such time-based components can be captured to understand what the stock price would be in the immediate or medium-term future. When considering regression-based approaches, a large number of inputs can be provided; however, the challenge is to capture data, make sense out of it, and structure it.
+
+### Limitations of ML when Forecasting or Predicting: The Human Factor
+
+Generally speaking, forecasting the price of a stock is comparatively easier than predicting a stock price, which is much more difficult. For prediction, the model needs to have multiple inputs. This can include major political and economic events and assessing their impact on the stock price. Also, aspects that are tough to capture, such as the market’s mood, psychology, and herd mentality, need to be quantified and fed to the model. If the user can do so, then for sure, the model can predict the stock price. The reason is that even when the components involved for successfully predicting the stock value range from physical to psychological, driven by human motives that can often be irrational, there are still patterns that the Machine Learning model can capture. What needs to be understood is that the volatility in the market is because stock prices are solely influenced by humans (it’s a market, after all), and humans are often unpredictable and irrational. Still, their unpredictability and irrationality also have patterns that a machine learning model can capture. Suppose the country’s president where the stock is being traded is pro-free market and loses the election. In that case, people can panic and sell stocks leading to a sudden drop in the price, whereas if another anti-capitalist president loses, the market will react oppositely, and the stock prices can shoot up.
+
+Thus, such patterns and human behavior need to be quantified and passed to the model when creating such a model. Several similar methods are discussed below that are often form a self-fulfilling prophecy.
+
+## Stock Market Research Methods
+
+![Stock Market Research Methods](https://www.analytixlabs.co.in/wp-content/uploads/2021/09/Blog-03-copy.png)
+
+### What Is Stock Market Research?
+
+The single most crucial aspect of any data science project that data scientists often miss out on is that their model doesn’t work in a vacuum. There were people before these models who have developed methods to predict events. In short, domain knowledge is essential. Suppose you think that a stock price prediction model can be created without understanding how markets are analyzed. In that case, companies are evaluated, common patterns that investors look for, and a stock’s price can be predicted by pumping in a bunch of data and using a sophisticated algorithm. You cannot be more wrong. Thus, a data scientist building a model that predicts stock prices needs to know of essential and ideally all the important stock market research methods that can be an input to their machine learning model.
+
+The two most fundamental research methods are Fundamental research and Technical research of the stock you are trying to predict.
+
+### a. Fundamental Research
+
+Let us first start with Fundamental research. Performing such research will provide the basic information about the company whose stocks are being traded that can hugely influence how the market will react. To put it simply, if there is negative news about Reliance, a blue-chip company, then its prices will not fall as dramatically as, say, of a small-sized company from a tier-2 city whose reserves will run out in 3 days. Thus, fundamental research is critical as it can tell the machine learning model the magnitude of the movement when an input appears.
+
+**Common aspects of Fundamental Research includes analyzing and capturing the following:**
+
+-   **Market Capital:** Market value of a company. (share price \* No. Of share outstanding)
+
+-   **P/E (Price/Earnings) Ratio:** You must have heard some financial pundits saying that the recent skyrocketing of Tesla stock price is unsustainable as the company is being overvalued. Such a calculation is done by calculating the P/E ratio which is the ratio of a company’s share price to the company’s earnings per share. To put it simply, it explains if the stocks of the company are overbought or oversold.
+
+-   **Dividend:** When you buy a share, you literally have a share in the company i.e. you own the company. And when the company makes a profit, they distribute the profit among its shareholder. This is what is called a dividend.
+
+-   **Deliverables:** This is simply for how long people keep the stock. If they keep it for long then this indicates that the stock prices are stable and people do buy it for long-term investment.
+
+-   **Net Profit/Loss:** This is the total profit or loss the company has made in a financial year
+
+-   **Net Sales:** Its the total sales of a company in a financial year
+
+-   **Total Debt:** It is the amount of debt that the company has on its balance sheet. A stock price of a company can drop significantly if there is negative news regarding the company where the debt is high and assets are low to pay off the debt.
+
+-   **Total Asset:** It is the total value of the asses the company owns. As mentioned above, this can impact the stock price.
+
+-   **Profit Before Tax / Profit After Tax:** This is the total profit company has made before and after paying tax in a financial year.
+
+-   **Various other Results published by the company:** This is where the data scientist has to look into the Balance sheet and Income statement of the company and feed as much useful information to the model as possible allowing the machine learning model to make an informed decision regarding the price of the stock. 
+
+### b. Technical Research
+
+While Fundamental research is important, there is a separate school of thought, especially among those who trade on a short-term basis, that the actual predictive capability can be achieved by doing the technical research. There are hundreds of such techniques that exist, and as a data scientist, one needs to know a large number of them, when they work and when they don’t, and couple them with other external factors. Fundamental research talks about solely focusing on the short to medium (sometimes long) stock performance and looking for repeating patterns, and then looking for the occurrence of such patterns in the future. Some of these patterns are so widely used they end up becoming a self-fulfilling prophecy.
+
+**Understanding Technical Research with a simple example**
+
+To understand this, let’s take a rather childish example. Let’s assume there is a common technical pattern known as ‘the bolt,’ which looks pretty much like the harry potter’s mark on his forehead. In this pattern, the stock prices fall straight, stagnate for some time, and fall again. Now let’s assume that if you are a trader and you see a bolt shape appearing, i.e., the stock has fallen and has become stagnant, then it may go down again, and now is the safe time to sell the stock and stop further loss for happening. When the whole market sees such a pattern in progress, they all will sell the stock causing the fall of the price even when the fall may not be happening, thus fulfilling the prophecy and completing the pattern. No such patterns exist, but other patterns exist that the user has to train their machine learning model to look for and predict values according to it.
+
+**Basic Concepts required to know for understanding and performing Technical Research**
+
+However, before knowing the common technical patterns, one should know the basics to enable data scientists to do technical research. The data scientist should be familiar with the following terms-
+
+1.  **Uptrend:** When there are multiple Higher High and Higher Low. As every new Higher High is higher than the previous one then the stock is said to be in an Uptrend.
+
+![Uptrend ](https://www.analytixlabs.co.in/wp-content/uploads/2021/11/image-1.png)
+
+2.  **Downtrend:** When there are multiple Lower Low and Higher Low. As every new Lower Low is lower than the previous one then the stock is said to be in a Downtrend.
+
+![Downtrend](https://www.analytixlabs.co.in/wp-content/uploads/2021/11/image-2.png)
+
+3.  **Sideway Trend:** When there are multiple Highs and Lows at the same point then the stock is said to have gone sideways. If this is happening at a very short time frame then this often indicates stagnation in the stock and the market is said to be less volatile. It is considered the ideal time to make very short-term predictions and book profit.
+
+![Sideway Trend](https://www.analytixlabs.co.in/wp-content/uploads/2021/11/image-3.png)
+
+4.  **Support:** This is the price point which the stock is not able to fall below. This acts as the support for the stock as when it reaches this point, the chances are it will bounce up from here. Thus, a data scientist needs to train their Machine Learning model to calculate or feed such points in their input data because if this point is breached then the stock can go into free fall for some time and the model should sell the stock (yes, in the stock market on can also sell a stock which they haven’t bought. Its explanation is beyond the scope of this article but if you sell the stock (aka short the stock) then profit is made if the price drops). And if the stock price bounces up from the support then the price will rise up from here and the predictive model should buy the stock. This bouncing back technically is known as trend reversal. 
+
+5.  **Resistance:** Similarly resistance is a virtual point which the share is not able to cross. When the stock price get stuck between them then the share is known to have gone sideways.
+
+![Resistance](https://www.analytixlabs.co.in/wp-content/uploads/2021/11/image-4.png)
+
+**Now, We’ll discuss some common patterns found during Technical Research.**
+
+With this understanding, we can quickly understand the common technical research that people do, and a data scientist should also look for and train their model to do the same.
+
+**(i) Head and Shoulders**
+
+This is when the stock reaches a peak and is surrounded by smaller peaks on each side. Here when the third peak is achieved, generally, the stock prices tend to fall.
+
+![Head and Shoulder](https://www.analytixlabs.co.in/wp-content/uploads/2021/11/image-5.png)
+
+ URL: https://www.ig.com/en/trading-strategies/10-chart-patterns-every-trader-needs-to-know-190514
+
+**(ii) Double Top**
+
+When a stock price goes up and hits a peak at the same point twice, then this pattern is known as Double top. When a stock hits a double top, there are high chances that the price will fall.
+
+![Double Top](https://www.analytixlabs.co.in/wp-content/uploads/2021/11/image-6.png)
+
+**(iii) Double Bottom**
+
+It is the opposite of Double top, and when the second bottom is hit, the price goes with an uptrend.
+
+![Double bottom](https://www.analytixlabs.co.in/wp-content/uploads/2021/11/image-7.png)
+
+**(iv) Wedge**
+
+When Highs and Lows tend to contract with each cycle and go lower or higher, and the stock price has no room to go sideways, a breakout happens. When this breakout occurs, the stock price falls (falling edge) or rises (rising wedge) dramatically.
+
+![Wedge](https://www.analytixlabs.co.in/wp-content/uploads/2021/11/image-8.png)
+
+**(v) Descending Triangle**
+
+The stock price will fall dramatically when the support remains stagnant, and the resistance points are made at a lower point.
+
+![Descending Triangle](https://www.analytixlabs.co.in/wp-content/uploads/2021/11/image-9.png)
+
+**(vi) Ascending Triangle**
+
+It is the opposite of the Descending Triangle.
+
+![Ascending Triangle](https://www.analytixlabs.co.in/wp-content/uploads/2021/11/image-10.png)
+
+**(vii) Symmetrical Triangle**
+
+When the highs and lows become very close to each other, and there is no space for the stock to move (forming a triangle), breakout happens, and the stock price goes dramatically up or down.
+
+![Symmetrical Triangle](https://www.analytixlabs.co.in/wp-content/uploads/2021/11/image-11.png)
+
+**(viii) Bilateral Symmetrical Triangle**
+
+It is somewhat closest to the ‘lighting bolt’ example given at the begging of this section. This happens when stock prices are downtrend, go through a brief period of the symmetrical triangle, and then follow the downtrend again.
+
+![Bilateral Symmetrical Triangle](https://www.analytixlabs.co.in/wp-content/uploads/2021/11/image-12.png)
+
+Thus the ML model must recognize these patterns and take appropriate actions. Several techniques can be used to identify such patterns, which will be discussed in the section below.
+
+**Other Research Sources**
+
+The data scientist must also create a dataset where the important news and its impact on the stock prices are assessed. Thus if there is a major political, natural, economic event, the model should consider that. When the model goes live, pipelines need to be created where such news will be fed to the model in real-time, and their impact can be taken into consideration while predicting the stock price. Also, the changes in the competition and management are to be captured and considered a potential predictor. 
+
+## Machine Learning Techniques Used for Stock Market Prediction
+
+Creating a good stock price prediction model is particularly challenging because it is non-linear. As mentioned before, stock prices are influenced by people and not only socio-political-economical factors. Other aspects also affect the price viz. Fundamental research (qualitative analysis), based on the companies fundamentals, whose stock is the target, and Technical analysis, based on past behavior of the stock and the patterns associated with it. This makes the problem not only non-linear but highly dynamic. Stock market prediction using machine learning techniques is the right way forward. Machine Learning and Artificial Intelligence (often considered its sub-category) based methods can be highly sophisticated, which can capture this complex world of the stock market and how various factors influence the price of a stock.
+
+In this section, we will be starting with the simplest of techniques and going progressively more advanced. We will be talking about the basics of how a technique works, its advantages, and its limitations. 
+
+**(i) Linear Regression**
+
+One of the most straightforward techniques, Linear Regression, can be used to predict any continuous values, including the predictions of the stock price. Linear Regression, as the name suggests, is a linear technique, i.e., it finds the linear combination of the X variables that are used to predict the Y variable (the stock price in this case). The major advantage of this method is that it is high in interpretability as the user can know which factor influences the price of stock more and by how much. The disadvantage includes that it is highly limited in its scope. Many predictors cannot be used, which is required to solve the stock price prediction problem. Machine Learning-based packages such as sci-kit learn to allow the user to use Linear Regression in a Machine Learning framework. Some libraries in R also allow the same, but the disadvantage persists.
+
+> **You may also like to read:** _**[What is Linear Regression In ML? With Example Codes](https://www.analytixlabs.co.in/blog/linear-regression-machine-learning/)**_
+
+**(ii) ARIMA family of techniques**
+
+This Time Series Forecasting technique can be used to forecast the price of a stock. Being a time series technique, it considers the time component and its effect on the stock price. ARIMA stands for Auto-Regressive Integrated Moving average and is regarded as rather a family of functions. It can be used as a Machine Learning technique if the hyper-parameters are considered as p,d, and q (the values of AR, I, and MA). Here, p and q are the numbers of last values and errors considered for forecasting valued, whereas d is differencing to make the data stationary. Suppose there is seasonality in the stock price. In that case, a related technique known as SARIMA can be used, whereas if there as few predictors apart from time, another version such as ARIMAX and SARIMAX can also be used. The major advantage of this method is its simplicity and flexibility. However, it is a linear technique, and the very nature of stock price prediction is non-linear, which is the major hindrance in using the technique.
+
+**(iii) Prophet**
+
+The prophet is a facebook developed time series forecasting technique that is available as a package for all. It is not wrong to consider this technique as an advanced version of ARIMA. Unlike ARIMAX, it requires little data preparation and can work with large datasets. This technique is often used to predict stock prices as it is one of the most advanced Time Series techniques. One of the major issues with this method is its abysmal accuracy compared to other techniques, especially deep learning-based.
+
+> **You may also like to read: _[What is Business Forecasting And Its Methods?](https://www.analytixlabs.co.in/blog/business-forecasting/)_**
+
+**(iv) Support Vector Regression (SVR)**
+
+Considered once the major rival of Neural Networks, Support Vector Machine is a machine learning technique that can solve regression and classification problems. While initially designed to solve classification problems by maximizing the margin, it has presented a similar concept to solve regression-based problems only by adjusting the epsilon where the error of those data points inside the margin is not calculated. This provides the same advantage that a typical Support Vector Classifier offers: the reduction of overfitting, better generalization, and accurate results. Unlike Linear Regression, it has the capability of dealing with datasets that are in high dimensions. While we compare it with Linear Regression, one problem persists: the technique is linear, whereas the problem is often non-linear. This problem is solved by using kernels that can make this algorithm work in a non-linear manner. Among the traditional Machine Learning based techniques, this is the most advanced and accurate technique but again fails to solve highly complex and dynamic problems, which are something of a forte of deep learning-based methods. 
+
+> **You may also like to read: _[Introduction To SVM – Support Vector Machine Algorithm in Machine Learning](https://www.analytixlabs.co.in/blog/introduction-support-vector-machine-algorithm/)_**
+
+**(v) K Nearest Neighbor**
+
+In theory, K Nearest Neighbor (KNN) seems to be the perfect technique. When we say that while each individual’s actions are unique and possess free will when in a group, their behavior manifests patterns, thus making it predictable. This allows the data scientist the opportunity to look for similar patterns and predict the target. Therefore, KNN seems to be the ideal candidate. It is a distance-based technique that, for an observation, looks for the most similar records and then predicts the value based on the outcome of these records. Thus, in theory, for a situation in the market, KNN can look for the most similar historical situation, find how the market behaved, and predict the stock price. While the idea seems enticing and is highly simple to understand, it doesn’t work as expected. The major problem with this method is that it will consider all the variables that we provide; thus, it gives equal importance to all the predictors all the time. In addition to this, it is a highly time-consuming technique and cannot be used for day trading. Lastly, the prediction is highly sensitive towards the value of K and the chosen distance metric, which can hugely alter the results, thus making the technique rigid and not as dynamic as needed.
+
+**(vi) Random Forest**
+
+Considered among the most potent tree-based techniques, Random Forest can predict the stock process as they can also solve regression-based problems. It uses bootstrapping and pasting techniques. It randomly picks different features and creates multiple Decision, Tree models. This way can help predict the stock prices. Also, it has the advantage of being highly interpretable. However, even with these advantages and its advanced versions such as Gradient and XG Boost, the method is not sufficiently sophisticated to solve the highly complex problem of predicting stock prices. This leads us to the exploration of the often considered subset of Machine Learning – Deep Learning.
+
+![Deep Learning Based Techniques for stock market prediction](https://www.analytixlabs.co.in/wp-content/uploads/2021/09/Blog-05.jpg)
+
+### DL Based Techniques
+
+**(vii) ANN**
+
+The most basic form of Deep Learning technique is the **Artificial Neural Networks** powered by backpropagation. ANN, for one, can solve non-linear and complex problems and adjust the weights of each of the inputs, thus making it an ideal technique to start with.
+
+As the input data for predicting the stock price can often be unstructured, for example, text-based news updates, blogs, articles, etc., ANN can also deal with unstructured data. ANN, however, is the most rudimentary deep learning technique, and other techniques generally outperform it and are discussed below.
+
+> **You may also like to read: _[Fundamentals Of Neural Networks & Deep Learning](https://www.analytixlabs.co.in/blog/fundamentals-of-neural-networks/)_**
+
+**(viii) RNN**
+
+Recurrent Neural Network (RNN) **is a common deep learning technique often used to create** chatboxes and other models that deal with text-based and other unstructured data. Compared to ANN, it takes input from the present and past and is ideal for mimicking the part of the human brain that deals with tasks that require short-term memory. This makes it a perfect candidate for solving dynamic problems such as chatbox. As we know now, predicting stock prices is a highly dynamic problem with constant fluctuation in prices and the environment. This is why researchers have experimented with RNN **to predict stock prices and have achieved decent results.**
+
+**(ix) CNN**
+
+**Convolutional Neural Network** is a technique famous for solving image-based problems such as image classification, facial recognition, etc. Due to its unique architecture of understanding the features through multiple Convolutional nets, researchers have considered it a candidate to predict stock prices. Among ANN, RNN, and CNN, CNN has shown the most promising results from some research. Eventually, however, the most successful technique so far has been LSTM which is discussed below.
+
+**(x) LSTM**
+
+Long Short Term Memory (LSTM ) is a type of RNN; however, unlike RNN, its architecture is much more complex. Where RNN tends to forget the long-term patterns, LSTM has a memory block through which long-term ‘memories’ can also be stored and used. LSTM is a widely used technique as it provides the best of all the algorithms discussed above, i.e., it has the long term memory of ANN, short term memory of RNN, and complexity of CNN, making it a widely used technique to solve the stock price prediction problem. The only limitation of this technique is the expectations of the data scientists from it. It is good but not great, and this is why there are some cutting-edge techniques that researchers are working upon, 2 of which are discussed below.
+
+**(xi) GNN**
+
+Graph Neural Network (GNN) is another type of Deep Learning technique that inputs data in graphs. Graphs here mean a type of data structure with nodes aka vertices and edges such that a graph (G) is V and E. Here V can be the multiple set of nodes, and E can be the edges between them, making the data be represented in any arbitrary form. Highly complex problems such as stock price predictions can be solved using GNN, and researchers are working on them. However, there are some hurdles. One is that it’s relatively a new technique, and packages for using it are limited. Also, converting the data to be represented in graphs is challenging. However, GNN can provide unprecedented results if done correctly, as shown by some of the research where GNN has even outperformed LSTM.
+
+**(xii) Boltzmann Machine**
+
+Ludwig Boltzmann created the entropy formula. Entropy is the measure of the disorder or randomness of a system. Using his formula, a neural network was created known as Boltzmann Machine, an all-connected neural network. This method doesn’t look for the target values but instead understands the system itself and adjusts the weights. It tries to make the system reach an entropy of 0, i.e., how the system will work in the ideal state, thereby understanding the influences of all the features on each other. This is a pretty advanced technique, and research is ongoing especially using a sub-type of Boltzman Machine known as Restricted Boltzmann Machine, which is relatively less time-consuming. 
+
+Stock market prediction using machine learning techniques have been used, are being used, and will be used in the future that leads us closer to the chances of creating a model that can accurately predict the prices of stock. It is an ever-evolving field, and data science enthusiasts are highly welcome to try the new promising techniques and showcase their insights and results.
+
+## Challenges in Stock Price Prediction Using Machine Learning
+
+At the beginning of this article, we discussed the possibility of highly accurate and successful models that can predict the stock price. This section will discuss one of them, and through the challenges faced by their developers, we will explore the various issues that can be met by a Data Scientist when developing such a model.
+
+![Challenges in Stock Price Prediction Using Machine Learning](https://www.analytixlabs.co.in/wp-content/uploads/2021/09/Blog-06.jpg)
+
+**Case Study: Medallion fund**
+
+There is a reason that Wall Street has been hiring data scientists since the 1980s. Experts a long time back concluded that a model is possible that can accurately predict the stock market’s next move. A prime example of this is the predictive model used by the Medallion Fund, a highly successful hedge fund. Jim Simons, the founder of this fund, was a mathematician by profession. In 1978, he founded Monemetrics (present-day Renaissance Technologies), which proposed predicting share prices using mathematics, and launched the Medallion as mentioned above fund in 1988. He and his team, comprised of highly educated mathematicians, statisticians, and data scientists who developed the stock price prediction model, faced many challenges.
+
+**Challenge 1: Quantity of required data**
+
+The first issue was to have an extreme amount of data as many factors can influence the stock prices. This is the first challenge of getting hold of large amounts of data from all walks of life. This includes accessing data that might not be publicly available and unstructured data. The extension of this problem is to store this large amount of data. Researches at Renaissance Technologies collected data of all the historic stock movements, buying books, and even historical data as far back as the 1940s. 
+
+**Challenge 2: Feature Selection**
+
+The second issue is that once a large amount of data is gathered, it is difficult to decide which feature to keep and drop. This is the area Modern-day **_[deep learning algorithms outshines vs. machine learning](https://www.analytixlabs.co.in/blog/machine-learning-vs-deep-learning/)_**, and solves this problem as their weights can be tweaked; still, this is the main issue that restricts a data scientist from creating the successful stock price predicting model.
+
+ **Challenge 3: Integration of Human’s Behavioral effect on the market**
+
+The third problem was integrating human input, which includes human bias, misjudgments, anxiety, nervousness, etc. Thus typical behavior of traders such as Loss aversion, anchoring, endowment effect is to quantified and fed to the model. 
+
+**Challenge 4: Identification of distant relationships**
+
+The fourth issue is the problem of identifying relationships between different stocks. For example, If the price of oil increases, then the share of aviation-based companies decreases. By assessing this relationship, predictions can take place. Still, the challenge here is to identify the exact set of variables involved as it is a multivariate problem, and several features are interested in finding such relationships.
+
+**Challenge 5: Identification of distant relationships while addressing Overfitting**
+
+The fifth one was the problem of overfitting, which is identifying patterns that were true but were bound to fail in the future. One of the examples was when researchers found a high relationship between the price of S&P500 and the combined butter production of Bangladesh, Cheese production of the USA, and the population of sheep in Bangladesh. This provides the classic case of model overfitting and is one of the biggest challenges. 
+
+> **You may also like to read: _[What Is Regularisation and Its Importance in Machine Learning?](https://www.analytixlabs.co.in/blog/regularization-in-machine-learning/)_**
+
+**Challenge 6: Requirement of Expertise in multiple fields** 
+
+The sixth challenge is the level of advanced mathematics required for creating an extremely successful model. Renaissance Technologies employed people with PhDs who were masters in Hidden Makarov Processes, Algebra, Kernel methods, Game theory, Computer Science, and Finance. Today, we have a pre-built neural network-based model, but a high level of knowledge in all these fields is required to master the model.
+
+**Challenge 7: Long Term Predictions**
+
+The last challenge that even big institutions with their researchers, algorithms, and powerful computers have not solved is predicting the price of a stock over the long term. As over long term, the effects become cumulative and tough to predict. This is where people can still invest based on their analysis and away from the interference of AI-based traders. Also, the impact of the knee-jerk reactions taken by traders is mitigated when the timeline is long enough, which reduces the typical volatility of the market, making accurate predictions challenging to achieve.
+
+## Conclusion: Authors Opinion
+
+There are specific problems in the world that push the capabilities of data science and the technologies available in this field to their edge. Among them is the stock market prediction. It is challenging for a person to create such a model, but there are ways through which this art can be learned. One can learn stock market prediction using machine learning projects on public forums such as Kaggle to understand how basic to intermediate level models can be created. This is an ever-evolving problem with new solutions being proposed by every generation of researchers and data scientists. There are still many novel techniques that can be used, and it is encouraged that the readers of this article give it a try, master these techniques and build models to predict the price of stock accurately.
+
+> **You may also like to check out:** **_[8 (Interesting) Machine Learning Projects For Beginners](https://www.analytixlabs.co.in/blog/8-interesting-machine-learning-projects-for-beginners/)_**
+
+## FAQs – Frequently Asked Questions
+
+**Q1. Can AI predict stock prices?**
+
+Prediction of stock prices is considered one of the most challenging problems in applied AI and machine learning. Still, the answer is that yes, AI can predict stock prices. Advanced AI techniques based on fundamental and technical research can predict stock prices often up to 90% accuracy. The majority of the short-term trade profits are booked by the institution using AI-based models.
+
+> **You may also like to read: _[15 Real World Applications of Artificial](//www.analytixlabs.co.in/blog/applications-of-artificial-intelligence/)_**
+
+**Q2. How can I predict tomorrow’s stock market?**
+
+One can look at the historical data of the stock in question. This will include the similar time of the day, previous day closing, market situation, the market’s mood, etc., and based on it, predict the price. Similarly, a model can also be created by feeding past data to predict or forecast future prices. Creating such a model can be time-consuming. However, if it is appropriately trained for a particular stock, the ML model can understand the behavior of this stock and can assess its price.
+
+**Q3. Is AI trading profitable?**
+
+AI trading is highly profitable if done correctly. Institutions especially have mastered the use of AI trading and predicting the price of a stock over a short-term period. Though limited in resources, individuals can try to do the same on their own first by first looking at some stock market predictions using machine learning projects.
+
+This article aimed to provide the reader with an understanding of ML and AI’s scope in the stock market field and the common research methods, ML techniques, common challenges, and potential solutions to those challenges. If you have any opinions or queries related to this article, feel free to comment below and help us get more insights.
+
+> **You may consider opting for a _[professional Machine Learning course](https://www.analytixlabs.co.in/machine-learning-course-certification-training)_** **and take a first step towards building an ML model for stock market prediction and forecasting.**
+> 
+> **In the meantime, you may check out the following blogs **to develop more knowledge on Machine Learning****
+> 
+> **_1._** **_[What Are the Important Topics in Machine Learning?](https://www.analytixlabs.co.in/blog/machine-learning-topics/)_**
+> 
+> **_2\._ [Types of Algorithms With Different Machine Learning Algorithm Example_s_](https://www.analytixlabs.co.in/blog/types-of-machine-learning/)**
+> 
+> **_3\. [Difference Between Machine Learning Vs Data Mining Vs Pattern Recognition](https://www.analytixlabs.co.in/blog/difference-between-machine-learning-pattern-recognition-and-data-mining/)_**

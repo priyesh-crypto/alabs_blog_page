@@ -1,0 +1,244 @@
+---
+title: "How to Read CSV Files in Python?"
+slug: csv-file-in-python
+date: "2023-02-07T11:38:13+00:00"
+modified: ""
+description: "A detailed guide on how to read csv file in python with additional codes on writing to csv file, and how it is different from excel"
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2023/02/1-1.jpg"
+author: AnalytixLabs
+categories:
+  - Python
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/csv-file-in-python/"
+noindex: true
+---
+
+CSV is among the common formats in which data is stored. Almost all tools in data science, including Python, have methods to access data stored in the CSV format. In this article, you will learn about CSV full form in python, the various Python methods to load CSV files to pursue data manipulation and analysis. To understand how to read CSV file in python, you will first need to understand what is a CSV file. 
+
+## What is a CSV File?
+
+Data is available in various formats. Data Scientists access data stored mainly in _structured_, _semi-structured_, and _unstructured forms_. 
+
+-   Structured data is stored in the form of a table. These tables have clearly defined columns with information about various subjects or events typically stored at a row level. Know more about [structured data in big data](https://www.analytixlabs.co.in/blog/structured-data-in-big-data/).
+-   Semi-structured data may not be stored in a tabular format but have specific headers and body, making it easy for users to transform them into a structured format. Examples of semi-structured data include JSON and XML files.
+-   The unstructured format includes data in peculiar formats and is generally difficult to convert to a structured/tabular format. These include image, audio, or video files.
+
+ In this context, a CSV file is an example of data stored in a structured format. CSV full form in python is “Comma Separated Value” file. 
+
+> Structured data is typically stored in the form of a CSV
+
+### CSV vs. Excel
+
+ CSV is a format where the data is stored in a plain text file.  For Windows users, this means saving the data using a notepad.
+
+ Notepad uses plain text to save data, making it possible to store large amounts of data without requiring too much storage space. The downside, however, is that a _CSV file cannot be formatted like an excel file._
+
+Suppose there is a dataset where we have product id, product name, cost price, and selling price.
+
+If the data is stored in Excel format, i.e., files with an extension of .xls or .xlsx, then a user can open this file and color certain cells, use Excel formulas to create a new column such as ‘profit’ by subtracting cost price from selling price, etc.
+
+The same data stored in a CSV file will have limited functionalities since it is stored in plain text format. 
+
+> One interesting aspect that often confuses new data scientists is that a CSV file can be accessed using Microsoft excel. You can open a CSV file using spreadsheet software, but this doesn’t mean that a CSV can behave the way a data file pertaining to an excel format does. 
+
+For example, if you open a CSV file using MS Excel, then you can use a formula or can color code the cells, but if you save the file and open it again, all result of all such operations will be lost.
+
+#### Steps to open a CSV file in Spreadsheet/Excel
+
+1.  Right-click on the CSV file
+2.  Select _open with_ option, and select _spreadsheet/excel_
+
+Now you can use any of the functionalities typical to Excel, like formatting the cells or adding colors, etc. However, when you save the file, you will need to save it in a format native to excel – .xls or .xlsx. 
+
+Incase, you don’t want to make any formatting changes, you can open the CSV file using any text editor like Notepad or Notepad++.
+
+## How does a CSV File Structure Data?
+
+If you look at a spreadsheet, how one can structure the data makes sense. There are clearly defined columns like A, B, C, and so on, with row numbers starting from 1. To create a structured data set, you can add column names and fill in the information in respective rows. 
+
+In a CSV file, however, there is a concept of **delimiter**.
+
+The delimiter is the unique way the _contents are categorized and demarcated_. As the name suggests, the delimiter _delimits or separates_ the information belonging to one column from the other.
+
+Let’s take the previous example of product information and _**use commas as a delimiter**_.
+
+We first mention the column name and separate the names using a comma. We then provide product information and use a comma to separate information from one column to the other.
+
+Product ID,Product Name,Cost Price,Selling Price
+AD121,Shirt,$23,$34
+PA231,Bag,$56,$70
+KL121,Shoe,$32,$43
+
+The above is a typical example of how data stored in a CSV format looks. While the first line is the header representing the column names, the consequent lines hold information about the different products.
+
+Thus, a CSV file is a delimited file where the delimiter is a comma.
+
+> Going by the context, the CSV full form in python will now make sense to you- Comma Separated Value file.
+
+Pointers to Note:
+
+-   A CSV file may or may not have a header.
+-   A delimited file can have delimiters other than a comma; for example, when the tab is used as the delimiter, then such a file is known as a tab-delimited file. 
+-   Nowadays, in most languages, a CSV file is the generic term to refer to any delimited file, whether the delimiter is a comma or not.
+-   Common delimiters, also commonly referred to as separators, include the comma, semicolon, space, tab, a hyphen, etc. (the use of the comma, however, is the most common).
+
+Let’s move on to the next part: How to read CSV file in Python.
+
+## How to Read CSV File in Python?
+
+CSV is the most common format for storing and accessing data. Each data log is stored in every row, and the simplicity of the format makes it an ideal candidate for exchanging data between different applications. 
+
+When reading a CSV file, Python is automatically the most common choice. Python is one of the easiest tools in Data Science and is the most widely used.
+
+> Want to Learn Python for Data Science? Join our [Data Science with Python Course](https://www.analytixlabs.co.in/data-science-using-python) today. Seats limited!
+
+One can opt for various ways to load a CSV file in Python. However, there are **two broad ways to** **import CSV file in Python** –
+
+1.  CSV module
+2.  Pandas library
+
+If you use the **CSV module** for reading CSV file in Python then you use a python module. This module allows you to use classes, enabling you to read data from  CSV file in Python.
+
+Suppose you use the **pandas library** for reading CSV file in Python, you need Pandas to read data from the CSV file in Python easily. It has many arguments that you can use to ensure that you correctly import a CSV file in Python using the correct delimiter and headers. 
+
+Let’s now look at a few specific code snippets that can help you understand how to open a CSV file in Python.
+
+We will continue with the earlier dataset. For reference, here is the data set –
+
+![csv file in python](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/5.jpg)
+
+## CSV.reader()
+
+This method uses the open() method to read CSV file in Python. Here you should use the ‘r’ mode that enables the read mode when opening the CSV file.
+
+The file object returned when using this method can be read using the reader() method available in the CSV module. This method returns a reader object that iterates through every line of the CSV document allowing the user to open a CSV file in Python.
+
+![CSV.reader()](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/Screenshot-2023-02-01-at-3.25.20-PM.png)
+
+## CSV.DictReader()
+
+This method also uses the open() method to read CSV file in Python.
+
+However, here we use the DictReader class available in the CSV module. While opening a CSV file in Python, this class maps the information differently as it stores the information from the CSV file in a dictionary (a data structure native to Python).
+
+As observed in the output, the first line of the file holds the dictionary keys.  
+
+![CSV.DictReader()](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/Screenshot-2023-02-01-at-3.24.05-PM.png)
+
+## pandas.read\_CSV()
+
+The standard answer to how to read CSV file in Python should be a simple use of read\_CSV() provided by the open-source library pandas. This function requires the user to mention the file location and file name of the CSV file along with the extension.
+
+## ![pandas.read\_CSV()](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/Screenshot-2023-02-01-at-3.20.31-PM.png)
+
+All the methods mentioned above can enable you to read CSV files. However, certain issues can arise due to the delimiters used in the CSV file.
+
+## Delimiter Issues
+
+While most CSV files use a comma as the separator, there can be a situation where the delimiter used in the file may be other than a comma. In such scenarios, you need to identify the separator used in the CSV file and specifically mention the identified separator.
+
+> The file can be misread if you do not mention the correct separator.
+
+For example, Let’s assume the separator is ‘**:**’ and the data looks something like-
+
+![csv file dataset](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/Screenshot-2023-02-01-at-3.27.53-PM.png)
+
+If you use the functions mentioned above where the **_delimiter is a comma_**, the CSV file will be imported incorrectly .
+
+![delimiter issue](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/Screenshot-2023-02-01-at-3.29.50-PM.png)
+
+ If you had explicitly mentioned the correct delimiter, then the CSV would have imported correctly. 
+
+Let’s look at how it functions in the two modes of reading a CSV file in Python.
+
+### CSV.reader()
+
+If you use CSV.reader(), you can use the argument ‘**delimiter =**‘ and mention the delimiter.
+
+![argument delimiter =](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/Screenshot-2023-02-01-at-3.32.35-PM.png)
+
+### pandas.read\_CSV()
+
+If using the pandas library to read the CSV file, you can use the ‘**delimiter =’ argument in the code again**.
+
+![how to read csv file delimiter](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/Screenshot-2023-02-01-at-3.34.05-PM.png)
+
+The Output is as follows:
+
+![Python code output](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/8.jpg)
+
+Now that you know how to read CSV file in Python, let’s also explore writing to a CSV file.
+
+## Writing to a CSV File
+
+There are three main ways you can write a CSV file.
+
+1.  CSV.writer()
+2.  writelines()
+3.  to\_CSV()
+
+### CSV.writer()
+
+This method requires you to have the column names or headers in a list and the rows or the data in another list. If we use the previous example, then we first create the following two lists-
+
+header = \['Product ID', 'Product Name', 'Cost Price', 'Selling Price'\]
+
+data = \[\['AD121', 'Shirt', '$23', '$34'\],\['PA231', 'Bag', '$56', '$70'\],\['KL121', 'Shoe', '$32', '$43'\]\]
+
+You then define the file name and open it using the Open() method. Once done, you create a CSVwriter object using the CSV.writer() method and then write the header and the data. The code looks like –
+
+![CSV.writer() method](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/Screenshot-2023-02-01-at-3.40.08-PM.png)
+
+### writelines()
+
+The second technique uses the writelines() method, where it iterates through each list. During this iteration, it converts list elements to string and writes it to a CSV file.
+
+header = \['Product ID', 'Product Name', 'Cost Price', 'Selling Price'\]
+
+data = \[\['AD121', 'Shirt', '$23', '$34'\],\['PA231', 'Bag', '$56', '$70'\],\['KL121', 'Shoe', '$32', '$43'\]\]
+
+The code will look like:
+
+![writelines() method](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/Screenshot-2023-02-01-at-3.41.54-PM.png)
+
+### to\_CSV()
+
+The last, simplest, and most common method uses pandas’ to\_CSV() function. Here you need a pandas dataframe that can be used to write the CSV.
+
+In the following code, the lists (headers and data) are first transformed into pandas dataframe that is then written into a CSV file. If you already have pandas dataframe whose contents you wish to write as a CSV file then you can skip the converting of lists into pandas dataframe step.
+
+![to\_CSV() method](https://www.analytixlabs.co.in/wp-content/uploads/2023/02/Screenshot-2023-02-01-at-3.44.19-PM.png)
+
+That’s all on writing and reading CSV file in Python. Below are a few frequently asked questions that can help you grasp the subject better.
+
+## FAQs
+
+-   **How do you open Excel CSV file in Python?**
+
+A CSV file can be opened using MS Excel, but the file remains a CSV file only. If you have any confusion, look at the extension of the file, and if it is ‘.CSV’, then the file is a CSV file, and the methods mentioned earlier can be used to open the file in Python.
+
+If the file extension is .xls’ or ‘.xlsx’, it means that it’s an excel file and not a CSV file. To open an Excel file, you can use the pandas function read\_excel().
+
+-   **What modules read CSV files in Python?**
+
+The CSV module can be used where the reader() method allows you to import a CSV file in Python.
+
+-   **How do I open a CSV file using pandas?**
+
+You can import a CSV file using pandas by using the read\_CSV() function and passing the CSV file’s location, name, and extension. You can also mention a specific delimiter by using the ‘delimiter =’ argument.
+
+-   **How do you read a dataset in Python?**
+
+There are several methods you can use to read a dataset in Python. However, the method used is dependent on the type of file. You can use the reader() method or pandas if the file is CSV.
+
+For most other formats, pandas can be used as it has functions to import data from various formats. Other third-party libraries are required for specific formats such as JSON, text, etc.
+
+I hope this article answered the question of how to read CSV file in Python. If you still face issues importing a CSV file or have any suggestions, please write back to us.
+
+Additional Resources on Python To Read
+
+-   [Reasons to Learn Python for Big Data](https://www.analytixlabs.co.in/blog/big-data-python/)
+-   [10 Steps to Mastering Python for Data Science](https://www.analytixlabs.co.in/blog/mastering-python-for-data-science/)
+-   [Python vs. R vs. SaS: A Comparative Study](https://www.analytixlabs.co.in/blog/the-best-machine-learning-tools-python-vs-r-vs-sas/)
+-   [Why Should You Choose Python Data Science Course](https://www.analytixlabs.co.in/blog/choose-python-data-science-course/)

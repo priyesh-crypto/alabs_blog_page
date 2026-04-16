@@ -1,0 +1,68 @@
+---
+title: "Why Should You Learn SQL in The Age of Python & R?"
+slug: why-learn-sql-for-data-science
+date: "2020-06-26T18:34:57+00:00"
+modified: ""
+description: "Everyone who has stepped into data analytics, data science would have pondered over this question at least once. Which among these big guns should I begin with or choose from SQL or Python or R."
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2020/06/blog-9-2x-01-3.jpg"
+author: AnalytixLabs
+categories:
+  - Data Analytics
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/why-learn-sql-for-data-science/"
+noindex: true
+---
+
+Everyone who has stepped into data analytics, data science would have pondered over this question at least once. Which among these big guns should I begin with or choose from: SQL or Python or R. While my mother feels that I am thinking about my life prospects whenever she watches me from the living room, I would actually be sitting in front of my work desk thinking deeply whether to enhance my learning in SQL or R or Python!! (I know you sensed a lame geeky touch there!). Although there is almost a big debate that will always be going on between [R and Python](https://www.analytixlabs.co.in/blog/the-best-machine-learning-tools-python-vs-r-vs-sas/), in this article, I would like to focus on SQL vs Python and R because many would forget SQL while engaging in a heated debate between R and Python.
+
+Undoubtedly, SQL is one of the most versatile languages that the tech world has ever come across and has become the lifeline for programmers who intend to work with databases for over many decades. So, why should one still invest time in learning this aging language which has stood the test of time when you have cool dudes like R, Python, Deep learning, Scala making over the roof noise and news in the tech world? Should I start from SQL vs R/Python, When should I use SQL vs R/Python, Which Should I lean more on; I will try to answer these questions in this post. Let’s get started.
+
+## **Why is SQL Still Ubiquitous?**
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2020/06/blog-9-2x-02-600x366.jpg)
+
+SQL is a great tool when you are handling relational databases to extract useful information from the data. For most business decisions that we make at a quantitative level, SQL does a good job with joins and aggregate functions. As we go into a higher level of data manipulations such as statistical analysis (although we have a statistical function in SQL), plot analysis, Regression test, time series analysis using SQL becomes painstaking to achieve them unless you are an SQL ninja! This is where the diversified libraries and packages in Python/R shine. Pandas in Python or _data.table_ in R are counterparts for handling relational or tabular data. Yet, SQL continues to be very pervasive among the data science people because of its declarative nature; you tell SQL what you want to be done rather than how you want it to be done. Also, the evolution of data warehouses like NoSQL, Hadoop, Amazon’s Redshift, and Google’s BigQuery significantly transform the way of handling complex data manipulations with a faster execution rate.
+
+## **Python & R are Climbing Up The Ladder Faster Than Ever**
+
+Keeping aside the debate of R vs Python, both of these languages are picking up the pace really fast in the data science community. Why? R/Python has given more flexibility to the kingpins of the 21stcentury – Data Science, Artificial Intelligence, and Machine Learning. All the more, personally, for me, the greatest benefit of these languages is that they have the capability of handling “end-to-end” operations starting from data preparation, Validation, Manipulation, exploratory analysis, modeling and finally visualization. I do not have to juggle between the tools at various stages of my work.
+
+## **Use Case of SQL vs R**
+
+Let’s take a use case. As you all know, window functions are very commonly used in the analytics world in that it provides aggregations over a partition against each row of data without condensing the number of rows in a table. Below I have performed the following four operations using window functions in SQL and R:
+
+-   Sum of Sales
+-   Cumulative sales
+-   Moving average of Sales 
+-   Rank operation
+
+**The Data has an ID, and sales corresponding to that ID as shown below:**
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2020/06/image.png)
+
+### **The SQL way:**
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2020/06/image-1.png)
+
+### **The R way ( using TidyVerse package):**
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2020/06/image-2.png)
+
+The outputs obtained from both the tools are the same. But what I want you to notice is here is that R is a bit more compact than SQL which is repetitive but flexible. If you notice, I still could have used R’s equivalent of _Over() and order by(ID),_ but I was able to consolidate them using _arrange() and mutate()_ functions. Also, the beautiful part about R here is that, especially for SQL enthusiasts, you can still query a data frame as if it were a SQL table and pass the query as a string using the _SQLDF_package. On the other hand, if I were to see more complex operations using window functions, SQL still might have an upper hand over R.
+
+A significant benefit that I have come across with R/python is their straightforward ability to import or export files of various formats which otherwise is a nightmare in SQL. Although, this might sound a bit off track for developers who are used to creating and integrate front end applications to the back end database using ODBC and JDBC, I would still consider this worth exploring instead of expending time and energy configuring specific packages and drivers. 
+
+On the other hand, understanding a SQL query is a lot more intuitive and less intimidating when compared to an R/python script. Because the SQL queries are mostly self-contained, I can easily figure out an SQL query more easily and execute it. When using a python/R script, one should accept the fact that you will never fully know what’s happening; for example, to wholly understand a _tidyverse_package in R or a _SciPy_ function in Python it becomes incredibly overwhelming as I have to go through series of documentation and source codes. So I will just find a function that I know will do the job for me, plug and chug them in and get the result. This is one downside I see with languages like Python/R with such vast community and endless resources.
+
+## **Concluding thoughts**
+
+SQL is always a safe house. Although an SQL script is way lengthier than its R/python counterparts in most cases, it feels easier to do it that way like you read an English language. But learning a language like an R/python will always make your life easier and more effective in the way you handle the data. So the best place to start your learning would be with SQL. Get used to it, play around with lots of datasets, get a grip of the language and then you can try out them on R/Python. This way, you not only will accelerate your learning skills, but you also will have more tools in your armor belt.
+
+Lastly, I would say, SQL is still the granddaddy, but I will say, R and python are way cooler and savvier in handling data manipulations!
+
+> **You may also like to read:**
+> 
+> **_[Top 40 Data Analyst Interview Questions & Answers](https://www.analytixlabs.co.in/blog/data-analyst-interview-questions/)_**
+> 
+> **_[Master SQL For Data Science | Key Topics & Concepts One Should Know](https://www.analytixlabs.co.in/blog/master-sql-for-data-science/)_**

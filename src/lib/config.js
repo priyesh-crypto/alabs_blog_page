@@ -23,7 +23,7 @@ export const NAV_CATEGORIES = [
 
 export const MOBILE_NAV_ITEMS = [
   { id: "home",     icon: "home",     label: "Home",     href: "/" },
-  { id: "insights", icon: "article",  label: "Insights", href: "/article" },
+  { id: "insights", icon: "article",  label: "Insights", href: "/blog" },
   { id: "courses",  icon: "school",   label: "Courses",  href: "#courses" },
   { id: "saved",    icon: "bookmark", label: "Saved",    href: "#" },
 ];

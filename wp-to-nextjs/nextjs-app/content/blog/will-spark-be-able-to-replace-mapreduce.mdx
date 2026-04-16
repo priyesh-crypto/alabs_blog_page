@@ -1,0 +1,63 @@
+---
+title: Will Spark be able to Replace MapReduce
+slug: will-spark-be-able-to-replace-mapreduce
+date: "2016-06-25T05:45:32+00:00"
+modified: ""
+description: "What is Apache Spark?Apache Spark is a framework for executing general data analytics over distributed system and computing clusters, for example Hadoop. Apac"
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2016/06/Spark-image-AL.jpg"
+author: AnalytixLabs
+categories:
+  - Hadoop Spark
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/will-spark-be-able-to-replace-mapreduce/"
+noindex: true
+---
+
+[![](https://www.analytixlabs.co.in/wp-content/uploads/2016/06/Spark-image-AL.jpg)](https://www.analytixlabs.co.in/wp-content/uploads/2016/06/Spark-image-AL.jpg)
+
+## **What is Apache Spark?**
+
+Apache Spark is a framework for executing general data analytics over distributed system and computing clusters, for example Hadoop. Apache Spark does in-memory computations with higher speed, low latency data process on MapReduce. Apache Spark doesn’t replace [Hadoop](https://www.analytixlabs.co.in/big-data-analytics-hadoop-spark-training-course-online), rather it runs atop existing Hadoop cluster to access Hadoop Distributed File System. Apache Spark also has the functionality to process structured data in Hive and streaming data from Flume, Twitter, HDFS, Flume, etc.
+
+### **Features of Apache Spark**
+
+Apache Spark has immense use cases in the Big Data Industry and it leverages features like speed, low latency, ease of use, complex analytics and data processing, flexibility of environments. Let’s have a look at some of Spark’s major features.
+
+#### ****Higher Speed and Low Latency Data Processing****
+
+According to recent study done by Hortonworks, Apache Spark can execute applications 100x times faster in memory on a Hadoop cluster. This low latency processing is achieved by reduced by low number of read/write operations to memory/disk. Spark uses in-memory to store processing data. Resilient Distributed Database (RDD) are allowed to store data on memory, reducing the time consuming factor of writing and reading into disc.
+
+#### ****Multi-Language APIs and Ease of Use****
+
+Apache Spark provides APIs to write application in languages like Scala, Java or Python. Spark is developer friendly, where it is relatively easy to create and execute applications in preferred programming languages.
+
+#### ****Data Processing, Data Streaming, Complex Analytics and much more functionalities****
+
+Apache Spark is like a multi-purpose framework for data analytics. Not only it can write map and reduce operation; it can also execute SQL queries, complex data analytics using machine learning algorithms, streaming live structured data.
+
+#### ****Flexing working environment****
+
+Apache Spark can work on Hadoop, Mesos, in the cloud or in a standalone cluster. Spark can access wide range of data sources like Hadoop Distributed Framework System, HBase, Cassandra, S3.
+
+## **Apache Spark and Hadoop**
+
+Hadoop uses in-disc memory, compared to Apache Spark which uses more RAM leading to 100x faster data processing. Apache Spark is not a framework designed to replace Hadoop, rather it is a data processing framework using in-memory storage for computing data stored on Hadoop disk. Hadoop Distributed Framework System and Apache Spark’s Resilient Distributed Dataset are both fault tolerant.
+
+### **Apache Spark Vs Hadoop MapReduce**
+
+As we have seen that Apache Spark does in-memory data processing, on the other hand Hadoop MapReduce does I/O operations on the disc after every map and reduce actions. This increases Spark’s processing speed and it can outperform Hadoop MapReduce.
+
+Apache Spark could replace Hadoop MapReduce but Spark needs a lot more memory; however MapReduce kills the processes after job completion; therefore it can easily run with some in-disk memory. Apache Spark performs better with iterative computations when cached data is used repetitively. As a conclusion Hadoop MapReduce performs better with data that doesn’t fit in the memory and when there are other services to be executed. While Spark is designed for instances where data fits in the memory especially on dedicated clusters.
+
+In terms of ease of use Hadoop MapReduce is written in Java and is difficult to program, whereas Apache Spark has flexible and easy to use APIs in languages like Python, Scala and Java. Developers can write user-defined functions in Spark and even include interactive mode for running commands.
+
+## **Apache Spark Use Cases**
+
+-   Iterative Algorithms in Machine Learning
+-   Interactive Data Mining and Data Processing
+-   Spark is a fully Apache Hive-compatible data warehousing system that can run 100x faster than Hive.
+-   Stream processing: Log processing and Fraud detection in live streams for alerts, aggregates and analysis
+-   Sensor data processing: Where data is fetched and joined from multiple sources, in-memory dataset really helpful as they are easy and fast to process.
+
+Considering the flexibility, speed and ease of using Spark, it is expected to be adopted more widely and largely replace MapReduce. But there would be still some areas where MapReduce would be required, particularly when non-iterative computations is required with limited memory availability.

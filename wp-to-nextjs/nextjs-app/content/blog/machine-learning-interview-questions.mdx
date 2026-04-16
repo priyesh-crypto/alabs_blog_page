@@ -1,0 +1,381 @@
+---
+title: "Top 45 Machine Learning Interview Questions and Answers [2026 Edition]"
+slug: machine-learning-interview-questions
+date: "2020-08-02T09:54:33+00:00"
+modified: "2026-03-23T07:16:10+00:00"
+description: "To land a job in data science, you’ll need to go through an interview process. Here is a list of key questions answers you could see in a machine learning interview."
+featuredImage: "https://www.analytixlabs.co.in/wp-content/uploads/2020/08/image-7-13-1-3.jpg"
+author: AnalytixLabs
+categories:
+  - Data Science
+  - Interview Q/A
+  - Machine Learning
+tags:
+  - general
+canonical: "https://www.analytixlabs.co.in/blog/machine-learning-interview-questions/"
+noindex: true
+---
+
+IIT Hyderabad recently launched a B.Tech course in Artificial Intelligence, starting from the academic year of 2019-20. One of the elite technological institutes of our country, IIT Hyderabad became the first Indian college to offer its students a chance to specialize in the fields of AI and Machine Learning.
+
+Although already a part of the computer engineering curriculum of most engineering colleges, the scope of ML and AI have far outgrown the domain of the computing world. Recent developments in both fields, especially ML, have led to a sharp rise in the demand for ML experts across most sectors.
+
+To that end, we have compiled the following list of machine-learning interview questions and answers. We have incorporated core ML concepts, advanced scenario-based questions, as well as basic **interview questions on machine learning** for freshers.
+
+_To speed up your prep for a machine learning job, AnalytixLabs offers you a comprehensive [online learning module for machine learning](https://www.analytixlabs.co.in/machine-learning-course-certification-training), with guidance from industry experts. If you have more doubts, you can contact us!_
+
+## **Q1: What do you mean by cross-validation?**
+
+As the name suggests, cross-validation is a technique to test whether the given ML system can perform accurately over datasets other than the one used to train it. Typically, programmers split their dataset into two different sets for cross-validation:
+
+1\. Training data- Used to train the system.
+
+2\. Testing data- Used to test and verify the system.
+
+## **Q2: How do you choose the metrics?**
+
+Metrics are parameters that help you evaluate an ML model/system. The selection of metrics depends on a variety of factors like:
+
+-   Is it a classification or regression model?
+-   How varied are the target variables?
+
+MAE, MAPE, RMSE, MSE for regression and Accuracy, Recall, Precision, and f1 score for classification are some of the most commonly used metrics.
+
+## **Q3: What are the false positives and false negatives?**
+
+A **false positive** is like a false alarm, where the model suggests the presence of a condition even when it doesn’t exist. A **false negative** is the exact opposite of the above situation where the model suggests the absence of a condition when it is actually present.
+
+## **Q4: Explain the terms ‘Recall’ and ‘Precision’:**
+
+Both [**Recall** and **Precision**](https://www.youtube.com/watch?v=mctizdBujk4) are accurate indicators of a model but have a distinct meaning. Where **recall** focuses on all the relevant results classified accurately by the model, **precision** helps you determine the percentage of the obtained results which are directly relevant to you.
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2020/08/image-3-37-1.jpg)
+
+## **Q5: Distinguish between supervised learning and unsupervised learning.**
+
+In **Supervised learning,** you provide the model with an answer key to the questions it is supposed to solve so that the model can verify its results and improve its process accordingly—for example, the correlation between the age and height of a group of children.
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2020/08/image-4-24-1-600x273.jpg)
+
+In the case of **Unsupervised learning**, the correct results are not known, so the model needs to draw inferences and find patterns from the given dataset. For example, grouping together customers with similar purchase histories.
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2020/08/image-2-40-1-600x350.jpg)
+
+## **Q6: How do you validate a predictive model based on multiple regression?**
+
+The most commonly used method to do this would be through cross-validation, as explained in the previous question. But you can also choose to employ the **[Adjusted R-squared](https://www.youtube.com/watch?v=IMjrEeeDB-Y)** method. In this method, an r-squared value is generated, which determines the relation between the variance present in the dependent and independent variables of a dataset. So, the higher the r-squared value, the more accurate the model.
+
+## **Q7: What is the full form of NLP?**
+
+**NLP** is short for Natural Language Processing. It is an AI discipline that focuses on helping machines understand and interact with humans in a more colloquial manner.
+
+## **Q8: What is a random forest?**
+
+[Random forests](https://www.youtube.com/watch?v=LIPtRVDmj1M) are a learning methodology based on the concept of decision trees. Multiple decision trees are created by a randomized selection of a subset of variables at each step of the decision tree which aggregates into a random forest. The mode of all predictions is then selected as a result with the least probability of errors.
+
+## **Q9: Which model is better, Random forests or Support Vector Machine? Justify your answer.**
+
+When it comes to Machine Learning algorithms the theory of no free lunch comes into the picture. No single algorithm is superior to the other in absolute terms and comes with a set of some trade-offs. Depending on the use case we prefer one over the other.
+
+But in general, Random forests are considered to a be superior model to the SVM for the following reasons:
+
+-   You can determine the feature’s importance using random forests, but not with SVM.
+-   It is easier to employ random forests than SVM, and the former is quicker too.
+-   Random forests prove to be more scalable and less memory intensive than SVMs for multi-class classifications.
+-   Lesser probability of over-fitting in general.
+-   Easy to tune the hyper-parameters.
+
+> **Related read:**
+> 
+> **_1\._ [_How to Choose The Best Algorithm for Your ML Solutions?_](https://www.analytixlabs.co.in/blog/how-to-choose-the-best-algorithm-for-your-applied-ai-ml-solution/)**
+> 
+> **_2._** **_[Introduction To SVM – Support Vector Machine Algorithm in Machine Learning](https://www.analytixlabs.co.in/blog/introduction-support-vector-machine-algorithm/)_**
+
+## **Q10: Explain PCA and its uses:**
+
+PCA stands for Principal Component Analysis. It involves simplifying the data by reducing the dimensionality of the dataset — for example converting 3-D to 2-D — without changing the original variables of the model. PCA is a widely used compression technique utilized for better visualization and summarization of data, reducing the required memory, and speeding up the process. You may also like to learn about **_[Factor Analysis vs. PCA](https://www.analytixlabs.co.in/blog/factor-analysis-vs-pca/)_**
+
+## **Q11: What are the drawbacks of Naive Bayes? How can you improve it?**
+
+The biggest drawback of Naive Bayes lies in its assumption that the features of a dataset are completely uncorrelated with one another, which is rarely the situation. The only way to improve the performance of Naive Bayes is to actually remove the correlations between the features and make the process optimum for the Naive Bayes.
+
+## **Q12: Explain the shortcomings of a linear model?**
+
+Following are the major downsides of a linear model:
+
+-   A linear model is based on too many theoretical assumptions which mostly don’t hold true in reality.
+-   Discrete or binary outcomes cannot be obtained through a linear model.
+-   High inflexibility.
+
+## **Q13: Are multiple small decision trees better than a single large one? Justify.**
+
+Having multiple small decision trees is the same as employing a random forest model, which is known to be more precise (low bias) and less prone to the problem of overfitting (high variance). So yes, having multiple small decision trees would be more preferable to having a single large one.
+
+## **Q14: What makes mean square error a poor metric of model performance?**
+
+MSE or Mean square error is based on associating a considerably higher weight to large errors, thus putting greater emphasis on wider deviations. However, this works well in most of the algorithms to minimize the model error and cost.
+
+Sometimes, a better option to MSE is MAE (mean absolute error) or MAPE (mean absolute percentage error), which does away with the above shortcoming and is easy to interpret.
+
+## **Q15. What assumptions is linear regression based upon?**
+
+Linear regression is generally based on the following key assumption:   
+
+-   The sample data must represent the entire population**.**
+-   The input and output variable must have a **linear relationship.**
+-   The input variable must show **homoscedasticity.**
+-   No **multicollinearity** among independent/ input variables.
+-   Normal distribution of the output variable for any value of the input variable.
+-   There is no serial or autocorrelation in the output/ dependent variable
+
+> **Related: _[What is Linear Regression In ML? With Example Codes](https://www.analytixlabs.co.in/blog/linear-regression-machine-learning/)_**
+
+## **Q16: What is multicollinearity?**
+
+When two independent variables display a high correlation to each other, multicollinearity is said to have occurred. Variance Inflation Factors (VIF) can be used to detect multicollinearity between independent variables. Usually, a VIF of more than 4 is a sign of [multicollinearity.](https://www.youtube.com/watch?v=Ybzc3AB1E-E)
+
+## **Q17: Why should, or shouldn’t, you perform dimensionality reduction before fitting an SVM?**
+
+For an optimal model outcome, dimensionality reduction is highly recommended before fitting an SVM when the number of features is greater than the number of observations.
+
+## **Q18: Distinguish between classification and regression?**
+
+**Classification**, as the name suggests, classifies or separates data into predetermined categories. The results obtained are discrete in nature. For example, classifying cricket players into bowler and batsman categories. Some business examples:
+
+-   Whether customers will **open an email or not?**
+-   Will a customer payback **credit card dues or default?**
+-   Is insurance claim **fraud or genuine claim?**
+
+**Regression**, on the other hand, deals with continuous data like determining the temperature of an object at a certain point of the day. In this case we are predicting a numerical value/ a continuous number. Some business examples:
+
+-   Predicting **revenue of a company**
+-   **Footfall** in a mall
+-   **Total retail spend** by different customers
+
+> **Related_: [What is Classification Algorithm in Machine Learning? With Examples](https://www.analytixlabs.co.in/blog/classification-in-machine-learning/)_**
+
+## **Q19: Explain the difference between KNN and k-means clustering.**
+
+**KNN** stands for K-Nearest Neighbours, which is a supervised learning method that requires labeled data that is then used to classify the points based on their distance from the nearest point.
+
+**K-Means clustering** is an unsupervised ML algorithm where a model with unlabelled data is provided and the algorithm then groups observation/ data points based on the similarities, measured using the average of the distances between different points.
+
+## **Q20: How to ensure that your model is not overfitting?**
+
+The primary reasons that cause overfitting in a model are the complexity of the model itself and the amount of noise in the variables used. **Cross-validation** methods like K-folds can be used to curb overfitting in a model. **Regularization** methods can be used to penalize parameters that might be causing overfitting.
+
+> **Related: _[What Is Regularization in Machine Learning? Techniques & Methods](https://www.analytixlabs.co.in/blog/regularization-in-machine-learning/)_**
+
+## **Q21: Explain Ensemble learning.**
+
+Basically, [ensemble learning](https://www.youtube.com/watch?v=AiePAlZy_t8) is the collection and aggregation of multiple models using bootstrapped samples, usually decision trees (classifiers or regressors), to obtain more accurate results, with lower bias and variance. Ensemble learning models can be created sequentially or in parallel.
+
+In **Bagging,** multiple models are created parallelly and the final results are aggregated outcomes of all these models, based on averages or majority voting. The most popular among such methods is Random Forest.
+
+In **Boosting** a large number of sequential models are created parallelly and each subsequent model learns from the weakness of the previous model to improve the final accuracy. GBM (Gradient Boosting Method) and Xgboost are the two most popular boosting techniques.
+
+## **Q22: How is ML different from Deep Learning?**
+
+Machine learning focuses on analyzing and learning from that data based on features fed into the model and using those insights to make better decisions.
+
+Deep Learning, is basically a subset of ML that is inspired by the human brain. It focuses on feature extraction by deducing information from multiple layers, where each layer propagates the information to each layer for the final outcome.
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2020/04/Picture-1.png)
+
+> **Related: _[Machine Learning vs Deep learning- What Is the Difference?](https://www.analytixlabs.co.in/blog/machine-learning-vs-deep-learning/)_**
+
+## **Q23: What is selection bias?**
+
+When a specific group or type of data is selected in a dataset more often, it leads to a statistical error called **selection bias.** Unless detected and resolved, selection bias can lead to inaccurate end results.
+
+## **Q24: Explain inductive and deductive reasoning:**
+
+Inductive reasoning involves analyzing the available observations to draw a conclusion. Deductive reasoning, on the contrary, uses known conclusions or premises to form observations. [Here](https://www.khanacademy.org/math/algebra-home/alg-series-and-induction/alg-deductive-and-inductive-reasoning/v/deductive-reasoning-1) is a good example.
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2020/08/image-5-26-1-600x273.jpg)
+
+## **Q25: Elaborate the difference between Gini Impurity and Entropy in a Decision Tree.**
+
+Gini Impurity and Entropy are both metrics that can help split a decision tree. The former measures the probability of correct classification of a random sample if you randomly pick a label in the branch.
+
+Entropy is the measure of uncertainty in your model. Entropy is the lowest towards the leaf node. The Information Gain is the difference of entropies observed between a dataset before and after the split of an attribute. It has a maximum value near the leaf node. The difference between entropies can help understand the level of uncertainty in a decision tree.
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2020/08/main-qimg-3800e86a4f0a8c548f29b025ce45d4d6-600x382.png)
+
+## **Q26. What are outliers and how to detect them?**
+
+Outliers are those data points that have a considerable difference of value from the average value of the dataset. Boxplot, linear models, and proximity-based models are often used for the screening of outliers in a dataset. For most of the models, it is highly recommended to treat outliers by either capping them or omitting them from the dataset.
+
+> **Related: _[What Is Data Preprocessing in Machine Learning | Examples and Codes](https://www.analytixlabs.co.in/blog/data-preprocessing-in-machine-learning/)_**
+
+## **Q27. What is A/B Testing?**
+
+A/B testing is dual-variable testing performed on randomized experiments for determining which of the two selected models is a better fit for the given dataset. Imagine having two movie recommendation models, A & B. Performing [A/B testing](https://www.youtube.com/watch?v=zFMgpxG-chM) can then help us determine which of these two models will provide a better recommendation to the user.
+
+## **Q28. Explain Cluster Sampling:**
+
+Cluster sampling is a grouping method used for a population that has separate subsets of homogeneous elements inside it. Commonly used for marketing research purposes, cluster sampling divides the given dataset into smaller groups and randomly selects a sample of the groups.
+
+## **Q29. Which Python libraries are commonly used in Machine Learning?**
+
+Pandas, NumPy, SciPy, Seaborn, Sklearn, etc. are the top 5 most commonly used libraries for Data Analysis and Scientific Computations required for the ML models.
+
+> **You may also like to read:**
+> 
+> **_1\. [Ultimate Python Data Science Libraries to Learn](https://www.analytixlabs.co.in/blog/50-ultimate-python-data-science-libraries-to-learn-in-2020/)_**
+> 
+> **_2\. [Top 50 Python Interview Questions for Data Science](https://www.analytixlabs.co.in/blog/python-interview-questions-for-data-science/)_**
+
+## **Q30. What experience do you have with big data tools like Spark that are used in ML?**
+
+At the enterprise level, Apache Spark plays a significant role to scale the machine models and enables real-time analytics on Big Data.
+
+Spark is one of the most commonly used Big Data tools of ML and is probable to come up in at least some of the **machine learning interview questions** for job roles that involve handling Big Data. It is a common part of machine learning interview questions for professionals with some prior experience.
+
+Always be honest about such interview questions on machine learning. So ensure that you have some practical experience of using similar tools before attempting ML interview questions.
+
+## **Q31. How would you handle missing data in a dataset?**
+
+Another hypothetical question that is a regular in a session of **machine learning interview questions and answers**. Most employers incorporate this situation in **machine learning interview questions** for freshers because they need to understand if the individual has enough practical knowledge to deal with such ubiquitous problems of everyday work.
+
+Your answer to such an ML interview question should be that you could either replace the missing value with another value using the measure of central tendency, like mean or median or mode. Following approach is used most commonly:
+
+-   Continuous Variables: Replace missing with mean
+-   Ordinal Variables: Replace missing with the median
+-   Categorical Variables: Replace missing with the mode
+
+In case, we have very small proportions of missing values in a large dataset then we can also drop them. dropna() method from the Pandas library.
+
+## **Q32. Write a pseudocode for any algorithm.**
+
+The most important quality that interviewers try to ascertain through their interview questions on machine learning is the individual’s understanding of the logic of ML. Writing the pseudocode of an algorithm requires an intuitive grasp of the fundamental concepts and strong logical reasoning skills. So always choose an algorithm that you have an in-depth understanding of.
+
+One of the easiest algorithms is Decision Tree where we can split the data in each node in order to minimize MSE or GINI index.
+
+## **Q33. What was the last book or research paper that you read on machine learning?**
+
+The interviewer will try to assess if you have a genuine interest in the field by asking such interview questions on machine learning. You must always be well-read and aware of the latest developments being made in ML by reading published research papers and scientific journals.
+
+> **Related: _[Best Machine Learning Books to Read](https://www.analytixlabs.co.in/blog/career-machine-learning-best-books-read/)_**
+
+## **Q34. What ML model do you like the most?**
+
+Although the interviewer might only ask you to name your favorite machine learning model at first, there is a strong chance that he will have some follow-up questions on the model you choose. So bear in mind to name a simple enough ML model that you have good knowledge and understanding of.
+
+And please remember the principle of no free lunch as explained in Q9! No single model is superior in every scenario. Every model has its pros and cons and we choose an appropriate model based on the business case and applicable trade-offs.
+
+## **Q35. How is Data Mining different from Machine Learning?**
+
+Data mining is a discipline that deals with the extraction of data from unrefined sources so that it can be analyzed and studied to obtain meaningful patterns.
+
+Machine Learning focuses on developing algorithms and methodologies that can help machines learn and evolve on their own.
+
+> **Related:** _**[Machine Learning vs Pattern Recognition vs Data Mining](https://www.analytixlabs.co.in/blog/difference-between-machine-learning-pattern-recognition-and-data-mining/)**_
+
+## **Q36. Name the life stages of model development in a Machine Learning project.**
+
+Development of an ML model progresses in the following stages:
+
+1.  **Define Business Problem:** Understand business objectives and convert it analytics problem
+2.  **Data Construct:** Identify the required data sources, extract and aggregate the data at the required level.
+3.  **Exploratory Analysis:** Understand the data, examine the variables for errors, outliers and missing values. Identify the relationship between different types of variables. Check for assumptions.
+4.  **Data Preparation:** Exclusions, type conversions, outlier treatment, missing value treatment. Create new, hypothetically relevant variables, e.g. max, min, sum, change, ratio. Binning variables, dummy variables creation, etc.
+5.  **Feature Engineering:** Avoid multicollinearity and optimize model complexity by reducing the number of input variables – variable cluster, correlation, factor analysis, RFE, etc.
+6.  **Data Split:** Split the data into training and testing samples.
+7.  **Model Building:** Fit, check accuracy, cross-validate, and tune the model with the help of parameters and hyperparameters.
+8.  **Model Testing:** Check the model on the testing sample, run diagnostics, and iterate the model if required.
+9.  **Model Implementation:** Prepare final model results– present the model. Identify the limitations of the model Implement the model (converting the ML solution into production).
+10.  **Performance Tracking:** Track model performance periodically and update it as and if required. With an evolving business environment, the performance of any ML model is likely to get impacted over a period of time.
+
+## **Q37. Name some real-life applications of  ML algorithms:**
+
+Machine learning algorithms are finding significant uses across the following sectors-
+
+-   Bioinformatics
+-   Robotics Process Automation
+-   Natural Language Processing
+-   Sentiment Analysis
+-   Fraud detection
+-   Facial & Vocal recognition systems
+-   Anti-money laundering
+
+## **Q38. Explain neural networks.**
+
+You can expect a question on neural networks when the interviewer has moved on from basic and intermediate machine learning questions and answers. The neural network is an advanced discipline of ML that has shown some remarkable results through its increased adaptability and flexibility.
+
+A **neural network** is a type of ML algorithm that identifies underlying hidden patterns & relationships in a dataset through a process that is inspired by the working of the human brain operates.
+
+It is a nondeterministic algorithm without a strong mathematical foundation and can be roughly compared to large-scale trial and error computations. These models very well adapt to changes in the input data; hence generating highly accurate results without explicit programming inputs. (You may also refer to Qn 22 again.)
+
+> **You may also like to read: _[Fundamentals Of Neural Networks & Deep Learning](https://www.analytixlabs.co.in/blog/fundamentals-of-neural-networks/)_**
+
+## **Q39. Is Machine Learning just another name for Artificial Intelligence?**
+
+This might seem like a trick question at first, but the simple answer is: No, ML and AI are not one and the same.  Although both of them focus on making machines more intelligent and capable of doing what humans can, Machine Learning is actually a subset of AI that focuses specifically on the development of learning methodologies for machines.
+
+Whereas, AI is broader and may all encompass other hardware and engineering elements to device the final solution. For example, Netflix’s AI-enabled recommendation engine is predominantly a Machine Learning solution, while the same can not be said for an autonomous self-driving car.
+
+> **Related topics you might like to read:**
+> 
+> **[AI VS ML (Major differences)](https://www.analytixlabs.co.in/blog/what-is-machine-learning#sub6)**
+
+## **Q40. What is a Hash Table?**
+
+A **Hash Table** is an organized listing of data elements where each element in the structure has a unique index value of its own. This allows hash tables to perform search and insert operations on data much more quickly as the data elements are stored in uniform association with one another.
+
+![](https://www.analytixlabs.co.in/wp-content/uploads/2020/08/image-6-14-1-600x400.jpg)
+
+For more explanation watch [this](https://www.youtube.com/watch?v=shs0KM3wKv8).
+
+> **Learn more about _[Data Types, Structures and Applications](https://www.analytixlabs.co.in/blog/types-of-data/)_**
+
+## **Q41. What are the different ways to perform dimensionality reduction on a dataset?**
+
+Dimensionality reduction can be achieved through the following methods:
+
+-   Factor Analysis
+-   Principal Component Analysis
+-   Isomap
+-   Autoencoding
+-   Semidefinite Embedding
+
+> **Related:** **_[Factor Analysis Vs. PCA (Principal Component Analysis) – Which One to Use?](https://www.analytixlabs.co.in/blog/factor-analysis-vs-pca/)_**
+
+## **Q42. Define the F1 Score.**
+
+**F1 score** is a performance measuring metric-based statistic evaluation. It is the weighted average of the Recall and Precision values of a model. It is predominantly used to compare the performances of two ML algorithms across a common dataset.
+
+![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRm96RRI9ApBiH7FylLfRcPM4vMFaAWOC8k5MKSxiK4j7N6EXI&s)
+
+## **Q43. How do you prune a decision tree?**
+
+Pruning involves replacing nodes of a decision tree in a top-down or bottom-up manner. It is very helpful in increasing the accuracy of the decision tree while also reducing its complexity and overfitting.
+
+Generally, a tree is grown until terminal nodes have a small sample then pruned to remove nodes that do not add additional accuracy or information. The objective is to reduce the size of a tree without affecting the accuracy as measured by cross-validation. There are the following 2 main approaches used for decision tree pruning:
+
+-   Error based
+-   Cost complexity based
+
+## **Q44: How would you** explain Machine Learning to a layman?
+
+Such questions are important to exhibit your ability to effectively communicate with business stakeholders and clients who may not necessarily have a technical background. You must answer this in your own words based on an overall understanding of the subject.
+
+“In simple terms, **_[Machine Learning](https://www.analytixlabs.co.in/blog/what-is-machine-learning/)_** comprises of a set of methodologies that empowers computers/ machines to automatically learn from past data and improve accuracy without being explicitly programmed.
+
+This involves a process to parse data, identify hidden patterns, learn from it, and then make a determination or prediction about the outcome without any rule-based programming inputs.”
+
+## **Q45. What interests you the most about ML?**
+
+You are supposed to answer this question through a genuine inspection of your understanding of ML. But if your interview is scheduled to start in the next few minutes and needs a quick response, try, “Machine learning is all about endowing them with the ability that nature only provided humans with Learning. Machine Learning can help us in making machines more human. More importantly, I really want to be part of the AI ML revolution, which is having a very profound impact on all spheres of our life. With my keen interest and skills, I can contribute to the same in a meaningful way. “
+
+Aside from the above ML interview questions, here is a list of interview questions to crack the [Google machine learning interview](https://prepfully.com/interview-guides/google-machine-learning-engineer). Additionally, make it a point to keep reading about the latest news and updates happening in the world of Machine Learning. All the best!
+
+> **You may also like to read:** 
+> 
+> **_1._** **_[Top 75 Natural Language Processing (NLP) Interview Questions](https://www.analytixlabs.co.in/blog/nlp-interview-questions/)_**
+> 
+> **_2._** _**[Top 60 Artificial Intelligence Interview Questions and Answers](https://www.analytixlabs.co.in/blog/artificial-intelligence-interview-questions/)**_
+> 
+> **_3._** **_[Top 50 Data Science Interview Questions & Answers](https://www.analytixlabs.co.in/blog/top-data-science-interview-questions-and-answers/)_**
+> 
+> **4\. _[Top 40 Deep Learning Interview Questions and Answers](https://www.analytixlabs.co.in/blog/deep-learning-interview-questions/)_**
