@@ -18,6 +18,11 @@ import RecommendedPosts from "@/components/RecommendedPosts";
 import NewsletterBanner from "@/components/NewsletterBanner";
 import DiscussionSection from "@/components/DiscussionSection";
 import CoursesGrid from "@/components/CoursesGrid";
+import Pagination from "@/components/Pagination";
+import FeaturedSection from "@/components/FeaturedSection";
+import PostCarousel from "@/components/PostCarousel";
+
+const POSTS_PER_PAGE = 12;
 
 function BlogListingContent() {
   const addToast = useToast();
@@ -31,6 +36,11 @@ function BlogListingContent() {
   const [bookmarked, setBookmarked]   = useState(new Set());
   const [authorPostCount, setAuthorPostCount] = useState(0);
   const [spotlight, setSpotlight]     = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [blogConfig, setBlogConfig]   = useState({ featured_slugs: [], carousels: [] });
+
+  // Reset to page 1 when filters change
+  useEffect(() => { setCurrentPage(1); }, [search, activeTopic, activeSkill]);
 
   useEffect(() => {
     fetch("/api/posts")
@@ -50,9 +60,51 @@ function BlogListingContent() {
         setSpotlight(featured);
       })
       .catch(() => {});
+
+    fetch("/api/site-config/blog-page")
+      .then((r) => r.ok ? r.json() : { featured_slugs: [], carousels: [] })
+      .then(setBlogConfig)
+      .catch(() => {});
   }, []);
 
-  const featuredPost = allPosts[0];
+  // Resolve featured posts from config (preserve admin-chosen order)
+  const featuredPosts = blogConfig.featured_slugs
+    .map((slug) => allPosts.find((p) => p.slug === slug))
+    .filter(Boolean);
+
+  // Build enabled carousels with their resolved posts
+  const resolvedCarousels = (blogConfig.carousels || [])
+    .filter((c) => c.enabled !== false)
+    .map((c) => {
+      let posts = [];
+      if (c.source === "manual") {
+        posts = (c.slugs || [])
+          .map((slug) => allPosts.find((p) => p.slug === slug))
+          .filter(Boolean);
+      } else if (c.source === "category") {
+        const cat = (c.category || "").toLowerCase();
+        posts = allPosts.filter((p) =>
+          (p.category || "").toLowerCase() === cat ||
+          (p.domain_tags || []).some((t) => (t || "").toLowerCase() === cat)
+        );
+      } else {
+        posts = allPosts;
+      }
+      return { ...c, posts: posts.slice(0, c.limit || 10) };
+    })
+    .filter((c) => c.posts.length > 0);
+
+  // Set of slugs already shown above (featured + carousels) — to exclude from "Latest"
+  const shownSlugs = new Set([
+    ...featuredPosts.map((p) => p.slug),
+    ...resolvedCarousels.flatMap((c) => c.posts.map((p) => p.slug)),
+  ]);
+
+  const isFilteringOrSearching = !!(search || activeTopic || activeSkill !== "All");
+  const showCurated = !isFilteringOrSearching && (featuredPosts.length > 0 || resolvedCarousels.length > 0);
+
+  // Hero uses first curated featured if set, else newest post
+  const featuredPost = featuredPosts[0] || allPosts[0];
 
   const allFiltered = allPosts.filter((p) => {
     const q = search.toLowerCase();
@@ -66,11 +118,28 @@ function BlogListingContent() {
     return matchSearch && matchTopic && matchSkill;
   });
 
-  // Only hide hero post from grid when no filters are active and there are more posts
+  // When not filtering, exclude posts already shown in curated sections (hero + featured + carousels)
   const isFiltering = search || activeTopic || activeSkill !== "All";
-  const filtered = !isFiltering && allFiltered.length > 1
-    ? allFiltered.filter((p) => p.id !== featuredPost?.id)
+  const excludeFromLatest = new Set(
+    isFiltering ? [] : [featuredPost?.id, ...[...shownSlugs].map((s) => allPosts.find((p) => p.slug === s)?.id)].filter(Boolean)
+  );
+  const filtered = !isFiltering && allFiltered.length > excludeFromLatest.size
+    ? allFiltered.filter((p) => !excludeFromLatest.has(p.id))
     : allFiltered;
+
+  // ── Pagination ──
+  const totalPages = Math.max(1, Math.ceil(filtered.length / POSTS_PER_PAGE));
+  const safePage = Math.min(currentPage, totalPages);
+  const startIdx = (safePage - 1) * POSTS_PER_PAGE;
+  const paginated = filtered.slice(startIdx, startIdx + POSTS_PER_PAGE);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    // Smooth scroll to top of post grid
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 400, behavior: "smooth" });
+    }
+  };
 
   const toggleBookmark = (slug) => {
     const next = new Set(bookmarked);
@@ -108,6 +177,25 @@ function BlogListingContent() {
         onToggleBookmark={toggleBookmark}
       />
 
+      {/* ── Curated Sections (Featured + Carousels) ── */}
+      {showCurated && (
+        <div className="max-w-7xl mx-auto px-6 pt-10">
+          {/* Editor's Featured — only render if we have at least 2 (1 hero + 1 side) */}
+          {featuredPosts.length >= 2 && (
+            <FeaturedSection posts={featuredPosts} />
+          )}
+          {/* Super admin-configured carousels */}
+          {resolvedCarousels.map((c) => (
+            <PostCarousel
+              key={c.id}
+              title={c.title}
+              posts={c.posts}
+              ctaHref={c.source === "category" && c.category ? `/blog/category/${encodeURIComponent(c.category.toLowerCase().replace(/\s+/g, "-"))}` : undefined}
+            />
+          ))}
+        </div>
+      )}
+
       {/* ── Main Body ── */}
       <div className="max-w-7xl mx-auto px-6 py-10">
 
@@ -131,23 +219,45 @@ function BlogListingContent() {
 
           {/* ── Posts Grid ── */}
           <div className="lg:col-span-8">
-            <h2 className="font-[family-name:var(--font-headline)] font-bold text-lg dark:text-[#dae2fd] mb-6">
-              Recent Blog Posts
-            </h2>
+            <div className="flex items-end justify-between mb-6">
+              <div>
+                <h2 className="font-[family-name:var(--font-headline)] font-bold text-xl md:text-2xl text-on-background dark:text-[#dae2fd]">
+                  {isFiltering ? "Search Results" : "Latest Articles"}
+                </h2>
+                {!isFiltering && (
+                  <p className="text-xs text-on-surface-variant dark:text-[#8c909f] mt-0.5">
+                    Fresh insights, ordered by newest first
+                  </p>
+                )}
+              </div>
+              {filtered.length > 0 && (
+                <span className="text-xs text-on-surface-variant dark:text-[#8c909f]">
+                  Showing {startIdx + 1}–{Math.min(startIdx + POSTS_PER_PAGE, filtered.length)} of {filtered.length}
+                </span>
+              )}
+            </div>
             {filtered.length === 0 ? (
               <p className="text-on-surface-variant dark:text-[#c2c6d6] text-sm py-8">No posts match your filters.</p>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {filtered.map((post) => (
-                  <PostCard
-                    key={post.id}
-                    post={post}
-                    bookmarked={bookmarked.has(post.slug)}
-                    onToggleBookmark={toggleBookmark}
-                    onShare={handleShare}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {paginated.map((post) => (
+                    <PostCard
+                      key={post.id}
+                      post={post}
+                      bookmarked={bookmarked.has(post.slug)}
+                      onToggleBookmark={toggleBookmark}
+                      onShare={handleShare}
+                    />
+                  ))}
+                </div>
+                <Pagination
+                  currentPage={safePage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                  className="mt-10"
+                />
+              </>
             )}
           </div>
 

@@ -85,11 +85,17 @@ const DEFAULT_HOMEPAGE_WIDGETS = [
 ];
 
 
+const DEFAULT_BLOG_PAGE = {
+  featured_slugs: [],
+  carousels: [],
+};
+
 export const DEFAULT_ZONES = {
   article_sidebar: DEFAULT_ARTICLE_SIDEBAR,
   homepage: DEFAULT_HOMEPAGE_WIDGETS,
   course_page: [],
   global_footer: [],
+  blog_page: DEFAULT_BLOG_PAGE,
 };
 
 /**
@@ -113,11 +119,16 @@ export async function getSiteConfig() {
         ? rawZones.homepage 
         : DEFAULT_HOMEPAGE_WIDGETS;
 
+    const rawBlog = rawZones?.blog_page;
     const zones = {
         article_sidebar: (rawZones && Array.isArray(rawZones.article_sidebar) && rawZones.article_sidebar.length > 0) ? rawZones.article_sidebar : DEFAULT_ARTICLE_SIDEBAR,
         homepage:        homepageRaw,
         course_page:     (rawZones && Array.isArray(rawZones.course_page)) ? rawZones.course_page : [],
         global_footer:   (rawZones && Array.isArray(rawZones.global_footer)) ? rawZones.global_footer : [],
+        blog_page: {
+          featured_slugs: Array.isArray(rawBlog?.featured_slugs) ? rawBlog.featured_slugs : [],
+          carousels:      Array.isArray(rawBlog?.carousels) ? rawBlog.carousels : [],
+        },
     };
 
     // Safety Net: Ensure 'homepage' ALWAYS contains a 'posts_grid' widget

@@ -53,7 +53,7 @@ export default function PostCard({ post, bookmarked = false, onToggleBookmark, o
                 alt={post.author.name || ""}
                 width={20}
                 height={20}
-                className="w-5 h-5 rounded-full object-cover"
+                className="w-5 h-5 rounded-full object-contain bg-white"
                 onError={(e) => { e.target.style.display = "none"; }}
               />
             ) : (

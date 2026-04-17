@@ -318,16 +318,13 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
               </>
             )}
 
-            {/* Author Spotlight (Left Sidebar) */}
-            {(() => {
-              console.log('Author Data Payload (Article - Left):', author);
-              return (
-                <SidebarAuthorSpotlight 
-                  author={author} 
-                  articleCount={authorPostCount} 
-                />
-              );
-            })()}
+            {/* Author Spotlight (Left Sidebar - compact, dark variant for gradient background) */}
+            <SidebarAuthorSpotlight
+              author={author}
+              articleCount={authorPostCount}
+              variant="dark"
+              compact
+            />
           </div>
         </aside>
 
@@ -801,12 +798,12 @@ function ArticleContent({ post, recommendedArticles, courseMatch, authorPostCoun
                   ) : null;
 
                 case 'author_spotlight':
-                  console.log('Author Data Payload (Article - Right):', post.author);
                   return (
                     <SidebarAuthorSpotlight
                       key={widget.id}
                       author={post.author}
                       articleCount={authorPostCount}
+                      compact
                     />
                   );
 

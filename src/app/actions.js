@@ -1073,3 +1073,92 @@ export async function upsertTopicsAction(topics) {
     return { success: false, error: error.message || 'Failed to save topics.' };
   }
 }
+
+// ── Super admin: toggle another author's is_super_admin flag ─────
+export async function toggleSuperAdminAction(targetSlug, makeSuperAdmin) {
+  try {
+    const db = await requireSuperAdmin();
+
+    // Self-demotion safety: block if this would leave zero super admins
+    if (makeSuperAdmin === false) {
+      const { data: admins } = await db
+        .from('authors')
+        .select('slug')
+        .eq('is_super_admin', true);
+      if (admins && admins.length <= 1 && admins[0]?.slug === targetSlug) {
+        return { success: false, error: 'Cannot remove the last super admin.' };
+      }
+    }
+
+    const { data, error } = await db
+      .from('authors')
+      .update({ is_super_admin: !!makeSuperAdmin })
+      .eq('slug', targetSlug)
+      .select('slug, name, is_super_admin')
+      .single();
+
+    if (error) return { success: false, error: error.message };
+    return { success: true, author: data };
+  } catch (error) {
+    return { success: false, error: error.message || 'Failed to toggle super admin.' };
+  }
+}
+
+// ── Super admin: update /blog page config (featured posts + carousels) ─
+export async function updateBlogPageConfigAction({ featuredSlugs = [], carousels = [] }) {
+  try {
+    const db = await requireSuperAdmin();
+
+    // Fetch current zones so we don't wipe other zones
+    const { data: existing } = await db
+      .from('site_config')
+      .select('zones')
+      .eq('key', 'global')
+      .maybeSingle();
+
+    const currentZones = existing?.zones || {};
+
+    // Validate inputs
+    const cleanFeatured = Array.isArray(featuredSlugs)
+      ? featuredSlugs.map((s) => String(s).trim()).filter(Boolean).slice(0, 20)
+      : [];
+
+    const cleanCarousels = Array.isArray(carousels)
+      ? carousels
+          .map((c) => ({
+            id:       String(c.id || '').trim() || `carousel-${Math.random().toString(36).slice(2, 8)}`,
+            title:    String(c.title || 'Untitled').trim(),
+            source:   c.source === 'category' || c.source === 'tag' || c.source === 'manual' ? c.source : 'latest',
+            category: String(c.category || '').trim(),
+            slugs:    Array.isArray(c.slugs) ? c.slugs.filter(Boolean) : [],
+            limit:    Math.min(Math.max(parseInt(c.limit) || 10, 1), 30),
+            enabled:  c.enabled !== false,
+          }))
+          .slice(0, 10)
+      : [];
+
+    const newZones = {
+      ...currentZones,
+      blog_page: {
+        featured_slugs: cleanFeatured,
+        carousels: cleanCarousels,
+      },
+    };
+
+    const { error: upsertErr } = await db
+      .from('site_config')
+      .upsert({
+        key: 'global',
+        zones: newZones,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'key' });
+
+    if (upsertErr) return { success: false, error: upsertErr.message };
+
+    revalidatePath('/blog');
+    revalidatePath('/');
+    return { success: true, config: newZones.blog_page };
+  } catch (error) {
+    return { success: false, error: error.message || 'Failed to update blog config.' };
+  }
+}

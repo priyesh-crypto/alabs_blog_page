@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { createClient } from "@/utils/supabase/client";
-import { adminCreateUserAction, createCourseAction, updateCourseAction, deleteCourseAction, upsertTopicsAction } from "@/app/actions";
+import { adminCreateUserAction, createCourseAction, updateCourseAction, deleteCourseAction, upsertTopicsAction, toggleSuperAdminAction, updateBlogPageConfigAction } from "@/app/actions";
 import { ShieldAlert, UserPlus, Users, Loader2, ArrowLeft, Key, Mail, CheckCircle2, Image as ImageIcon, BookOpen, Tags, Plus, Trash2, Pencil, X, Check } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -20,6 +20,13 @@ export default function AdminDashboard() {
   const [topicInput, setTopicInput] = useState("");
   const [topicsSaving, setTopicsSaving] = useState(false);
   const [topicsMsg, setTopicsMsg] = useState(null);
+
+  // ── Blog Page Config state (featured posts + carousels) ──────────
+  const [allPostsForPicker, setAllPostsForPicker] = useState([]);
+  const [featuredSlugs, setFeaturedSlugs] = useState([]);
+  const [carousels, setCarousels] = useState([]); // [{id,title,source,category,slugs,limit,enabled}]
+  const [blogCfgSaving, setBlogCfgSaving] = useState(false);
+  const [blogCfgMsg, setBlogCfgMsg] = useState(null);
 
   // ── Courses state ─────────────────────────────────────────────────
   const [coursesList, setCoursesList] = useState([]);
@@ -67,6 +74,25 @@ export default function AdminDashboard() {
       if (r.ok) setCoursesList(await r.json());
       setCoursesFetching(false);
     }
+    async function fetchBlogConfig() {
+      const { data } = await supabase
+        .from("site_config")
+        .select("zones")
+        .eq("key", "global")
+        .maybeSingle();
+      const bp = data?.zones?.blog_page || {};
+      setFeaturedSlugs(Array.isArray(bp.featured_slugs) ? bp.featured_slugs : []);
+      setCarousels(Array.isArray(bp.carousels) ? bp.carousels : []);
+    }
+    async function fetchPostsForPicker() {
+      const { data } = await supabase
+        .from("posts")
+        .select("slug, title, category, status")
+        .eq("status", "Published")
+        .order("id", { ascending: false })
+        .limit(5000);
+      setAllPostsForPicker(data || []);
+    }
     if (!authLoading) {
       if (!authorProfile?.is_super_admin) {
         router.replace("/studio");
@@ -74,6 +100,8 @@ export default function AdminDashboard() {
         fetchAuthors();
         fetchTopics();
         fetchCourses();
+        fetchBlogConfig();
+        fetchPostsForPicker();
       }
     }
   }, [authLoading, authorProfile, router, supabase]);
@@ -538,21 +566,48 @@ export default function AdminDashboard() {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     {a.is_super_admin ? (
-                      <span style={{ 
-                        fontSize: 10, padding: '5px 10px', background: 'var(--blue-dim)', 
+                      <span style={{
+                        fontSize: 10, padding: '5px 10px', background: 'var(--blue-dim)',
                         color: 'var(--blue)', borderRadius: 20, fontWeight: 700, textTransform: 'uppercase',
                         letterSpacing: '0.02em', border: '1px solid rgba(59, 130, 246, 0.1)'
                       }}>
                         Super Admin
                       </span>
                     ) : (
-                      <span style={{ 
-                        fontSize: 10, padding: '5px 10px', background: 'var(--bg3)', 
+                      <span style={{
+                        fontSize: 10, padding: '5px 10px', background: 'var(--bg3)',
                         color: 'var(--text3)', borderRadius: 20, fontWeight: 700, textTransform: 'uppercase',
                         letterSpacing: '0.02em', border: '1px solid var(--border)'
                       }}>
                         Author
                       </span>
+                    )}
+                    {/* Super-admin toggle — cannot demote self */}
+                    {a.slug !== authorProfile?.slug && (
+                      <button
+                        onClick={async () => {
+                          const next = !a.is_super_admin;
+                          const action = next ? "promote this author to Super Admin?" : "demote this author to regular Author?";
+                          if (!confirm(`Are you sure you want to ${action}`)) return;
+                          const res = await toggleSuperAdminAction(a.slug, next);
+                          if (res.success) {
+                            const { data } = await supabase.from("authors").select("*").order("name");
+                            setAuthorsList(data || []);
+                          } else {
+                            alert(res.error || "Failed to update role.");
+                          }
+                        }}
+                        style={{
+                          fontSize: 10, padding: '5px 10px', background: a.is_super_admin ? 'transparent' : 'var(--blue)',
+                          color: a.is_super_admin ? 'var(--text3)' : '#fff', borderRadius: 20, fontWeight: 700,
+                          textTransform: 'uppercase', letterSpacing: '0.02em',
+                          border: `1px solid ${a.is_super_admin ? 'var(--border)' : 'var(--blue)'}`,
+                          cursor: 'pointer', transition: 'all 0.15s',
+                        }}
+                        title={a.is_super_admin ? "Remove super admin" : "Make super admin"}
+                      >
+                        {a.is_super_admin ? "× Demote" : "↑ Promote"}
+                      </button>
                     )}
                   </div>
                 </div>
@@ -566,6 +621,266 @@ export default function AdminDashboard() {
             </div>
           </div>
 
+        </div>
+
+        {/* ── Blog Page Config: Featured Posts + Carousels ─────── */}
+        <div style={{ marginTop: 48 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 10, background: 'var(--blue-dim, rgba(59,130,246,0.12))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--blue, #3b82f6)' }}>
+              <BookOpen size={20} />
+            </div>
+            <div>
+              <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: 'var(--text)' }}>/blog Page Layout</h2>
+              <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--text3)' }}>Curate featured posts and build custom carousels shown on the public blog listing.</p>
+            </div>
+          </div>
+
+          <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
+
+            {/* Featured Slugs Picker */}
+            <div style={{ marginBottom: 24 }}>
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>
+                Editor's Featured (up to 5 posts, first one becomes the hero)
+              </label>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
+                {featuredSlugs.map((slug, idx) => {
+                  const p = allPostsForPicker.find((pp) => pp.slug === slug);
+                  return (
+                    <span key={slug} style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 6,
+                      padding: '4px 8px 4px 10px', borderRadius: 6,
+                      background: 'var(--blue-dim, rgba(59,130,246,0.12))', color: 'var(--blue, #3b82f6)',
+                      fontSize: 12, fontWeight: 600, maxWidth: 320,
+                    }}>
+                      <span style={{ opacity: 0.6 }}>#{idx + 1}</span>
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {p?.title || slug}
+                      </span>
+                      <button
+                        onClick={() => setFeaturedSlugs(featuredSlugs.filter((s) => s !== slug))}
+                        style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', display: 'flex', padding: 2 }}
+                        title="Remove"
+                      ><X size={12} /></button>
+                    </span>
+                  );
+                })}
+                {featuredSlugs.length === 0 && (
+                  <span style={{ fontSize: 12, color: 'var(--text4, #aaa)', fontStyle: 'italic' }}>No featured posts selected yet.</span>
+                )}
+              </div>
+              <select
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (!v || featuredSlugs.includes(v) || featuredSlugs.length >= 5) return;
+                  setFeaturedSlugs([...featuredSlugs, v]);
+                  e.target.value = "";
+                }}
+                style={{
+                  width: '100%', padding: '8px 10px', fontSize: 13, borderRadius: 8,
+                  border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)',
+                }}
+                disabled={featuredSlugs.length >= 5}
+              >
+                <option value="">
+                  {featuredSlugs.length >= 5 ? "Maximum 5 featured posts reached" : "+ Add a post to featured…"}
+                </option>
+                {allPostsForPicker
+                  .filter((p) => !featuredSlugs.includes(p.slug))
+                  .slice(0, 500)
+                  .map((p) => (
+                    <option key={p.slug} value={p.slug}>
+                      {p.title} {p.category ? `· ${p.category}` : ''}
+                    </option>
+                  ))}
+              </select>
+            </div>
+
+            {/* Carousels Manager */}
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                <label style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)' }}>
+                  Carousels ({carousels.length}/10)
+                </label>
+                <button
+                  onClick={() => {
+                    if (carousels.length >= 10) return;
+                    setCarousels([...carousels, {
+                      id: `c-${Date.now()}`,
+                      title: "New Carousel",
+                      source: "latest",
+                      category: "",
+                      slugs: [],
+                      limit: 10,
+                      enabled: true,
+                    }]);
+                  }}
+                  disabled={carousels.length >= 10}
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 4, padding: '6px 10px', fontSize: 12, fontWeight: 600,
+                    borderRadius: 6, border: '1px solid var(--blue, #3b82f6)', background: 'var(--blue, #3b82f6)',
+                    color: '#fff', cursor: carousels.length >= 10 ? 'not-allowed' : 'pointer', opacity: carousels.length >= 10 ? 0.5 : 1,
+                  }}
+                ><Plus size={12} /> Add Carousel</button>
+              </div>
+
+              {carousels.length === 0 && (
+                <div style={{ padding: 20, textAlign: 'center', color: 'var(--text4, #aaa)', border: '2px dashed var(--border)', borderRadius: 12, fontSize: 13 }}>
+                  No carousels yet. Add one to create a horizontal scrolling row of posts on /blog.
+                </div>
+              )}
+
+              {carousels.map((c, idx) => (
+                <div key={c.id} style={{ border: '1px solid var(--border)', borderRadius: 10, padding: 14, marginBottom: 10, background: 'var(--surface)' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 80px auto auto', gap: 8, alignItems: 'center', marginBottom: 8 }}>
+                    <input
+                      type="text"
+                      value={c.title}
+                      onChange={(e) => {
+                        const next = [...carousels];
+                        next[idx] = { ...c, title: e.target.value };
+                        setCarousels(next);
+                      }}
+                      placeholder="Carousel title"
+                      style={{ padding: '7px 10px', fontSize: 13, borderRadius: 6, border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }}
+                    />
+                    <select
+                      value={c.source}
+                      onChange={(e) => {
+                        const next = [...carousels];
+                        next[idx] = { ...c, source: e.target.value };
+                        setCarousels(next);
+                      }}
+                      style={{ padding: '7px 10px', fontSize: 13, borderRadius: 6, border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }}
+                    >
+                      <option value="latest">Latest posts</option>
+                      <option value="category">By category</option>
+                      <option value="manual">Manual pick</option>
+                    </select>
+                    <input
+                      type="text"
+                      value={c.category || ""}
+                      onChange={(e) => {
+                        const next = [...carousels];
+                        next[idx] = { ...c, category: e.target.value };
+                        setCarousels(next);
+                      }}
+                      placeholder={c.source === 'category' ? 'Category name' : '—'}
+                      disabled={c.source !== 'category'}
+                      style={{ padding: '7px 10px', fontSize: 13, borderRadius: 6, border: '1px solid var(--border)', background: c.source === 'category' ? 'var(--bg)' : 'var(--bg3)', color: 'var(--text)' }}
+                    />
+                    <input
+                      type="number"
+                      min="1" max="30"
+                      value={c.limit}
+                      onChange={(e) => {
+                        const next = [...carousels];
+                        next[idx] = { ...c, limit: parseInt(e.target.value) || 10 };
+                        setCarousels(next);
+                      }}
+                      title="Max posts"
+                      style={{ padding: '7px 10px', fontSize: 13, borderRadius: 6, border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }}
+                    />
+                    <label style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, color: 'var(--text3)' }}>
+                      <input
+                        type="checkbox"
+                        checked={c.enabled !== false}
+                        onChange={(e) => {
+                          const next = [...carousels];
+                          next[idx] = { ...c, enabled: e.target.checked };
+                          setCarousels(next);
+                        }}
+                      />
+                      Show
+                    </label>
+                    <button
+                      onClick={() => setCarousels(carousels.filter((_, i) => i !== idx))}
+                      title="Delete carousel"
+                      style={{ background: 'transparent', border: '1px solid var(--border)', borderRadius: 6, padding: 6, cursor: 'pointer', color: 'var(--text3)', display: 'flex' }}
+                    ><Trash2 size={14} /></button>
+                  </div>
+
+                  {/* Manual slug picker */}
+                  {c.source === 'manual' && (
+                    <div>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 6 }}>
+                        {(c.slugs || []).map((slug) => {
+                          const p = allPostsForPicker.find((pp) => pp.slug === slug);
+                          return (
+                            <span key={slug} style={{
+                              display: 'inline-flex', alignItems: 'center', gap: 4,
+                              padding: '3px 6px 3px 8px', borderRadius: 4,
+                              background: 'var(--bg3)', color: 'var(--text2)',
+                              fontSize: 11, fontWeight: 500, maxWidth: 240,
+                            }}>
+                              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p?.title || slug}</span>
+                              <button
+                                onClick={() => {
+                                  const next = [...carousels];
+                                  next[idx] = { ...c, slugs: c.slugs.filter((s) => s !== slug) };
+                                  setCarousels(next);
+                                }}
+                                style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', display: 'flex', padding: 1 }}
+                              ><X size={10} /></button>
+                            </span>
+                          );
+                        })}
+                      </div>
+                      <select
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          if (!v) return;
+                          const next = [...carousels];
+                          if (!c.slugs.includes(v)) next[idx] = { ...c, slugs: [...(c.slugs || []), v] };
+                          setCarousels(next);
+                          e.target.value = "";
+                        }}
+                        style={{
+                          width: '100%', padding: '6px 8px', fontSize: 12, borderRadius: 6,
+                          border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)',
+                        }}
+                      >
+                        <option value="">+ Add post to this carousel…</option>
+                        {allPostsForPicker
+                          .filter((p) => !(c.slugs || []).includes(p.slug))
+                          .slice(0, 500)
+                          .map((p) => (
+                            <option key={p.slug} value={p.slug}>{p.title}</option>
+                          ))}
+                      </select>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Save + status */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+              <button
+                onClick={async () => {
+                  setBlogCfgSaving(true);
+                  setBlogCfgMsg(null);
+                  const res = await updateBlogPageConfigAction({ featuredSlugs, carousels });
+                  setBlogCfgMsg(res.success ? { type: "success", text: "Blog page config saved!" } : { type: "err", text: res.error });
+                  setBlogCfgSaving(false);
+                }}
+                disabled={blogCfgSaving}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px',
+                  borderRadius: 8, background: 'var(--blue, #3b82f6)', color: '#fff',
+                  border: 'none', fontWeight: 700, fontSize: 13, cursor: blogCfgSaving ? 'not-allowed' : 'pointer',
+                  opacity: blogCfgSaving ? 0.6 : 1,
+                }}
+              >
+                {blogCfgSaving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
+                {blogCfgSaving ? "Saving…" : "Save /blog layout"}
+              </button>
+              {blogCfgMsg && (
+                <span style={{ fontSize: 12, fontWeight: 600, color: blogCfgMsg.type === 'success' ? 'var(--green, #10b981)' : 'var(--red, #ef4444)' }}>
+                  {blogCfgMsg.text}
+                </span>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* ── Topics Manager ─────────────────────────────────────── */}
