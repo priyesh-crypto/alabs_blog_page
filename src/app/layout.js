@@ -20,6 +20,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://www.analytixlabs.co.in"),
   title: "AnalytixLabs Editorial | Data Science & AI Insights",
   description:
     "Deep, authoritative insights into Data Science, Machine Learning, AI, and Analytics from industry experts at AnalytixLabs.",
@@ -27,6 +28,9 @@ export const metadata = {
     index: false,
     follow: false,
     googleBot: { index: false, follow: false },
+  },
+  alternates: {
+    canonical: "/blog",
   },
 };
 
