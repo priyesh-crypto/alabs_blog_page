@@ -13,11 +13,6 @@ export const COPYRIGHT_YEAR   = new Date().getFullYear();
 
 // ── Navigation ────────────────────────────────────────────────────
 export const NAV_CATEGORIES = [
-  { label: "Data Science",      href: "/" },
-  { label: "Machine Learning",  href: "/" },
-  { label: "AI",                href: "/" },
-  { label: "Analytics",         href: "/" },
-  { label: "Deep Learning",     href: "/" },
   { label: "Salary Hub",        href: "/salary-hub" },
 ];
 

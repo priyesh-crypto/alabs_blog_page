@@ -10,6 +10,14 @@ export default function Navbar({ activeCategory = "Data Science" }) {
   const [isDark, setIsDark] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [fontScale, setFontScale] = useState(16);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const stored = localStorage.getItem("theme");
@@ -44,32 +52,35 @@ export default function Navbar({ activeCategory = "Data Science" }) {
 
   return (
     <>
-      <nav className="fixed top-0 w-full z-50 glass-nav shadow-sm" id="main-nav">
+      <nav className={`fixed top-0 w-full z-50 glass-nav ${scrolled ? "glass-nav--scrolled shadow-md" : "shadow-sm"}`} id="main-nav">
         <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image src={isDark ? "/white.svg" : "/logo.svg"} alt="AnalytixLabs" width={140} height={32} priority style={{ objectFit: "contain" }} />
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-8">
-            {NAV_CATEGORIES.map((cat) => (
-              <Link
-                key={cat.label}
-                href={cat.href}
-                className={`font-[family-name:var(--font-headline)] font-bold text-sm tracking-tight transition-colors ${
-                  cat.label === activeCategory
-                    ? "text-[#003b93] dark:text-[#adc6ff] border-b-2 border-[#003b93] dark:border-[#adc6ff] pb-1"
-                    : "text-[#434653] dark:text-[#c2c6d6] hover:text-[#003b93] dark:hover:text-[#dae2fd]"
-                }`}
-              >
-                {cat.label}
-              </Link>
-            ))}
-          </div>
-
           {/* Right Controls */}
           <div className="flex items-center space-x-3">
+            {/* Desktop Nav — right-aligned as buttons */}
+            <div className="hidden md:flex items-center gap-2 mr-2">
+              {NAV_CATEGORIES.map((cat) => {
+                const isActive = cat.label === activeCategory;
+                return (
+                  <Link
+                    key={cat.label}
+                    href={cat.href}
+                    className={`font-[family-name:var(--font-headline)] font-bold text-sm tracking-tight px-4 py-1.5 rounded-full border transition-colors ${
+                      isActive
+                        ? "bg-[#003b93] text-white border-[#003b93] dark:bg-[#adc6ff] dark:text-[#001b3f] dark:border-[#adc6ff]"
+                        : "bg-white/60 text-[#003b93] border-[#003b93]/30 hover:bg-[#003b93] hover:text-white dark:bg-[#adc6ff]/10 dark:text-[#adc6ff] dark:border-[#adc6ff]/30 dark:hover:bg-[#adc6ff] dark:hover:text-[#001b3f]"
+                    }`}
+                  >
+                    {cat.label}
+                  </Link>
+                );
+              })}
+            </div>
+
             {/* Mobile hamburger */}
             <button
               className="md:hidden p-2 hover:bg-slate-100/50 dark:hover:bg-[#2d3449]/50 rounded-lg transition-all"
