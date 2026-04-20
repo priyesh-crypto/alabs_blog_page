@@ -12,6 +12,7 @@ export default function StudioLayout({ children }) {
   const router = useRouter();
   const pathname = usePathname();
   const { user, authorProfile, signOut } = useAuth();
+  const isLoginPage = pathname === "/studio/login";
 
   const {
     state,
@@ -38,8 +39,9 @@ export default function StudioLayout({ children }) {
   };
 
   useEffect(() => {
+    if (isLoginPage) return;
     fetchAllPosts();
-  }, [fetchAllPosts]);
+  }, [fetchAllPosts, isLoginPage]);
 
   const handleClearEditor = () => {
     clearEditor();
@@ -68,6 +70,14 @@ export default function StudioLayout({ children }) {
     user,
     authorProfile,
   };
+
+  if (isLoginPage) {
+    return (
+      <StudioContext.Provider value={contextValue}>
+        <div className="studio-wrapper">{children}</div>
+      </StudioContext.Provider>
+    );
+  }
 
   return (
     <StudioContext.Provider value={contextValue}>
